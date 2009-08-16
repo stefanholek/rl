@@ -8,6 +8,7 @@ from completion import cmd
 
 class MyCmd(cmd.Cmd):
 
+    intro = 'completesys example (type help for help)\n'
     prompt = 'completesys> '
 
     def do_EOF(self, args):
