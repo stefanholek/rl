@@ -1,4 +1,4 @@
-# Alternative readline interface
+# Alternative readline interface with a focus on completion
 
 import sys
 import readline
@@ -220,7 +220,7 @@ completer = Completer()
 
 
 class Completion(object):
-    """Interface to the current readline completion."""
+    """Interface to the active readline completion."""
 
     @property
     def begidx(self):
