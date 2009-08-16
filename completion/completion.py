@@ -1,4 +1,4 @@
-# Alternative readline interface with a focus on completion
+# Alternative readline interface focusing on completion
 
 import sys
 import readline
@@ -363,7 +363,7 @@ class Completion(object):
                 break
         return new
 
-    # Input stream hacking
+    # Input stream interaction
 
     def read_key(self):
         return readline.read_key()
