@@ -345,27 +345,23 @@ class Completion(object):
     # Stock completions
 
     def complete_filename(self, text):
-        new = []
-        for i in range(_MAXMATCHES):
-            n = readline.filename_completion_function(text, i)
-            if n is not None:
-                new.append(n)
-            else:
-                break
-        return new
+        return self.__matches(text, readline.filename_completion_function)
 
     def complete_username(self, text):
-        new = []
-        for i in range(_MAXMATCHES):
-            n = readline.username_completion_function(text, i)
-            if n is not None:
-                new.append(n)
-            else:
-                break
-        return new
+        return self.__matches(text, readline.username_completion_function)
 
     def expand_tilde(self, text):
         return readline.tilde_expand(text)
+
+    def __matches(self, text, entry_func):
+        new = []
+        for i in range(_MAXMATCHES):
+            n = entry_func(text, i)
+            if n is not None:
+                new.append(n)
+            else:
+                break
+        return new
 
     # Input stream hacking
 
