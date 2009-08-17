@@ -178,7 +178,6 @@ class Completer(object):
 
     # Debugging
 
-    @print_exc
     def dump_vars(self):
         sys.stdout.write("""\
 quote_characters:               %r
@@ -373,15 +372,14 @@ class Completion(object):
 
     # Display
 
-    def redisplay(self, force=False):
-        readline.redisplay(force)
-
     def display_match_list(self, substitution, matches, max_length):
         readline.display_match_list(substitution, matches, max_length)
 
+    def redisplay(self, force=False):
+        readline.redisplay(force)
+
     # Debugging
 
-    @print_exc
     def dump_vars(self):
         sys.stdout.write("""\
 line_buffer:                    %r
