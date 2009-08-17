@@ -49,22 +49,27 @@ print_exc
 Example Code
 ------------
 ::
-    from completion import completer
-    from completion import completion
+
+    import os
     from completion import cmd
 
     class MyCmd(cmd.Cmd):
 
-        def preloop(self):
-            self.completesys = SystemCompletion().complete
-
         def do_shell(self, args):
-            """Execute a shell command"""
+            """Usage: !command"""
             os.system(args)
 
         def complete_shell(self, text, *ignored):
             return self.completesys(text)
 
+        def completesys(self, text):
+            matches = []
+            for dir in os.environ.get('PATH').split(':'):
+                for name in os.listdir(dir):
+                    if name.startswith(text):
+                        if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
+                            matches.append(name)
+            return matches
 
 Installation
 ============
