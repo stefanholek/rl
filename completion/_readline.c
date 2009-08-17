@@ -2388,9 +2388,6 @@ setup_readline(void)
 #endif
 	/* Set our completion function */
 	rl_attempted_completion_function = (CPPFunction *)flex_complete;
-	/* Set completer quote characters */
-	rl_completer_quote_characters =
-		strdup(rl_basic_quote_characters);
 	/* Set Python word break characters */
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
