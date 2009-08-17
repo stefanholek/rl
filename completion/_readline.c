@@ -1333,7 +1333,7 @@ when it is passed to the completion function.");
 static PyObject *
 set_special_prefixes(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *value, *s;
 
 	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &value)) {
 		return NULL;
