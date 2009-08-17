@@ -985,9 +985,11 @@ May only be called from within custom completers.");
 /* Filename quoting/dequoting functions */
 
 static PyObject *filename_quoting_function = NULL;
+static rl_quote_func_t *default_filename_quoting_function = NULL;
 
 static char *
 on_filename_quoting_function(const char *text, int match_type, char *quote_pointer);
+
 
 static PyObject *
 set_filename_quoting_function(PyObject *self, PyObject *args)
@@ -997,7 +999,8 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 
 	rl_filename_quoting_function =
 		filename_quoting_function ?
-		(rl_quote_func_t *)on_filename_quoting_function : rl_quote_filename;
+		(rl_quote_func_t *)on_filename_quoting_function :
+		default_filename_quoting_function;
 
 	return result;
 }
@@ -1074,6 +1077,7 @@ static PyObject *filename_dequoting_function = NULL;
 
 static char *
 on_filename_dequoting_function(const char *text, char quote_char);
+
 
 static PyObject *
 set_filename_dequoting_function(PyObject *self, PyObject *args)
@@ -1167,6 +1171,7 @@ static PyObject *char_is_quoted_function = NULL;
 
 static int
 on_char_is_quoted_function(const char *text, int index);
+
 
 static PyObject *
 set_char_is_quoted_function(PyObject *self, PyObject *args)
@@ -1514,6 +1519,7 @@ static PyObject *completion_word_break_hook = NULL;
 static char *
 on_completion_word_break_hook(void);
 
+
 static PyObject *
 set_completion_word_break_hook(PyObject *self, PyObject *args)
 {
@@ -1608,6 +1614,7 @@ static PyObject *directory_completion_hook = NULL;
 
 static int
 on_directory_completion_hook(char **directory);
+
 
 static PyObject *
 set_directory_completion_hook(PyObject *self, PyObject *args)
@@ -2389,6 +2396,8 @@ setup_readline(void)
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 	rl_completion_append_character = '\0';
 #endif
+	/* Save a reference to the default implementation */
+	default_filename_quoting_function = rl_filename_quoting_function;
 
 	begidx = PyInt_FromLong(0L);
 	endidx = PyInt_FromLong(0L);
