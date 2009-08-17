@@ -34,7 +34,8 @@ class MyCmd(cmd.Cmd):
 
     def complete_shell(self, text, line, begidx, endidx):
         if self.commandpos(line, begidx):
-            return self.completesys(text)
+            if os.sep not in text:
+                return self.completesys(text)
         return self.completefiles(text)
 
     def commandpos(self, line, begidx):
