@@ -16,7 +16,7 @@ class MyCmd(cmd.Cmd):
     def preloop(self):
         completer.quote_characters = '"\''
         completer.word_break_characters = ' \t\n\\"\'`><=;|&!?*'
-        completer.filename_quote_characters = ' \t\n\\"\''
+        completer.filename_quote_characters = ' \t\n'
         completer.match_hidden_files = False
         completer.tilde_expansion = True
 
