@@ -664,14 +664,17 @@ Get list of characters that may be used to quote a substring of the line.");
 static PyObject *
 set_completer_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *value, *s;
 
 	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &value)) {
 		return NULL;
 	}
+	s = strdup(value);
+	if (s == NULL)
+		return PyErr_NoMemory();
 	if (rl_completer_quote_characters)
 		free((void*)rl_completer_quote_characters);
-	rl_completer_quote_characters = strdup(value);
+	rl_completer_quote_characters = s;
 	Py_RETURN_NONE;
 }
 
@@ -699,14 +702,17 @@ Get list of characters that cause a filename to be quoted by the completer.");
 static PyObject *
 set_filename_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *value, *s;
 
 	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &value)) {
 		return NULL;
 	}
+	s = strdup(value);
+	if (s == NULL)
+		return PyErr_NoMemory();
 	if (rl_filename_quote_characters)
 		free((void*)rl_filename_quote_characters);
-	rl_filename_quote_characters = strdup(value);
+	rl_filename_quote_characters = s;
 	Py_RETURN_NONE;
 }
 
@@ -1259,7 +1265,7 @@ filename_completion_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_filename_completion_function,
 "filename_completion_function(string, int) -> string\n\
-A generator function for filename completion in the general case.");
+A generator function for filename completion.");
 
 
 static PyObject *
@@ -1332,9 +1338,12 @@ set_special_prefixes(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &value)) {
 		return NULL;
 	}
+	s = strdup(value);
+	if (s == NULL)
+		return PyErr_NoMemory();
 	if (rl_special_prefixes)
 		free((void*)rl_special_prefixes);
-	rl_special_prefixes = strdup(value);
+	rl_special_prefixes = s;
 	Py_RETURN_NONE;
 }
 
@@ -1854,10 +1863,8 @@ StringArray_new(size_t size)
 	char **p;
 
 	p = calloc(size+1, sizeof(char*));
-	if (p == NULL) {
+	if (p == NULL)
 		PyErr_NoMemory();
-		return NULL;
-	}
 	return p;
 }
 
@@ -1925,7 +1932,7 @@ PyList_FromStringArray(char **strings)
 
 	list = PyList_New(size);
 	if (list == NULL)
-		goto error;
+		return NULL;
 
 	for (i = 0; i < size; i++) {
 		s = PyString_FromString(strings[i]);
@@ -2389,7 +2396,7 @@ setup_readline(void)
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
-	rl_completion_append_character ='\0';
+	rl_completion_append_character = '\0';
 #endif
 
 	begidx = PyInt_FromLong(0L);
