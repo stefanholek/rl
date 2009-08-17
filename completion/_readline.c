@@ -664,17 +664,14 @@ Get list of characters that may be used to quote a substring of the line.");
 static PyObject *
 set_completer_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value, *s;
+	char *value;
 
 	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &value)) {
 		return NULL;
 	}
-	s = strdup(value);
-	if (s == NULL)
-		return PyErr_NoMemory();
 	if (rl_completer_quote_characters)
 		free((void*)rl_completer_quote_characters);
-	rl_completer_quote_characters = s;
+	rl_completer_quote_characters = strdup(value);
 	Py_RETURN_NONE;
 }
 
@@ -702,17 +699,14 @@ Get list of characters that cause a filename to be quoted by the completer.");
 static PyObject *
 set_filename_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value, *s;
+	char *value;
 
 	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &value)) {
 		return NULL;
 	}
-	s = strdup(value);
-	if (s == NULL)
-		return PyErr_NoMemory();
 	if (rl_filename_quote_characters)
 		free((void*)rl_filename_quote_characters);
-	rl_filename_quote_characters = s;
+	rl_filename_quote_characters = strdup(value);
 	Py_RETURN_NONE;
 }
 
@@ -1333,17 +1327,14 @@ when it is passed to the completion function.");
 static PyObject *
 set_special_prefixes(PyObject *self, PyObject *args)
 {
-	char *value, *s;
+	char *value;
 
 	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &value)) {
 		return NULL;
 	}
-	s = strdup(value);
-	if (s == NULL)
-		return PyErr_NoMemory();
 	if (rl_special_prefixes)
 		free((void*)rl_special_prefixes);
-	rl_special_prefixes = s;
+	rl_special_prefixes = strdup(value);
 	Py_RETURN_NONE;
 }
 
@@ -1868,6 +1859,7 @@ StringArray_new(size_t size)
 	return p;
 }
 
+
 static void
 StringArray_free(char **strings)
 {
@@ -1880,6 +1872,7 @@ StringArray_free(char **strings)
 	}
 }
 
+
 static size_t
 StringArray_size(char **strings)
 {
@@ -1890,6 +1883,7 @@ StringArray_size(char **strings)
 		size++;
 	return size;
 }
+
 
 static int
 StringArray_insert(char ***strings, size_t pos, char *string)
