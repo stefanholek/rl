@@ -11,6 +11,9 @@ class MyCmd(cmd.Cmd):
     intro = 'completesys example (type help for help)\n'
     prompt = 'completesys> '
 
+    def emptyline(self):
+        pass
+
     def do_EOF(self, args):
         """Usage: Ctrl+D"""
         self.stdout.write('\n')
