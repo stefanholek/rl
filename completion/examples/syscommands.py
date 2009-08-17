@@ -8,8 +8,8 @@ from completion import cmd
 
 class MyCmd(cmd.Cmd):
 
-    intro = 'completesys example (type help for help)\n'
-    prompt = 'completesys> '
+    intro = 'Command completion example (type help for help)\n'
+    prompt = 'completion> '
 
     def emptyline(self):
         pass
@@ -24,9 +24,9 @@ class MyCmd(cmd.Cmd):
         os.system(args)
 
     def complete_shell(self, text, *ignored):
-        return self.completesys(text)
+        return self.commandcomplete(text)
 
-    def completesys(self, text):
+    def commandcomplete(self, text):
         matches = []
         for dir in os.environ.get('PATH').split(':'):
             for name in os.listdir(dir):
