@@ -32,11 +32,11 @@ class MyCmd(cmd.Cmd):
         os.system(args)
 
     def complete_shell(self, text, line, begidx, endidx):
-        if self.iscommand(line, begidx) and os.sep not in text:
+        if self.commandpos(line, begidx) and os.sep not in text:
             return self.completesys(text)
         return self.completefiles(text)
 
-    def iscommand(self, line, begidx):
+    def commandpos(self, line, begidx):
         delta = line[0:begidx]
         return delta.strip() in ('!', 'shell')
 
