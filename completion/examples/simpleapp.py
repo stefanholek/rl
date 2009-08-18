@@ -51,8 +51,8 @@ class MyCmd(cmd.Cmd):
 
     def completefiles(self, text):
         if text.startswith('~') and os.sep not in text:
-            return completion.username_completion_function(text)
-        return completion.filename_completion_function(text)
+            return completion.complete_username(text)
+        return completion.complete_filename(text)
 
 
 def main():

@@ -344,13 +344,13 @@ class Completion(object):
 
     # Stock completions
 
-    def filename_completion_function(self, text):
+    def complete_filename(self, text):
         return self.__matches(text, readline.filename_completion_function)
 
-    def username_completion_function(self, text):
+    def complete_username(self, text):
         return self.__matches(text, readline.username_completion_function)
 
-    def tilde_expand(self, text):
+    def expand_tilde(self, text):
         return readline.tilde_expand(text)
 
     def __matches(self, text, entry_func):
