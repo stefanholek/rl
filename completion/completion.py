@@ -12,6 +12,7 @@ def print_exc(func):
 
     Useful for debugging completions and hooks.
     """
+
     def wrapped_func(*args, **kw):
         try:
             return func(*args, **kw)
@@ -343,13 +344,13 @@ class Completion(object):
 
     # Stock completions
 
-    def complete_filename(self, text):
+    def filename_completion_function(self, text):
         return self.__matches(text, readline.filename_completion_function)
 
-    def complete_username(self, text):
+    def username_completion_function(self, text):
         return self.__matches(text, readline.username_completion_function)
 
-    def expand_tilde(self, text):
+    def tilde_expand(self, text):
         return readline.tilde_expand(text)
 
     def __matches(self, text, entry_func):
@@ -420,4 +421,23 @@ completion.inhibit_completion,
 ))
 
 completion = Completion()
+
+
+class generator(object):
+    """Turn a function returning a list of matches into a
+    completion_entry_function that can be handed to readline.
+    """
+
+    def __init__(self, func):
+        self._func = func
+
+    def __call__(self, text, state):
+        if state == 0:
+            self._matches = self._func(text)
+            if not isinstance(self._matches, list):
+                self._matches = list(self._matches)
+        try:
+            return self._matches[state]
+        except IndexError:
+            return None
 
