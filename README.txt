@@ -143,7 +143,7 @@ places like the shell::
         return matches
 
     def main():
-        completer.parse_and_bind('TAB: complete')
+        completer.parse_and_bind('tab: complete')
         completer.completer = generator(completesys)
         command = raw_input('command> ')
         print 'You typed:', command
