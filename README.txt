@@ -52,9 +52,8 @@ Discussion
 
 The graph, when read from top to bottom, represents a possible calling
 sequence for filename completion in readline. This sequence is initiated
-whenever the user presses the TAB key and has three distinct phases: Finding
-the word to complete, generating matches for the word, and displaying those
-matches.
+whenever the user presses the TAB key and has three distinct phases:
+word breaking, match generation, and match display.
 
 Functions in **boldface** may be overridden by applications.
 Functions in `italics` may be called by such application-provided hooks to
