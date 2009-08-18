@@ -104,17 +104,17 @@ completion
     with readline when a completion is in progress.
 
 readline
-    Bare-bones interface to the _readline.so C library. Contains everything
+    Bare-bones interface to the ``_readline.so`` C library. Contains everything
     known from the standard library plus extensions specific to the
-    completion package. The completer and completion interfaces make use of
+    completion package. The ``completer`` and ``completion`` interfaces make use of
     this module, and you should rarely need to interact with it directly.
 
 generator
-    A factory turning any callable into a completion_entry_function that
+    A factory turning any callable into a ``completion_entry_function`` that
     can be handed to readline.
 
 cmd
-    A subclass of cmd.Cmd using completion's version of readline.
+    A subclass of ``cmd.Cmd`` using completion's version of readline.
 
 print_exc
     A decorator printing exceptions to stderr. Useful when writing (Python)
