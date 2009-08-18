@@ -1,6 +1,5 @@
-# Complete system commands and filenames
+# Complete filenames
 
-import sys
 import os
 
 from completion import completer
@@ -10,8 +9,8 @@ from completion import cmd
 
 class MyCmd(cmd.Cmd):
 
-    intro = 'Filename completion example (type help for help)\n'
-    prompt = 'completion> '
+    intro = 'Filename completion example (type Ctrl+D to exit)\n'
+    prompt = 'filename> '
 
     def preloop(self):
         completer.quote_characters = '"\''
@@ -28,41 +27,16 @@ class MyCmd(cmd.Cmd):
         self.stdout.write('\n')
         return True
 
-    def do_shell(self, args):
-        """Usage: !command [filename ...]"""
-        os.system(args)
-
-    def complete_shell(self, text, line, begidx, endidx):
-        if self.commandpos(line, begidx):
-            if os.sep not in text:
-                return self.commandcomplete(text)
-        return self.filecomplete(text)
-
-    def commandpos(self, line, begidx):
-        delta = line[0:begidx]
-        return delta.strip() in ('!', 'shell')
-
-    def commandcomplete(self, text):
-        matches = []
-        for dir in os.environ.get('PATH').split(':'):
-            for name in os.listdir(dir):
-                if name.startswith(text):
-                    if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                        matches.append(name)
-        return matches
-
-    def filecomplete(self, text):
+    def completenames(self, text, *ignored):
         if text.startswith('~') and os.sep not in text:
-            return completion.complete_username(text)
-        return completion.complete_filename(text)
+            return completion.username_completion_function(text)
+        return completion.filename_completion_function(text)
 
 
 def main():
     c = MyCmd()
     c.cmdloop()
-    return 0
 
 
 if __name__ == '__main__':
-    sys.exit(main())
-
+    main()
