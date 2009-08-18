@@ -95,8 +95,6 @@ interface objects ``completer`` and ``completion``.
 Components
 ----------
 
-The package consist of these parts:
-
 completer
     Interface to the readline completer. Used to configure the completion
     aspects of readline.
