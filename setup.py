@@ -5,10 +5,10 @@ from sys import platform
 version = '1.0'
 
 
-# On *nix, install libreadline6-dev (or equivalent) before
-# attempting to build completion. On Mac OS X you need a
-# Python built with MacPorts or Fink, as the system Python
-# uses the BSD editline library and not GNU readline.
+# On Linux, install libreadline5-dev (or equivalent) before attempting to
+# build completion. On Mac OS X, you need a Python built with MacPorts or
+# Fink, as the system Python is linked to the BSD editline library and not
+# GNU readline.
 
 include_dirs = []
 library_dirs = []
@@ -35,13 +35,13 @@ Extension(name='completion._readline',
 
 setup(name='completion',
       version=version,
-      description='Alternative Python readline interface, focused on completion.',
+      description='Alternative Python-Readline interface focused on completion',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
           'Programming Language :: Python',
       ],
-      keywords='readline completion interface',
+      keywords='gnu readline completion interface',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
       url='http://pypi.python.org/pypi/completion',
