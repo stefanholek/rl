@@ -434,7 +434,7 @@ class generator(object):
 
     def __call__(self, text, state):
         if state == 0:
-            self._matches = list(self._func(text))
+            self._matches = self._func(text)
         try:
             return self._matches[state]
         except IndexError:
