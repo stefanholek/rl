@@ -424,8 +424,9 @@ completion = Completion()
 
 
 class generator(object):
-    """Turn a function returning a list of matches into a
-    completion_entry_function that can be handed to readline.
+    """Turn a callable returning matches into a
+    completion_entry_function that can be handed to
+    readline.
     """
 
     def __init__(self, func):
@@ -433,9 +434,7 @@ class generator(object):
 
     def __call__(self, text, state):
         if state == 0:
-            self._matches = self._func(text)
-            if not isinstance(self._matches, list):
-                self._matches = list(self._matches)
+            self._matches = list(self._func(text))
         try:
             return self._matches[state]
         except IndexError:
