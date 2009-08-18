@@ -424,9 +424,8 @@ completion = Completion()
 
 
 class generator(object):
-    """Turn a callable returning matches into a
-    completion_entry_function that can be handed to
-    readline.
+    """Turn any callable returning a list of matches into a
+    completion_entry_function that can be handed to readline.
     """
 
     def __init__(self, func):
