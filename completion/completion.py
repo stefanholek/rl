@@ -39,6 +39,8 @@ class generator(object):
     def __call__(self, text, state):
         if state == 0:
             self._matches = self._func(text)
+            if not isinstance(self._matches, list):
+                self._matches = list(self._matches)
         try:
             return self._matches[state]
         except IndexError:

@@ -83,6 +83,8 @@ class Cmd(cmd.Cmd):
             else:
                 compfunc = self.completenames
             self.completion_matches = compfunc(text, line, begidx, endidx)
+            if not isinstance(self.completion_matches, list):
+                self.completion_matches = list(self.completion_matches)
         try:
             return self.completion_matches[state]
         except IndexError:
