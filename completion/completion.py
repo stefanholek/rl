@@ -26,6 +26,25 @@ def print_exc(func):
     return wrapped_func
 
 
+class generator(object):
+    """Generator function factory.
+
+    Takes a callable returning a list of matches and returns
+    an object implementing the protocol readline requires.
+    """
+
+    def __init__(self, func):
+        self._func = func
+
+    def __call__(self, text, state):
+        if state == 0:
+            self._matches = self._func(text)
+        try:
+            return self._matches[state]
+        except IndexError:
+            return None
+
+
 class Completer(object):
     """Interface to the readline completer."""
 
@@ -169,7 +188,7 @@ class Completer(object):
             readline.set_filename_dequoting_function(function)
         return property(get, set)
 
-    # Configuration
+    # Configuration functions
 
     def read_init_file(self, filename):
         return readline.read_init_file(filename)
@@ -342,18 +361,21 @@ class Completion(object):
             readline.set_inhibit_completion(value)
         return property(get, set)
 
-    # Stock completions
+    # Completion functions
 
     def complete_filename(self, text):
-        return self.__matches(text, readline.filename_completion_function)
+        return self._generate(text, readline.filename_completion_function)
 
     def complete_username(self, text):
-        return self.__matches(text, readline.username_completion_function)
+        return self._generate(text, readline.username_completion_function)
 
     def expand_tilde(self, text):
         return readline.tilde_expand(text)
 
-    def __matches(self, text, entry_func):
+    def display_match_list(self, substitution, matches, max_length):
+        readline.display_match_list(substitution, matches, max_length)
+
+    def _generate(self, text, entry_func):
         new = []
         for i in range(_MAXMATCHES):
             n = entry_func(text, i)
@@ -362,22 +384,6 @@ class Completion(object):
             else:
                 break
         return new
-
-    # Input stream interaction
-
-    def read_key(self):
-        return readline.read_key()
-
-    def stuff_char(self, char):
-        return readline.stuff_char(char)
-
-    # Display
-
-    def display_match_list(self, substitution, matches, max_length):
-        readline.display_match_list(substitution, matches, max_length)
-
-    def redisplay(self, force=False):
-        readline.redisplay(force)
 
     # Debugging
 
@@ -421,21 +427,4 @@ completion.inhibit_completion,
 ))
 
 completion = Completion()
-
-
-class generator(object):
-    """Turn any callable returning a list of matches into a
-    completion_entry_function that can be handed to readline.
-    """
-
-    def __init__(self, func):
-        self._func = func
-
-    def __call__(self, text, state):
-        if state == 0:
-            self._matches = self._func(text)
-        try:
-            return self._matches[state]
-        except IndexError:
-            return None
 
