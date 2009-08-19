@@ -97,7 +97,7 @@ completer
 
 completion
     4 status flags, 10 completion settings, 5 completion variables, and
-    4 functions.
+    5 functions.
 
 [TBC]
 
