@@ -2,7 +2,7 @@ from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 from sys import platform
 
-version = '1.0'
+version = '1.0a1'
 
 
 # On Linux, install libreadline5-dev (or equivalent) before attempting to
@@ -19,7 +19,7 @@ if platform == 'darwin':
         include_dirs += ['/opt/local/include']
         library_dirs += ['/opt/local/lib']
     # Fink
-    if exists('/sw/local/include'):
+    elif exists('/sw/local/include'):
         include_dirs += ['/sw/local/include']
         library_dirs += ['/sw/local/lib']
 
@@ -35,11 +35,13 @@ Extension(name='completion._readline',
 
 setup(name='completion',
       version=version,
-      description='Alternative Python-Readline interface focused on completion',
+      description='Python readline interface focused on completion',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
           'Programming Language :: Python',
+          'Development Status :: 3 - Alpha',
+          'License :: OSI Approved :: Python Software Foundation License',
       ],
       keywords='gnu readline completion interface',
       author='Stefan H. Holek',

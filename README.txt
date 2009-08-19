@@ -1,9 +1,9 @@
 ==========
 completion
 ==========
------------------------------------------------------------
-Alternative Python-Readline interface focused on completion
------------------------------------------------------------
+-----------------------------------------------
+Python readline interface focused on completion
+-----------------------------------------------
 
 Introduction
 ============
@@ -52,7 +52,7 @@ Discussion
 
 The graph, when read from top to bottom, represents a possible calling
 sequence for filename completion in readline. This sequence is initiated
-whenever the user presses the TAB key and has three distinct phases:
+whenever the user presses the TAB key and has three phases:
 word breaking, match generation, and match display.
 
 Functions in **boldface** may be overridden by applications.
@@ -63,14 +63,16 @@ At C-level, there is a default ``filename_quoting_function`` and a default
 ``display_matches_hook``. The remaining hooks have no default implementations.
 
 The ``completion_entry_function``, marked with an '*' above, has traditionally
-been the place where Python's completion support hooks into readline. In fact,
+been the place where Python hooks into readline. In fact,
 ``readline.set_completer(func)`` sets readline's
 ``[rl_]completion_entry_function`` to ``func``. [#]_
 
 To be fair, the standard library only claims to support `word completion` as
 used in the ``cmd`` and ``rlcompleter`` modules. For more advanced
-use cases – most importantly filename completion – we need access to the
-entire graph.
+use cases however – notably filename completion – we need access to the entire
+graph.
+
+[TBC]
 
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
@@ -84,12 +86,23 @@ Overview
 --------
 
 The completion package implements all flags, settings, and hooks documented in
-the `Custom Completers`_ section of the GNU Readline Library manual.
+the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
+They are presented to the user in the form of properties on two
+interface objects, ``completer`` and ``completion``.
 
-They are presented to the user in the form of properties on the
-interface objects ``completer`` and ``completion``.
+Some statistics:
+
+completer
+    9 configuration settings (7 settable), 9 settable hooks, 2 functions.
+
+completion
+    4 status flags, 10 completion settings, 5 completion variables, and
+    4 functions.
+
+[TBC]
 
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
 Components
 ----------
@@ -109,7 +122,7 @@ readline
     this module, and you should rarely need to interact with it directly.
 
 generator
-    A factory turning any callable into a ``completion_entry_function`` that
+    A factory turning a callable into a ``completion_entry_function`` that
     can be handed to readline.
 
 cmd
@@ -125,8 +138,7 @@ Please see the respective module documentation for details.
 Example
 -------
 
-The code below implements system command completion as can be found in
-places like the shell::
+The code below implements system command completion similar to bash::
 
     import os
 
@@ -163,7 +175,7 @@ Then type::
 
 and watch the console. When it reads::
 
-    Finished processing dependencies for completion==1.0
+    Finished processing dependencies for completion==1.0a1
 
 you are done and completion is ready to use.
 
