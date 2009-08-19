@@ -27,10 +27,10 @@ def print_exc(func):
 
 
 class generator(object):
-    """Factory for generator functions.
+    """Generator function factory.
 
-    Takes a callable returning a list of matches and returns
-    an object implementing the protocol readline requires.
+    Takes a callable returning a list of matches and returns an
+    object implementing the generator protocol readline requires.
     """
 
     def __init__(self, func):
@@ -374,9 +374,6 @@ class Completion(object):
 
     def display_match_list(self, substitution, matches, max_length):
         readline.display_match_list(substitution, matches, max_length)
-
-    def redisplay(force=False):
-        readline.redisplay(force)
 
     def _generate(self, text, entry_func):
         new = []
