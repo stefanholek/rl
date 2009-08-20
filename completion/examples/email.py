@@ -31,8 +31,8 @@ def completehostnames(text):
 def main():
     completer.completer = generator(completeemails)
     completer.parse_and_bind('tab: complete')
-    address = raw_input('email address: ')
-    print 'Your email is:', address.strip()
+    email = raw_input('email address: ')
+    print 'Your email is:', email.strip()
 
 
 if __name__ == '__main__':
