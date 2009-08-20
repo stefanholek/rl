@@ -10,7 +10,7 @@ from completion import cmd
 class MyCmd(cmd.Cmd):
 
     intro = 'Completion example (type Ctrl+D to exit)\n'
-    prompt = 'completion> '
+    prompt = 'command> '
 
     def preloop(self):
         completer.quote_characters = '"\''
@@ -32,7 +32,7 @@ class MyCmd(cmd.Cmd):
         os.system(args)
 
     def complete_shell(self, text, line, begidx, endidx):
-        if self.commandpos(line, begidx) and os.sep not in text:
+        if self.commandpos(line, begidx) and (os.sep not in text):
             return self.completesys(text)
         return self.completefiles(text)
 
@@ -41,16 +41,14 @@ class MyCmd(cmd.Cmd):
         return delta.strip() in ('!', 'shell')
 
     def completesys(self, text):
-        matches = []
         for dir in os.environ.get('PATH').split(':'):
             for name in os.listdir(dir):
                 if name.startswith(text):
                     if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                        matches.append(name)
-        return matches
+                        yield name
 
     def completefiles(self, text):
-        if text.startswith('~') and os.sep not in text:
+        if text.startswith('~') and (os.sep not in text):
             return completion.complete_username(text)
         return completion.complete_filename(text)
 
