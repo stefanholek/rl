@@ -1,7 +1,7 @@
 # Complete system commands
 
-# Instead of implementing the generator protocol directly
-# we can write a matcher function only and use the 'generator'
+# Instead of implementing the generator protocol directly,
+# we can provide a matcher function and use the generator
 # factory on it.
 
 import os
@@ -9,7 +9,7 @@ from completion import completer
 from completion import generator
 
 
-def complete(self, text):
+def complete(text):
     # Return an iterable of matches for 'text'
     for dir in os.environ.get('PATH').split(':'):
         for name in os.listdir(dir):

@@ -12,10 +12,15 @@ class MyCmd(cmd.Cmd):
     prompt = 'command> '
 
     def preloop(self):
+        # Characters used to quote substrings
         completer.quote_characters = '"\''
+        # Characters used to find word boundaries
         completer.word_break_characters = ' \t\n\\"\'`><=;|&!?*'
+        # Characters that trigger quoting
         completer.filename_quote_characters = ' \t\n'
+        # Exclude hidden files
         completer.match_hidden_files = False
+        # Expand tildes during completion
         completer.tilde_expansion = True
 
     def emptyline(self):
@@ -32,7 +37,7 @@ class MyCmd(cmd.Cmd):
 
     def complete_shell(self, text, line, begidx, endidx):
         # Select the completion type depending on position
-        # and format of the word to complete
+        # and format of the word being completed
         if self.commandpos(line, begidx) and (os.sep not in text):
             return self.completecommands(text)
         else:
