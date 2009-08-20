@@ -50,7 +50,7 @@ Control Flow
 Discussion
 ----------
 
-The graph, when read from top to bottom, represents a possible calling
+The graph – when read from top to bottom – represents a possible calling
 sequence for filename completion in readline. This sequence is initiated
 whenever the user presses the TAB key and has three phases:
 word breaking, match generation, and match display.
@@ -67,17 +67,17 @@ been the place where Python hooks into readline. In fact,
 ``readline.set_completer(func)`` sets readline's
 ``[rl_]completion_entry_function`` to ``func``. [#]_
 
-To be fair, the standard library only claims to support `word completion` as
-used in the ``cmd`` and ``rlcompleter`` modules. For more advanced
-use cases however – notably filename completion – we need access to the entire
-graph.
+In addition to hooks, readline provides an abundance of configuration settings
+that may be changed by applications to influence the way the library behaves.
+For example, by configuring readline's ``word_break_characters``, an
+application can affect how readline computes word boundaries.
 
 [TBC]
 
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
    when generating matches. The effect however is the same as if ``func`` had
-   been assigned to ``[rl_]completion_entry_function``.
+   been assigned to ``[rl_]completion_entry_function`` directly.
 
 How completion Works
 ====================
@@ -97,7 +97,7 @@ completer
 
 completion
     4 status flags, 10 completion settings, 5 completion variables, and
-    5 functions.
+    4 functions.
 
 [TBC]
 
@@ -141,22 +141,19 @@ Example
 The code below implements system command completion similar to bash::
 
     import os
-
     from completion import completer
     from completion import generator
 
-    def completesys(text):
-        matches = []
+    def complete(text):
         for dir in os.environ.get('PATH').split(':'):
             for name in os.listdir(dir):
                 if name.startswith(text):
                     if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                        matches.append(name)
-        return matches
+                        yield name
 
     def main():
+        completer.completer = generator(complete)
         completer.parse_and_bind('tab: complete')
-        completer.completer = generator(completesys)
         command = raw_input('command> ')
         print 'You typed:', command
 
