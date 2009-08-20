@@ -1,7 +1,6 @@
-# Complete system commands and filenames in one application
+# Complete system commands and filenames on the same line
 
 import os
-
 from completion import completer
 from completion import completion
 from completion import cmd
@@ -32,25 +31,29 @@ class MyCmd(cmd.Cmd):
         os.system(args)
 
     def complete_shell(self, text, line, begidx, endidx):
+        # Select the completion type depending on position
+        # and format of the word to complete
         if self.commandpos(line, begidx) and (os.sep not in text):
-            return self.completesys(text)
-        return self.completefiles(text)
+            return self.completecommands(text)
+        else:
+            return self.completefilenames(text)
 
     def commandpos(self, line, begidx):
         delta = line[0:begidx]
         return delta.strip() in ('!', 'shell')
 
-    def completesys(self, text):
+    def completecommands(self, text):
         for dir in os.environ.get('PATH').split(':'):
             for name in os.listdir(dir):
                 if name.startswith(text):
                     if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
                         yield name
 
-    def completefiles(self, text):
+    def completefilenames(self, text):
         if text.startswith('~') and (os.sep not in text):
             return completion.complete_username(text)
-        return completion.complete_filename(text)
+        else:
+            return completion.complete_filename(text)
 
 
 def main():
