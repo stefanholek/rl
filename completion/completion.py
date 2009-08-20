@@ -7,46 +7,6 @@ import readline
 _MAXMATCHES = 100000
 
 
-def print_exc(func):
-    """Decorator printing exceptions to stderr.
-
-    Useful for debugging completions and hooks.
-    """
-
-    def wrapped_func(*args, **kw):
-        try:
-            return func(*args, **kw)
-        except:
-            import traceback; traceback.print_exc()
-            raise
-
-    wrapped_func.__name__ = func.__name__
-    wrapped_func.__dict__ = func.__dict__
-    wrapped_func.__doc__ = func.__doc__
-    return wrapped_func
-
-
-class generator(object):
-    """Generator function factory.
-
-    Takes a callable returning a list of matches and returns an
-    object implementing the generator protocol readline requires.
-    """
-
-    def __init__(self, func):
-        self._func = func
-
-    def __call__(self, text, state):
-        if state == 0:
-            self._matches = self._func(text)
-            if not isinstance(self._matches, list):
-                self._matches = list(self._matches)
-        try:
-            return self._matches[state]
-        except IndexError:
-            return None
-
-
 class Completer(object):
     """Interface to the readline completer."""
 
@@ -429,4 +389,44 @@ completion.inhibit_completion,
 ))
 
 completion = Completion()
+
+
+class generator(object):
+    """Generator function factory.
+
+    Takes a callable returning a list of matches and returns an
+    object implementing the generator protocol readline expects.
+    """
+
+    def __init__(self, compfunc):
+        self.compfunc = compfunc
+
+    def __call__(self, text, state):
+        if state == 0:
+            self.matches = self.compfunc(text)
+            if not isinstance(self.matches, list):
+                self.matches = list(self.matches)
+        try:
+            return self.matches[state]
+        except IndexError:
+            return None
+
+
+def print_exc(func):
+    """Decorator printing exceptions to stderr.
+
+    Useful for debugging completions and hooks.
+    """
+
+    def wrapped_func(*args, **kw):
+        try:
+            return func(*args, **kw)
+        except:
+            import traceback; traceback.print_exc()
+            raise
+
+    wrapped_func.__name__ = func.__name__
+    wrapped_func.__dict__ = func.__dict__
+    wrapped_func.__doc__ = func.__doc__
+    return wrapped_func
 
