@@ -1,5 +1,9 @@
 # Complete system commands
 
+# Instead of implementing the generator protocol directly
+# we can write a matcher function only and use the 'generator'
+# factory on it.
+
 import os
 from completion import completer
 from completion import generator
