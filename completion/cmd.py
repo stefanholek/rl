@@ -16,6 +16,9 @@ class Cmd(cmd.Cmd):
     framework.  There is no good reason to instantiate Cmd itself; rather,
     it's useful as a superclass of an interpreter class you define yourself
     in order to inherit Cmd's methods and encapsulate action methods.
+
+    This version overrides some methods so they use completion's readline
+    interface.
     """
 
     def cmdloop(self, intro=None):

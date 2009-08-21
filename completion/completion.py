@@ -8,7 +8,7 @@ _MAXMATCHES = 100000
 
 
 class Completer(object):
-    """Interface to the readline completer."""
+    """Interface to the readline completer configuration."""
 
     # For filename_quoting_function
     SINGLE_MATCH = 1
