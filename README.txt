@@ -8,8 +8,8 @@ Python readline interface focused on completion
 Introduction
 ============
 
-The completion package aims to provide a full implementation of the GNU
-Readline `completion interface`_.
+The completion package aims to provide a full implementation of the
+GNU Readline `completion interface`_.
 
 .. _`completion interface`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 
@@ -90,19 +90,11 @@ the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
 They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
 
-Some statistics:
-
-completer
-    9 configuration settings (7 settable), 9 settable hooks, 2 functions.
-
-completion
-    4 status flags, 10 completion settings, 5 completion variables, and
-    4 functions.
+While names have been shortened – we removed the ``rl_`` prefix and the
+occasional ``completer`` or ``completion`` from the C identifiers – they
+should still be easily recognizable by anyone familiar with readline.
 
 [TBC]
-
-.. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
 Components
 ----------
@@ -129,11 +121,31 @@ cmd
     A subclass of ``cmd.Cmd`` using completion's version of readline.
 
 print_exc
-    A decorator printing exceptions to stderr. Useful when writing (Python)
+    A decorator printing exceptions to stderr. Useful when writing Python
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
 
-Please see the respective module documentation for details.
+Some Statistics
+---------------
+
+readline
+    86 functions: 2 configuration, 10 history, 6 display & interaction,
+    2 testing, and 66 completion (note however that all the get/set logic
+    requires 2 functions per item).
+
+Divide et Impera
+----------------
+
+completer
+    18 properties: 9 configuration settings (7 settable), 9 settable hooks,
+    and 2 functions.
+
+completion
+    19 properties: 4 status flags, 10 completion settings, 5 completion
+    variables, and 4 functions.
+
+.. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
 Example
 -------
