@@ -1,5 +1,7 @@
 # Inititalize the completion package
 
+from __ import readline # [sic]
+
 import readline
 import cmd
 

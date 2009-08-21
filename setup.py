@@ -24,9 +24,9 @@ if platform == 'darwin':
         library_dirs += ['/sw/local/lib']
 
 
-_readline = \
-Extension(name='completion._readline',
-          sources=[join('completion', '_readline.c')],
+readline = \
+Extension(name='completion.readline',
+          sources=[join('completion', 'readline.c')],
           libraries=['readline', 'ncursesw'],
           include_dirs=include_dirs,
           library_dirs=library_dirs,
@@ -53,7 +53,7 @@ setup(name='completion',
       zip_safe=False,
       test_suite='completion.tests',
       ext_modules=[
-          _readline,
+          readline,
       ],
       install_requires=[
           'setuptools',
