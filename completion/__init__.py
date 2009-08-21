@@ -1,10 +1,9 @@
 # Alternative readline interface focusing on completion
 
+import sys
+
 from __ import readline # [sic]
 import readline
-
-import sys
-import cmd
 
 # Rein in runaway completions
 _MAXMATCHES = 100000

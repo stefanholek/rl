@@ -1,4 +1,4 @@
-# Override some methods so they use completion's version of readline
+"""A simple framework for writing line-oriented command interpreters."""
 
 from __ import cmd
 
