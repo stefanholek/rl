@@ -7,7 +7,9 @@ from completion import generator
 
 def completeemails(text):
     # If there is no '@' before word, complete usernames
-    if completion.line_buffer.find('@', 0, completion.begidx) < 0:
+    line = completion.line_buffer
+    word = completion.begidx
+    if line.find('@', 0, word) < 0:
         completion.append_character = '@'
         return completion.complete_username(text)
     # Else, complete hostnames
