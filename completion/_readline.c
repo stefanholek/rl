@@ -221,8 +221,8 @@ set_completion_display_matches_hook(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_completion_display_matches_hook,
 "set_completion_display_matches_hook([function]) -> None\n\
 Set or remove the completion display function.\n\
-The function is called as\n\
-  function(substitution, matches, longest_match_length)\n\
+The function is called as \
+  function(substitution, matches, longest_match_length) \
 once each time matches need to be displayed.");
 
 static PyObject *
@@ -569,7 +569,7 @@ redisplay(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_redisplay,
 "redisplay([force]) -> None\n\
-Change what's displayed on the screen to reflect the current\n\
+Change what's displayed on the screen to reflect the current \
 contents of the line buffer.");
 
 
@@ -1007,8 +1007,8 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_quoting_function,
 "set_filename_quoting_function([function]) -> None\n\
-Set or remove the filename quoting function.\n\
-The function is called as\n\
+Set or remove the filename quoting function. \
+The function is called as \
   function(text, match_type, quote_char).");
 
 
@@ -1094,8 +1094,8 @@ set_filename_dequoting_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_dequoting_function,
 "set_filename_dequoting_function([function]) -> None\n\
-Set or remove the filename dequoting function.\n\
-The function is called as\n\
+Set or remove the filename dequoting function. \
+The function is called as \
   function(text, quote_char).");
 
 
@@ -1188,8 +1188,8 @@ set_char_is_quoted_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_char_is_quoted_function,
 "set_char_is_quoted_function([function]) -> None\n\
-Set or remove the function that determines whether or not a specific character in the line buffer is quoted.\n\
-The function is called as\n\
+Set or remove the function that determines whether or not a specific character in the line buffer is quoted. \
+The function is called as \
   function(text, index).");
 
 
@@ -1535,8 +1535,8 @@ set_completion_word_break_hook(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_completion_word_break_hook,
 "set_completion_word_break_hook([function]) -> None\n\
-A function to call when readline is deciding where to separate words for word completion.\n\
-The function is called as\n\
+A function to call when readline is deciding where to separate words for word completion. \
+The function is called as \
   function(text, begidx, endidx).");
 
 
@@ -1631,8 +1631,8 @@ set_directory_completion_hook(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_directory_completion_hook,
 "set_directory_completion_hook([function]) -> None\n\
-This function is allowed to modify the directory portion of filenames readline completes.\n\
-The function is called as\n\
+This function is allowed to modify the directory portion of filenames readline completes. \
+The function is called as \
   function(string).");
 
 
