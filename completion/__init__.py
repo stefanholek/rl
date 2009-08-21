@@ -2,7 +2,7 @@
 
 import sys
 
-from __ import readline # [sic]
+from stdlib import readline # [sic]
 import readline
 
 # Rein in runaway completions
