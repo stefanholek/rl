@@ -1,6 +1,6 @@
 """Simple framework for writing line-oriented command interpreters.
 
-The Cmd subclass in this module uses completion's readline interface.
+The cmd.Cmd subclass in this module uses completion's readline interface.
 """
 
 from stdlib import cmd

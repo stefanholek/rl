@@ -338,7 +338,7 @@ class Completion(object):
 
     @apply
     def attempted_completion_over():
-        doc="""Do not fall back to the default (filename) completion,
+        doc="""Do not fall back to the default filename completion,
         even if the current completion returns no matches.
         Defaults to True."""
         def get(self):
