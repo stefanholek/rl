@@ -137,12 +137,11 @@ Divide et Impera
 ----------------
 
 completer
-    18 properties: 9 configuration settings (7 settable), 9 settable hooks,
-    and 2 functions.
+    16 properties (7 configuration settings, 9 hooks) and 2 functions.
 
 completion
-    19 properties: 4 status flags, 10 completion settings, 5 completion
-    variables, and 4 functions.
+    16 properties (4 status flags, 7 completion settings, 5 completion
+    variables) and 4 functions.
 
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
