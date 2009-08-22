@@ -78,7 +78,7 @@ class Completer(object):
 
     @apply
     def query_items():
-        doc="""Threshold above which the user is prompted if he really
+        doc="""Threshold above which the user is prompted if he is sure he
         wants to see all matches. Defaults to 100."""
         def get(self):
             return readline.get_completion_query_items()
@@ -149,7 +149,8 @@ class Completer(object):
     def display_matches_hook():
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
-        once each time matches need to be displayed."""
+        once each time matches need to be displayed. It typically calls
+        ``completion.display_match_list`` to do the actual work."""
         def get(self):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
@@ -174,7 +175,8 @@ class Completer(object):
         The function is called as ``function(text, match_type, quote_char)``
         and should return a string representing a quoted version
         of ``text``, or None to indicate no change. The ``match_type``
-        argument is set to either ``SINGLE_MATCH`` or ``MULT_MATCH``."""
+        argument is set to either ``SINGLE_MATCH`` or ``MULT_MATCH``
+        depending on the number of matches the completion has generated."""
         def get(self):
             return readline.get_filename_quoting_function()
         def set(self, function):
@@ -254,12 +256,12 @@ class Completion(object):
 
     @property
     def begidx(self):
-        """The start index of the word in the line buffer."""
+        """The start index of the word in the line."""
         return readline.get_begidx()
 
     @property
     def endidx(self):
-        """The end index of the word in the line buffer."""
+        """The end index of the word in the line."""
         return readline.get_endidx()
 
     @property
@@ -269,17 +271,19 @@ class Completion(object):
 
     @property
     def invoking_key(self):
-        """The last character in the key sequence that invoked completion."""
+        """The last character in the key sequence that invoked the
+        completion."""
         return readline.get_completion_invoking_key()
 
     @property
     def found_quote(self):
-        """True if the word contains or is delimited by a quote character."""
+        """True if the word contains or is delimited by a quote
+        character."""
         return readline.get_completion_found_quote()
 
     @property
     def quote_character(self):
-        """Set to the quote character found."""
+        """The quote character found."""
         return readline.get_completion_quote_character()
 
     @property
@@ -289,12 +293,13 @@ class Completion(object):
 
     @property
     def rl_end(self):
-        """The last position in the line."""
+        """The last position in the line. The cursor range
+        is defined as: ``0 <= rl_point <= rl_end``."""
         return readline.get_rl_end()
 
     @apply
     def line_buffer():
-        doc="""The line being edited."""
+        doc="""The line buffer readline uses."""
         def get(self):
             return readline.get_line_buffer()
         def set(self, string):
@@ -304,7 +309,7 @@ class Completion(object):
     @apply
     def append_character():
         doc="""The character appended when the completion returns a
-        single match. Defaults to ' '."""
+        single match. Defaults to the space character."""
         def get(self):
             return readline.get_completion_append_character()
         def set(self, string):
@@ -313,7 +318,8 @@ class Completion(object):
 
     @apply
     def suppress_append():
-        doc="""Suppress the append character for this completion."""
+        doc="""Suppress the append character for this completion.
+        Defaults to False."""
         def get(self):
             return readline.get_completion_suppress_append()
         def set(self, bool):
@@ -323,7 +329,7 @@ class Completion(object):
     @apply
     def suppress_quote():
         doc="""Do not append a matching quote character when performing
-        completion on a quoted string."""
+        completion on a quoted string. Defaults to False."""
         def get(self):
             return readline.get_completion_suppress_quote()
         def set(self, bool):
@@ -333,7 +339,8 @@ class Completion(object):
     @apply
     def attempted_completion_over():
         doc="""Do not fall back to the default (filename) completion,
-        even if the current completion returns no matches."""
+        even if the current completion returns no matches.
+        Defaults to True."""
         def get(self):
             return readline.get_attempted_completion_over()
         def set(self, bool):
@@ -343,7 +350,8 @@ class Completion(object):
     @apply
     def filename_completion_desired():
         doc="""Treat the results of matches as filenames.
-        Directories will have a slash appended, for example."""
+        Directory names will have a slash appended, for example.
+        Defaults to False."""
         def get(self):
             return readline.get_filename_completion_desired()
         def set(self, bool):
@@ -353,7 +361,7 @@ class Completion(object):
     @apply
     def filename_quoting_desired():
         doc="""Quote completed words according to the rules for filename
-        quoting."""
+        quoting. Defaults to True."""
         def get(self):
             return readline.get_filename_quoting_desired()
         def set(self, bool):
@@ -362,7 +370,8 @@ class Completion(object):
 
     @apply
     def inhibit_completion():
-        doc="""Insert the completion character like any other character."""
+        doc="""Insert the completion character like any other character.
+        Defaults to False."""
         def get(self):
             return readline.get_inhibit_completion()
         def set(self, bool):
