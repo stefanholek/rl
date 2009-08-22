@@ -143,7 +143,7 @@ set_history_length(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(set_history_length_doc,
 "set_history_length(length) -> None\n\
-set the maximal number of items which will be written to\n\
+Set the maximal number of items which will be written to\n\
 the history file. A negative length is used to inhibit\n\
 history truncation.");
 
@@ -158,7 +158,7 @@ get_history_length(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(get_history_length_doc,
 "get_history_length() -> int\n\
-return the maximum number of items that will be written to\n\
+Return the maximum number of items that will be written to\n\
 the history file.");
 
 
@@ -222,7 +222,7 @@ PyDoc_STRVAR(doc_set_completion_display_matches_hook,
 "set_completion_display_matches_hook([function]) -> None\n\
 Set or remove the completion display function.\n\
 The function is called as \
-  function(substitution, matches, longest_match_length) \
+  ``function(substitution, matches, longest_match_length)`` \
 once each time matches need to be displayed.");
 
 static PyObject *
@@ -289,7 +289,7 @@ get_begidx(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_begidx,
 "get_begidx() -> int\n\
-get the beginning index of the readline tab-completion scope");
+Get the beginning index of the readline tab-completion scope.");
 
 
 /* Get the ending index for the scope of the tab-completion */
@@ -303,7 +303,7 @@ get_endidx(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_endidx,
 "get_endidx() -> int\n\
-get the ending index of the readline tab-completion scope");
+Get the ending index of the readline tab-completion scope.");
 
 
 /* Set the tab-completion word-delimiters that readline uses */
@@ -323,7 +323,7 @@ set_completer_delims(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_completer_delims,
 "set_completer_delims(string) -> None\n\
-set the readline word delimiters for tab-completion");
+Set the readline word delimiters for tab-completion.");
 
 static PyObject *
 py_remove_history(PyObject *self, PyObject *args)
@@ -357,7 +357,7 @@ py_remove_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_remove_history,
 "remove_history_item(pos) -> None\n\
-remove history item given by its position");
+Remove history item given by its position.");
 
 static PyObject *
 py_replace_history(PyObject *self, PyObject *args)
@@ -394,7 +394,7 @@ py_replace_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_replace_history,
 "replace_history_item(pos, line) -> None\n\
-replaces history item given by its position with contents of line");
+Replaces history item given by its position with contents of line.");
 
 /* Add a line to the history buffer */
 
@@ -412,7 +412,7 @@ py_add_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_add_history,
 "add_history(string) -> None\n\
-add a line to the history buffer");
+Add a line to the history buffer.");
 
 
 /* Get the tab-completion word-delimiters that readline uses */
@@ -425,7 +425,7 @@ get_completer_delims(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_completer_delims,
 "get_completer_delims() -> string\n\
-get the readline word delimiters for tab-completion");
+Get the readline word delimiters for tab-completion.");
 
 
 /* Set the completer function */
@@ -439,9 +439,9 @@ set_completer(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_completer,
 "set_completer([function]) -> None\n\
 Set or remove the completer function.\n\
-The function is called as function(text, state),\n\
+The function is called as ``function(text, state)``,\n\
 for state in 0, 1, 2, ..., until it returns a non-string.\n\
-It should return the next possible completion starting with 'text'.");
+It should return the next possible completion starting with ``text``.");
 
 
 static PyObject *
@@ -478,7 +478,7 @@ get_history_item(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_get_history_item,
 "get_history_item() -> string\n\
-return the current contents of history item at index.");
+Return the current contents of history item at index.");
 
 
 /* Exported function to get current length of history */
@@ -494,7 +494,7 @@ get_current_history_length(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_current_history_length,
 "get_current_history_length() -> integer\n\
-return the current (not the maximum) length of history.");
+Return the current (not the maximum) length of history.");
 
 
 /* Exported function to read the current line buffer */
@@ -507,7 +507,7 @@ get_line_buffer(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_line_buffer,
 "get_line_buffer() -> string\n\
-return the current contents of the line buffer.");
+Return the current contents of the line buffer.");
 
 
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
@@ -751,8 +751,7 @@ get_completion_suppress_quote(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_completion_suppress_quote,
 "get_completion_suppress_quote() -> bool\n\
-Do not append a matching quote character when performing completion on a quoted string. \
-.");
+Do not append a matching quote character when performing completion on a quoted string.");
 
 
 static PyObject *
@@ -783,7 +782,8 @@ get_filename_completion_desired(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_filename_completion_desired,
 "get_filename_completion_desired() -> bool\n\
-True means that the results of the matches are to be treated as filenames.");
+True means readline should fall back to filename completion when the current \
+completion returns no matches.");
 
 
 static PyObject *
@@ -800,7 +800,8 @@ set_filename_completion_desired(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_completion_desired,
 "set_filename_completion_desired(bool) -> None\n\
-True means that the results of the matches are to be treated as filenames. \
+True means readline should fall back to filename completion when the current \
+completion returns no matches. \
 May only be called from within custom completers.");
 
 
@@ -812,7 +813,7 @@ get_filename_quoting_desired(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_filename_quoting_desired,
 "get_filename_quoting_desired() -> bool\n\
-True means that the results of the matches are to be quoted.");
+True means that results should be quoted according to the rules for filename quoting.");
 
 
 static PyObject *
@@ -829,7 +830,7 @@ set_filename_quoting_desired(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_quoting_desired,
 "set_filename_quoting_desired(bool) -> None\n\
-True means that the results of the matches are to be quoted. \
+True means that results should be quoted according to the rules for filename quoting. \
 May only be called from within custom completers.");
 
 
@@ -841,7 +842,7 @@ get_attempted_completion_over(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_attempted_completion_over,
 "get_attempted_completion_over() -> bool\n\
-If True, do not perform the default filename completion, even if the current \
+If True, do not fall back to the default (filename) completion, even if the current \
 completion returns no matches.");
 
 
@@ -859,7 +860,7 @@ set_attempted_completion_over(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_attempted_completion_over,
 "set_attempted_completion_over(bool) -> None\n\
-If True, do not perform the default filename completion, even if the current \
+If True, do not fall back to the default (filename) completion, even if the current \
 completion returns no matches. \
 May only be called from within custom completers.");
 
@@ -1008,8 +1009,9 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_filename_quoting_function,
 "set_filename_quoting_function([function]) -> None\n\
 Set or remove the filename quoting function. \
-The function is called as \
-  function(text, match_type, quote_char).");
+The function is called as ``function(text, match_type, quote_char)`` \
+and should return a string representing a quoted version of ``text``, \
+or None to indicate no change.");
 
 
 static PyObject *
@@ -1095,8 +1097,9 @@ set_filename_dequoting_function(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_filename_dequoting_function,
 "set_filename_dequoting_function([function]) -> None\n\
 Set or remove the filename dequoting function. \
-The function is called as \
-  function(text, quote_char).");
+The function is called as ``function(text, quote_char)`` \
+and should return a string representing a dequoted version \
+of ``text``, or None to indicate no change.");
 
 
 static PyObject *
@@ -1188,9 +1191,10 @@ set_char_is_quoted_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_char_is_quoted_function,
 "set_char_is_quoted_function([function]) -> None\n\
-Set or remove the function that determines whether or not a specific character in the line buffer is quoted. \
-The function is called as \
-  function(text, index).");
+Set or remove the function that determines whether or not a \
+specific character in the line buffer is quoted. \
+The function is called as ``function(text, index)`` and should return \
+True if the character at ``index`` is quoted, and False otherwise.");
 
 
 static PyObject *
@@ -1205,7 +1209,8 @@ get_char_is_quoted_function(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_get_char_is_quoted_function,
 "get_char_is_quoted_function() -> function\n\
-Get the function that determines whether or not a specific character in the line buffer is quoted.");
+Get the function that determines whether or not a specific character \
+in the line buffer is quoted.");
 
 
 static int
@@ -1264,7 +1269,7 @@ filename_completion_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_filename_completion_function,
 "filename_completion_function(string, int) -> string\n\
-A generator function for filename completion.");
+A built-in generator function for filename completion.");
 
 
 static PyObject *
@@ -1286,7 +1291,7 @@ username_completion_function(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_username_completion_function,
 "username_completion_function(string, int) -> string\n\
-A generator function for username completion.");
+A built-in generator function for username completion.");
 
 
 static PyObject *
@@ -1536,8 +1541,9 @@ set_completion_word_break_hook(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_completion_word_break_hook,
 "set_completion_word_break_hook([function]) -> None\n\
 A function to call when readline is deciding where to separate words for word completion. \
-The function is called as \
-  function(text, begidx, endidx).");
+The function is called as ``function(text, begidx, endidx)`` once for every completion, \
+and should return a string of word break characters for the current completion, or None \
+to indicate no change.");
 
 
 static PyObject *
@@ -1632,8 +1638,8 @@ set_directory_completion_hook(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_directory_completion_hook,
 "set_directory_completion_hook([function]) -> None\n\
 This function is allowed to modify the directory portion of filenames readline completes. \
-The function is called as \
-  function(string).");
+The function is called as ``function(dirname)`` and should return a new directory name or \
+None to indicate no change.");
 
 
 static PyObject *
@@ -1737,7 +1743,7 @@ read_key(PyObject* self, PyObject* noargs)
 
 PyDoc_STRVAR(doc_read_key,
 "read_key() -> string\n\
-Read a key from readline's input stream.");
+Read a key from readline's input stream, typically the keyboard.");
 
 
 /* Stuff a character into the input stream */
@@ -2603,7 +2609,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 /* Initialize the module */
 
 PyDoc_STRVAR(doc_module,
-"Importing this module enables command line editing using GNU readline.");
+"GNU readline interface with enhanced completion support.");
 
 PyMODINIT_FUNC
 initreadline(void)

@@ -1,4 +1,7 @@
-"""A simple framework for writing line-oriented command interpreters."""
+"""Simple framework for writing line-oriented command interpreters.
+
+The Cmd subclass in this module uses completion's readline interface.
+"""
 
 from stdlib import cmd
 
@@ -17,8 +20,8 @@ class Cmd(cmd.Cmd):
     it's useful as a superclass of an interpreter class you define yourself
     in order to inherit Cmd's methods and encapsulate action methods.
 
-    This version overrides some methods so they use completion's readline
-    interface.
+    This subclass overrides some methods in order to use completion's
+    readline interface.
     """
 
     def cmdloop(self, intro=None):
