@@ -14,6 +14,17 @@ class Completer(object):
 
     This class is not intended for instantiation beyond
     the one ``completer`` object in this module.
+    Applications wanting to use the Completer interface will
+    typically import the ``completer`` object and use its
+    properties and methods to configure readline.
+
+    Example::
+
+        from completion import completer
+
+        completer.quote_characters = '"\\''
+        completer.query_items = -1
+        completer.parse_and_bind('tab: complete')
     """
 
     # For filename_quoting_function
@@ -78,8 +89,10 @@ class Completer(object):
 
     @apply
     def query_items():
-        doc="""Threshold above which the user is prompted if he is sure he
-        wants to see all matches. Defaults to 100."""
+        doc="""Threshold above which the user is prompted if he really
+        wants to see all matches. Defaults to 100. A negative value means
+        never prompt. The prompt is bypassed when a custom
+        ``display_matches_hook`` is installed."""
         def get(self):
             return readline.get_completion_query_items()
         def set(self, int):
@@ -150,7 +163,7 @@ class Completer(object):
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
-        ``completion.display_match_list`` to do the actual work."""
+        ``display_match_list`` to do the actual work."""
         def get(self):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
@@ -252,6 +265,17 @@ class Completion(object):
 
     This class is not intended for instantiation beyond
     the one ``completion`` object in this module.
+    Applications wanting to use the Completion interface will
+    typically import the ``completion`` object and use its
+    properties and methods to implement custom completions.
+
+    Example::
+
+        from completion import completion
+
+        def complete(text):
+            completion.append_character = '@'
+            return completion.complete_username(text)
     """
 
     @property
