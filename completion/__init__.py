@@ -137,7 +137,7 @@ class Completer(object):
     @apply
     def word_break_hook():
         doc="""The word break hook function.
-        The function is called as ``function(text, begidx, endidx)``
+        The function is called as ``function(begidx, endidx)``
         once per completion and should return a string of word
         break characters for the scope of the completion, or None
         to indicate no change."""
@@ -384,7 +384,7 @@ class Completion(object):
 
     @apply
     def filename_quoting_desired():
-        doc="""Quote completed words according to the rules for filename
+        doc="""Quote results according to the rules for filename
         quoting. Defaults to True."""
         def get(self):
             return readline.get_filename_quoting_desired()

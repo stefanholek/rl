@@ -20,7 +20,7 @@ class Cmd(cmd.Cmd):
     it's useful as a superclass of an interpreter class you define yourself
     in order to inherit Cmd's methods and encapsulate action methods.
 
-    This subclass overrides some methods in order to use completion's
+    This subclass overrides some methods so they use completion's
     readline interface.
     """
 

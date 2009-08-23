@@ -1543,7 +1543,7 @@ set_completion_word_break_hook(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_completion_word_break_hook,
 "set_completion_word_break_hook([function]) -> None\n\
 A function to call when readline is deciding where to separate words for word completion. \
-The function is called as ``function(text, begidx, endidx)`` once for every completion, \
+The function is called as ``function(begidx, endidx)`` once for every completion, \
 and should return a string of word break characters for the current completion, or None \
 to indicate no change.");
 
@@ -1570,7 +1570,6 @@ on_completion_word_break_hook(void)
 	char *s = NULL;
 	PyObject *r;
 	int begidx, endidx;
-	char *text;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1586,11 +1585,8 @@ on_completion_word_break_hook(void)
 	begidx = rl_point;
 	rl_point = endidx;
 
-	/* rl_copy_text aborts on out of memory condition */
-	text = rl_copy_text(begidx, endidx);
-
-	r = PyObject_CallFunction(completion_word_break_hook, "sii",
-	                          text, begidx, endidx);
+	r = PyObject_CallFunction(completion_word_break_hook, "ii",
+	                          begidx, endidx);
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
@@ -1608,7 +1604,6 @@ on_completion_word_break_hook(void)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-  	free(text);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
