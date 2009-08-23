@@ -85,7 +85,7 @@ How completion Works
 Overview
 --------
 
-The completion package implements most flags, settings, and hooks documented in
+The completion package implements all flags, settings, and hooks documented in
 the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
 They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
@@ -96,35 +96,6 @@ should still be easily recognizable by anyone familiar with readline.
 
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
-
-Package Contents
-----------------
-
-completer
-    Interface to the readline completer. Used to configure the completion
-    aspects of readline.
-
-completion
-    Interface to the active readline completion. Used to interact
-    with readline when a completion is in progress.
-
-readline
-    Readline interface module. Contains everything
-    known from the standard library plus extensions specific to the
-    completion package. The ``completer`` and ``completion`` interfaces make use of
-    this module, and you should rarely need to interact with it directly.
-
-generator
-    A factory turning a callable into a ``completion_entry_function`` that
-    can be handed to readline.
-
-cmd
-    A subclass of ``cmd.Cmd`` using completion's version of readline.
-
-print_exc
-    A decorator printing exceptions to stderr. Useful when writing Python
-    completions and hooks, as exceptions occurring there are usually
-    swallowed by the in-between C code.
 
 Divide and Conquer
 ------------------
@@ -139,11 +110,51 @@ completion
     16 properties (4 status flags, 7 completion settings, 5 completion
     variables) and 4 functions.
 
-[TBC]
+This separation is by concern: The ``completer`` provides
+access to global configuration settings and hooks. The ``completion`` interface
+provides status information concerning the active completion, configuration
+settings to affect the results of the completion, and
+functions to request completion services from readline.
 
-Please see the epydoc-generated `API Documentation`_ for details.
+Values set trough the ``completer`` are permanent. If you want
+them restored you have to take care of it yourself.
+
+Values accessed through the ``completion`` object affect the current
+completion only. They are reset to their default values when a new
+completion starts.
+
+For further details, please refer to the `API Documentation`_.
 
 .. _`API Documentation`: file:///Users/stefan/sandbox/completion/html/index.html
+
+Package Contents
+----------------
+
+completer
+    Interface to the readline completer. Used to configure the completion
+    aspects of readline.
+
+completion
+    Interface to the active readline completion. Used to interact
+    with readline when a completion is in progress.
+
+readline
+    The readline interface module. Contains everything
+    known from the standard library plus extensions specific to the
+    completion package. The ``completer`` and ``completion`` interfaces make use of
+    this module, and you should rarely need to interact with it directly.
+
+cmd
+    A subclass of ``cmd.Cmd`` using completion's version of readline.
+
+generator
+    A factory turning a callable into a ``completion_entry_function`` that
+    can be handed to readline.
+
+print_exc
+    A decorator printing exceptions to stderr. Useful when writing Python
+    completions and hooks, as exceptions occurring there are usually
+    swallowed by the in-between C code.
 
 Example
 -------
@@ -167,7 +178,7 @@ The code below implements system command completion similar to bash::
         command = raw_input('command> ')
         print 'You typed:', command
 
-See the ``examples`` subdirectory in this package for more.
+See the ``examples`` subdirectory of the package for more.
 
 Installation
 ============
