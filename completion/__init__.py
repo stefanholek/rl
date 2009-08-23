@@ -23,7 +23,7 @@ class Completer(object):
         from completion import completer
 
         completer.quote_characters = '"\\''
-        completer.query_items = -1
+        completer.query_items = 100
         completer.parse_and_bind('tab: complete')
     """
 
