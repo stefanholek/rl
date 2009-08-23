@@ -2,6 +2,7 @@
 
 import os
 from completion import completer
+from completion import completion
 from completion import readline
 
 
@@ -23,7 +24,7 @@ step = 0
 def pre_input_hook():
     # The pre-input hook is used to insert text into
     # the line buffer that the user may then edit.
-    readline.insert_text(defaults[step])
+    completion.line_buffer = defaults[step]
     readline.redisplay()
 
 
