@@ -570,7 +570,9 @@ redisplay(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_redisplay,
 "redisplay([force]) -> None\n\
 Change what's displayed on the screen to reflect the current \
-contents of the line buffer.");
+contents of the line buffer. If ``force`` is True, readline will \
+refresh the display even if its internal state indicates \
+an up-to-date screen.");
 
 
 /* <_readline.c> */
