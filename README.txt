@@ -85,7 +85,7 @@ How completion Works
 Overview
 --------
 
-The completion package implements all flags, settings, and hooks documented in
+The completion package implements most flags, settings, and hooks documented in
 the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
 They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
@@ -94,10 +94,11 @@ While names have been shortened – we removed the ``rl_`` prefix and the
 occasional ``completer`` or ``completion`` from the C identifiers – they
 should still be easily recognizable by anyone familiar with readline.
 
-[TBC]
+.. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
-Components
-----------
+Package Contents
+----------------
 
 completer
     Interface to the readline completer. Used to configure the completion
@@ -108,7 +109,7 @@ completion
     with readline when a completion is in progress.
 
 readline
-    Bare-bones interface to the ``_readline.so`` C library. Contains everything
+    Readline interface module. Contains everything
     known from the standard library plus extensions specific to the
     completion package. The ``completer`` and ``completion`` interfaces make use of
     this module, and you should rarely need to interact with it directly.
@@ -125,16 +126,11 @@ print_exc
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
 
-Some Statistics
----------------
+Divide and Conquer
+------------------
 
-readline
-    86 functions: 2 configuration, 10 history, 6 display & interaction,
-    2 testing, and 66 completion (note however that all the get/set logic
-    requires 2 functions per item).
-
-Divide et Impera
-----------------
+Readline's completion interface is massive, so we break it down into two
+interface objects:
 
 completer
     16 properties (7 configuration settings, 9 hooks) and 2 functions.
@@ -143,8 +139,11 @@ completion
     16 properties (4 status flags, 7 completion settings, 5 completion
     variables) and 4 functions.
 
-.. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
+[TBC]
+
+Please see the epydoc-generated `API Documentation`_ for details.
+
+.. _`API Documentation`: file:///Users/stefan/sandbox/completion/html/index.html
 
 Example
 -------
@@ -168,7 +167,7 @@ The code below implements system command completion similar to bash::
         command = raw_input('command> ')
         print 'You typed:', command
 
-See the ``examples`` subdirectory of the package for more.
+See the ``examples`` subdirectory in this package for more.
 
 Installation
 ============
