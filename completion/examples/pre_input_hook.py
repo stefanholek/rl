@@ -13,8 +13,8 @@ lead_ins = (
 )
 
 defaults = (
-    'awesome!',
-    'providing the balance I need',
+    'great',
+    'golf',
     'fireman',
 )
 
