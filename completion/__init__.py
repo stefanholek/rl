@@ -89,9 +89,10 @@ class Completer(object):
 
     @apply
     def query_items():
-        doc="""Threshold above which the user is prompted if he really
-        wants to see all matches. Defaults to 100. A negative value means
-        never prompt. The prompt is bypassed when a custom
+        doc="""Up to this many items will be displayed in response to a
+        possible-completions call. Beyond that the user is prompted if he
+        really wants to see all matches. Defaults to 100. A negative value
+        means never prompt. The prompt is bypassed when a custom
         ``display_matches_hook`` is installed."""
         def get(self):
             return readline.get_completion_query_items()
