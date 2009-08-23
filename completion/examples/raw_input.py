@@ -5,7 +5,7 @@ from completion import completer
 
 
 class complete(object):
-    # Completion function implementing readline's
+    # A completion function implementing readline's
     # generator protocol
 
     def __call__(self, text, state):
