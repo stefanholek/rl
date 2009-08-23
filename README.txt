@@ -67,9 +67,9 @@ been the place where Python hooks into readline. In fact,
 ``readline.set_completer(func)`` sets readline's
 ``[rl_]completion_entry_function`` to ``func``. [#]_
 
-In addition to hooks, readline provides an abundance of configuration settings
-that may be changed by applications to influence the way the library behaves.
-For example, by configuring readline's ``word_break_characters``, an
+In addition to these hooks, readline provides an abundance of configuration
+settings that may be changed by applications to influence the way the library
+behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
 [TBC]
@@ -79,8 +79,8 @@ application can affect how readline computes word boundaries.
    when generating matches. The effect however is the same as if ``func`` had
    been assigned to ``[rl_]completion_entry_function`` directly.
 
-How completion Works
-====================
+The completion Package
+======================
 
 Overview
 --------
@@ -110,15 +110,15 @@ completion
     16 properties (4 status flags, 7 completion settings, 5 completion
     variables) and 4 functions.
 
-This separation is by concern: The ``completer`` provides
+On the one hand, this separation is by concern: The ``completer`` provides
 access to global configuration settings and hooks. The ``completion`` interface
 provides status information concerning the active completion, configuration
 settings to affect the results of the completion, and
-functions to request completion services from readline.
+functions to request services implemented by readline.
 
+On the other hand, it is also a separation by value lifetime:
 Values set trough the ``completer`` are permanent. If you want
 them restored you have to take care of it yourself.
-
 Values accessed through the ``completion`` object affect the current
 completion only. They are reset to their default values when a new
 completion starts.
