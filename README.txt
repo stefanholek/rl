@@ -117,7 +117,7 @@ settings to affect the results of the completion, and
 functions to request services implemented by readline.
 
 On the other hand, it is also a separation by value lifetime:
-Values set trough the ``completer`` are permanent. If you want
+Values set trough the ``completer`` are global and permanent. If you want
 them restored you have to take care of it yourself.
 Values accessed through the ``completion`` object affect the current
 completion only. They are reset to their default values when a new
