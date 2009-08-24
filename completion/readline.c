@@ -2606,7 +2606,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 /* Initialize the module */
 
 PyDoc_STRVAR(doc_module,
-"GNU readline interface with enhanced completion support.");
+"Importing this module enables command line editing using GNU readline.");
 
 PyMODINIT_FUNC
 initreadline(void)
