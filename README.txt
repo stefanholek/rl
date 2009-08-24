@@ -97,36 +97,6 @@ should still be easily recognizable by anyone familiar with readline.
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
-Divide and Conquer
-------------------
-
-Readline's completion interface is massive, so we break it down into two
-interface objects:
-
-completer
-    16 properties (7 configuration settings, 9 hooks) and 2 functions.
-
-completion
-    16 properties (4 status flags, 7 completion settings, 5 completion
-    variables) and 4 functions.
-
-On the one hand, this separation is by concern: The ``completer`` provides
-access to global configuration settings and hooks. The ``completion`` interface
-provides status information concerning the active completion, configuration
-settings to affect the results of the completion, and
-functions to request services implemented by readline.
-
-On the other hand, it is also a separation by value lifetime:
-Values set trough the ``completer`` are global and permanent. If you want
-them restored you have to take care of it yourself.
-Values accessed through the ``completion`` object affect the current
-completion only. They are reset to their default values when a new
-completion starts.
-
-For further details, please refer to the `API Documentation`_.
-
-.. _`API Documentation`: file:///Users/stefan/sandbox/completion/html/index.html
-
 Package Contents
 ----------------
 
@@ -155,6 +125,36 @@ print_exc
     A decorator printing exceptions to stderr. Useful when writing Python
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
+
+Divide and Conquer
+------------------
+
+Readline's completion interface is massive, so we break it down into two
+interface objects:
+
+completer
+    16 properties (7 configuration settings, 9 hooks) and 2 functions.
+
+completion
+    16 properties (4 status flags, 7 completion settings, 5 completion
+    variables) and 4 functions.
+
+On the one hand, this separation is by concern: The ``completer`` provides
+access to global configuration settings and hooks. The ``completion`` interface
+provides status information concerning the active completion, configuration
+settings to affect the results of the completion, and
+functions to request services implemented by readline.
+
+On the other hand, it is also a separation by value lifetime:
+Values set trough the ``completer`` are global and permanent. If you want
+them restored you have to take care of it yourself.
+Values accessed through the ``completion`` object affect the current
+completion only. They are reset to their default values when a new
+completion starts.
+
+For further details, please refer to the `API Documentation`_.
+
+.. _`API Documentation`: http://packages.python.org/completion/
 
 Example
 -------
