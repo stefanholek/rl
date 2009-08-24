@@ -6,14 +6,13 @@ from completion import generator
 
 
 def complete(text):
-    # '@' is a special prefix and we receive it as part
-    # of the word. Hence, words starting with '@' are
-    # hostnames and other words are usernames.
-    if text.startswith('@'):
-        return complete_hostname(text[1:])
-    else:
+    # Since '@' is a special prefix, we receive it as part
+    # of the word.
+    if not text.startswith('@'):
         completion.append_character = '@'
         return completion.complete_username(text)
+    else:
+        return complete_hostname(text)
 
 
 def complete_hostname(text):
@@ -26,7 +25,7 @@ def complete_hostname(text):
         line = filter(None, line.split())
         if line and not line[0].startswith('#'):
             for hostname in line[1:]:
-                if hostname.startswith(text):
+                if hostname.startswith(text[1:]):
                     yield '@' + hostname
 
 
