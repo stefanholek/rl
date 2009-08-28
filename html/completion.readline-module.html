@@ -1,0 +1,2116 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>completion.readline</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="completion-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >completion</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="completion-module.html">Package&nbsp;completion</a> ::
+        Module&nbsp;readline
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="completion.readline-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module readline</h1><p class="nomargin-top"></p>
+Importing this module enables command line editing using GNU readline.
+
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add_history"></a><span class="summary-sig-name">add_history</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Add a line to the history buffer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clear_history"></a><span class="summary-sig-name">clear_history</span>()</span><br />
+      Clear the current readline history.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="complete_internal"></a><span class="summary-sig-name">complete_internal</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Complete the word at or before the cursor position.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="display_match_list"></a><span class="summary-sig-name">display_match_list</span>(<span class="summary-sig-arg">substitution</span>,
+        <span class="summary-sig-arg">matches</span>,
+        <span class="summary-sig-arg">longest_match_length</span>)</span><br />
+      Display a list of matches in columnar format on readline's output stream.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="filename_completion_function"></a><span class="summary-sig-name">filename_completion_function</span>(<span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">int</span>)</span><br />
+      A built-in generator function for filename completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">(begidx, endidx)</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="find_completion_word"></a><span class="summary-sig-name">find_completion_word</span>()</span><br />
+      Find the bounds of the word at or before the cursor position.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_attempted_completion_over"></a><span class="summary-sig-name">get_attempted_completion_over</span>()</span><br />
+      If True, do not fall back to the default (filename) completion, even if the current completion returns no matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_basic_quote_characters"></a><span class="summary-sig-name">get_basic_quote_characters</span>()</span><br />
+      Get readline's default set of quote characters.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_basic_word_break_characters"></a><span class="summary-sig-name">get_basic_word_break_characters</span>()</span><br />
+      Get readline's default set of word break characters.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_begidx"></a><span class="summary-sig-name">get_begidx</span>()</span><br />
+      Get the beginning index of the readline tab-completion scope.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_char_is_quoted_function"></a><span class="summary-sig-name">get_char_is_quoted_function</span>()</span><br />
+      Get the function that determines whether or not a specific character in the line buffer is quoted.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_complete_with_tilde_expansion"></a><span class="summary-sig-name">get_complete_with_tilde_expansion</span>()</span><br />
+      If True, readline completion functions perform tilde expansion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completer"></a><span class="summary-sig-name">get_completer</span>()</span><br />
+      Returns current completer function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completer_delims"></a><span class="summary-sig-name">get_completer_delims</span>()</span><br />
+      Get the readline word delimiters for tab-completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completer_quote_characters"></a><span class="summary-sig-name">get_completer_quote_characters</span>()</span><br />
+      Get list of characters that may be used to quote a substring of the line.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_append_character"></a><span class="summary-sig-name">get_completion_append_character</span>()</span><br />
+      Get the character appended after completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_display_matches_hook"></a><span class="summary-sig-name">get_completion_display_matches_hook</span>()</span><br />
+      Get the current completion display function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_found_quote"></a><span class="summary-sig-name">get_completion_found_quote</span>()</span><br />
+      When readline is completing quoted text, it sets this variable to True if the word being completed contains any quoting character.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_invoking_key"></a><span class="summary-sig-name">get_completion_invoking_key</span>()</span><br />
+      The final character in the key sequence that invoked the completion function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_mark_symlink_dirs"></a><span class="summary-sig-name">get_completion_mark_symlink_dirs</span>()</span><br />
+      If True, a slash will be appended to completed filenames that are symbolic links to directory names.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_query_items"></a><span class="summary-sig-name">get_completion_query_items</span>()</span><br />
+      Up to this many items will be displayed in response to a possible-completions call.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_quote_character"></a><span class="summary-sig-name">get_completion_quote_character</span>()</span><br />
+      When readline is completing quoted text, it sets this variable to the quoting character found.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_suppress_append"></a><span class="summary-sig-name">get_completion_suppress_append</span>()</span><br />
+      Do not append the completion_append_character after the current completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_suppress_quote"></a><span class="summary-sig-name">get_completion_suppress_quote</span>()</span><br />
+      Do not append a matching quote character when performing completion on a quoted string.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_type"></a><span class="summary-sig-name">get_completion_type</span>()</span><br />
+      Get the type of completion being attempted.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_completion_word_break_hook"></a><span class="summary-sig-name">get_completion_word_break_hook</span>()</span><br />
+      A function to call when readline is deciding where to separate words for word completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">integer</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_current_history_length"></a><span class="summary-sig-name">get_current_history_length</span>()</span><br />
+      Return the current (not the maximum) length of history.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_directory_completion_hook"></a><span class="summary-sig-name">get_directory_completion_hook</span>()</span><br />
+      This function is allowed to modify the directory portion of filenames readline completes.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_endidx"></a><span class="summary-sig-name">get_endidx</span>()</span><br />
+      Get the ending index of the readline tab-completion scope.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_filename_completion_desired"></a><span class="summary-sig-name">get_filename_completion_desired</span>()</span><br />
+      True means readline should fall back to filename completion when the current completion returns no matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_filename_dequoting_function"></a><span class="summary-sig-name">get_filename_dequoting_function</span>()</span><br />
+      Get the current filename dequoting function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_filename_quote_characters"></a><span class="summary-sig-name">get_filename_quote_characters</span>()</span><br />
+      Get list of characters that cause a filename to be quoted by the completer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_filename_quoting_desired"></a><span class="summary-sig-name">get_filename_quoting_desired</span>()</span><br />
+      True means that results should be quoted according to the rules for filename quoting.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_filename_quoting_function"></a><span class="summary-sig-name">get_filename_quoting_function</span>()</span><br />
+      Get the current filename quoting function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_history_item"></a><span class="summary-sig-name">get_history_item</span>()</span><br />
+      Return the current contents of history item at index.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_history_length"></a><span class="summary-sig-name">get_history_length</span>()</span><br />
+      Return the maximum number of items that will be written to
+the history file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_ignore_completion_duplicates"></a><span class="summary-sig-name">get_ignore_completion_duplicates</span>()</span><br />
+      If an application sets this variable to False, readline will not remove duplicates from the list of completions.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_inhibit_completion"></a><span class="summary-sig-name">get_inhibit_completion</span>()</span><br />
+      If True, the completion character will be inserted as any other.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_line_buffer"></a><span class="summary-sig-name">get_line_buffer</span>()</span><br />
+      Return the current contents of the line buffer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_match_hidden_files"></a><span class="summary-sig-name">get_match_hidden_files</span>()</span><br />
+      If True, include hidden files when computing the list of matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_pre_input_hook"></a><span class="summary-sig-name">get_pre_input_hook</span>()</span><br />
+      Get the current pre_input_hook function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_rl_end"></a><span class="summary-sig-name">get_rl_end</span>()</span><br />
+      Return rl_end.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">int</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_rl_point"></a><span class="summary-sig-name">get_rl_point</span>()</span><br />
+      Return rl_point.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_sort_completion_matches"></a><span class="summary-sig-name">get_sort_completion_matches</span>()</span><br />
+      If an application sets this variable to False, readline will not sort the list of completions.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_special_prefixes"></a><span class="summary-sig-name">get_special_prefixes</span>()</span><br />
+      List of characters that are word break characters, but should be left in text when it is passed to the completion function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">function</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_startup_hook"></a><span class="summary-sig-name">get_startup_hook</span>()</span><br />
+      Get the current startup_hook function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="insert_text"></a><span class="summary-sig-name">insert_text</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Insert text into the command line.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="parse_and_bind"></a><span class="summary-sig-name">parse_and_bind</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Parse and execute single line of a readline init file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#read_history_file" class="summary-sig-name">read_history_file</a>(<span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Load a readline history file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#read_init_file" class="summary-sig-name">read_init_file</a>(<span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Parse a readline initialization file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="read_key"></a><span class="summary-sig-name">read_key</span>()</span><br />
+      Read a key from readline's input stream, typically the keyboard.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#redisplay" class="summary-sig-name">redisplay</a>(<span class="summary-sig-arg">force</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Change what's displayed on the screen to reflect the current contents of the line buffer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="remove_history_item"></a><span class="summary-sig-name">remove_history_item</span>(<span class="summary-sig-arg">pos</span>)</span><br />
+      Remove history item given by its position.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="replace_history_item"></a><span class="summary-sig-name">replace_history_item</span>(<span class="summary-sig-arg">pos</span>,
+        <span class="summary-sig-arg">line</span>)</span><br />
+      Replaces history item given by its position with contents of line.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="replace_line"></a><span class="summary-sig-name">replace_line</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Replace the line buffer contents with string.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_attempted_completion_over" class="summary-sig-name">set_attempted_completion_over</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If True, do not fall back to the default (filename) completion, even if the current completion returns no matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_char_is_quoted_function" class="summary-sig-name">set_char_is_quoted_function</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the function that determines whether or not a specific character in the line buffer is quoted.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_complete_with_tilde_expansion"></a><span class="summary-sig-name">set_complete_with_tilde_expansion</span>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If True, readline completion functions perform tilde expansion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completer" class="summary-sig-name">set_completer</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the completer function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_completer_delims"></a><span class="summary-sig-name">set_completer_delims</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Set the readline word delimiters for tab-completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_completer_quote_characters"></a><span class="summary-sig-name">set_completer_quote_characters</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Set list of characters that may be used to quote a substring of the line.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_append_character" class="summary-sig-name">set_completion_append_character</a>(<span class="summary-sig-arg">string</span>)</span><br />
+      Set the character appended after the current completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_display_matches_hook" class="summary-sig-name">set_completion_display_matches_hook</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the completion display function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_mark_symlink_dirs" class="summary-sig-name">set_completion_mark_symlink_dirs</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If True, a slash will be appended to completed filenames that are symbolic links to directory names.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_completion_query_items"></a><span class="summary-sig-name">set_completion_query_items</span>(<span class="summary-sig-arg">int</span>)</span><br />
+      Up to this many items will be displayed in response to a possible-completions call.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_suppress_append" class="summary-sig-name">set_completion_suppress_append</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      Do not append the completion_append_character after the current completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_suppress_quote" class="summary-sig-name">set_completion_suppress_quote</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      Do not append a matching quote character when performing completion on a quoted string.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_completion_word_break_hook" class="summary-sig-name">set_completion_word_break_hook</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      A function to call when readline is deciding where to separate words for word completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_directory_completion_hook" class="summary-sig-name">set_directory_completion_hook</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      This function is allowed to modify the directory portion of filenames readline completes.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_filename_completion_desired" class="summary-sig-name">set_filename_completion_desired</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      True means readline should fall back to filename completion when the current completion returns no matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_filename_dequoting_function" class="summary-sig-name">set_filename_dequoting_function</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the filename dequoting function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_filename_quote_characters"></a><span class="summary-sig-name">set_filename_quote_characters</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Set list of characters that cause a filename to be quoted by the completer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_filename_quoting_desired" class="summary-sig-name">set_filename_quoting_desired</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      True means that results should be quoted according to the rules for filename quoting.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_filename_quoting_function" class="summary-sig-name">set_filename_quoting_function</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the filename quoting function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_history_length" class="summary-sig-name">set_history_length</a>(<span class="summary-sig-arg">length</span>)</span><br />
+      Set the maximal number of items which will be written to
+the history file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_ignore_completion_duplicates" class="summary-sig-name">set_ignore_completion_duplicates</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If an application sets this variable to False, readline will not remove duplicates from the list of completions.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_inhibit_completion" class="summary-sig-name">set_inhibit_completion</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If True, the completion character will be inserted as any other.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_match_hidden_files"></a><span class="summary-sig-name">set_match_hidden_files</span>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If True, include hidden files when computing the list of matches.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_pre_input_hook" class="summary-sig-name">set_pre_input_hook</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the pre_input_hook function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_sort_completion_matches" class="summary-sig-name">set_sort_completion_matches</a>(<span class="summary-sig-arg">bool</span>)</span><br />
+      If an application sets this variable to False, readline will not sort the list of completions.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_special_prefixes"></a><span class="summary-sig-name">set_special_prefixes</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      List of characters that are word break characters, but should be left in text when it is passed to the completion function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#set_startup_hook" class="summary-sig-name">set_startup_hook</a>(<span class="summary-sig-arg">function</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Set or remove the startup_hook function.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">bool</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#stuff_char" class="summary-sig-name">stuff_char</a>(<span class="summary-sig-arg">string</span>)</span><br />
+      Insert a character into readline's input stream.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="tilde_expand"></a><span class="summary-sig-name">tilde_expand</span>(<span class="summary-sig-arg">string</span>)</span><br />
+      Return a new string which is the result of tilde expanding string.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">string</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="username_completion_function"></a><span class="summary-sig-name">username_completion_function</span>(<span class="summary-sig-arg">string</span>,
+        <span class="summary-sig-arg">int</span>)</span><br />
+      A built-in generator function for username completion.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">None</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="completion.readline-module.html#write_history_file" class="summary-sig-name">write_history_file</a>(<span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">...</span>)</span><br />
+      Save a readline history file.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="read_history_file"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">read_history_file</span>(<span class="sig-arg">filename</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Load a readline history file.
+The default filename is ~/.history.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="read_init_file"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">read_init_file</span>(<span class="sig-arg">filename</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Parse a readline initialization file.
+The default filename is the last filename used.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="redisplay"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">redisplay</span>(<span class="sig-arg">force</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Change what's displayed on the screen to reflect the current contents of the line buffer. If <tt class="rst-docutils literal"><span class="pre">force</span></tt> is True, readline will refresh the display even if its internal state indicates an up-to-date screen.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_attempted_completion_over"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_attempted_completion_over</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  If True, do not fall back to the default (filename) completion, even if the current completion returns no matches. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_char_is_quoted_function"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_char_is_quoted_function</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the function that determines whether or not a specific character in the line buffer is quoted. The function is called as <tt class="rst-docutils literal"><span class="pre">function(text,</span> <span class="pre">index)</span></tt> and should return True if the character at <tt class="rst-docutils literal"><span class="pre">index</span></tt> is quoted, and False otherwise.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completer"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completer</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the completer function.
+The function is called as <tt class="rst-docutils literal"><span class="pre">function(text,</span> <span class="pre">state)</span></tt>,
+for state in 0, 1, 2, ..., until it returns a non-string.
+It should return the next possible completion starting with <tt class="rst-docutils literal"><span class="pre">text</span></tt>.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_append_character"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_append_character</span>(<span class="sig-arg">string</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the character appended after the current completion. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_display_matches_hook"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_display_matches_hook</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the completion display function.
+The function is called as   <tt class="rst-docutils literal"><span class="pre">function(substitution,</span> <span class="pre">matches,</span> <span class="pre">longest_match_length)</span></tt> once each time matches need to be displayed.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_mark_symlink_dirs"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_mark_symlink_dirs</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  If True, a slash will be appended to completed filenames that are symbolic links to directory names. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_suppress_append"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_suppress_append</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Do not append the completion_append_character after the current completion. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_suppress_quote"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_suppress_quote</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Do not append a matching quote character when performing completion on a quoted string. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_completion_word_break_hook"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_completion_word_break_hook</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  A function to call when readline is deciding where to separate words for word completion. The function is called as <tt class="rst-docutils literal"><span class="pre">function(begidx,</span> <span class="pre">endidx)</span></tt> once for every completion, and should return a string of word break characters for the current completion, or None to indicate no change.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_directory_completion_hook"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_directory_completion_hook</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  This function is allowed to modify the directory portion of filenames readline completes. The function is called as <tt class="rst-docutils literal"><span class="pre">function(dirname)</span></tt> and should return a new directory name or None to indicate no change.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_filename_completion_desired"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_filename_completion_desired</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  True means readline should fall back to filename completion when the current completion returns no matches. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_filename_dequoting_function"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_filename_dequoting_function</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the filename dequoting function. The function is called as <tt class="rst-docutils literal"><span class="pre">function(text,</span> <span class="pre">quote_char)</span></tt> and should return a string representing a dequoted version of <tt class="rst-docutils literal"><span class="pre">text</span></tt>, or None to indicate no change.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_filename_quoting_desired"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_filename_quoting_desired</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  True means that results should be quoted according to the rules for filename quoting. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_filename_quoting_function"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_filename_quoting_function</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the filename quoting function. The function is called as <tt class="rst-docutils literal"><span class="pre">function(text,</span> <span class="pre">match_type,</span> <span class="pre">quote_char)</span></tt> and should return a string representing a quoted version of <tt class="rst-docutils literal"><span class="pre">text</span></tt>, or None to indicate no change.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_history_length"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_history_length</span>(<span class="sig-arg">length</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set the maximal number of items which will be written to
+the history file. A negative length is used to inhibit
+history truncation.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_ignore_completion_duplicates"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_ignore_completion_duplicates</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  If an application sets this variable to False, readline will not remove duplicates from the list of completions. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_inhibit_completion"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_inhibit_completion</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  If True, the completion character will be inserted as any other. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_pre_input_hook"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_pre_input_hook</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the pre_input_hook function.
+The function is called with no arguments after the first prompt
+has been printed and just before readline starts reading input
+characters.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_sort_completion_matches"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_sort_completion_matches</span>(<span class="sig-arg">bool</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  If an application sets this variable to False, readline will not sort the list of completions. May only be called from within custom completers.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_startup_hook"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_startup_hook</span>(<span class="sig-arg">function</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Set or remove the startup_hook function.
+The function is called with no arguments just
+before readline prints the first prompt.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stuff_char"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stuff_char</span>(<span class="sig-arg">string</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Insert a character into readline's input stream. Returns True if the insert was successful.
+  <dl class="fields">
+    <dt>Returns: bool</dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="write_history_file"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">write_history_file</span>(<span class="sig-arg">filename</span>=<span class="sig-default">...</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  Save a readline history file.
+The default filename is ~/.history.
+  <dl class="fields">
+    <dt>Returns: None</dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="completion-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            >completion</th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Aug 24 23:27:49 2009
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
