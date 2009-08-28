@@ -25,15 +25,15 @@ if platform == 'darwin':
 
 
 readline = \
-Extension(name='completion.readline',
-          sources=[join('completion', 'readline.c')],
+Extension(name='rl.readline',
+          sources=[join('rl', 'readline.c')],
           libraries=['readline', 'ncursesw'],
           include_dirs=include_dirs,
           library_dirs=library_dirs,
 )
 
 
-setup(name='completion',
+setup(name='rl',
       version=version,
       description='Python readline interface focused on completion',
       long_description=open('README.txt').read() + '\n' +
@@ -46,12 +46,12 @@ setup(name='completion',
       keywords='gnu readline completion interface',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
-      url='http://pypi.python.org/pypi/completion',
+      url='http://pypi.python.org/pypi/rl',
       license='Python',
       packages=find_packages(exclude=['ez_setup']),
       include_package_data=True,
       zip_safe=False,
-      test_suite='completion.tests',
+      test_suite='rl.tests',
       ext_modules=[
           readline,
       ],
