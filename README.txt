@@ -1,9 +1,9 @@
 ==========
 completion
 ==========
------------------------------------------------
-Python readline interface focused on completion
------------------------------------------------
+------------------------------------------------
+Python readline interface focusing on completion
+------------------------------------------------
 
 Introduction
 ============
@@ -16,8 +16,8 @@ GNU Readline `completion interface`_.
 How Readline Completion Works
 =============================
 
-Control Flow
-------------
+Call Graph
+----------
 
 * complete_internal
 
@@ -47,8 +47,8 @@ Control Flow
 
                 * `display_match_list`
 
-Discussion
-----------
+Readline Completion
+-------------------
 
 The graph – when read from top to bottom – represents a possible calling
 sequence for filename completion in readline. This sequence is initiated
@@ -72,12 +72,15 @@ settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
-[TBC]
-
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
    when generating matches. The effect however is the same as if ``func`` had
    been assigned to ``[rl_]completion_entry_function`` directly.
+
+Custom Completers
+-----------------
+
+[TBD]
 
 The completion Package
 ======================
