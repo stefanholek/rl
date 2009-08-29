@@ -5,8 +5,8 @@ The cmd.Cmd subclass in this module uses completion's readline interface.
 
 from stdlib import cmd
 
-from completion import completer
-from completion import completion
+from rl import completer
+from rl import completion
 
 
 class Cmd(cmd.Cmd):
