@@ -4,9 +4,9 @@ from _stdlib import readline # [sic]
 del readline
 
 from _readline import *
+from _utils import generator
+from _utils import print_exc
 from _completer import completer
-from _completer import generator
-from _completer import print_exc
 from _completion import completion
 from _history import history
 

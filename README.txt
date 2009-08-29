@@ -139,7 +139,7 @@ completer
     16 properties (7 configuration settings, 9 hooks) and 2 functions.
 
 completion
-    16 properties (4 status flags, 7 completion settings, 5 completion
+    18 properties (4 status flags, 9 completion settings, 5 completion
     variables) and 4 functions.
 
 On the one hand, this separation is by concern: The ``completer`` provides

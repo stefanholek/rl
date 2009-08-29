@@ -1,4 +1,5 @@
 import unittest
+import StringIO
 
 from rl import completer
 from rl import completion
@@ -21,4 +22,12 @@ class CompletionTests(unittest.TestCase):
         self.assertEqual(completer.word_break_characters, ' \t\n\\"\'`<>=;&|?*!')
         completer.word_break_characters = ''
         self.assertEqual(completer.word_break_characters, '')
+
+    def test_dump_completer(self):
+        stream = StringIO.StringIO()
+        completer._dump(stream)
+
+    def test_dump_completion(self):
+        stream = StringIO.StringIO()
+        completion._dump(stream)
 

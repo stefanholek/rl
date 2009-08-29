@@ -1,4 +1,4 @@
-"""Alternative readline interface focusing on completion."""
+"""Interface to the readline completer configuration."""
 
 import sys
 import _readline as readline
@@ -15,7 +15,7 @@ class Completer(object):
 
     Example::
 
-        from completion import completer
+        from rl import completer
 
         completer.quote_characters = '"\\''
         completer.query_items = 100
@@ -217,6 +217,7 @@ class Completer(object):
     # Debugging
 
     def _dump(self, stream=sys.stdout):
+        """Dump properties to stream."""
         stream.write("""\
 quote_characters:               %r
 word_break_characters:          %r
@@ -254,57 +255,4 @@ completer.filename_dequoting_function,
 ))
 
 completer = Completer()
-
-
-class _GeneratorFunction(object):
-    """Generator function implementation."""
-
-    def __init__(self, compfunc):
-        """Initialize the generator."""
-        self.compfunc = compfunc
-
-    def __call__(self, text, state):
-        """Implement the generator protocol.
-
-        Calls ``compfunc`` once, passing ``text`` as the only argument.
-        Returns the resulting matches according to readline's generator
-        protocol.
-        """
-        if state == 0:
-            self.matches = self.compfunc(text)
-            if not isinstance(self.matches, list):
-                self.matches = list(self.matches)
-        try:
-            return self.matches[state]
-        except IndexError:
-            return None
-
-
-def generator(compfunc):
-    """Generator function factory.
-
-    Takes a callable returning a list of matches and returns an
-    object implementing the generator protocol readline requires.
-    """
-    return _GeneratorFunction(compfunc)
-
-
-def print_exc(func):
-    """Decorator printing exceptions to stderr.
-
-    Useful when debugging completions and hooks, as exceptions occurring
-    there are usually swallowed by the in-between C code.
-    """
-
-    def wrapped_func(*args, **kw):
-        try:
-            return func(*args, **kw)
-        except:
-            import traceback; traceback.print_exc()
-            raise
-
-    wrapped_func.__name__ = func.__name__
-    wrapped_func.__dict__ = func.__dict__
-    wrapped_func.__doc__ = func.__doc__
-    return wrapped_func
 

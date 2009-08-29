@@ -1,10 +1,7 @@
-"""Alternative readline interface focusing on completion."""
+"""Interface to the active readline completion."""
 
 import sys
 import _readline as readline
-
-# Rein in runaway completions
-_MAXMATCHES = 100000
 
 
 class Completion(object):
@@ -18,12 +15,14 @@ class Completion(object):
 
     Example::
 
-        from completion import completion
+        from rl import completion
 
         def complete(text):
             completion.append_character = '@'
             return completion.complete_username(text)
     """
+
+    _MAXMATCHES = 100000 # Just in case
 
     @property
     def begidx(self):
@@ -131,12 +130,30 @@ class Completion(object):
 
     @apply
     def filename_quoting_desired():
-        doc="""Quote results according to the rules for filename
-        quoting. Defaults to True."""
+        doc="""Quote results according to filename quoting rules.
+        Defaults to True."""
         def get(self):
             return readline.get_filename_quoting_desired()
         def set(self, bool):
             readline.set_filename_quoting_desired(bool)
+        return property(get, set, doc=doc)
+
+    @apply
+    def sort_matches():
+        doc="""Sort the list of completions."""
+        def get(self):
+            return readline.get_sort_completion_matches()
+        def set(self, bool):
+            readline.set_sort_completion_matches(bool)
+        return property(get, set, doc=doc)
+
+    @apply
+    def ignore_duplicates():
+        doc="""Remove duplicates from the list of completions."""
+        def get(self):
+            return readline.get_ignore_completion_duplicates()
+        def set(self, bool):
+            readline.set_ignore_completion_duplicates(bool)
         return property(get, set, doc=doc)
 
     @apply
@@ -168,8 +185,9 @@ class Completion(object):
         readline.display_match_list(substitution, matches, longest_match_length)
 
     def _generate(self, text, entry_func):
+        """Extract a list of matches from a generator function."""
         new = []
-        for i in range(_MAXMATCHES):
+        for i in range(self._MAXMATCHES):
             n = entry_func(text, i)
             if n is not None:
                 new.append(n)
@@ -180,6 +198,7 @@ class Completion(object):
     # Debugging
 
     def _dump(self, stream=sys.stdout):
+        """Dump properties to stream."""
         stream.write("""\
 line_buffer:                    %r
 begidx:                         %s
@@ -196,7 +215,6 @@ filename_completion_desired:    %s
 filename_quoting_desired:       %s
 sort_matches:                   %s
 ignore_duplicates:              %s
-mark_symlink_dirs:              %s
 inhibit_completion:             %s
 """ % (
 completion.line_buffer,
@@ -214,7 +232,6 @@ completion.filename_completion_desired,
 completion.filename_quoting_desired,
 completion.sort_matches,
 completion.ignore_duplicates,
-completion.mark_symlink_dirs,
 completion.inhibit_completion,
 ))
 

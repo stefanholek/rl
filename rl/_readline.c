@@ -477,8 +477,8 @@ get_history_item(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_get_history_item,
-"get_history_item() -> string\n\
-Return the current contents of history item at index.");
+"get_history_item(pos) -> string\n\
+Return the current contents of history item at pos.");
 
 
 /* Exported function to get current length of history */
@@ -815,7 +815,7 @@ get_filename_quoting_desired(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_filename_quoting_desired,
 "get_filename_quoting_desired() -> bool\n\
-True means that results should be quoted according to the rules for filename quoting.");
+True means that results should be quoted according to filename quoting rules.");
 
 
 static PyObject *
