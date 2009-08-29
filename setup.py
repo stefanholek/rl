@@ -25,8 +25,8 @@ if platform == 'darwin':
 
 
 readline = \
-Extension(name='rl.readline',
-          sources=[join('rl', 'readline.c')],
+Extension(name='rl._readline',
+          sources=[join('rl', '_readline.c')],
           libraries=['readline', 'ncursesw'],
           include_dirs=include_dirs,
           library_dirs=library_dirs,
@@ -35,7 +35,7 @@ Extension(name='rl.readline',
 
 setup(name='rl',
       version=version,
-      description='Python readline interface focused on completion',
+      description='Python readline interface focusing on completion',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
