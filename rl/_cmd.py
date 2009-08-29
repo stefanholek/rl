@@ -1,6 +1,6 @@
 """Simple framework for writing line-oriented command interpreters."""
 
-from stdlib import cmd
+from _stdlib import cmd
 
 from rl import completer
 from rl import completion
