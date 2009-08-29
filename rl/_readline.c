@@ -844,7 +844,7 @@ get_attempted_completion_over(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_attempted_completion_over,
 "get_attempted_completion_over() -> bool\n\
-If True, do not fall back to the default (filename) completion, even if the current \
+If True, do not fall back to the default filename completion, even if the current \
 completion returns no matches.");
 
 
@@ -862,7 +862,7 @@ set_attempted_completion_over(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_attempted_completion_over,
 "set_attempted_completion_over(bool) -> None\n\
-If True, do not fall back to the default (filename) completion, even if the current \
+If True, do not fall back to the default filename completion, even if the current \
 completion returns no matches. \
 May only be called from within custom completers.");
 
@@ -1496,7 +1496,7 @@ find_completion_word(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_find_completion_word,
 "find_completion_word() -> (begidx, endidx)\n\
-Find the bounds of the word at or before the cursor position.");
+Find the bounds of the word at or before the cursor position (testing only).");
 
 
 static PyObject *
@@ -1516,7 +1516,7 @@ complete_internal(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_complete_internal,
 "complete_internal(string) -> int\n\
-Complete the word at or before the cursor position.");
+Complete the word at or before the cursor position (testing only).");
 
 
 /* Word-break hook */
