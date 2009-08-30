@@ -72,7 +72,7 @@ settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
-[TBC] `Readline has username completion and basic filename completion built-in...`
+[TBC]
 
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
