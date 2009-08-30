@@ -51,7 +51,7 @@ def generator(compfunc):
     """Generator function factory.
 
     Takes a callable returning a list of matches and returns an
-    object implementing the generator protocol readline requires.
+    object implementing the generator protocol readline expects.
     """
     return _GeneratorFunction(compfunc)
 
