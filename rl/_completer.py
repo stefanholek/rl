@@ -8,7 +8,7 @@ class Completer(object):
     """Interface to the readline completer configuration.
 
     This class is not intended for instantiation beyond
-    the one ``completer`` object in this module.
+    the one ``completer`` object in this package.
     Applications wanting to use the Completer interface will
     typically import the ``completer`` object and use its
     properties and methods to configure readline.
@@ -236,23 +236,21 @@ char_is_quoted_function:        %r
 filename_quoting_function:      %r
 filename_dequoting_function:    %r
 """ % (
-completer.quote_characters,
-completer.word_break_characters,
-completer.special_prefixes,
-completer.filename_quote_characters,
-completer.match_hidden_files,
-completer.tilde_expansion,
-completer.query_items,
-completer.completer,
-completer.startup_hook,
-completer.pre_input_hook,
-completer.word_break_hook,
-completer.directory_completion_hook,
-completer.display_matches_hook,
-completer.char_is_quoted_function,
-completer.filename_quoting_function,
-completer.filename_dequoting_function,
+self.quote_characters,
+self.word_break_characters,
+self.special_prefixes,
+self.filename_quote_characters,
+self.match_hidden_files,
+self.tilde_expansion,
+self.query_items,
+self.completer,
+self.startup_hook,
+self.pre_input_hook,
+self.word_break_hook,
+self.directory_completion_hook,
+self.display_matches_hook,
+self.char_is_quoted_function,
+self.filename_quoting_function,
+self.filename_dequoting_function,
 ))
-
-completer = Completer()
 

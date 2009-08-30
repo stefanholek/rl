@@ -3,14 +3,14 @@
 from _stdlib import readline # [sic]
 import _readline as readline
 
-from _completer import completer
-from _completion import completion
-from _history import history
-
-# For subclassing
 from _completer import Completer
 from _completion import Completion
 from _history import History
+
+# Interface objects
+completer = Completer()
+completion = Completion()
+history = History()
 
 # Patch cmd.Cmd to use rl instead of readline
 import _cmd

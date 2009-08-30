@@ -8,7 +8,7 @@ class Completion(object):
     """Interface to the active readline completion.
 
     This class is not intended for instantiation beyond
-    the one ``completion`` object in this module.
+    the one ``completion`` object in this package.
     Applications wanting to use the Completion interface will
     typically import the ``completion`` object and use its
     properties and methods to implement custom completers.
@@ -218,23 +218,21 @@ sort_matches:                   %s
 ignore_duplicates:              %s
 inhibit_completion:             %s
 """ % (
-completion.line_buffer,
-completion.begidx,
-completion.endidx,
-completion.completion_type, chr(completion.completion_type),
-completion.invoking_key,
-completion.append_character,
-completion.suppress_append,
-completion.found_quote,
-completion.quote_character,
-completion.suppress_quote,
-completion.attempted_completion_over,
-completion.filename_completion_desired,
-completion.filename_quoting_desired,
-completion.sort_matches,
-completion.ignore_duplicates,
-completion.inhibit_completion,
+self.line_buffer,
+self.begidx,
+self.endidx,
+self.completion_type, chr(self.completion_type),
+self.invoking_key,
+self.append_character,
+self.suppress_append,
+self.found_quote,
+self.quote_character,
+self.suppress_quote,
+self.attempted_completion_over,
+self.filename_completion_desired,
+self.filename_quoting_desired,
+self.sort_matches,
+self.ignore_duplicates,
+self.inhibit_completion,
 ))
-
-completion = Completion()
 

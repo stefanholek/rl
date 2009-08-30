@@ -7,7 +7,7 @@ class History(object):
     """Interface to readline history.
 
     This class is not intended for instantiation beyond
-    the one ``history`` object in this module.
+    the one ``history`` object in this package.
     Applications wanting to use the History interface will
     typically import the ``history`` object and use its
     properties and methods to work with readline history.
@@ -95,6 +95,4 @@ class History(object):
         except IOError:
             if raise_exc:
                 raise
-
-history = History()
 
