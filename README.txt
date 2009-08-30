@@ -1,6 +1,6 @@
-==========
-completion
-==========
+==
+rl
+==
 ------------------------------------------------
 Python readline interface focusing on completion
 ------------------------------------------------
@@ -8,7 +8,7 @@ Python readline interface focusing on completion
 Introduction
 ============
 
-The completion package aims to provide a full implementation of the
+The rl package aims to provide a full implementation of the
 GNU Readline `completion interface`_.
 
 .. _`completion interface`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
@@ -82,13 +82,13 @@ Custom Completers
 
 [TBD]
 
-The completion Package
-======================
+The rl Package
+==============
 
 Overview
 --------
 
-The completion package implements all flags, settings, and hooks documented in
+The rl package implements all flags, settings, and hooks documented in
 the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
 They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
@@ -111,14 +111,16 @@ completion
     Interface to the active readline completion. Used to interact
     with readline when a completion is in progress.
 
+history
+    Interface to readline history. Used to read and write history files and to
+    manage history entries.
+
 readline
     The readline interface module. Contains everything
-    known from the standard library plus extensions specific to the
-    completion package. The ``completer`` and ``completion`` interfaces make use of
-    this module, and you should rarely need to interact with it directly.
-
-cmd
-    A subclass of ``cmd.Cmd`` using completion's version of readline.
+    known from the standard library plus extensions specific to the rl
+    package.  The ``completer``, ``completion``, and ``history`` interfaces
+    make use of this module, and you should rarely need to interact with it
+    directly.
 
 generator
     A factory turning a callable into a ``completion_entry_function`` that
@@ -143,10 +145,10 @@ completion
     variables) and 4 functions.
 
 On the one hand, this separation is by concern: The ``completer`` provides
-access to global configuration settings and hooks. The ``completion`` interface
-provides status information concerning the active completion, configuration
-settings to affect the results of the completion, and
-functions to request services implemented by readline.
+access to global configuration settings and hooks. The ``completion``
+interface provides status information concerning the active completion,
+configuration settings to affect the results of the completion, and functions
+to use services implemented by readline.
 
 On the other hand, it is also a separation by value lifetime:
 Values set trough the ``completer`` are global and permanent. If you want
@@ -157,7 +159,7 @@ completion starts.
 
 For further details, please refer to the `API Documentation`_.
 
-.. _`API Documentation`: http://packages.python.org/completion/
+.. _`API Documentation`: http://packages.python.org/rl/
 
 Example
 -------
@@ -165,8 +167,8 @@ Example
 The code below implements system command completion similar to bash::
 
     import os
-    from completion import completer
-    from completion import generator
+    from rl import completer
+    from rl import generator
 
     def complete(text):
         for dir in os.environ.get('PATH').split(':'):
@@ -187,16 +189,16 @@ Installation
 ============
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
-completion. On Mac OS X, you need a Python built with MacPorts or Fink, as
-the system Python is linked to the BSD editline library and not GNU readline.
+rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
+Python is linked to the BSD editline library and not GNU readline.
 
 Then type::
 
-    /path/to/easy_install completion
+    /path/to/easy_install rl
 
 and watch the console. When it reads::
 
-    Finished processing dependencies for completion==1.0a1
+    Finished processing dependencies for rl==1.0a1
 
-you are done and completion is ready to use.
+you are done and rl is ready to use.
 
