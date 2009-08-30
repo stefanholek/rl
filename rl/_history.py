@@ -24,7 +24,7 @@ class History(object):
 
     def __init__(self):
         """Set ``history_base=0``. Indexes starting at 1 are not pythonic."""
-        # This is a-ok until we implement stifling (if ever)
+        # This is a-ok unless we implement stifling
         readline.set_history_base(0)
 
     def __len__(self):
