@@ -1,4 +1,4 @@
-"""Utility functions."""
+"""Various utility functions."""
 
 
 class _GeneratorFunction(object):

@@ -1,4 +1,4 @@
-"""Simple framework for writing line-oriented command interpreters."""
+"""Importing this module modifies cmd.Cmd to use rl instead of readline."""
 
 from _stdlib import cmd
 
@@ -82,4 +82,3 @@ def complete(self, text, state):
 # Monkey patch cmd.Cmd
 cmd.Cmd.cmdloop = cmdloop
 cmd.Cmd.complete = complete
-

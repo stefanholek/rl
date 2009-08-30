@@ -22,7 +22,7 @@ class Completion(object):
             return completion.complete_username(text)
     """
 
-    _MAXMATCHES = 100000 # Just in case
+    MAX_MATCHES = 100000 # Just in case
 
     @property
     def begidx(self):
@@ -140,7 +140,7 @@ class Completion(object):
 
     @apply
     def sort_matches():
-        doc="""Sort the list of completions."""
+        doc="""Sort the list of completions. Defaults to True."""
         def get(self):
             return readline.get_sort_completion_matches()
         def set(self, bool):
@@ -149,7 +149,8 @@ class Completion(object):
 
     @apply
     def ignore_duplicates():
-        doc="""Remove duplicates from the list of completions."""
+        doc="""Remove duplicates from the list of completions.
+        Defaults to True."""
         def get(self):
             return readline.get_ignore_completion_duplicates()
         def set(self, bool):
@@ -187,7 +188,7 @@ class Completion(object):
     def _generate(self, text, entry_func):
         """Extract a list of matches from a generator function."""
         new = []
-        for i in range(self._MAXMATCHES):
+        for i in range(self.MAX_MATCHES):
             n = entry_func(text, i)
             if n is not None:
                 new.append(n)
