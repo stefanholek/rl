@@ -72,7 +72,7 @@ settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
-[TBC] `Readline has username completion and basic filename completion built-in.`
+[TBC] `Readline has username completion and basic filename completion built-in...`
 
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
@@ -96,8 +96,9 @@ They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
 
 While names have been shortened – we removed the ``rl_`` prefix and the
-occasional ``completer`` or ``completion`` from the C identifiers – they
-should still be easily recognizable by anyone familiar with readline.
+occasional ``completer``, ``completion``, or ``history`` from the C
+identifiers – they should still be easy to recognize for anyone familiar
+with readline.
 
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
@@ -153,7 +154,7 @@ configuration settings to affect the results of the completion, and functions
 to use services implemented by readline.
 
 On the other hand, it is also a separation by value lifetime:
-Values set trough the ``completer`` are global and permanent. If you want
+Values set trough the ``completer`` are permanent. If you want
 them restored you have to take care of it yourself.
 Values accessed through the ``completion`` object affect the current
 completion only. They are reset to their default values when a new
