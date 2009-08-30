@@ -27,6 +27,10 @@ class History(object):
         """Get the current (not the maximum) length of history."""
         return readline.get_current_history_length()
 
+    def __len__(self):
+        """Get the current (not the maximum) length of history."""
+        return self.current_length
+
     @apply
     def length():
         doc="""This many lines will be saved in the history file."""
@@ -38,7 +42,7 @@ class History(object):
 
     def add(self, line):
         """Add a line to the history."""
-        readline.add_history(string)
+        readline.add_history(line)
 
     def clear(self):
         """Clear the current readline history."""
@@ -48,19 +52,13 @@ class History(object):
         """Return the current contents of history at pos."""
         return readline.get_history_item(pos)
 
-    __getitem__ = get_item
-
     def remove_item(self, pos):
         """Remove a history item given by its position."""
         readline.remove_history_item(pos)
 
-    __delitem__ = remove_item
-
     def replace_item(self, pos, line):
         """Replace a history item given by its position with contents of line."""
         readline.replace_history_item(pos, line)
-
-    __setitem__ = replace_item
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file. The default filename is ~/.history."""

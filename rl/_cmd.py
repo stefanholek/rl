@@ -9,7 +9,7 @@ from rl import completion
 def cmdloop(self, intro=None):
     """Repeatedly issue a prompt, accept input, parse an initial prefix
     off the received input, and dispatch to action methods, passing them
-    the remainder of the line as argument.
+    the remainder of the line as argument. Uses rl.completer.
     """
     self.preloop()
     if self.use_rawinput and self.completekey:
@@ -52,6 +52,7 @@ def complete(self, text, state):
 
     If a command has not been entered, then complete against command list.
     Otherwise try to call complete_<command> to get list of completions.
+    Uses rl.completion.
     """
     if state == 0:
         origline = completion.line_buffer
