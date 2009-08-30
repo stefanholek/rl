@@ -63,8 +63,8 @@ At C-level, there is a default ``filename_quoting_function`` and a default
 ``display_matches_hook``. The remaining hooks have no default implementations.
 
 The ``completion_entry_function``, marked with an '*' above, has traditionally
-been the place where Python hooks into readline. In fact,
-``readline.set_completer(func)`` sets readline's
+been the place where Python hooks into readline. In fact, the standard
+library's ``readline.set_completer(func)`` sets readline's
 ``[rl_]completion_entry_function`` to ``func``. [#]_
 
 In addition to these hooks, readline provides an abundance of configuration
@@ -96,9 +96,8 @@ They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
 
 While names have been shortened – we removed the ``rl_`` prefix and the
-occasional ``completer``, ``completion``, or ``history`` from the C
-identifiers – they should still be easy to recognize for anyone familiar
-with readline.
+occasional ``completer`` and ``completion`` from the C identifiers – they
+should still be easy to recognize for anyone familiar with readline.
 
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
@@ -141,11 +140,10 @@ Readline's completion interface is massive, so we break it down into two
 interface objects:
 
 completer
-    16 properties (7 configuration settings, 9 hooks) and 2 functions.
+    16 properties and 2 functions.
 
 completion
-    18 properties (4 status flags, 9 completion settings, 5 completion
-    variables) and 4 functions.
+    18 properties and 4 functions.
 
 On the one hand, this separation is by concern: The ``completer`` provides
 access to global configuration settings and hooks. The ``completion``
