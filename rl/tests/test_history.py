@@ -7,12 +7,11 @@ class HistoryTests(unittest.TestCase):
 
     def setUp(self):
         history.clear()
-        history.base = 0
 
     def test_add(self):
-        self.assertEqual(history.current_length, 0)
-        history.append('fred')
-        self.assertEqual(history.current_length, 1)
+        self.assertEqual(len(history), 0)
+        history.add_item('fred')
+        self.assertEqual(len(history), 1)
 
     def test__len__(self):
         self.assertEqual(len(history), 0)
@@ -21,36 +20,16 @@ class HistoryTests(unittest.TestCase):
         history.append('wilma')
         self.assertEqual(len(history), 2)
 
-    def test_base(self):
-        self.assertEqual(history.base, 0)
-        history.append('fred')
-        self.assertEqual(history.base, 0)
-        history.append('wilma')
-        self.assertEqual(history.base, 0)
-
     def test_get_item(self):
         history.append('fred')
         history.append('wilma')
         history.append('barney')
         history.append('betty')
         self.assertEqual(len(history), 4)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history.get_item(0), 'fred')
         self.assertEqual(history.get_item(1), 'wilma')
         self.assertEqual(history.get_item(2), 'barney')
         self.assertEqual(history.get_item(3), 'betty')
-
-    def test_get_item_with_nonzero_base(self):
-        history.append('fred')
-        history.append('wilma')
-        history.append('barney')
-        history.append('betty')
-        self.assertEqual(len(history), 4)
-        history.base = 1
-        self.assertEqual(history.get_item(1), 'fred')
-        self.assertEqual(history.get_item(2), 'wilma')
-        self.assertEqual(history.get_item(3), 'barney')
-        self.assertEqual(history.get_item(4), 'betty')
 
     def test__getitem__(self):
         history.append('fred')
@@ -58,7 +37,6 @@ class HistoryTests(unittest.TestCase):
         history.append('barney')
         history.append('betty')
         self.assertEqual(len(history), 4)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history[0], 'fred')
         self.assertEqual(history[1], 'wilma')
         self.assertEqual(history[2], 'barney')
@@ -72,7 +50,6 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         history.remove_item(1)
         self.assertEqual(len(history), 3)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history.get_item(0), 'fred')
         self.assertEqual(history.get_item(1), 'barney')
         self.assertEqual(history.get_item(2), 'betty')
@@ -85,7 +62,6 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         del history[1]
         self.assertEqual(len(history), 3)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history.get_item(0), 'fred')
         self.assertEqual(history.get_item(1), 'barney')
         self.assertEqual(history.get_item(2), 'betty')
@@ -98,7 +74,6 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         history.replace_item(1, 'pebbles')
         self.assertEqual(len(history), 4)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history.get_item(0), 'fred')
         self.assertEqual(history.get_item(1), 'pebbles')
         self.assertEqual(history.get_item(2), 'barney')
@@ -112,7 +87,6 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         history[1] = 'pebbles'
         self.assertEqual(len(history), 4)
-        self.assertEqual(history.base, 0)
         self.assertEqual(history.get_item(0), 'fred')
         self.assertEqual(history.get_item(1), 'pebbles')
         self.assertEqual(history.get_item(2), 'barney')

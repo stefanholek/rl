@@ -23,31 +23,18 @@ class History(object):
     """
 
     def __init__(self):
-        """Set ``base=0``. Indexes starting at 1 are unpythonic."""
+        """Set ``history_base=0``. Indexes starting at 1 are unpythonic."""
         # This is a-ok until we implement stifling (if ever)
-        self.base = 0
-
-    @property
-    def current_length(self):
-        """The current length of history."""
-        return readline.get_current_history_length()
+        readline.set_history_base(0)
 
     def __len__(self):
-        """Alias for ``current_length``."""
-        return self.current_length
-
-    @apply
-    def base():
-        doc="""The logical "base" of the history list. Defaults to 0."""
-        def get(self):
-            return readline.get_history_base()
-        def set(self, int):
-            readline.set_history_base(int)
-        return property(get, set, doc=doc)
+        """The current history length."""
+        return readline.get_current_history_length()
 
     @apply
     def length():
-        doc="""The number of lines saved to the history file."""
+        doc="""The number of lines saved in the history file.
+        A negative value means no limit."""
         def get(self):
             return readline.get_history_length()
         def set(self, int):
@@ -55,7 +42,7 @@ class History(object):
         return property(get, set, doc=doc)
 
     def clear(self):
-        """Clear the current readline history."""
+        """Clear the history."""
         readline.clear_history()
 
     def add_item(self, line):
@@ -67,7 +54,7 @@ class History(object):
         self.add_item(line)
 
     def get_item(self, pos):
-        """Return the contents of history at pos (zero-based)."""
+        """Return the contents of history at pos."""
         return readline.get_history_item(pos)
 
     def __getitem__(self, pos):
@@ -75,7 +62,7 @@ class History(object):
         return self.get_item(pos)
 
     def remove_item(self, pos):
-        """Remove a history item given by its position (zero-based)."""
+        """Remove a history item given by its position."""
         readline.remove_history_item(pos)
 
     def __delitem__(self, pos):
@@ -83,7 +70,7 @@ class History(object):
         self.remove_item(pos)
 
     def replace_item(self, pos, line):
-        """Replace a history item given by its position with contents of line (zero-based)."""
+        """Replace a history item given by its position with contents of line."""
         readline.replace_history_item(pos, line)
 
     def __setitem__(self, pos, line):
