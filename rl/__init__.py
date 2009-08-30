@@ -17,7 +17,10 @@ import _cmd
 
 
 class _GeneratorFunction(object):
-    """Generator function implementation."""
+    """Generator function implementation.
+
+    The ``generator`` factory returns objects of this type.
+    """
 
     def __init__(self, compfunc):
         """Initialize the generator."""

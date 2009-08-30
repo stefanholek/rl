@@ -62,7 +62,7 @@ class History(object):
         return self.get_item(pos)
 
     def remove_item(self, pos):
-        """Remove a history item given by its position."""
+        """Remove the history item at pos."""
         readline.remove_history_item(pos)
 
     def __delitem__(self, pos):
@@ -70,7 +70,7 @@ class History(object):
         self.remove_item(pos)
 
     def replace_item(self, pos, line):
-        """Replace a history item given by its position with contents of line."""
+        """Replace the history item at pos with contents of line."""
         readline.replace_history_item(pos, line)
 
     def __setitem__(self, pos, line):
