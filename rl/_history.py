@@ -34,7 +34,7 @@ class History(object):
     @apply
     def length():
         doc="""The number of lines saved in the history file.
-        A negative value means no limit."""
+        A negative value means no limit. Defaults to -1."""
         def get(self):
             return readline.get_history_length()
         def set(self, int):

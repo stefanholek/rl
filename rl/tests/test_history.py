@@ -8,6 +8,11 @@ class HistoryTests(unittest.TestCase):
     def setUp(self):
         history.clear()
 
+    def test_length(self):
+        self.assertEqual(history.length, -1)
+        history.length = 100
+        self.assertEqual(history.length, 100)
+
     def test_add(self):
         self.assertEqual(len(history), 0)
         history.add_item('fred')
