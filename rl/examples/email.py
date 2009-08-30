@@ -1,8 +1,8 @@
 # Complete email addresses
 
-from completion import completer
-from completion import completion
-from completion import generator
+from rl import completer
+from rl import completion
+from rl import generator
 
 
 def complete(text):

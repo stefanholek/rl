@@ -5,8 +5,8 @@
 # factory on it.
 
 import os
-from completion import completer
-from completion import generator
+from rl import completer
+from rl import generator
 
 
 def complete(text):

@@ -1,9 +1,9 @@
 # Complete system commands and filenames on the same line
 
 import os
-from completion import completer
-from completion import completion
-from completion import cmd
+import cmd
+from rl import completer
+from rl import completion
 
 
 class MyCmd(cmd.Cmd):

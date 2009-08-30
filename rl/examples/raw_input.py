@@ -1,7 +1,7 @@
 # Complete system commands
 
 import os
-from completion import completer
+from rl import completer
 
 
 class complete(object):

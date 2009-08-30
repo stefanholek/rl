@@ -1,8 +1,8 @@
 # Show a pre-input hook at work
 
-from completion import completer
-from completion import completion
-from completion import readline
+from rl import completer
+from rl import completion
+from rl import readline
 
 
 class Questionnaire(object):
