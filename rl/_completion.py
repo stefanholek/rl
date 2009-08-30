@@ -130,8 +130,8 @@ class Completion(object):
 
     @apply
     def filename_quoting_desired():
-        doc="""Quote results according to filename quoting rules.
-        Defaults to True."""
+        doc="""If results are filenames, quote them. Defaults to True.
+        Has no effect if ``filename_completion_desired`` is False."""
         def get(self):
             return readline.get_filename_quoting_desired()
         def set(self, bool):

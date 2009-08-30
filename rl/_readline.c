@@ -832,7 +832,7 @@ set_filename_quoting_desired(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_quoting_desired,
 "set_filename_quoting_desired(bool) -> None\n\
-True means that results should be quoted according to the rules for filename quoting. \
+True means that results should be quoted according to filename quoting rules. \
 May only be called from within custom completers.");
 
 
