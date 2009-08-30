@@ -114,8 +114,8 @@ completion
     with readline when a completion is in progress.
 
 history
-    Interface to readline history. Used to read and write history files and to
-    manipulate history entries.
+    Interface to the readline history. Used to read and write history files
+    and to manipulate history entries.
 
 readline
     The readline interface module. Contains everything

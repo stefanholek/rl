@@ -1,10 +1,10 @@
-"""Interface to readline history."""
+"""Interface to the readline history."""
 
 import _readline as readline
 
 
 class History(object):
-    """Interface to readline history.
+    """Interface to the readline history.
 
     This class is not intended for instantiation beyond
     the one ``history`` object in this package.
@@ -14,8 +14,8 @@ class History(object):
 
     Example::
 
-        from rl import history
         import atexit
+        from rl import history
 
         history.read_file(histfile)
         history.length = 100
