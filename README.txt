@@ -72,6 +72,8 @@ settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
+[TBC] `Readline has username completion and basic filename completion built-in.`
+
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
    when generating matches. The effect however is the same as if ``func`` had
@@ -113,7 +115,7 @@ completion
 
 history
     Interface to readline history. Used to read and write history files and to
-    manage history entries.
+    manipulate history entries.
 
 readline
     The readline interface module. Contains everything
@@ -171,6 +173,7 @@ The code below implements system command completion similar to bash::
     from rl import generator
 
     def complete(text):
+        # Return an iterable of matches for 'text'
         for dir in os.environ.get('PATH').split(':'):
             for name in os.listdir(dir):
                 if name.startswith(text):
@@ -178,8 +181,13 @@ The code below implements system command completion similar to bash::
                         yield name
 
     def main():
+        # Set the completion function
         completer.completer = generator(complete)
+
+        # Enable TAB completion
         completer.parse_and_bind('tab: complete')
+
+        # Prompt the user for a command name
         command = raw_input('command> ')
         print 'You typed:', command
 
