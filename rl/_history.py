@@ -28,8 +28,13 @@ class History(object):
         return readline.get_current_history_length()
 
     def __len__(self):
-        """Get the current (not the maximum) length of history."""
+        """Alias for ``current_length``."""
         return self.current_length
+
+    @property
+    def base(self):
+        """Get the current history base position."""
+        return readline.get_history_base()
 
     @apply
     def length():
@@ -49,15 +54,15 @@ class History(object):
         readline.clear_history()
 
     def get_item(self, pos):
-        """Return the current contents of history at pos."""
+        """Return the current contents of history at pos (relative to ``history.base``)."""
         return readline.get_history_item(pos)
 
     def remove_item(self, pos):
-        """Remove a history item given by its position."""
+        """Remove a history item given by its position (zero-based)."""
         readline.remove_history_item(pos)
 
     def replace_item(self, pos, line):
-        """Replace a history item given by its position with contents of line."""
+        """Replace a history item given by its position with contents of line (zero-based)."""
         readline.replace_history_item(pos, line)
 
     def read_file(self, filename=None, raise_exc=False):

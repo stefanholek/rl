@@ -1446,6 +1446,17 @@ PyDoc_STRVAR(doc_get_pre_input_hook,
 Get the current pre_input_hook function.");
 
 
+static PyObject *
+get_history_base(PyObject *self, PyObject *noarg)
+{
+	return PyInt_FromLong(history_base);
+}
+
+PyDoc_STRVAR(doc_get_history_base,
+"get_history_base() -> int\n\
+Return the current history base position.");
+
+
 /* Internals */
 
 static PyObject *
@@ -2212,6 +2223,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_display_match_list},
 	{"get_rl_point", get_rl_point, METH_NOARGS, doc_get_rl_point},
 	{"get_rl_end", get_rl_end, METH_NOARGS, doc_get_rl_end},
+	{"get_history_base", get_history_base, METH_NOARGS, doc_get_history_base},
 	{"find_completion_word", find_completion_word,
 	 METH_NOARGS, doc_find_completion_word},
 	{"complete_internal", complete_internal,

@@ -19,13 +19,20 @@ class HistoryTests(unittest.TestCase):
         history.add('wilma')
         self.assertEqual(len(history), 2)
 
+    def test_base(self):
+        history.add('fred')
+        self.assertEqual(history.base, 1)
+        history.add('wilma')
+        self.assertEqual(history.base, 1)
+
     def test_get_item(self):
         history.add('fred')
         history.add('wilma')
         history.add('barney')
         history.add('betty')
         self.assertEqual(len(history), 4)
-        self.assertEqual(history.get_item(1), 'fred')
+        self.assertEqual(history.base, 1)
+        self.assertEqual(history.get_item(1), 'fred') # history.base-based here
         self.assertEqual(history.get_item(2), 'wilma')
         self.assertEqual(history.get_item(3), 'barney')
         self.assertEqual(history.get_item(4), 'betty')
@@ -36,10 +43,11 @@ class HistoryTests(unittest.TestCase):
         history.add('barney')
         history.add('betty')
         self.assertEqual(len(history), 4)
-        history.remove_item(2)
+        history.remove_item(1) # Zero-based here!
         self.assertEqual(len(history), 3)
+        self.assertEqual(history.base, 1)
         self.assertEqual(history.get_item(1), 'fred')
-        self.assertEqual(history.get_item(2), 'wilma') # WTF?
+        self.assertEqual(history.get_item(2), 'barney')
         self.assertEqual(history.get_item(3), 'betty')
 
     def test_replace_item(self):
@@ -48,10 +56,11 @@ class HistoryTests(unittest.TestCase):
         history.add('barney')
         history.add('betty')
         self.assertEqual(len(history), 4)
-        history.replace_item(2, 'pebbles')
+        history.replace_item(1, 'pebbles') # Zero-based here!
         self.assertEqual(len(history), 4)
+        self.assertEqual(history.base, 1)
         self.assertEqual(history.get_item(1), 'fred')
-        self.assertEqual(history.get_item(2), 'wilma')
-        self.assertEqual(history.get_item(3), 'pebbles') # WTF?
+        self.assertEqual(history.get_item(2), 'pebbles')
+        self.assertEqual(history.get_item(3), 'barney')
         self.assertEqual(history.get_item(4), 'betty')
 
