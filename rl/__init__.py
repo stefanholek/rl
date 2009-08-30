@@ -23,7 +23,11 @@ class _GeneratorFunction(object):
     """
 
     def __init__(self, compfunc):
-        """Initialize the generator."""
+        """Initialize the generator.
+
+        The passed-in function will be called as ``compfunc(text)``
+        and should return an iterable of matches for ``text``.
+        """
         self.compfunc = compfunc
 
     def __call__(self, text, state):
