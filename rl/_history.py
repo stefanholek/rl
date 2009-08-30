@@ -23,7 +23,7 @@ class History(object):
     """
 
     def __init__(self):
-        """Set ``base=0``."""
+        """Set ``base=0``. Indexes starting at 1 are unpythonic."""
         # This is a-ok until we implement stifling (if ever)
         self.base = 0
 
