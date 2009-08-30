@@ -23,7 +23,7 @@ class History(object):
     """
 
     def __init__(self):
-        """Set ``history_base=0``. Indexes starting at 1 are unpythonic."""
+        """Set ``history_base=0``. Indexes starting at 1 are not pythonic."""
         # This is a-ok until we implement stifling (if ever)
         readline.set_history_base(0)
 
