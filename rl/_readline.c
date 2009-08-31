@@ -1507,7 +1507,7 @@ find_completion_word(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_find_completion_word,
 "find_completion_word() -> (begidx, endidx)\n\
-Find the bounds of the word at or before the cursor position (testing only).");
+Find the bounds of the word at or before the cursor position.");
 
 
 static PyObject *
@@ -1527,7 +1527,7 @@ complete_internal(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_complete_internal,
 "complete_internal(string) -> int\n\
-Complete the word at or before the cursor position (testing only).");
+Complete the word at or before the cursor position.");
 
 
 /* Word-break hook */
