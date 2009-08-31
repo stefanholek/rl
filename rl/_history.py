@@ -1,10 +1,10 @@
-"""Interface to the readline history."""
+"""Interface to readline history."""
 
 import _readline as readline
 
 
 class History(object):
-    """Interface to the readline history.
+    """Interface to readline history.
 
     This class is not intended for instantiation beyond
     the one ``history`` object in this package.
