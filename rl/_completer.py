@@ -1,11 +1,11 @@
-"""Interface to the readline completer configuration."""
+"""Interface to the readline completer."""
 
 import sys
 import _readline as readline
 
 
 class Completer(object):
-    """Interface to the readline completer configuration.
+    """Interface to the readline completer.
 
     This class is not intended for instantiation beyond
     the one ``completer`` object in this package.
