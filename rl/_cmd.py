@@ -47,6 +47,7 @@ def cmdloop(self, intro=None):
         if self.use_rawinput and self.completekey:
             completer.completer = self.old_completer
 
+
 def complete(self, text, state):
     """Return the next possible completion for 'text'.
 
@@ -83,3 +84,4 @@ def complete(self, text, state):
 # Monkey patch cmd.Cmd
 cmd.Cmd.cmdloop = cmdloop
 cmd.Cmd.complete = complete
+
