@@ -11,7 +11,7 @@ class Completion(object):
     the one ``completion`` object in this package.
     Applications wanting to use the Completion interface will
     typically import the ``completion`` object and use its
-    properties and methods to implement custom completers.
+    properties and methods to implement custom completions.
 
     Example::
 
