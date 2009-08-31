@@ -49,10 +49,6 @@ class History(object):
         """Add a line to the history."""
         readline.add_history(line)
 
-    def append(self, line):
-        """Alias for ``add_item``."""
-        self.add_item(line)
-
     def get_item(self, pos):
         """Return the contents of history at pos."""
         return readline.get_history_item(pos)
