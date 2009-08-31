@@ -13,9 +13,9 @@ class HistoryTests(unittest.TestCase):
         history.length = 100
         self.assertEqual(history.length, 100)
 
-    def test_add(self):
+    def test_append(self):
         self.assertEqual(len(history), 0)
-        history.add_item('fred')
+        history.append('fred')
         self.assertEqual(len(history), 1)
 
     def test__len__(self):
@@ -96,4 +96,24 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(history.get_item(1), 'pebbles')
         self.assertEqual(history.get_item(2), 'barney')
         self.assertEqual(history.get_item(3), 'betty')
+
+    def test_negative_pos(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual(len(history), 4)
+        self.assertEqual(history[-4], 'fred')
+        self.assertEqual(history[-3], 'wilma')
+        self.assertEqual(history[-2], 'barney')
+        self.assertEqual(history[-1], 'betty')
+
+    def test_out_of_range_pos(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual(len(history), 4)
+        self.assertRaises(IndexError, history.get_item, 4)
+        self.assertRaises(IndexError, history.get_item, -5)
 

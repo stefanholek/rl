@@ -1,10 +1,10 @@
-"""Interface to readline history."""
+"""Interface to the readline history."""
 
 import _readline as readline
 
 
 class History(object):
-    """Interface to readline history.
+    """Interface to the readline history.
 
     This class is not intended for instantiation beyond
     the one ``history`` object in this package.
@@ -17,67 +17,69 @@ class History(object):
         from rl import history
         import atexit
 
-        history.read_file(histfile)
+        history.read(histfile)
         history.length = 100
-        atexit.register(history.write_file, histfile)
+        atexit.register(history.write, histfile)
     """
 
-    def __init__(self):
-        """Set ``history_base=0``. Indexes starting at 1 are not pythonic."""
-        # This is a-ok unless we implement stifling
-        readline.set_history_base(0)
-
-    def __len__(self):
-        """The current history length."""
-        return readline.get_current_history_length()
+    @property
+    def base(self):
+        """The logical "base" of the history list. Normally 1."""
+        return readline.get_history_base()
 
     @apply
     def length():
-        doc="""The number of lines saved in the history file.
-        A negative value means no limit. Defaults to -1."""
+        doc="""Number of lines saved to the history file. A negative
+        value means no limit. Defaults to -1."""
         def get(self):
             return readline.get_history_length()
         def set(self, int):
             readline.set_history_length(int)
         return property(get, set, doc=doc)
 
+    def __len__(self):
+        """The current history length."""
+        return readline.get_current_history_length()
+
     def clear(self):
         """Clear the history."""
         readline.clear_history()
 
-    def add_item(self, line):
-        """Add a line to the history."""
+    def append(self, line):
+        """Append a line to the history."""
         readline.add_history(line)
 
-    def get_item(self, pos):
-        """Return the contents of history at pos."""
-        return readline.get_history_item(pos)
+    def __getitem__(self, index):
+        """Return the history item at index."""
+        return readline.get_history_item(self._norm_index(index)+self.base)
 
-    def __getitem__(self, pos):
-        """Alias for ``get_item``."""
-        return self.get_item(pos)
+    def __delitem__(self, index):
+        """Remove the history item at index."""
+        readline.remove_history_item(self._norm_index(index))
 
-    def remove_item(self, pos):
-        """Remove the history item at pos."""
-        readline.remove_history_item(pos)
+    def __setitem__(self, index, line):
+        """Replace the history item at index."""
+        readline.replace_history_item(self._norm_index(index), line)
 
-    def __delitem__(self, pos):
-        """Alias for ``remove_item``."""
-        self.remove_item(pos)
+    # Alternative API
+    add_item = append
+    get_item = __getitem__
+    remove_item = __delitem__
+    replace_item = __setitem__
 
-    def replace_item(self, pos, line):
-        """Replace the history item at pos with contents of line."""
-        readline.replace_history_item(pos, line)
+    def _norm_index(self, index):
+        """Support negative indexes."""
+        if index < 0:
+            index = len(self) + index
+        if index < 0 or index >= len(self):
+            raise IndexError('History index out of range')
+        return index
 
-    def __setitem__(self, pos, line):
-        """Alias for ``replace_item``."""
-        self.replace_item(pos, line)
-
-    def read_file(self, filename=None, raise_exc=False):
+    def read(self, filename=None, raise_exc=False):
         """Load a readline history file. The default filename is ~/.history."""
         self._file_op(readline.read_history_file, filename, raise_exc)
 
-    def write_file(self, filename=None, raise_exc=False):
+    def write(self, filename=None, raise_exc=False):
         """Save a readline history file. The default filename is ~/.history."""
         self._file_op(readline.write_history_file, filename, raise_exc)
 
