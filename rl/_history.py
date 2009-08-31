@@ -24,12 +24,12 @@ class History(object):
 
     @property
     def base(self):
-        """The logical "base" of the history list. Normally 1."""
+        """The logical base of the history list."""
         return readline.get_history_base()
 
     @apply
     def length():
-        doc="""Number of lines saved to the history file. A negative
+        doc="""The number of lines saved in the history file. A negative
         value means no limit. Defaults to -1."""
         def get(self):
             return readline.get_history_length()
