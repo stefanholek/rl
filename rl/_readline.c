@@ -1457,23 +1457,6 @@ PyDoc_STRVAR(doc_get_history_base,
 Return the history base position.");
 
 
-static PyObject *
-set_history_base(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_history_base", &value)) {
-		return NULL;
-	}
-	history_base = value;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_history_base,
-"set_history_base(int) -> None\n\
-Set the history base position.");
-
-
 /* Internals */
 
 static PyObject *
@@ -2246,8 +2229,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_complete_internal},
 	{"get_history_base", get_history_base,
 	 METH_NOARGS, doc_get_history_base},
-	{"set_history_base", set_history_base,
-	 METH_VARARGS, doc_set_history_base},
 	/* </_readline.c> */
 
 	{0, 0}
