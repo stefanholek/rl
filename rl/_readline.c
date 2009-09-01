@@ -493,7 +493,7 @@ get_current_history_length(PyObject *self, PyObject *noarg)
 }
 
 PyDoc_STRVAR(doc_get_current_history_length,
-"get_current_history_length() -> integer\n\
+"get_current_history_length() -> int\n\
 Return the current (not the maximum) length of history.");
 
 
