@@ -17,9 +17,9 @@ class History(object):
         from rl import history
         import atexit
 
-        history.read(histfile)
+        history.read_file(histfile)
         history.length = 100
-        atexit.register(history.write, histfile)
+        atexit.register(history.write_file, histfile)
     """
 
     @property
@@ -75,11 +75,11 @@ class History(object):
             raise IndexError('History index out of range')
         return index
 
-    def read(self, filename=None, raise_exc=False):
+    def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file. The default filename is ~/.history."""
         self._file_op(readline.read_history_file, filename, raise_exc)
 
-    def write(self, filename=None, raise_exc=False):
+    def write_file(self, filename=None, raise_exc=False):
         """Save a readline history file. The default filename is ~/.history."""
         self._file_op(readline.write_history_file, filename, raise_exc)
 
