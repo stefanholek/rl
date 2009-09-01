@@ -69,10 +69,12 @@ class History(object):
 
     def _norm_index(self, index):
         """Support negative indexes."""
+        if not isinstance(index, int) or isinstance(index, bool):
+            raise TypeError('an integer is required')
         if index < 0:
             index = len(self) + index
         if index < 0 or index >= len(self):
-            raise IndexError('History index out of range')
+            raise IndexError('history index out of range')
         return index
 
     def read_file(self, filename=None, raise_exc=False):

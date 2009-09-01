@@ -116,4 +116,6 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         self.assertRaises(IndexError, history.get_item, 4)
         self.assertRaises(IndexError, history.get_item, -5)
+        self.assertRaises(TypeError, history.get_item, 'foo')
+        self.assertRaises(TypeError, history.get_item, False)
 
