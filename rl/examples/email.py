@@ -6,8 +6,7 @@ from rl import generator
 
 
 def complete(text):
-    # Since '@' is a special prefix, we receive it as part
-    # of the word.
+    # We receive the '@' as part of the word
     if not text.startswith('@'):
         completion.append_character = '@'
         return completion.complete_username(text)
@@ -16,8 +15,7 @@ def complete(text):
 
 
 def complete_hostname(text):
-    # To be offered for completion, hostnames must appear
-    # in /etc/hosts.
+    # Hostnames must appear in /etc/hosts
     f = open('/etc/hosts', 'rt')
     hosts = f.read().strip()
     f.close()
@@ -33,7 +31,7 @@ def main():
     # Configure special prefixes
     completer.special_prefixes = '@'
 
-    # Configure the completion function
+    # Set the completion function
     completer.completer = generator(complete)
 
     # Enable TAB completion
