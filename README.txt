@@ -65,9 +65,9 @@ At C-level, there is a default ``filename_quoting_function`` and a default
 The ``completion_entry_function``, marked with an '*' above, has traditionally
 been the place where Python hooks into readline. In fact, the standard
 library's ``readline.set_completer(func)`` sets readline's
-``[rl_]completion_entry_function`` to ``func``. [#]_
+``rl_completion_entry_function`` to ``func``. [#]_
 
-In addition to these hooks, readline provides an abundance of configuration
+In addition to hooks, readline provides an abundance of configuration
 settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
@@ -77,7 +77,7 @@ application can affect how readline computes word boundaries.
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
    when generating matches. The effect however is the same as if ``func`` had
-   been assigned to ``[rl_]completion_entry_function`` directly.
+   been assigned to ``rl_completion_entry_function`` directly.
 
 Custom Completers
 -----------------
@@ -118,14 +118,13 @@ history
     and to manipulate history entries.
 
 readline
-    The readline interface module. Contains everything
-    known from the standard library plus extensions specific to the rl
-    package.  The ``completer``, ``completion``, and ``history`` interfaces
-    make use of this module, and you should rarely need to interact with it
-    directly.
+    The readline module. Contains everything known from the standard library
+    plus extensions specific to the rl package.  The ``completer``,
+    ``completion``, and ``history`` interfaces make use of this module, and
+    you should rarely need to interact with it directly.
 
 generator
-    A factory turning a callable into a ``completion_entry_function`` that
+    A factory turning any callable into a ``completion_entry_function`` that
     can be handed to readline.
 
 print_exc
@@ -145,14 +144,14 @@ completer
 completion
     18 properties and 4 functions.
 
-On the one hand, this separation is by concern: The ``completer`` provides
-access to global configuration settings and hooks. The ``completion``
-interface provides status information concerning the active completion,
+On the one hand, this separation is by concern: The ``completer`` object
+provides access to global configuration settings and hooks. The ``completion``
+object provides status information concerning the active completion,
 configuration settings to affect the results of the completion, and functions
 to use services implemented by readline.
 
-On the other hand, it is also a separation by value lifetime:
-Values set trough the ``completer`` are permanent. If you want
+On the other hand, it is a separation by value lifetime:
+Values set trough the ``completer`` are global and permanent. If you want
 them restored you have to take care of it yourself.
 Values accessed through the ``completion`` object affect the current
 completion only. They are reset to their default values when a new
