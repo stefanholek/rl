@@ -6,7 +6,6 @@ import _readline as readline
 from _completer import Completer
 from _completion import Completion
 from _history import History
-from _utils import GeneratorFunction
 
 # Interface objects
 completer = Completer()
@@ -20,10 +19,24 @@ import _cmd
 def generator(compfunc):
     """Generator function factory.
 
-    Takes a callable returning a list of matches and returns an
+    Takes a function returning matches and returns an
     object implementing the generator protocol readline expects.
+    The function will be called as ``compfunc(text)`` and should
+    return an iterable of matches for ``text``.
     """
-    return GeneratorFunction(compfunc)
+    class GeneratorFunction(object):
+
+        def __call__(self, text, state):
+            if state == 0:
+                self.matches = compfunc(text)
+                if not isinstance(self.matches, list):
+                    self.matches = list(self.matches)
+            try:
+                return self.matches[state]
+            except IndexError:
+                return None
+
+    return GeneratorFunction()
 
 
 def print_exc(func):
@@ -32,7 +45,6 @@ def print_exc(func):
     Useful when debugging completions and hooks, as exceptions occurring
     there are usually swallowed by the in-between C code.
     """
-
     def wrapped_func(*args, **kw):
         try:
             return func(*args, **kw)
