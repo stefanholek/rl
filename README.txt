@@ -13,8 +13,8 @@ GNU Readline `completion interface`_.
 
 .. _`completion interface`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 
-How Readline Completion Works
-=============================
+Readline Completion
+===================
 
 Call Graph
 ----------
@@ -47,8 +47,8 @@ Call Graph
 
                 * `display_match_list`
 
-Readline Completion
--------------------
+Discussion
+----------
 
 The graph – when read from top to bottom – represents a possible calling
 sequence for filename completion in readline. This sequence is initiated
@@ -57,7 +57,7 @@ word breaking, match generation, and match presentation.
 
 Functions in **boldface** may be overridden by applications.
 Functions in `italics` may be called by such application-provided hooks to
-make use of functionality implemented by readline.
+use functionality implemented in readline.
 
 At C-level, there is a default ``filename_quoting_function`` and a default
 ``display_matches_hook``. The remaining hooks have no default implementations.
@@ -72,17 +72,10 @@ settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
 
-[TBC]
-
 .. [#] This is not entirely correct. What it really does, is arrange
    things so that the readline C-library calls the Python function ``func``
    when generating matches. The effect however is the same as if ``func`` had
    been assigned to ``rl_completion_entry_function`` directly.
-
-Custom Completers
------------------
-
-[TBD]
 
 The rl Package
 ==============
@@ -105,30 +98,23 @@ should still be easy to recognize for anyone familiar with readline.
 Divide and Conquer
 ------------------
 
-For the sake of abstraction we postulate a `completer` component which is
-responsible for configuring and executing (custom) completions in readline.
+For the sake of abstraction we postulate a `completer` component in readline. It is
+responsible for configuring and executing readline completions.
 
 Secondly, we define a `completion` interface which is used by
 applications to implement custom completion code.
 
-This separation is by concern: The ``completer`` object
+The ``completer`` object
 provides access to global configuration settings and hooks. The ``completion``
 interface contains status information for the active completion,
-settings that affect the results of the completion, and functions
-to use services implemented by readline.
+configuration settings that affect the results of the completion, and
+functions to use services implemented by readline.
 
-It is also a separation by value lifetime:
 Values set trough the ``completer`` are permanent. If you want
 them restored you have to take care of it yourself.
 Values accessed through the ``completion`` object affect the current
 completion only. They are reset to their default values when a new
 completion starts.
-
-completer
-    16 properties and 2 methods.
-
-completion
-    18 properties and 6 methods.
 
 For further details, please refer to the `API Documentation`_.
 
@@ -136,6 +122,8 @@ For further details, please refer to the `API Documentation`_.
 
 Package Contents
 ----------------
+
+rl exports the following components:
 
 completer
     Interface to the readline completer. Used to configure the completion
