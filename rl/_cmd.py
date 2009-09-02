@@ -1,6 +1,6 @@
 """Importing this module modifies cmd.Cmd to use rl instead of readline."""
 
-from _stdlib import cmd
+import cmd
 
 from rl import completer
 from rl import completion

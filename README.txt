@@ -102,6 +102,38 @@ should still be easy to recognize for anyone familiar with readline.
 .. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
 
+Divide and Conquer
+------------------
+
+For the sake of abstraction we postulate a `completer` component which is
+responsible for configuring and executing (custom) completions in readline.
+
+Secondly, we define a `completion` interface which is used by
+applications to implement custom completion code.
+
+This separation is by concern: The ``completer`` object
+provides access to global configuration settings and hooks. The ``completion``
+interface contains status information for the active completion,
+settings that affect the results of the completion, and functions
+to use services implemented by readline.
+
+It is also a separation by value lifetime:
+Values set trough the ``completer`` are permanent. If you want
+them restored you have to take care of it yourself.
+Values accessed through the ``completion`` object affect the current
+completion only. They are reset to their default values when a new
+completion starts.
+
+completer
+    16 properties and 2 methods.
+
+completion
+    18 properties and 6 methods.
+
+For further details, please refer to the `API Documentation`_.
+
+.. _`API Documentation`: http://packages.python.org/rl/
+
 Package Contents
 ----------------
 
@@ -132,40 +164,20 @@ print_exc
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
 
-Divide and Conquer
-------------------
+Exported Names
+--------------
 
-For the sake of abstraction we postulate a `completer` component which is
-responsible for configuring and executing completions in readline.
+The rl package exports the following names::
 
-We furthermore introduce a `completion` interface which is used by
-applications to implement custom completions.
+    from rl import completer
+    from rl import completion
+    from rl import history
+    from rl import readline
+    from rl import generator
+    from rl import print_exc
 
-This separation is by concern: The ``completer`` object
-provides access to global configuration settings and hooks. The ``completion``
-interface contains status information concerning the active completion,
-settings that affect the results of the completion, and functions
-to use services implemented by readline.
-
-On the other hand, it is also a separation by lifetime:
-Values set trough the ``completer`` are global and permanent. If you want
-them restored you have to take care of it yourself.
-Settings accessed through the ``completion`` object affect the current
-completion only. They are reset to their default values when a new
-completion starts.
-
-completer
-    16 properties and 2 functions.
-
-completion
-    18 properties and 6 functions.
-
-For further details, please refer to the `API Documentation`_.
-
-.. _`API Documentation`: http://packages.python.org/rl/
-
-Example
--------
+Example Code
+------------
 
 The code below implements system command completion similar to bash::
 
@@ -188,8 +200,7 @@ The code below implements system command completion similar to bash::
         # Enable TAB completion
         completer.parse_and_bind('tab: complete')
 
-        # Prompt the user for a command name
-        command = raw_input('command> ')
+        command = raw_input('command: ')
         print 'You typed:', command
 
 See the ``examples`` subdirectory of the package for more.

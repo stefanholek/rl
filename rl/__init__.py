@@ -1,6 +1,6 @@
 """Alternative readline interface focusing on completion."""
 
-from _stdlib import readline # [sic]
+import readline # [sic]
 import _readline as readline
 
 from _completer import Completer
