@@ -164,18 +164,6 @@ print_exc
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
 
-Exported Names
---------------
-
-The rl package exports the following names::
-
-    from rl import completer
-    from rl import completion
-    from rl import history
-    from rl import readline
-    from rl import generator
-    from rl import print_exc
-
 Example Code
 ------------
 
