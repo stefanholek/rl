@@ -210,9 +210,9 @@ class Completion(object):
         """Dump properties to stream."""
         stream.write("""\
 line_buffer:                    %r
-begidx:                         %s
-endidx:                         %s
-completion_type:                %s (%r)
+begidx:                         %d
+endidx:                         %d
+completion_type:                %r
 invoking_key:                   %r
 append_character:               %r
 suppress_append:                %s
@@ -229,7 +229,7 @@ inhibit_completion:             %s
 self.line_buffer,
 self.begidx,
 self.endidx,
-self.completion_type, chr(self.completion_type),
+self.completion_type,
 self.invoking_key,
 self.append_character,
 self.suppress_append,

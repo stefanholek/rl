@@ -270,11 +270,11 @@ static PyObject *endidx = NULL;
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
 {
-  return PyInt_FromLong(rl_completion_type);
+	return PyString_FromFormat("%c", rl_completion_type);
 }
 
 PyDoc_STRVAR(doc_get_completion_type,
-"get_completion_type() -> int\n\
+"get_completion_type() -> string\n\
 Get the type of completion being attempted.");
 
 
@@ -593,7 +593,7 @@ get_completion_append_character(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_completion_append_character,
 "get_completion_append_character() -> string\n\
-Get the character appended after completion.");
+Get the character appended after the current completion.");
 
 
 static PyObject *
@@ -2215,6 +2215,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_basic_quote_characters},
 	{"get_basic_word_break_characters", get_basic_word_break_characters,
 	 METH_NOARGS, doc_get_basic_word_break_characters},
+	{"get_history_base", get_history_base,
+	 METH_NOARGS, doc_get_history_base},
 	{"tilde_expand", py_tilde_expand, METH_VARARGS, doc_tilde_expand},
 	{"replace_line", replace_line, METH_VARARGS, doc_replace_line},
 	{"read_key", read_key, METH_NOARGS, doc_read_key},
@@ -2227,8 +2229,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_find_completion_word},
 	{"complete_internal", complete_internal,
 	 METH_VARARGS, doc_complete_internal},
-	{"get_history_base", get_history_base,
-	 METH_NOARGS, doc_get_history_base},
 	/* </_readline.c> */
 
 	{0, 0}
