@@ -105,10 +105,12 @@ Secondly, we define a `completion` interface which is used by
 applications to implement custom completion code.
 
 The ``completer`` object
-provides access to global configuration settings and hooks. The ``completion``
-interface contains status information for the active completion,
+provides access to configuration settings and hooks.
+
+The ``completion``
+object provides status information for the active completion,
 configuration settings that affect the results of the completion, and
-functions to use services implemented by readline.
+functions to use completion services implemented by readline.
 
 Values set trough the ``completer`` are permanent. If you want
 them restored you have to take care of it yourself.
