@@ -7,15 +7,19 @@
 import os
 from rl import completer
 from rl import generator
+from rl import print_exc
 
 
+@print_exc
 def complete(text):
     # Return an iterable of matches for 'text'
     for dir in os.environ.get('PATH').split(':'):
-        for name in os.listdir(dir):
-            if name.startswith(text):
-                if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                    yield name
+        dir = os.path.expanduser(dir)
+        if os.path.isdir(dir):
+            for name in os.listdir(dir):
+                if name.startswith(text):
+                    if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
+                        yield name
 
 
 def main():

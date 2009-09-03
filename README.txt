@@ -166,10 +166,12 @@ The code below implements system command completion similar to bash::
     def complete(text):
         # Return an iterable of matches for 'text'
         for dir in os.environ.get('PATH').split(':'):
-            for name in os.listdir(dir):
-                if name.startswith(text):
-                    if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                        yield name
+            dir = os.path.expanduser(dir)
+            if os.path.isdir(dir):
+                for name in os.listdir(dir):
+                    if name.startswith(text):
+                        if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
+                            yield name
 
     def main():
         # Set the completion function
