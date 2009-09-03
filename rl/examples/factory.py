@@ -12,7 +12,7 @@ from rl import print_exc
 
 @print_exc
 def complete(text):
-    # Return an iterable of matches for 'text'
+    # Return executables matching 'text'
     for dir in os.environ.get('PATH').split(':'):
         dir = os.path.expanduser(dir)
         if os.path.isdir(dir):
