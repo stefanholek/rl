@@ -13,20 +13,19 @@ version = '1.0a1'
 include_dirs = []
 library_dirs = []
 
-libraries = ['readline']
+libraries = ['readline', 'ncurses']
 
 if platform == 'darwin':
     # MacPorts
     if exists('/opt/local/include'):
-        include_dirs += ['/opt/local/include']
-        library_dirs += ['/opt/local/lib']
+        include_dirs = ['/opt/local/include']
+        library_dirs = ['/opt/local/lib']
     # Fink
     elif exists('/sw/local/include'):
-        include_dirs += ['/sw/local/include']
-        library_dirs += ['/sw/local/lib']
-    libraries += ['ncursesw']
-else:
-    libraries += ['ncurses']
+        include_dirs = ['/sw/local/include']
+        library_dirs = ['/sw/local/lib']
+
+    libraries = ['readline', 'ncursesw']
 
 
 readline = \
