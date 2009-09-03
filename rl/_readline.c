@@ -2383,6 +2383,14 @@ flex_complete(char *text, int start, int end)
 	Py_XDECREF(endidx);
 	begidx = PyInt_FromLong((long) start);
 	endidx = PyInt_FromLong((long) end);
+
+	/* Reset completion variables like readline 6 does */
+	rl_completion_append_character = ' ';
+	rl_completion_suppress_append = 0;
+	rl_completion_suppress_quote = 0;
+	rl_filename_completion_desired = 0;
+	rl_filename_quoting_desired = 1;
+
 	return completion_matches(text, *on_completion);
 }
 
