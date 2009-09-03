@@ -2,7 +2,6 @@
 
 from rl import completer
 from rl import completion
-from rl import readline
 
 
 class Questionnaire(object):
@@ -26,7 +25,7 @@ class Questionnaire(object):
         # The pre-input hook is used to insert text into
         # the line buffer which the user may then edit
         completion.line_buffer = self.defaults[self.step]
-        readline.redisplay()
+        completion.redisplay()
 
 
 def main():
