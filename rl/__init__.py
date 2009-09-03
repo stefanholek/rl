@@ -19,9 +19,9 @@ import _cmd
 def generator(compfunc):
     """Generator function factory.
 
-    Takes a function returning matches and returns an
+    Takes a function returning a list of matches and returns an
     object implementing the generator protocol readline expects.
-    The function will be called as ``compfunc(text)`` and should
+    The function is called as ``compfunc(text)`` and should
     return an iterable of matches for ``text``.
     """
     class GeneratorFunction(object):

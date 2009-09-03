@@ -86,8 +86,7 @@ class Completer(object):
 
     @apply
     def inhibit_completion():
-        doc="""If True, insert the completion character
-        like any other character. Defaults to False."""
+        doc="""If True, completion is disabled. Defaults to False."""
         def get(self):
             return readline.get_inhibit_completion()
         def set(self, bool):
@@ -98,7 +97,7 @@ class Completer(object):
     def query_items():
         doc="""Up to this many items will be displayed in response to a
         possible-completions call. Beyond that the user is prompted if he
-        really wants to see all matches. Defaults to 100. A negative value
+        really wants to see them all. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed when a custom
         ``display_matches_hook`` is installed."""
         def get(self):
