@@ -1392,6 +1392,7 @@ Up to this many items will be displayed in response to a possible-completions ca
 
 /* Invoking key */
 
+/*
 extern int rl_completion_invoking_key;
 
 static PyObject *
@@ -1403,6 +1404,7 @@ get_completion_invoking_key(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_get_completion_invoking_key,
 "get_completion_invoking_key() -> string\n\
 The final character in the key sequence that invoked the completion function.");
+*/
 
 
 /* Missing APIs */
@@ -2175,8 +2177,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_char_is_quoted_function},
 	{"set_char_is_quoted_function", set_char_is_quoted_function,
 	 METH_VARARGS, doc_set_char_is_quoted_function},
+	/*
 	{"get_completion_invoking_key", get_completion_invoking_key,
 	 METH_NOARGS, doc_get_completion_invoking_key},
+	*/
 	{"get_completion_display_matches_hook", get_completion_display_matches_hook,
 	 METH_NOARGS, doc_get_completion_display_matches_hook},
 	{"get_startup_hook", get_startup_hook,

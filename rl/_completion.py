@@ -40,12 +40,6 @@ class Completion(object):
         return readline.get_completion_type()
 
     @property
-    def invoking_key(self):
-        """The last character in the key sequence that invoked the
-        completion."""
-        return readline.get_completion_invoking_key()
-
-    @property
     def found_quote(self):
         """True if the word contains or is delimited by a quote
         character."""
@@ -194,7 +188,6 @@ line_buffer:                    %r
 begidx:                         %d
 endidx:                         %d
 completion_type:                %r
-invoking_key:                   %r
 append_character:               %r
 suppress_append:                %s
 found_quote:                    %s
@@ -209,7 +202,6 @@ self.line_buffer,
 self.begidx,
 self.endidx,
 self.completion_type,
-self.invoking_key,
 self.append_character,
 self.suppress_append,
 self.found_quote,
