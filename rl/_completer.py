@@ -66,7 +66,8 @@ class Completer(object):
 
     @apply
     def match_hidden_files():
-        doc="""If True, include hidden files when matching filenames."""
+        doc="""If True, include hidden files when matching filenames.
+        Defaults to True."""
         def get(self):
             return readline.get_match_hidden_files()
         def set(self, bool):
@@ -75,7 +76,8 @@ class Completer(object):
 
     @apply
     def tilde_expansion():
-        doc="""If True, completion functions perform tilde expansion."""
+        doc="""If True, completion functions perform tilde expansion.
+        Defaults to False."""
         def get(self):
             return readline.get_complete_with_tilde_expansion()
         def set(self, bool):
