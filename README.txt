@@ -105,7 +105,7 @@ Secondly, we define a `completion` interface which is used by
 applications to implement custom completion code.
 
 The ``completer`` object
-provides access to configuration settings and hooks.
+provides access to global configuration settings and hooks.
 
 The ``completion``
 object provides status information for the active completion,
