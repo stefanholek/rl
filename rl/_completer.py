@@ -98,6 +98,16 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def inhibit_completion():
+        doc="""Inhibit TAB completion and insert the completion character
+        like any other character. Defaults to False."""
+        def get(self):
+            return readline.get_inhibit_completion()
+        def set(self, bool):
+            readline.set_inhibit_completion(bool)
+        return property(get, set, doc=doc)
+
+    @apply
     def completer():
         doc="""The completer function.
         The function is called as ``function(text, state)``, for state
@@ -228,6 +238,7 @@ filename_quote_characters:      %r
 match_hidden_files:             %s
 tilde_expansion:                %s
 query_items:                    %d
+inhibit_completion:             %s
 completer:                      %r
 startup_hook:                   %r
 pre_input_hook:                 %r
@@ -245,6 +256,7 @@ self.filename_quote_characters,
 self.match_hidden_files,
 self.tilde_expansion,
 self.query_items,
+self.inhibit_completion,
 self.completer,
 self.startup_hook,
 self.pre_input_hook,

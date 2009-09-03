@@ -132,16 +132,6 @@ class Completion(object):
             readline.set_filename_quoting_desired(bool)
         return property(get, set, doc=doc)
 
-    @apply
-    def inhibit_completion():
-        doc="""Insert the completion character like any other character.
-        Defaults to False."""
-        def get(self):
-            return readline.get_inhibit_completion()
-        def set(self, bool):
-            readline.set_inhibit_completion(bool)
-        return property(get, set, doc=doc)
-
     # Completion functions
 
     def complete_filename(self, text):
@@ -196,7 +186,6 @@ suppress_quote:                 %s
 attempted_completion_over:      %s
 filename_completion_desired:    %s
 filename_quoting_desired:       %s
-inhibit_completion:             %s
 """ % (
 self.line_buffer,
 self.begidx,
@@ -210,6 +199,5 @@ self.suppress_quote,
 self.attempted_completion_over,
 self.filename_completion_desired,
 self.filename_quoting_desired,
-self.inhibit_completion,
 ))
 
