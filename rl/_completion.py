@@ -139,25 +139,6 @@ class Completion(object):
         return property(get, set, doc=doc)
 
     @apply
-    def sort_matches():
-        doc="""Sort the list of matches. Defaults to True."""
-        def get(self):
-            return readline.get_sort_completion_matches()
-        def set(self, bool):
-            readline.set_sort_completion_matches(bool)
-        return property(get, set, doc=doc)
-
-    @apply
-    def ignore_duplicates():
-        doc="""Remove duplicates from the list of matches.
-        Defaults to True."""
-        def get(self):
-            return readline.get_ignore_completion_duplicates()
-        def set(self, bool):
-            readline.set_ignore_completion_duplicates(bool)
-        return property(get, set, doc=doc)
-
-    @apply
     def inhibit_completion():
         doc="""Insert the completion character like any other character.
         Defaults to False."""
@@ -222,8 +203,6 @@ suppress_quote:                 %s
 attempted_completion_over:      %s
 filename_completion_desired:    %s
 filename_quoting_desired:       %s
-sort_matches:                   %s
-ignore_duplicates:              %s
 inhibit_completion:             %s
 """ % (
 self.line_buffer,
@@ -239,8 +218,6 @@ self.suppress_quote,
 self.attempted_completion_over,
 self.filename_completion_desired,
 self.filename_quoting_desired,
-self.sort_matches,
-self.ignore_duplicates,
 self.inhibit_completion,
 ))
 

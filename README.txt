@@ -196,7 +196,7 @@ Then type::
 
 and watch the console. When it reads::
 
-    Finished processing dependencies for rl==1.0a1
+    Finished processing dependencies for rl
 
 you are done and rl is ready to use.
 

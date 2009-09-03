@@ -869,6 +869,7 @@ May only be called from within custom completers.");
 
 /* Misc flags */
 
+/*
 extern int rl_sort_completion_matches;
 
 static PyObject *
@@ -956,6 +957,7 @@ PyDoc_STRVAR(doc_set_completion_mark_symlink_dirs,
 "set_completion_mark_symlink_dirs(bool) -> None\n\
 If True, a slash will be appended to completed filenames that are symbolic links to directory names. \
 May only be called from within custom completers.");
+*/
 
 
 static PyObject *
@@ -2183,6 +2185,7 @@ static struct PyMethodDef readline_methods[] =
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},
 #endif
+	/*
 	{"get_sort_completion_matches", get_sort_completion_matches,
 	 METH_NOARGS, doc_get_sort_completion_matches},
 	{"set_sort_completion_matches", set_sort_completion_matches,
@@ -2195,6 +2198,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_completion_mark_symlink_dirs},
 	{"set_completion_mark_symlink_dirs", set_completion_mark_symlink_dirs,
 	 METH_VARARGS, doc_set_completion_mark_symlink_dirs},
+	*/
 	{"get_inhibit_completion", get_inhibit_completion,
 	 METH_NOARGS, doc_get_inhibit_completion},
 	{"set_inhibit_completion", set_inhibit_completion,
