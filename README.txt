@@ -67,7 +67,7 @@ been the place where Python hooks into readline. In fact, the standard
 library's ``set_completer(func)`` sets readline's
 ``rl_completion_entry_function`` to ``func``. [#]_
 
-In addition to hooks, readline provides an abundance of configuration
+In addition to hooks, readline provides configuration
 settings that may be changed by applications to influence the way the library
 behaves. For example, by configuring readline's ``word_break_characters``, an
 application can affect how readline computes word boundaries.
@@ -106,16 +106,15 @@ applications to implement custom completion code.
 
 The ``completer`` object
 provides access to global configuration settings and hooks.
+Values set trough the ``completer`` are permanent. If you want
+them restored you have to take care of it yourself.
 
 The ``completion``
 object provides status information for the active completion,
 configuration settings that affect the results of the completion, and
 functions to use completion services implemented by readline.
-
-Values set trough the ``completer`` are permanent. If you want
-them restored you have to take care of it yourself.
 Values accessed through the ``completion`` object affect the current
-completion only. They are reset to their default values when a new
+completion only; they are reset to their default values when a new
 completion starts.
 
 For further details, please refer to the `API Documentation`_.
@@ -164,7 +163,7 @@ The code below implements system command completion similar to bash::
     from rl import generator
 
     def complete(text):
-        # Return an iterable of matches for 'text'
+        # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
             if os.path.isdir(dir):
@@ -187,6 +186,8 @@ See the ``examples`` subdirectory of the package for more.
 
 Installation
 ============
+
+rl has been tested with GNU readline versions 5 and 6.
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
 rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
