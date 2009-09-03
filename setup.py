@@ -13,6 +13,8 @@ version = '1.0a1'
 include_dirs = []
 library_dirs = []
 
+libraries = ['readline']
+
 if platform == 'darwin':
     # MacPorts
     if exists('/opt/local/include'):
@@ -22,12 +24,15 @@ if platform == 'darwin':
     elif exists('/sw/local/include'):
         include_dirs += ['/sw/local/include']
         library_dirs += ['/sw/local/lib']
+    libraries += ['ncursesw']
+else:
+    libraries += ['ncurses']
 
 
 readline = \
 Extension(name='rl._readline',
           sources=[join('rl', '_readline.c')],
-          libraries=['readline', 'ncursesw'],
+          libraries=libraries,
           include_dirs=include_dirs,
           library_dirs=library_dirs,
 )
