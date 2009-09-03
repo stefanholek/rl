@@ -869,6 +869,8 @@ May only be called from within custom completers.");
 
 /* Misc flags */
 
+extern int rl_sort_completion_matches;
+
 static PyObject *
 get_sort_completion_matches(PyObject *self, PyObject *noarg)
 {
@@ -1387,6 +1389,8 @@ Up to this many items will be displayed in response to a possible-completions ca
 
 
 /* Invoking key */
+
+extern int rl_completion_invoking_key;
 
 static PyObject *
 get_completion_invoking_key(PyObject *self, PyObject *noarg)
