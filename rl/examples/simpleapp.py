@@ -15,7 +15,7 @@ class MyCmd(cmd.Cmd):
         # Characters used to quote substrings
         completer.quote_characters = '"\''
         # Characters used to find word boundaries
-        completer.word_break_characters = ' \t\n\\"\'`><=;|&'
+        completer.word_break_characters = ' \t\n\\"\'`><=;|&!'
         # Characters that trigger filename quoting
         completer.filename_quote_characters = ' \t\n'
         # Exclude hidden files
