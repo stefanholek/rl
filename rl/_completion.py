@@ -42,7 +42,7 @@ class Completion(object):
     @property
     def found_quote(self):
         """True if the word contains or is delimited by a quote
-        character."""
+        character. Note that this includes backslashes."""
         return readline.get_completion_found_quote()
 
     @property
