@@ -1651,7 +1651,8 @@ PyDoc_STRVAR(doc_set_directory_completion_hook,
 "set_directory_completion_hook([function]) -> None\n\
 This function is allowed to modify the directory portion of filenames readline completes. \
 The function is called as ``function(dirname)`` and should return a new directory name or \
-None to indicate no change.");
+None to indicate no change. At the very least the function must perform all necessary \
+dequoting.");
 
 
 static PyObject *

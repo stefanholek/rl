@@ -155,17 +155,6 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
-    def directory_completion_hook():
-        doc="""The directory completion hook function.
-        The function is called as ``function(dirname)`` and should
-        return a new directory name or None to indicate no change."""
-        def get(self):
-            return readline.get_directory_completion_hook()
-        def set(self, function):
-            readline.set_directory_completion_hook(function)
-        return property(get, set, doc=doc)
-
-    @apply
     def display_matches_hook():
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
@@ -175,6 +164,19 @@ class Completer(object):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
             readline.set_completion_display_matches_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
+    def directory_completion_hook():
+        doc="""The directory completion hook function.
+        The function is called as ``function(dirname)`` and should
+        return a new directory name or None to indicate no change.
+        At the very least the function must perform all necessary
+        dequoting."""
+        def get(self):
+            return readline.get_directory_completion_hook()
+        def set(self, function):
+            readline.set_directory_completion_hook(function)
         return property(get, set, doc=doc)
 
     @apply
@@ -242,8 +244,8 @@ completer:                      %r
 startup_hook:                   %r
 pre_input_hook:                 %r
 word_break_hook:                %r
-directory_completion_hook:      %r
 display_matches_hook:           %r
+directory_completion_hook:      %r
 char_is_quoted_function:        %r
 filename_quoting_function:      %r
 filename_dequoting_function:    %r
@@ -260,8 +262,8 @@ self.completer,
 self.startup_hook,
 self.pre_input_hook,
 self.word_break_hook,
-self.directory_completion_hook,
 self.display_matches_hook,
+self.directory_completion_hook,
 self.char_is_quoted_function,
 self.filename_quoting_function,
 self.filename_dequoting_function,
