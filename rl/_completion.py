@@ -47,7 +47,10 @@ class Completion(object):
 
     @property
     def quote_character(self):
-        """The quote character found."""
+        """The quote character found. This does **not** include
+        backslashes. If a backslash is found, ``found_quote`` is
+        set to True and ``quote_character`` is set to the empty
+        string."""
         return readline.get_completion_quote_character()
 
     @property
@@ -63,7 +66,8 @@ class Completion(object):
 
     @apply
     def line_buffer():
-        doc="""The line buffer readline uses."""
+        doc="""The line buffer readline uses. This property
+        may be assigned to to change the contents of the line."""
         def get(self):
             return readline.get_line_buffer()
         def set(self, string):
@@ -98,17 +102,6 @@ class Completion(object):
             return readline.get_completion_suppress_quote()
         def set(self, bool):
             readline.set_completion_suppress_quote(bool)
-        return property(get, set, doc=doc)
-
-    @apply
-    def attempted_completion_over():
-        doc="""Do not fall back to the default filename completion,
-        even if the current completion returns no matches.
-        Defaults to True."""
-        def get(self):
-            return readline.get_attempted_completion_over()
-        def set(self, bool):
-            readline.set_attempted_completion_over(bool)
         return property(get, set, doc=doc)
 
     @apply
@@ -183,7 +176,6 @@ suppress_append:                %s
 found_quote:                    %s
 quote_character:                %r
 suppress_quote:                 %s
-attempted_completion_over:      %s
 filename_completion_desired:    %s
 filename_quoting_desired:       %s
 """ % (
@@ -196,7 +188,6 @@ self.suppress_append,
 self.found_quote,
 self.quote_character,
 self.suppress_quote,
-self.attempted_completion_over,
 self.filename_completion_desired,
 self.filename_quoting_desired,
 ))

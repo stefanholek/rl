@@ -57,7 +57,7 @@ class Completer(object):
 
     @apply
     def filename_quote_characters():
-        doc="""Characters that trigger quoting of filenames."""
+        doc="""Characters that trigger filename quoting."""
         def get(self):
             return readline.get_filename_quote_characters()
         def set(self, string):
@@ -96,8 +96,8 @@ class Completer(object):
     @apply
     def query_items():
         doc="""Up to this many items will be displayed in response to a
-        possible-completions call. Beyond that the user is prompted if he
-        really wants to see them all. Defaults to 100. A negative value
+        possible-completions call. Beyond that the user must confirm he
+        really wants to see all matches. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed when a custom
         ``display_matches_hook`` is installed."""
         def get(self):
@@ -147,11 +147,28 @@ class Completer(object):
         The function is called as ``function(begidx, endidx)``
         once per completion and should return a string of word
         break characters for the scope of the completion, or None
-        to indicate no change."""
+        to indicate no change. The passed-in word boundaries are
+        what readline would use if the
+        hook did not exist (and will use if the hook returns None)."""
         def get(self):
             return readline.get_completion_word_break_hook()
         def set(self, function):
             readline.set_completion_word_break_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
+    def directory_completion_hook():
+        doc="""The directory completion hook function.
+        This hook is used to prepare the directory name passed
+        to ``opendir`` during filename completion.
+        The function is called as ``function(dirname)`` and should
+        return a new directory name or None to indicate no change.
+        At the least, the function must perform all necessary
+        dequoting."""
+        def get(self):
+            return readline.get_directory_completion_hook()
+        def set(self, function):
+            readline.set_directory_completion_hook(function)
         return property(get, set, doc=doc)
 
     @apply
@@ -164,19 +181,6 @@ class Completer(object):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
             readline.set_completion_display_matches_hook(function)
-        return property(get, set, doc=doc)
-
-    @apply
-    def directory_completion_hook():
-        doc="""The directory completion hook function.
-        The function is called as ``function(dirname)`` and should
-        return a new directory name or None to indicate no change.
-        At the very least the function must perform all necessary
-        dequoting."""
-        def get(self):
-            return readline.get_directory_completion_hook()
-        def set(self, function):
-            readline.set_directory_completion_hook(function)
         return property(get, set, doc=doc)
 
     @apply
@@ -244,8 +248,8 @@ completer:                      %r
 startup_hook:                   %r
 pre_input_hook:                 %r
 word_break_hook:                %r
-display_matches_hook:           %r
 directory_completion_hook:      %r
+display_matches_hook:           %r
 char_is_quoted_function:        %r
 filename_quoting_function:      %r
 filename_dequoting_function:    %r
@@ -262,8 +266,8 @@ self.completer,
 self.startup_hook,
 self.pre_input_hook,
 self.word_break_hook,
-self.display_matches_hook,
 self.directory_completion_hook,
+self.display_matches_hook,
 self.char_is_quoted_function,
 self.filename_quoting_function,
 self.filename_dequoting_function,

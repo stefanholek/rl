@@ -728,7 +728,7 @@ get_completion_found_quote(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_get_completion_found_quote,
 "get_completion_found_quote() -> bool\n\
 When readline is completing quoted text, it sets this variable to True \
-if the word being completed contains any quoting character.");
+if the word being completed contains any quoting character (including backslash).");
 
 
 static PyObject *
@@ -848,6 +848,7 @@ If True, do not fall back to the default filename completion, even if the curren
 completion returns no matches.");
 
 
+/*
 static PyObject *
 set_attempted_completion_over(PyObject *self, PyObject *args)
 {
@@ -865,6 +866,7 @@ PyDoc_STRVAR(doc_set_attempted_completion_over,
 If True, do not fall back to the default filename completion, even if the current \
 completion returns no matches. \
 May only be called from within custom completers.");
+*/
 
 
 /* Misc flags */
@@ -1651,7 +1653,7 @@ PyDoc_STRVAR(doc_set_directory_completion_hook,
 "set_directory_completion_hook([function]) -> None\n\
 This function is allowed to modify the directory portion of filenames readline completes. \
 The function is called as ``function(dirname)`` and should return a new directory name or \
-None to indicate no change. At the very least the function must perform all necessary \
+None to indicate no change. At the least, the function must perform all necessary \
 dequoting.");
 
 
@@ -2148,8 +2150,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_set_filename_quoting_desired},
 	{"get_attempted_completion_over", get_attempted_completion_over,
 	 METH_NOARGS, doc_get_attempted_completion_over},
+	/*
 	{"set_attempted_completion_over", set_attempted_completion_over,
 	 METH_VARARGS, doc_set_attempted_completion_over},
+	*/
 	{"filename_completion_function", filename_completion_function,
 	 METH_VARARGS, doc_filename_completion_function},
 	{"username_completion_function", username_completion_function,
