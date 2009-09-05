@@ -23,7 +23,7 @@ class History(object):
     """
 
     @property
-    def base(self):
+    def _base(self):
         """The logical base of the history list."""
         return readline.get_history_base()
 
@@ -51,7 +51,7 @@ class History(object):
 
     def __getitem__(self, index):
         """Return the history item at index."""
-        return readline.get_history_item(self.base + self._norm_index(index))
+        return readline.get_history_item(self._base + self._norm_index(index))
 
     def __delitem__(self, index):
         """Remove the history item at index."""
@@ -86,7 +86,7 @@ class History(object):
         self._file_op(readline.write_history_file, filename, raise_exc)
 
     def _file_op(self, op, filename, raise_exc):
-        """Perform a file operation optionally ignoring IOErrors."""
+        """Perform a file operation optionally suppressing IOErrors."""
         try:
             if filename:
                 op(filename)
