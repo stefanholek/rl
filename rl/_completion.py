@@ -22,8 +22,6 @@ class Completion(object):
             return completion.complete_username(text)
     """
 
-    MAX_MATCHES = 100000 # Just in case
-
     @property
     def begidx(self):
         """The start index of the word in the line."""
@@ -153,14 +151,15 @@ class Completion(object):
 
     def _generate(self, text, entry_func):
         """Extract a list of matches from a generator function."""
-        new = []
-        for i in range(self.MAX_MATCHES):
+        matches = []
+        i = 0
+        while True:
             n = entry_func(text, i)
             if n is not None:
-                new.append(n)
+                matches.append(n)
+                i += 1
             else:
-                break
-        return new
+                return matches
 
     # Debugging
 
