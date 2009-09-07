@@ -1015,9 +1015,10 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_filename_quoting_function,
 "set_filename_quoting_function([function]) -> None\n\
 Set or remove the filename quoting function. \
-The function is called as ``function(text, match_type, quote_char)`` \
+The function is called as ``function(text, single_match, quote_char)`` \
 and should return a string representing a quoted version of ``text``, \
-or None to indicate no change.");
+or None to indicate no change. The ``single_match`` argument is non-zero \
+if the completion has generated only one match.");
 
 
 static PyObject *
@@ -1043,17 +1044,20 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	char *result = (char*)text;
 	char *s = NULL;
 	char quote_char_string[2] = "\0\0";
+	int single_match;
 	PyObject *r;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	single_match = (match_type == SINGLE_MATCH) ? 1 : 0;
+
 	if (quote_pointer && *quote_pointer) {
 		quote_char_string[0] = *quote_pointer;
 	}
 
 	r = PyObject_CallFunction(filename_quoting_function, "sis",
-				  text, match_type, quote_char_string);
+				  text, single_match, quote_char_string);
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {

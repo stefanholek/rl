@@ -22,10 +22,6 @@ class Completer(object):
         completer.parse_and_bind('tab: complete')
     """
 
-    # For filename_quoting_function
-    SINGLE_MATCH = 1
-    MULT_MATCH = 2
-
     @apply
     def quote_characters():
         doc="""Characters that may be used in pairs to quote substrings
@@ -146,10 +142,10 @@ class Completer(object):
         doc="""The word break hook function.
         The function is called as ``function(begidx, endidx)``
         once per completion and should return a string of word
-        break characters for the scope of the completion, or None
-        to indicate no change. The passed-in word boundaries are
-        what readline would use if the
-        hook did not exist (and will use if the hook returns None)."""
+        break characters for the current completion, or None
+        to indicate no change. The passed-in ``begidx`` and ``endidx``
+        are what readline would use if the hook did not exist (and
+        will use if the hook returns None)."""
         def get(self):
             return readline.get_completion_word_break_hook()
         def set(self, function):
@@ -198,11 +194,11 @@ class Completer(object):
     @apply
     def filename_quoting_function():
         doc="""The filename quoting function.
-        The function is called as ``function(text, match_type, quote_char)``
+        The function is called as ``function(text, single_match, quote_char)``
         and should return a string representing a quoted version
-        of ``text``, or None to indicate no change. The ``match_type``
-        argument is set to either ``SINGLE_MATCH`` or ``MULT_MATCH``
-        depending on the number of matches the completion has generated."""
+        of ``text``, or None to indicate no change. The ``single_match``
+        argument is non-zero if the completion has generated
+        only one match (may be used to close quotes)."""
         def get(self):
             return readline.get_filename_quoting_function()
         def set(self, function):
