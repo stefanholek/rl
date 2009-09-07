@@ -1,21 +1,21 @@
 """Interface to the readline completer."""
 
 import sys
-import _readline as readline
+import readline
 
 
 class Completer(object):
     """Interface to the readline completer configuration.
 
     This class is not intended for instantiation beyond
-    the one ``completer`` object in this package.
+    the one ``completer`` object in this module.
     Applications wanting to use the Completer interface will
     typically import the ``completer`` object and use its
     properties and methods to configure readline.
 
     Example::
 
-        from rl import completer
+        from rl.completion import completer
 
         completer.quote_characters = '"\\''
         completer.query_items = 100
@@ -92,7 +92,7 @@ class Completer(object):
     @apply
     def query_items():
         doc="""Up to this many items will be displayed in response to a
-        possible-completions call. Beyond that the user must confirm he
+        possible-completions call. Beyond that the user is prompted if he
         really wants to see all matches. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed when a custom
         ``display_matches_hook`` is installed."""
@@ -197,8 +197,8 @@ class Completer(object):
         The function is called as ``function(text, single_match, quote_char)``
         and should return a string representing a quoted version
         of ``text``, or None to indicate no change. The ``single_match``
-        argument is set to True if the completion has generated only one
-        match (may be used to close quotes)."""
+        argument is True if the completion has generated only one match
+        (may be used to close quotes)."""
         def get(self):
             return readline.get_filename_quoting_function()
         def set(self, function):
@@ -269,19 +269,21 @@ self.filename_quoting_function,
 self.filename_dequoting_function,
 ))
 
+completer = Completer()
+
 
 class Completion(object):
     """Interface to the active readline completion.
 
     This class is not intended for instantiation beyond
-    the one ``completion`` object in this package.
+    the one ``completion`` object in this module.
     Applications wanting to use the Completion interface will
     typically import the ``completion`` object and use its
     properties and methods to implement custom completions.
 
     Example::
 
-        from rl import completion
+        from rl.completion import completion
 
         def complete(text):
             completion.append_character = '@'
@@ -456,4 +458,48 @@ self.suppress_quote,
 self.filename_completion_desired,
 self.filename_quoting_desired,
 ))
+
+completion = Completion()
+
+
+def generator(compfunc):
+    """Generator function factory.
+
+    Takes a function returning a list of matches and returns an
+    object implementing the generator protocol readline expects.
+    The function is called as ``compfunc(text)`` and should
+    return an iterable of matches for ``text``.
+    """
+    class GeneratorFunction(object):
+
+        def __call__(self, text, state):
+            if state == 0:
+                self.matches = compfunc(text)
+                if not isinstance(self.matches, list):
+                    self.matches = list(self.matches)
+            try:
+                return self.matches[state]
+            except IndexError:
+                return None
+
+    return GeneratorFunction()
+
+
+def print_exc(func):
+    """Decorator printing exceptions to stderr.
+
+    Useful when debugging completions and hooks, as exceptions occurring
+    there are usually swallowed by the in-between C code.
+    """
+    def wrapped_func(*args, **kw):
+        try:
+            return func(*args, **kw)
+        except:
+            import traceback; traceback.print_exc()
+            raise
+
+    wrapped_func.__name__ = func.__name__
+    wrapped_func.__dict__ = func.__dict__
+    wrapped_func.__doc__ = func.__doc__
+    return wrapped_func
 

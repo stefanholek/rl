@@ -2649,11 +2649,11 @@ PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU readline.");
 
 PyMODINIT_FUNC
-init_readline(void)
+initreadline(void)
 {
 	PyObject *m;
 
-	m = Py_InitModule4("_readline", readline_methods, doc_module,
+	m = Py_InitModule4("readline", readline_methods, doc_module,
 			   (PyObject *)NULL, PYTHON_API_VERSION);
 	if (m == NULL)
 		return;

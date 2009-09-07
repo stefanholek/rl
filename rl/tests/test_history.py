@@ -1,6 +1,6 @@
 import unittest
 
-from rl import history
+from rl.history import history
 
 
 class HistoryTests(unittest.TestCase):

@@ -1,9 +1,9 @@
 """Importing this module modifies cmd.Cmd to use rl instead of readline."""
 
-import cmd
+from stdlib import cmd
 
-from rl import completer
-from rl import completion
+from completion import completer
+from completion import completion
 
 
 def cmdloop(self, intro=None):
