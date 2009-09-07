@@ -1017,7 +1017,7 @@ PyDoc_STRVAR(doc_set_filename_quoting_function,
 Set or remove the filename quoting function. \
 The function is called as ``function(text, single_match, quote_char)`` \
 and should return a string representing a quoted version of ``text``, \
-or None to indicate no change. The ``single_match`` argument is non-zero \
+or None to indicate no change. The ``single_match`` argument is True \
 if the completion has generated only one match.");
 
 
@@ -1044,19 +1044,19 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	char *result = (char*)text;
 	char *s = NULL;
 	char quote_char_string[2] = "\0\0";
-	int single_match;
+	PyObject *single_match = NULL;
 	PyObject *r;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	single_match = (match_type == SINGLE_MATCH) ? 1 : 0;
+	single_match = PyBool_FromLong(match_type == SINGLE_MATCH);
 
 	if (quote_pointer && *quote_pointer) {
 		quote_char_string[0] = *quote_pointer;
 	}
 
-	r = PyObject_CallFunction(filename_quoting_function, "sis",
+	r = PyObject_CallFunction(filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
 	if (r == NULL)
 		goto error;
@@ -1072,10 +1072,12 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		if (s != NULL)
 			result = s;
 	}
+	Py_DECREF(single_match);
 	Py_DECREF(r);
 	goto done;
   error:
 	PyErr_Clear();
+	Py_XDECREF(single_match);
 	Py_XDECREF(r);
   done:
 #ifdef WITH_THREAD
