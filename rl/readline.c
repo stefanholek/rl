@@ -2436,9 +2436,11 @@ setup_readline(void)
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
+/*
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 	rl_completion_append_character = '\0';
 #endif
+*/
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 
