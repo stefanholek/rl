@@ -14,8 +14,8 @@ class History(object):
 
     Example::
 
+        from rl import history
         import atexit
-        from rl.history import history
 
         history.read_file(histfile)
         history.length = 100

@@ -15,7 +15,7 @@ class Completer(object):
 
     Example::
 
-        from rl.completion import completer
+        from rl import completer
 
         completer.quote_characters = '"\\''
         completer.query_items = 100
@@ -283,7 +283,7 @@ class Completion(object):
 
     Example::
 
-        from rl.completion import completion
+        from rl import completion
 
         def complete(text):
             completion.append_character = '@'
