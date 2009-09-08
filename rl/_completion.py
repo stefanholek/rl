@@ -1,7 +1,7 @@
 """Interface to the readline completer."""
 
 import sys
-import readline
+import _readline as readline
 
 
 class Completer(object):

@@ -1,6 +1,6 @@
 """Interface to the readline history."""
 
-import readline
+import _readline as readline
 
 
 class History(object):

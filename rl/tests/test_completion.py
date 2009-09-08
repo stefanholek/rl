@@ -1,8 +1,8 @@
 import unittest
 import StringIO
 
-from rl.completion import completer
-from rl.completion import completion
+from rl import completer
+from rl import completion
 
 
 class CompletionTests(unittest.TestCase):

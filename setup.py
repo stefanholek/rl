@@ -29,8 +29,8 @@ if platform == 'darwin':
 
 
 readline = \
-Extension(name='rl.readline',
-          sources=[join('rl', 'readline.c')],
+Extension(name='rl._readline',
+          sources=[join('rl', '_readline.c')],
           libraries=libraries,
           include_dirs=include_dirs,
           library_dirs=library_dirs,
