@@ -25,9 +25,9 @@ class CompletionTests(unittest.TestCase):
 
     def test_dump_completer(self):
         stream = StringIO.StringIO()
-        completer._dump(stream)
+        completer.dump(stream)
 
     def test_dump_completion(self):
         stream = StringIO.StringIO()
-        completion._dump(stream)
+        completion.dump(stream)
 

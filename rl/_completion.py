@@ -5,7 +5,7 @@ import _readline as readline
 
 
 class Completer(object):
-    """Interface to the readline completer configuration.
+    """Interface to the readline completer.
 
     This class is not intended for instantiation beyond
     the one ``completer`` object in this module.
@@ -229,7 +229,7 @@ class Completer(object):
 
     # Debugging
 
-    def _dump(self, stream=sys.stdout):
+    def dump(self, stream=sys.stdout):
         """Dump properties to stream."""
         stream.write("""\
 quote_characters:               %r
@@ -431,7 +431,7 @@ class Completion(object):
 
     # Debugging
 
-    def _dump(self, stream=sys.stdout):
+    def dump(self, stream=sys.stdout):
         """Dump properties to stream."""
         stream.write("""\
 line_buffer:                    %r

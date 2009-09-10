@@ -1,7 +1,7 @@
 """Alternative readline interface focusing on completion.
 
 completer
-    Interface to the readline completer configuration.
+    Interface to the readline completer.
 
 completion
     Interface to the active readline completion.
