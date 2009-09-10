@@ -467,7 +467,7 @@ def generator(compfunc):
 
     Takes a function returning a list of matches and returns an
     object implementing the generator protocol readline expects.
-    The function is called as ``compfunc(text)`` and should
+    The function will be called as ``compfunc(text)`` and should
     return an iterable of matches for ``text``.
     """
     class GeneratorFunction(object):
