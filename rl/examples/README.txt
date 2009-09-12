@@ -16,3 +16,6 @@ email.py
 
 pre_input_hook.py
     Shows how to use prompt and pre_input_hook to prepopulate the line.
+
+static.py
+    Complete from a static list of strings.
