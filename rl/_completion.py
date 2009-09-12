@@ -102,18 +102,6 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
-    def completer():
-        doc="""The completer function.
-        The function is called as ``function(text, state)``, for state
-        in 0, 1, 2, ..., until it returns a non-string. It should return the
-        next possible completion starting with ``text``."""
-        def get(self):
-            return readline.get_completer()
-        def set(self, function):
-            readline.set_completer(function)
-        return property(get, set, doc=doc)
-
-    @apply
     def startup_hook():
         doc="""The startup hook function.
         The function is called with no arguments just before readline
@@ -134,6 +122,18 @@ class Completer(object):
             return readline.get_pre_input_hook()
         def set(self, function):
             readline.set_pre_input_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
+    def completer():
+        doc="""The completion entry function.
+        The function is called as ``function(text, state)``, for state
+        in 0, 1, 2, ..., until it returns a non-string. It should return the
+        next possible completion starting with ``text``."""
+        def get(self):
+            return readline.get_completer()
+        def set(self, function):
+            readline.set_completer(function)
         return property(get, set, doc=doc)
 
     @apply
