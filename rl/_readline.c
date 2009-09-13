@@ -834,6 +834,7 @@ If True, filenames will be quoted. \
 May only be called from within custom completers.");
 
 
+/*
 static PyObject *
 get_attempted_completion_over(PyObject *self, PyObject *noarg)
 {
@@ -846,7 +847,6 @@ If True, do not fall back to the default filename completion, even if the curren
 completion returns no matches.");
 
 
-/*
 static PyObject *
 set_attempted_completion_over(PyObject *self, PyObject *args)
 {
@@ -1340,7 +1340,7 @@ get_special_prefixes(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_special_prefixes,
 "get_special_prefixes() -> string\n\
-List of characters that are word break characters, but should be left in text \
+Characters that are word break characters, but should be left in text \
 when it is passed to the completion function.");
 
 
@@ -1360,7 +1360,7 @@ set_special_prefixes(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_special_prefixes,
 "set_special_prefixes(string) -> None\n\
-List of characters that are word break characters, but should be left in text \
+Characters that are word break characters, but should be left in text \
 when it is passed to the completion function.");
 
 
@@ -2152,9 +2152,9 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_filename_quoting_desired},
 	{"set_filename_quoting_desired", set_filename_quoting_desired,
 	 METH_VARARGS, doc_set_filename_quoting_desired},
+	/*
 	{"get_attempted_completion_over", get_attempted_completion_over,
 	 METH_NOARGS, doc_get_attempted_completion_over},
-	/*
 	{"set_attempted_completion_over", set_attempted_completion_over,
 	 METH_VARARGS, doc_set_attempted_completion_over},
 	*/
