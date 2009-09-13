@@ -784,8 +784,7 @@ get_filename_completion_desired(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_filename_completion_desired,
 "get_filename_completion_desired() -> bool\n\
-True means readline should fall back to filename completion when the current \
-completion returns no matches.");
+If True, treat the results of matches as filenames.");
 
 
 static PyObject *
@@ -802,8 +801,7 @@ set_filename_completion_desired(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_completion_desired,
 "set_filename_completion_desired(bool) -> None\n\
-True means readline should fall back to filename completion when the current \
-completion returns no matches. \
+If True, treat the results of matches as filenames. \
 May only be called from within custom completers.");
 
 
@@ -815,7 +813,7 @@ get_filename_quoting_desired(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_filename_quoting_desired,
 "get_filename_quoting_desired() -> bool\n\
-True means that results should be quoted according to filename quoting rules.");
+If True, filenames will be quoted.");
 
 
 static PyObject *
@@ -832,7 +830,7 @@ set_filename_quoting_desired(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_quoting_desired,
 "set_filename_quoting_desired(bool) -> None\n\
-True means that results should be quoted according to filename quoting rules. \
+If True, filenames will be quoted. \
 May only be called from within custom completers.");
 
 
@@ -968,7 +966,7 @@ get_inhibit_completion(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_inhibit_completion,
 "get_inhibit_completion() -> bool\n\
-If True, the completion character will be inserted as any other.");
+If True, completion is disabled.");
 
 
 static PyObject *
@@ -985,7 +983,7 @@ set_inhibit_completion(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_inhibit_completion,
 "set_inhibit_completion(bool) -> None\n\
-If True, the completion character will be inserted as any other. \
+If True, completion is disabled. \
 May only be called from within custom completers.");
 
 
