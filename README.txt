@@ -83,7 +83,7 @@ The rl Package
 Overview
 --------
 
-The rl package implements all flags, settings, and hooks documented in
+The rl package implements most flags, settings, and hooks documented in
 the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
 They are presented to the user in the form of properties on two
 interface objects, ``completer`` and ``completion``.
@@ -139,8 +139,8 @@ history
     and to manipulate history entries.
 
 readline
-    The readline module. Contains everything known from the standard library
-    plus extensions specific to the rl package.  The ``completer``,
+    The readline interface module. Contains everything known from the standard
+    library plus extensions specific to the rl package.  The ``completer``,
     ``completion``, and ``history`` interfaces make use of this module, and
     you should rarely need to interact with it directly.
 
