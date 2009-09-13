@@ -4,6 +4,8 @@ import StringIO
 from rl import completer
 from rl import completion
 
+PYTHON_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
+
 
 class CompletionTests(unittest.TestCase):
 
@@ -15,8 +17,7 @@ class CompletionTests(unittest.TestCase):
         self.assertEqual(completer.quote_characters, '')
 
     def test_word_break_characters(self):
-        self.assertEqual(completer.word_break_characters,
-                         ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?')
+        self.assertEqual(completer.word_break_characters, PYTHON_DELIMS)
         completer.word_break_characters = ' \t\n\\"\'`<>=;&|'
         self.assertEqual(completer.word_break_characters, ' \t\n\\"\'`<>=;&|')
         completer.word_break_characters = ''
