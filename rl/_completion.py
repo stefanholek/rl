@@ -371,7 +371,7 @@ class Completion(object):
 
     @apply
     def filename_completion_desired():
-        doc="""Treat the results of matches as filenames.
+        doc="""Treat the resulting matches as filenames.
         Directory names will have a slash appended, for example.
         Defaults to False."""
         def get(self):
