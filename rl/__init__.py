@@ -10,7 +10,7 @@ history
     Interface to the readline history.
 
 readline
-    Basic readline interface.
+    Basic readline interface module.
 
 generator
     Generator function factory.
