@@ -102,6 +102,18 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def completer():
+        doc="""The completion entry function.
+        The function is called as ``function(text, state)``, for state
+        in 0, 1, 2, ..., until it returns a non-string. It should return the
+        next possible completion starting with ``text``."""
+        def get(self):
+            return readline.get_completer()
+        def set(self, function):
+            readline.set_completer(function)
+        return property(get, set, doc=doc)
+
+    @apply
     def startup_hook():
         doc="""The startup hook function.
         The function is called with no arguments just before readline
@@ -122,18 +134,6 @@ class Completer(object):
             return readline.get_pre_input_hook()
         def set(self, function):
             readline.set_pre_input_hook(function)
-        return property(get, set, doc=doc)
-
-    @apply
-    def completer():
-        doc="""The completion entry function.
-        The function is called as ``function(text, state)``, for state
-        in 0, 1, 2, ..., until it returns a non-string. It should return the
-        next possible completion starting with ``text``."""
-        def get(self):
-            return readline.get_completer()
-        def set(self, function):
-            readline.set_completer(function)
         return property(get, set, doc=doc)
 
     @apply
@@ -299,36 +299,6 @@ class Completion(object):
         """The end index of the word in the line."""
         return readline.get_endidx()
 
-    @property
-    def completion_type(self):
-        """The type of completion readline performs."""
-        return readline.get_completion_type()
-
-    @property
-    def found_quote(self):
-        """True if the word contains or is delimited by a quote
-        character. Note that this includes backslashes."""
-        return readline.get_completion_found_quote()
-
-    @property
-    def quote_character(self):
-        """The quote character found. This does **not** include
-        backslashes. If a backslash is found, ``found_quote`` is
-        set to True and ``quote_character`` is set to the empty
-        string."""
-        return readline.get_completion_quote_character()
-
-    @property
-    def rl_point(self):
-        """The position of the cursor in the line."""
-        return readline.get_rl_point()
-
-    @property
-    def rl_end(self):
-        """The last position in the line. The cursor range
-        is defined as: ``0 <= rl_point <= rl_end``."""
-        return readline.get_rl_end()
-
     @apply
     def line_buffer():
         doc="""The line buffer readline uses. This property
@@ -338,6 +308,11 @@ class Completion(object):
         def set(self, string):
             readline.replace_line(string)
         return property(get, set, doc=doc)
+
+    @property
+    def completion_type(self):
+        """The type of completion readline performs."""
+        return readline.get_completion_type()
 
     @apply
     def append_character():
@@ -359,19 +334,30 @@ class Completion(object):
             readline.set_completion_suppress_append(bool)
         return property(get, set, doc=doc)
 
+    @property
+    def quote_character(self):
+        """The quote character found (if any)."""
+        return readline.get_completion_quote_character()
+
     @apply
     def suppress_quote():
-        doc="""Do not append a matching quote character when performing
-        completion on a quoted string. Defaults to False."""
+        doc="""Do not append a matching quote character when completing
+        a quoted string. Defaults to False."""
         def get(self):
             return readline.get_completion_suppress_quote()
         def set(self, bool):
             readline.set_completion_suppress_quote(bool)
         return property(get, set, doc=doc)
 
+    @property
+    def found_quote(self):
+        """True if the word contains or is delimited by any quote
+        character, including backslashes."""
+        return readline.get_completion_found_quote()
+
     @apply
     def filename_completion_desired():
-        doc="""Treat the resulting matches as filenames.
+        doc="""Treat the results of matches as filenames.
         Directory names will have a slash appended, for example.
         Defaults to False."""
         def get(self):
@@ -389,6 +375,17 @@ class Completion(object):
         def set(self, bool):
             readline.set_filename_quoting_desired(bool)
         return property(get, set, doc=doc)
+
+    @property
+    def rl_point(self):
+        """The position of the cursor in the line."""
+        return readline.get_rl_point()
+
+    @property
+    def rl_end(self):
+        """The last position in the line. The cursor range
+        is defined as: ``0 <= rl_point <= rl_end``."""
+        return readline.get_rl_end()
 
     # Completion functions
 
