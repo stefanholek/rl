@@ -7,7 +7,7 @@ from rl import completion
 PYTHON_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
-class CompletionTests(unittest.TestCase):
+class CompleterTests(unittest.TestCase):
 
     def test_quote_characters(self):
         self.assertEqual(completer.quote_characters, '')
@@ -68,6 +68,9 @@ class CompletionTests(unittest.TestCase):
     def test_dump_completer(self):
         stream = StringIO.StringIO()
         completer.dump(stream)
+
+
+class CompletionTests(unittest.TestCase):
 
     def test_dump_completion(self):
         stream = StringIO.StringIO()
