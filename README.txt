@@ -13,114 +13,6 @@ GNU Readline `completion interface`_.
 
 .. _`completion interface`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 
-Readline Completion
-===================
-
-Call Graph
-----------
-
-* complete_internal
-
-    * find_completion_word
-
-        * **word_break_hook**
-
-        * **char_is_quoted_function**
-
-    * gen_completion_matches
-
-        * **completion_entry_function**'*'
-
-            * `filename_completion_function`
-
-                * **directory_completion_hook**
-
-                * **filename_dequoting_function**
-
-    * insert_match
-
-        * **filename_quoting_function**
-
-    * display_matches
-
-            * **display_matches_hook**
-
-                * `display_match_list`
-
-Discussion
-----------
-
-The graph – when read from top to bottom – represents a possible calling
-sequence for filename completion in readline. This sequence is initiated
-whenever the user presses the TAB key and has three phases:
-word breaking, match generation, and match presentation.
-
-Functions in **boldface** may be overridden by applications.
-Functions in `italics` may be called by such application-provided hooks to
-use functionality implemented in readline.
-
-At C-level, there is a default ``filename_quoting_function`` and a default
-``display_matches_hook``. The remaining hooks have no default implementations.
-
-The ``completion_entry_function``, marked with an '*' above, has traditionally
-been the place where Python hooks into readline. In fact, the standard
-library's ``set_completer(func)`` sets readline's
-``rl_completion_entry_function`` to ``func``. [#]_
-
-In addition to hooks, readline provides configuration
-settings that may be changed by applications to influence the way the library
-behaves. For example, by configuring readline's ``word_break_characters``, an
-application can affect how readline computes word boundaries.
-
-.. [#] This is not entirely correct. What it really does, is arrange
-   things so that the readline C-library calls the Python function ``func``
-   when generating matches. The effect however is the same as if ``func`` had
-   been assigned to ``rl_completion_entry_function`` directly.
-
-The rl Package
-==============
-
-Overview
---------
-
-The rl package implements most flags, settings, and hooks documented in
-the `Custom Completers`_ section of the `GNU Readline Library`_ manual.
-They are presented to the user in the form of properties on two
-interface objects, ``completer`` and ``completion``.
-
-While names have been shortened – we removed the ``rl_`` prefix and the
-occasional ``completer`` and ``completion`` from the C identifiers – they
-should still be easy to recognize for anyone familiar with readline.
-
-.. _`Custom Completers`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html
-
-Divide and Conquer
-------------------
-
-For the sake of abstraction we postulate a `completer` component in readline. It is
-responsible for configuring and executing readline completions.
-
-Secondly, we define a `completion` interface which is used by
-applications to implement custom completion code.
-
-The ``completer`` object
-provides access to global configuration settings and hooks.
-Values set trough the ``completer`` are permanent. If you want
-them restored you have to take care of it yourself.
-
-The ``completion``
-object provides status information for the active completion,
-configuration settings that affect the results of the completion, and
-functions to use completion services implemented by readline.
-Values accessed through the ``completion`` object affect the current
-completion only; they are reset to their default values when a new
-completion starts.
-
-For further details, please refer to the `API Documentation`_.
-
-.. _`API Documentation`: http://packages.python.org/rl/
-
 Package Contents
 ----------------
 
@@ -152,6 +44,10 @@ print_exc
     A decorator printing exceptions to stderr. Useful when writing Python
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
+
+For further details, please refer to the `API Documentation`_.
+
+.. _`API Documentation`: http://packages.python.org/rl/
 
 Example Code
 ------------
@@ -187,7 +83,7 @@ See the ``examples`` subdirectory of the package for more.
 Installation
 ============
 
-rl has been tested with GNU readline versions 5 and 6.
+rl has been tested with GNU Readline versions 5 and 6.
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
 rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
