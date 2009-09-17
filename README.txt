@@ -9,9 +9,9 @@ Introduction
 ============
 
 The rl package aims to provide a full implementation of the
-GNU Readline `completion interface`_.
+GNU Readline `Custom Completer`_ interface.
 
-.. _`completion interface`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`Custom Completer`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 
 Package Contents
 ----------------
