@@ -728,7 +728,7 @@ get_completion_found_quote(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_get_completion_found_quote,
 "get_completion_found_quote() -> bool\n\
 When readline is completing quoted text, it sets this variable to True \
-if the word being completed contains any quoting character (including backslash).");
+if the word being completed contains any quoting character (including backslashes).");
 
 
 static PyObject *
@@ -1536,7 +1536,7 @@ complete_internal(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_complete_internal,
-"complete_internal(string) -> int\n\
+"complete_internal(what_to_do) -> int\n\
 Complete the word at or before the cursor position.");
 
 
@@ -1854,6 +1854,7 @@ If True, include hidden files when computing the list of matches.");
 
 /* Get basic quote characters */
 
+/*
 static PyObject *
 get_basic_quote_characters(PyObject *self, PyObject *noarg)
 {
@@ -1863,10 +1864,12 @@ get_basic_quote_characters(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_get_basic_quote_characters,
 "get_basic_quote_characters() -> string\n\
 Get readline's default set of quote characters.");
+*/
 
 
 /* Get basic word break characters */
 
+/*
 static PyObject *
 get_basic_word_break_characters(PyObject *self, PyObject *noarg)
 {
@@ -1876,6 +1879,7 @@ get_basic_word_break_characters(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_get_basic_word_break_characters,
 "get_basic_word_break_characters() -> string\n\
 Get readline's default set of word break characters.");
+*/
 
 
 /* StringArray helpers */
@@ -2228,10 +2232,12 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_match_hidden_files},
 	{"set_match_hidden_files", set_match_hidden_files,
 	 METH_VARARGS, doc_set_match_hidden_files},
+	/*
 	{"get_basic_quote_characters", get_basic_quote_characters,
 	 METH_NOARGS, doc_get_basic_quote_characters},
 	{"get_basic_word_break_characters", get_basic_word_break_characters,
 	 METH_NOARGS, doc_get_basic_word_break_characters},
+	*/
 	{"get_history_base", get_history_base,
 	 METH_NOARGS, doc_get_history_base},
 	{"tilde_expand", py_tilde_expand, METH_VARARGS, doc_tilde_expand},
