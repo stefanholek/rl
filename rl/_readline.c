@@ -1278,7 +1278,7 @@ filename_completion_function(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_filename_completion_function,
-"filename_completion_function(string, int) -> string\n\
+"filename_completion_function(text, state) -> string\n\
 A built-in generator function for filename completion.");
 
 
@@ -1300,7 +1300,7 @@ username_completion_function(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_username_completion_function,
-"username_completion_function(string, int) -> string\n\
+"username_completion_function(text, state) -> string\n\
 A built-in generator function for username completion.");
 
 
