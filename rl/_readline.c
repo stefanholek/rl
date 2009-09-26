@@ -2016,7 +2016,7 @@ PyList_AsStringArray(PyObject *list)
 }
 
 
-/* Display match list */
+/* Display match list function */
 
 static PyObject*
 display_match_list(PyObject *self, PyObject *args)
@@ -2070,6 +2070,112 @@ display_match_list(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_display_match_list,
 "display_match_list(substitution, matches, longest_match_length) -> None\n\
 Display a list of matches in columnar format on readline's output stream.");
+
+
+/* Ignore some completions function */
+
+static PyObject *ignore_some_completions_function = NULL;
+
+static int
+on_ignore_some_completions_function(char **directory);
+
+
+static PyObject *
+set_ignore_some_completions_function(PyObject *self, PyObject *args)
+{
+	PyObject *result = set_hook("ignore_some_completions_function",
+			&ignore_some_completions_function, args);
+
+	rl_ignore_some_completions_function =
+		ignore_some_completions_function ?
+		(rl_compignore_func_t *)on_ignore_some_completions_function : NULL;
+
+	return result;
+}
+
+PyDoc_STRVAR(doc_set_ignore_some_completions_function,
+"set_ignore_some_completions_function([function]) -> None\n\
+This function may filter the results of filename completion. \
+The function is called as ``function(substitution, matches)`` and \
+should return a filtered subset of matches or None to indicate no \
+change.");
+
+
+static PyObject *
+get_ignore_some_completions_function(PyObject *self, PyObject *noargs)
+{
+	if (ignore_some_completions_function == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(ignore_some_completions_function);
+	return ignore_some_completions_function;
+}
+
+PyDoc_STRVAR(doc_get_ignore_some_completions_function,
+"get_ignore_some_completions_function() -> function\n\
+This function may filter the results of filename completion.");
+
+
+static int
+on_ignore_some_completions_function(char **matches)
+{
+	int result = 0;
+	char **strings;
+	size_t i;
+	Py_ssize_t old_size, new_size;
+	PyObject *m = NULL;
+	PyObject *r = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+	m = PyList_FromStringArray(matches+1);
+	if (m == NULL)
+		goto error;
+
+	r = PyObject_CallFunction(ignore_some_completions_function, "sO",
+				  matches[0], m);
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = 0;
+	}
+	else {
+		new_size = PyList_Size(r);
+		if (new_size == -1)
+			goto error;
+
+		old_size = PyList_Size(m);
+		if (new_size > old_size)
+			goto error;
+
+		strings = PyList_AsStringArray(r);
+		if (strings == NULL)
+			goto error;
+
+		for (i=1; i <= old_size; i++)
+			free(matches[i]);
+
+		for (i=1; i <= new_size; i++) {
+			matches[i] = strings[i-1];
+			matches[i+1] = NULL;
+		}
+		free(strings);
+		result = 1;
+	}
+	Py_DECREF(m);
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(m);
+	Py_XDECREF(r);
+  done:
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
 
 
 /* </_readline.c> */
@@ -2232,6 +2338,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_match_hidden_files},
 	{"set_match_hidden_files", set_match_hidden_files,
 	 METH_VARARGS, doc_set_match_hidden_files},
+	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
+	 METH_NOARGS, doc_get_ignore_some_completions_function},
+	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
+	 METH_VARARGS, doc_set_ignore_some_completions_function},
 	/*
 	{"get_basic_quote_characters", get_basic_quote_characters,
 	 METH_NOARGS, doc_get_basic_quote_characters},

@@ -216,6 +216,18 @@ class Completer(object):
             readline.set_filename_dequoting_function(function)
         return property(get, set, doc=doc)
 
+    @apply
+    def ignore_some_completions_function():
+        doc="""The filename filter function.
+        The function is called as ``function(substitution, matches)``
+        after all filenames have been generated and should return a
+        filtered subset of ``matches``, or None to indicate no change."""
+        def get(self):
+            return readline.get_ignore_some_completions_function()
+        def set(self, function):
+            readline.set_ignore_some_completions_function(function)
+        return property(get, set, doc=doc)
+
     # Configuration functions
 
     def read_init_file(self, filename):
