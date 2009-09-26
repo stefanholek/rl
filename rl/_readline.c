@@ -1852,36 +1852,6 @@ PyDoc_STRVAR(doc_set_match_hidden_files,
 If True, include hidden files when computing the list of matches.");
 
 
-/* Get basic quote characters */
-
-/*
-static PyObject *
-get_basic_quote_characters(PyObject *self, PyObject *noarg)
-{
-	return PyString_FromString(rl_basic_quote_characters);
-}
-
-PyDoc_STRVAR(doc_get_basic_quote_characters,
-"get_basic_quote_characters() -> string\n\
-Get readline's default set of quote characters.");
-*/
-
-
-/* Get basic word break characters */
-
-/*
-static PyObject *
-get_basic_word_break_characters(PyObject *self, PyObject *noarg)
-{
-	return PyString_FromString(rl_basic_word_break_characters);
-}
-
-PyDoc_STRVAR(doc_get_basic_word_break_characters,
-"get_basic_word_break_characters() -> string\n\
-Get readline's default set of word break characters.");
-*/
-
-
 /* StringArray helpers */
 
 static char**
@@ -2342,12 +2312,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
 	 METH_VARARGS, doc_set_ignore_some_completions_function},
-	/*
-	{"get_basic_quote_characters", get_basic_quote_characters,
-	 METH_NOARGS, doc_get_basic_quote_characters},
-	{"get_basic_word_break_characters", get_basic_word_break_characters,
-	 METH_NOARGS, doc_get_basic_word_break_characters},
-	*/
 	{"get_history_base", get_history_base,
 	 METH_NOARGS, doc_get_history_base},
 	{"tilde_expand", py_tilde_expand, METH_VARARGS, doc_tilde_expand},
