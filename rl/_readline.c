@@ -1173,7 +1173,7 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	/* We really can't return NULL here, so we abort like
 	   readline's xmalloc. */
 	if (result == NULL) {
-		fprintf(stderr, "_readline: out of virtual memory\n");
+		fprintf(stderr, "readline: out of virtual memory\n");
 		exit(2);
 	}
 	return result;
