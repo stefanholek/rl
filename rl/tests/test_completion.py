@@ -18,8 +18,8 @@ class CompleterTests(unittest.TestCase):
 
     def test_word_break_characters(self):
         self.assertEqual(completer.word_break_characters, PYTHON_DELIMS)
-        completer.word_break_characters = ' \t\n\\"\'`<>=;&|'
-        self.assertEqual(completer.word_break_characters, ' \t\n\\"\'`<>=;&|')
+        completer.word_break_characters = ' \t\n"\'<>=;&|'
+        self.assertEqual(completer.word_break_characters, ' \t\n"\'<>=;&|')
         completer.word_break_characters = ''
         self.assertEqual(completer.word_break_characters, '')
 
