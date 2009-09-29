@@ -1,3 +1,6 @@
+from distribute_setup import use_setuptools
+use_setuptools()
+
 from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 from sys import platform
@@ -6,8 +9,8 @@ version = '1.0a1'
 
 
 # On Linux, install libreadline5-dev (or equivalent) before attempting to
-# build completion. On Mac OS X, you need a Python built with MacPorts or
-# Fink, as the system Python is linked to the BSD editline library and not
+# build rl. On Mac OS X, you need a Python built with MacPorts or Fink,
+# as the system Python is linked to the BSD editline library and not
 # GNU readline.
 
 include_dirs = []
@@ -52,7 +55,7 @@ setup(name='rl',
       author_email='stefan@epy.co.at',
       url='http://pypi.python.org/pypi/rl',
       license='Python',
-      packages=find_packages(exclude=['ez_setup']),
+      packages=find_packages(exclude=['distribute_setup']),
       include_package_data=True,
       zip_safe=False,
       test_suite='rl.tests',
@@ -60,7 +63,7 @@ setup(name='rl',
           readline,
       ],
       install_requires=[
-          'setuptools',
+          'distribute',
       ],
 )
 
