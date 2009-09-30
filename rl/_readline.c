@@ -2262,10 +2262,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_char_is_quoted_function},
 	{"set_char_is_quoted_function", set_char_is_quoted_function,
 	 METH_VARARGS, doc_set_char_is_quoted_function},
-	/*
-	{"get_completion_invoking_key", get_completion_invoking_key,
-	 METH_NOARGS, doc_get_completion_invoking_key},
-	*/
 	{"get_completion_display_matches_hook", get_completion_display_matches_hook,
 	 METH_NOARGS, doc_get_completion_display_matches_hook},
 	{"get_startup_hook", get_startup_hook,
@@ -2274,7 +2270,9 @@ static struct PyMethodDef readline_methods[] =
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},
 #endif
-	/*
+	/* readline 6
+	{"get_completion_invoking_key", get_completion_invoking_key,
+	 METH_NOARGS, doc_get_completion_invoking_key},
 	{"get_sort_completion_matches", get_sort_completion_matches,
 	 METH_NOARGS, doc_get_sort_completion_matches},
 	{"set_sort_completion_matches", set_sort_completion_matches,
