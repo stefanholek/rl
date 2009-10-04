@@ -104,8 +104,8 @@ class Completer(object):
     @apply
     def completer():
         doc="""The completion entry function.
-        The function is called as ``function(text, state)``, for state
-        in 0, 1, 2, ..., until it returns a non-string. It should return the
+        The function is called as ``function(text, state)`` for state
+        in 0, 1, 2, ... until it returns None. It should return the
         next possible completion starting with ``text``."""
         def get(self):
             return readline.get_completer()
