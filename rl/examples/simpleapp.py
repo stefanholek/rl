@@ -13,11 +13,11 @@ class MyCmd(cmd.Cmd):
 
     def preloop(self):
         # Characters used to quote substrings
-        completer.quote_characters = '"\''
+        completer.quote_characters = '\'"'
         # Characters used to find word boundaries
-        completer.word_break_characters = ' \t\n\\"\'`><=;|&!'
+        completer.word_break_characters = '! \t\n"\'><=;|&(:'
         # Characters that trigger filename quoting
-        completer.filename_quote_characters = ' \t\n'
+        completer.filename_quote_characters = '\\ \t\n"\'><=;|&()@#$`?*[!:{~'
         # Exclude hidden files
         completer.match_hidden_files = False
         # Expand tildes during completion
