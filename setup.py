@@ -52,7 +52,7 @@ setup(name='rl',
       author_email='stefan@epy.co.at',
       url='http://pypi.python.org/pypi/rl',
       license='Python',
-      packages=find_packages(exclude=['ez_setup']),
+      packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
       test_suite='rl.tests',
@@ -60,7 +60,7 @@ setup(name='rl',
           readline,
       ],
       install_requires=[
-          'setuptools',
+          'distribute',
       ],
 )
 
