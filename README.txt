@@ -32,12 +32,12 @@ history
 
 readline
     The readline interface module. Contains everything known from the standard
-    library plus extensions specific to the rl package.  The ``completer``,
-    ``completion``, and ``history`` interfaces make use of this module, and
+    library plus extensions specific to the rl package.  The `completer`,
+    `completion`, and `history` interfaces make use of this module, and
     you should rarely need to interact with it directly.
 
 generator
-    A factory turning any callable into a ``completion_entry_function`` that
+    A factory turning any callable into a `completion entry function` that
     can be handed to readline.
 
 print_exc
@@ -88,6 +88,11 @@ rl has been tested with GNU Readline versions 5 and 6.
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
 rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
 Python is linked to the BSD editline library and not GNU readline.
+
+rl requires distribute >= 0.6.3. If you have not upgraded from setuptools
+yet, type::
+
+    /path/to/easy_install distribute
 
 Then type::
 
