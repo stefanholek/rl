@@ -470,27 +470,33 @@ self.filename_quoting_desired,
 completion = Completion()
 
 
-def generator(compfunc):
+def generator(func):
     """Generator function factory.
 
     Takes a function returning a list of matches and returns an
-    object implementing the generator protocol readline expects.
-    The function is called as ``compfunc(text)`` and should
-    return an iterable of matches for ``text``.
+    object implementing the generator protocol readline requires.
+    The function is called as ``func(text)`` and should return an
+    iterable of matches for ``text``.
     """
-    class GeneratorFunction(object):
+    d = {}
 
-        def __call__(self, text, state):
-            if state == 0:
-                self.matches = compfunc(text)
-                if not isinstance(self.matches, list):
-                    self.matches = list(self.matches)
-            try:
-                return self.matches[state]
-            except IndexError:
-                return None
+    def generator_func(*args):
+        # We are called as func(text, state) or func(self, text, state)
+        # depending on whether we wrap a function or instance method.
+        state, args = args[-1], args[:-1]
+        if state == 0:
+            d['matches'] = func(*args)
+            if not isinstance(d['matches'], list):
+                d['matches'] = list(d['matches'])
+        try:
+            return d['matches'][state]
+        except (KeyError, IndexError):
+            return None
 
-    return GeneratorFunction()
+    generator_func.__name__ = func.__name__
+    generator_func.__dict__ = func.__dict__
+    generator_func.__doc__ = func.__doc__
+    return generator_func
 
 
 def print_exc(func):
