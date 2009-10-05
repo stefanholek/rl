@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0a2 - Unreleased
+------------------
+
+- Make ``generator`` factory work for functions and instance methods.
+  [stefan]
+
+
 1.0a1 - 2009-10-04
 ------------------
 
