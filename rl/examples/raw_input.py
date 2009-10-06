@@ -5,7 +5,7 @@ from rl import completer
 from rl import print_exc
 
 
-class complete(object):
+class Complete(object):
     # A completion function implementing readline's
     # generator protocol
 
@@ -28,7 +28,7 @@ class complete(object):
 
 def main():
     # Set the completion function
-    completer.completer = complete()
+    completer.completer = Complete()
 
     # Enable TAB completion
     completer.parse_and_bind('tab: complete')
