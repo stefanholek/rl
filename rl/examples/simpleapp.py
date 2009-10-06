@@ -17,7 +17,7 @@ class MyCmd(cmd.Cmd):
         # Characters used to find word boundaries
         completer.word_break_characters = '! \t\n"\'><=;|&(:'
         # Characters that trigger filename quoting
-        completer.filename_quote_characters = '\\ \t\n"\'><=;|&()@#$`?*[!:{~'
+        completer.filename_quote_characters = '\\ \t\n"\'><=;|&()@#$`?*[!:{'
         # Exclude hidden files
         completer.match_hidden_files = False
         # Expand tildes during completion
@@ -38,16 +38,20 @@ class MyCmd(cmd.Cmd):
     def complete_shell(self, text, line, begidx, endidx):
         # Select the completion type depending on position
         # and format of the word being completed
+        if text.startswith('~') and (os.sep not in text):
+            return completion.complete_username(text)
+
         if self.commandpos(line, begidx) and (os.sep not in text):
-            return self.completecommands(text)
-        else:
-            return self.completefilenames(text)
+            return self._complete_command(text)
+
+        return completion.complete_filename(text)
 
     def commandpos(self, line, begidx):
         delta = line[0:begidx]
         return delta.strip() in ('!', 'shell')
 
-    def completecommands(self, text):
+    def _complete_command(self, text):
+        # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
             if os.path.isdir(dir):
@@ -55,12 +59,6 @@ class MyCmd(cmd.Cmd):
                     if name.startswith(text):
                         if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
                             yield name
-
-    def completefilenames(self, text):
-        if text.startswith('~') and (os.sep not in text):
-            return completion.complete_username(text)
-        else:
-            return completion.complete_filename(text)
 
 
 def main():
