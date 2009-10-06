@@ -399,7 +399,7 @@ class Completion(object):
         is defined as: ``0 <= rl_point <= rl_end``."""
         return readline.get_rl_end()
 
-    # Completion functions
+    # Built-in functions
 
     def complete_filename(self, text):
         """Built-in filename completion."""
