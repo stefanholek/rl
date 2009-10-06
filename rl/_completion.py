@@ -493,7 +493,8 @@ def generator(func):
         except (KeyError, IndexError):
             return None
 
-    generator_func.__name__ = func.__name__
+    # Allow to wrap callable non-functions which may not have a __name__
+    generator_func.__name__ = getattr(func, '__name__', func.__class__.__name__)
     generator_func.__dict__ = func.__dict__
     generator_func.__doc__ = func.__doc__
     return generator_func

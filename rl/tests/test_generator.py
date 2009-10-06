@@ -103,6 +103,21 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(complete_1('test', 4), None)
         self.assertEqual(complete_2('test', 4), None)
 
+    def test_wrap_callable_object(self):
+
+        class Complete(object):
+            """Test completer"""
+
+            def __call__(self, text):
+                return ['foo', 'bar', 'baz']
+
+        g = generator(Complete())
+        self.assertEqual(g.__name__, 'Complete')
+        self.assertEqual(g.__doc__, 'Test completer')
+
+        match = g('test', 0)
+        self.assertEqual(match, 'foo')
+
 
 class PrintExcTests(unittest.TestCase):
 
