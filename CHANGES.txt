@@ -4,7 +4,11 @@ Changelog
 1.0a2 - Unreleased
 ------------------
 
-- Make ``generator`` factory work for functions and instance methods.
+- Make the ``generator`` factory work for functions, instance methods,
+  and other callables.
+  [stefan]
+
+- Improve examples.
   [stefan]
 
 
