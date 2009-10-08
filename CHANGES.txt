@@ -1,11 +1,10 @@
 Changelog
 =========
 
-1.0a2 - Unreleased
+1.0a2 - 2009-10-08
 ------------------
 
-- Make the ``generator`` factory work for functions, instance methods,
-  and other callables.
+- Make the ``generator`` factory work for all types of callables.
   [stefan]
 
 - Improve examples.
