@@ -80,6 +80,13 @@ The code below implements system command completion similar to bash::
 
 See the ``examples`` subdirectory of the package for more.
 
+Repository Access
+-----------------
+
+rl development is hosted on github_.
+
+.. _github: http://github.com/stefanholek/rl
+
 Installation
 ============
 
