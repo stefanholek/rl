@@ -3,12 +3,12 @@
 from rl import completer
 from rl import completion
 
-PYTHON_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
+DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
 def reset_completer():
     completer.quote_characters = ''
-    completer.word_break_characters = PYTHON_DELIMS
+    completer.word_break_characters = DEFAULT_DELIMS
     completer.special_prefixes = ''
     completer.filename_quote_characters = ''
     completer.match_hidden_files = True
