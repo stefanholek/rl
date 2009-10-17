@@ -7,6 +7,10 @@ from rl import completion
 PYTHON_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
+def hook(*args, **kw):
+    pass
+
+
 class CompleterTests(unittest.TestCase):
 
     def test_quote_characters(self):
@@ -64,6 +68,76 @@ class CompleterTests(unittest.TestCase):
         self.assertEqual(completer.query_items, 200)
         completer.query_items = -1
         self.assertEqual(completer.query_items, -1)
+
+    def test_completer(self):
+        self.assertEqual(completer.completer, None)
+        completer.completer = hook
+        self.assertEqual(completer.completer, hook)
+        completer.completer = None
+        self.assertEqual(completer.completer, None)
+
+    def test_startup_hook(self):
+        self.assertEqual(completer.startup_hook, None)
+        completer.startup_hook = hook
+        self.assertEqual(completer.startup_hook, hook)
+        completer.startup_hook = None
+        self.assertEqual(completer.startup_hook, None)
+
+    def test_pre_input_hook(self):
+        self.assertEqual(completer.pre_input_hook, None)
+        completer.pre_input_hook = hook
+        self.assertEqual(completer.pre_input_hook, hook)
+        completer.pre_input_hook = None
+        self.assertEqual(completer.pre_input_hook, None)
+
+    def test_word_break_hook(self):
+        self.assertEqual(completer.word_break_hook, None)
+        completer.word_break_hook = hook
+        self.assertEqual(completer.word_break_hook, hook)
+        completer.word_break_hook = None
+        self.assertEqual(completer.word_break_hook, None)
+
+    def test_directory_completion_hook(self):
+        self.assertEqual(completer.directory_completion_hook, None)
+        completer.directory_completion_hook = hook
+        self.assertEqual(completer.directory_completion_hook, hook)
+        completer.directory_completion_hook = None
+        self.assertEqual(completer.directory_completion_hook, None)
+
+    def test_display_matches_hook(self):
+        self.assertEqual(completer.display_matches_hook, None)
+        completer.display_matches_hook = hook
+        self.assertEqual(completer.display_matches_hook, hook)
+        completer.display_matches_hook = None
+        self.assertEqual(completer.display_matches_hook, None)
+
+    def test_char_is_quoted_function(self):
+        self.assertEqual(completer.char_is_quoted_function, None)
+        completer.char_is_quoted_function = hook
+        self.assertEqual(completer.char_is_quoted_function, hook)
+        completer.char_is_quoted_function = None
+        self.assertEqual(completer.char_is_quoted_function, None)
+
+    def test_filename_quoting_function(self):
+        self.assertEqual(completer.filename_quoting_function, None)
+        completer.filename_quoting_function = hook
+        self.assertEqual(completer.filename_quoting_function, hook)
+        completer.filename_quoting_function = None
+        self.assertEqual(completer.filename_quoting_function, None)
+
+    def test_filename_dequoting_function(self):
+        self.assertEqual(completer.filename_dequoting_function, None)
+        completer.filename_dequoting_function = hook
+        self.assertEqual(completer.filename_dequoting_function, hook)
+        completer.filename_dequoting_function = None
+        self.assertEqual(completer.filename_dequoting_function, None)
+
+    def test_ignore_some_completions_function(self):
+        self.assertEqual(completer.ignore_some_completions_function, None)
+        completer.ignore_some_completions_function = hook
+        self.assertEqual(completer.ignore_some_completions_function, hook)
+        completer.ignore_some_completions_function = None
+        self.assertEqual(completer.ignore_some_completions_function, None)
 
     def test_dump_completer(self):
         stream = StringIO.StringIO()
