@@ -3,12 +3,51 @@ import StringIO
 
 from rl import completer
 from rl import completion
-from rl.testing import reset
+from rl import generator
+from rl import readline
+
 from rl.testing import DEFAULT_DELIMS
+from rl.testing import reset
+
+TAB = '\t'
 
 
-def hook(*args, **kw):
-    pass
+called = []
+
+def hook(*args):
+    called.append(*args)
+
+@generator
+def texthook(text):
+    hook(text)
+    return ['fred']
+
+@generator
+def fauxcomplete(text):
+    return ['fred', 'barney']
+
+
+class HookTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+        called[:] = []
+        completer.completer = fauxcomplete
+
+    def test_completer(self):
+        completer.completer = texthook
+        completer.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['fr'])
+
+    def _test_word_break_hook(self):
+        completer.word_break_hook = hook
+        completer.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [''])
+
+    def _test_char_is_quoted_function(self):
+        pass
 
 
 class CompleterTests(unittest.TestCase):
