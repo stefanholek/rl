@@ -3,9 +3,9 @@ import StringIO
 
 from rl import completer
 from rl import completion
-
 from rl.testing import reset
 from rl.testing import DEFAULT_DELIMS
+
 
 def hook(*args, **kw):
     pass

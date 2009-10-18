@@ -1,17 +1,23 @@
 import unittest
 
 from rl import history
+from rl.testing import reset
 
 
 class HistoryTests(unittest.TestCase):
 
     def setUp(self):
-        history.clear()
+        reset()
 
     def test_length(self):
         self.assertEqual(history.length, -1)
         history.length = 100
         self.assertEqual(history.length, 100)
+
+    def test_add_item(self):
+        self.assertEqual(len(history), 0)
+        history.add_item('fred')
+        self.assertEqual(len(history), 1)
 
     def test_append(self):
         self.assertEqual(len(history), 0)

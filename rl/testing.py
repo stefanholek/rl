@@ -2,6 +2,7 @@
 
 from rl import completer
 from rl import completion
+from rl import history
 
 DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
@@ -36,7 +37,13 @@ def reset_completion():
     completion.filename_quoting_desired = True
 
 
+def reset_history():
+    history.clear()
+    history.length = -1
+
+
 def reset():
     reset_completer()
     reset_completion()
+    reset_history()
 
