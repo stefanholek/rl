@@ -58,6 +58,7 @@ setup(name='rl',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
+      use_2to3=True,
       test_suite='rl.tests',
       ext_modules=[
           readline,
