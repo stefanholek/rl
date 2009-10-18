@@ -4,6 +4,11 @@ import sys
 import _readline as readline
 
 
+def apply(func):
+    """Python3 has no ``apply``."""
+    return func()
+
+
 class Completer(object):
     """Interface to the readline completer.
 
