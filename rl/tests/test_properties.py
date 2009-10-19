@@ -3,51 +3,13 @@ import StringIO
 
 from rl import completer
 from rl import completion
-from rl import generator
-from rl import readline
 
 from rl.testing import DEFAULT_DELIMS
 from rl.testing import reset
 
-TAB = '\t'
-
-
-called = []
 
 def hook(*args):
-    called.append(*args)
-
-@generator
-def texthook(text):
-    hook(text)
-    return ['fred']
-
-@generator
-def fauxcomplete(text):
-    return ['fred', 'barney']
-
-
-class HookTests(unittest.TestCase):
-
-    def setUp(self):
-        reset()
-        called[:] = []
-        completer.completer = fauxcomplete
-
-    def test_completer(self):
-        completer.completer = texthook
-        completer.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(called, ['fr'])
-
-    def _test_word_break_hook(self):
-        completer.word_break_hook = hook
-        completer.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(called, [''])
-
-    def _test_char_is_quoted_function(self):
-        pass
+    pass
 
 
 class CompleterTests(unittest.TestCase):
@@ -195,11 +157,11 @@ class CompletionTests(unittest.TestCase):
         stream = StringIO.StringIO()
         completion.dump(stream)
 
-    def test_begidx(self):
-        self.assertEqual(completion.begidx, 0)
+    #def test_begidx(self):
+    #    self.assertEqual(completion.begidx, 0)
 
-    def test_endidx(self):
-        self.assertEqual(completion.endidx, 0)
+    #def test_endidx(self):
+    #    self.assertEqual(completion.endidx, 0)
 
     def test_line_buffer(self):
         self.assertEqual(completion.line_buffer, '')
@@ -208,8 +170,8 @@ class CompletionTests(unittest.TestCase):
         completion.line_buffer = ''
         self.assertEqual(completion.line_buffer, '')
 
-    def test_completion_type(self):
-        self.assertEqual(completion.completion_type, '\0') # XXX
+    #def test_completion_type(self):
+    #    self.assertEqual(completion.completion_type, '\0') # XXX
 
     def test_append_character(self):
         self.assertEqual(completion.append_character, ' ')
@@ -225,8 +187,8 @@ class CompletionTests(unittest.TestCase):
         completion.suppress_append = False
         self.assertEqual(completion.suppress_append, False)
 
-    def test_quote_character(self):
-        self.assertEqual(completion.quote_character, '')
+    #def test_quote_character(self):
+    #    self.assertEqual(completion.quote_character, '')
 
     def test_suppress_quote(self):
         self.assertEqual(completion.suppress_quote, False)
@@ -235,8 +197,8 @@ class CompletionTests(unittest.TestCase):
         completion.suppress_quote = False
         self.assertEqual(completion.suppress_quote, False)
 
-    def test_found_quote(self):
-        self.assertEqual(completion.found_quote, False)
+    #def test_found_quote(self):
+    #    self.assertEqual(completion.found_quote, False)
 
     def test_filename_completion_desired(self):
         self.assertEqual(completion.filename_completion_desired, False)
@@ -252,13 +214,13 @@ class CompletionTests(unittest.TestCase):
         completion.filename_quoting_desired = True
         self.assertEqual(completion.filename_quoting_desired, True)
 
-    def test_rl_point(self):
-        self.assertEqual(completion.rl_point, 0)
-        completion.line_buffer = 'foo'
-        self.assertEqual(completion.rl_point, 3)
+    #def test_rl_point(self):
+    #    self.assertEqual(completion.rl_point, 0)
+    #    completion.line_buffer = 'foo'
+    #    self.assertEqual(completion.rl_point, 3)
 
-    def test_rl_end(self):
-        self.assertEqual(completion.rl_end, 0)
-        completion.line_buffer = 'foo'
-        self.assertEqual(completion.rl_end, 3)
+    #def test_rl_end(self):
+    #    self.assertEqual(completion.rl_end, 0)
+    #    completion.line_buffer = 'foo'
+    #    self.assertEqual(completion.rl_end, 3)
 
