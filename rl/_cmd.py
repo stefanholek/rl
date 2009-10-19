@@ -72,12 +72,10 @@ def complete(self, text, state):
                     compfunc = self.completedefault
         else:
             compfunc = self.completenames
-        self.completion_matches = compfunc(text, line, begidx, endidx)
-        if not isinstance(self.completion_matches, list):
-            self.completion_matches = list(self.completion_matches)
+        self.completion_matches = iter(compfunc(text, line, begidx, endidx))
     try:
-        return self.completion_matches[state]
-    except IndexError:
+        return self.completion_matches.next()
+    except StopIteration:
         return None
 
 

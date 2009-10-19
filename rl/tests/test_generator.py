@@ -118,6 +118,15 @@ class GeneratorTests(unittest.TestCase):
         match = g('test', 0)
         self.assertEqual(match, 'foo')
 
+    def test_bad_completer(self):
+
+        @generator
+        def complete(text):
+            """Test completer"""
+            return None
+
+        self.assertRaises(TypeError, complete, 'test', 0)
+
 
 class PrintExcTests(unittest.TestCase):
 

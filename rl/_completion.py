@@ -492,12 +492,10 @@ def generator(func):
         # depending on whether we wrap a function or instance method.
         state, args = args[-1], args[:-1]
         if state == 0:
-            d['matches'] = func(*args)
-            if not isinstance(d['matches'], list):
-                d['matches'] = list(d['matches'])
+            d['matches'] = iter(func(*args))
         try:
-            return d['matches'][state]
-        except (KeyError, IndexError):
+            return d['matches'].next()
+        except (KeyError, StopIteration):
             return None
 
     # Allow to wrap callable non-functions which may not have a __name__
