@@ -243,23 +243,24 @@ class Completer(object):
     def dump(self, stream=sys.stdout):
         """Dump properties to stream."""
         stream.write("""\
-quote_characters:               %r
-word_break_characters:          %r
-special_prefixes:               %r
-filename_quote_characters:      %r
-match_hidden_files:             %s
-tilde_expansion:                %s
-query_items:                    %d
-inhibit_completion:             %s
-completer:                      %r
-startup_hook:                   %r
-pre_input_hook:                 %r
-word_break_hook:                %r
-directory_completion_hook:      %r
-display_matches_hook:           %r
-char_is_quoted_function:        %r
-filename_quoting_function:      %r
-filename_dequoting_function:    %r
+quote_characters:                 %r
+word_break_characters:            %r
+special_prefixes:                 %r
+filename_quote_characters:        %r
+match_hidden_files:               %s
+tilde_expansion:                  %s
+query_items:                      %d
+inhibit_completion:               %s
+completer:                        %r
+startup_hook:                     %r
+pre_input_hook:                   %r
+word_break_hook:                  %r
+directory_completion_hook:        %r
+display_matches_hook:             %r
+char_is_quoted_function:          %r
+filename_quoting_function:        %r
+filename_dequoting_function:      %r
+ignore_some_completions_function: %r
 """ % (
 self.quote_characters,
 self.word_break_characters,
@@ -278,6 +279,7 @@ self.display_matches_hook,
 self.char_is_quoted_function,
 self.filename_quoting_function,
 self.filename_dequoting_function,
+self.ignore_some_completions_function,
 ))
 
 completer = Completer()
@@ -442,17 +444,17 @@ class Completion(object):
     def dump(self, stream=sys.stdout):
         """Dump properties to stream."""
         stream.write("""\
-line_buffer:                    %r
-begidx:                         %d
-endidx:                         %d
-completion_type:                %r
-append_character:               %r
-suppress_append:                %s
-found_quote:                    %s
-quote_character:                %r
-suppress_quote:                 %s
-filename_completion_desired:    %s
-filename_quoting_desired:       %s
+line_buffer:                      %r
+begidx:                           %d
+endidx:                           %d
+completion_type:                  %r
+append_character:                 %r
+suppress_append:                  %s
+found_quote:                      %s
+quote_character:                  %r
+suppress_quote:                   %s
+filename_completion_desired:      %s
+filename_quoting_desired:         %s
 """ % (
 self.line_buffer,
 self.begidx,
