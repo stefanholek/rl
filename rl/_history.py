@@ -22,6 +22,8 @@ class History(object):
         atexit.register(history.write_file, histfile)
     """
 
+    __slots__ = ()
+
     @property
     def _base(self):
         """The logical base of the history list."""

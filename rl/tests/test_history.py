@@ -127,3 +127,6 @@ class HistoryTests(unittest.TestCase):
         self.assertRaises(TypeError, history.get_item, 'foo')
         self.assertRaises(TypeError, history.get_item, False)
 
+    def test_slots(self):
+        self.assertRaises(AttributeError, setattr, history, 'foo', 1)
+

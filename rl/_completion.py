@@ -22,6 +22,8 @@ class Completer(object):
         completer.parse_and_bind('tab: complete')
     """
 
+    __slots__ = ()
+
     @apply
     def quote_characters():
         doc="""Characters that may be used in pairs to quote substrings
@@ -302,6 +304,8 @@ class Completion(object):
             completion.append_character = '@'
             return completion.complete_username(text)
     """
+
+    __slots__ = ()
 
     @property
     def begidx(self):

@@ -147,6 +147,9 @@ class CompleterTests(unittest.TestCase):
         completer.ignore_some_completions_function = None
         self.assertEqual(completer.ignore_some_completions_function, None)
 
+    def test_slots(self):
+        self.assertRaises(AttributeError, setattr, completer, 'foo', 1)
+
 
 class CompletionTests(unittest.TestCase):
 
@@ -223,4 +226,7 @@ class CompletionTests(unittest.TestCase):
     #    self.assertEqual(completion.rl_end, 0)
     #    completion.line_buffer = 'foo'
     #    self.assertEqual(completion.rl_end, 3)
+
+    def test_slots(self):
+        self.assertRaises(AttributeError, setattr, completion, 'foo', 1)
 
