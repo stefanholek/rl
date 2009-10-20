@@ -4,6 +4,9 @@ Changelog
 1.0a3 - Unreleased
 ------------------
 
+- Add ``__slots__`` to interface objects to make them immutable.
+  [stefan]
+
 
 1.0a2 - 2009-10-08
 ------------------
