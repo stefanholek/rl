@@ -149,6 +149,16 @@ class WordBreakHookTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 2)
         self.assertEqual(completion.endidx, 6)
 
+    def test_empty_string(self):
+        def func(begidx, endidx):
+            return ''
+        completer.word_break_hook = func
+        completer.word_break_characters = ' '
+        completion.line_buffer = 'fr ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 0)
+        self.assertEqual(completion.endidx, 5)
+
 
 class CharIsQuotedFunctionTests(unittest.TestCase):
 
@@ -249,6 +259,24 @@ class CompleterTests(unittest.TestCase):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, 'fr')
 
+    def test_none_matches(self):
+        @generator
+        def func(text):
+            return [None]
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_empty_string(self):
+        @generator
+        def func(text):
+            return ['']
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr ') # XXX Single match?
+
 
 class DirectoryCompletionHookTests(JailSetup):
 
@@ -312,4 +340,83 @@ class DirectoryCompletionHookTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(called, ['flint\\ stone/'])
         self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_empty_string(self):
+        def func(dirname):
+            return ''
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+
+class FilenameDequotingFunctionTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkfile('fr ed.txt')
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fr\\ ")
+
+    def test_none_hook(self):
+        def func(text, quote_char):
+            return None
+        self.mkfile('fr ed.txt')
+        completer.filename_dequoting_function = func
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fr\\ ")
+
+    def test_bad_hook(self):
+        def func(text, quote_char):
+            return 23
+        self.mkfile('fr ed.txt')
+        completer.filename_dequoting_function = func
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fr\\ ")
+
+    def test_filename_dequoting_function(self):
+        def func(text, quote_char):
+            called.append((text, quote_char))
+            return text.replace('\\', '')
+        self.mkfile('fr ed.txt')
+        completer.filename_dequoting_function = func
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
+        self.assertEqual(completion.line_buffer, "'fr ed.txt' ")
+
+    def test_no_dequoting(self):
+        def func(text, quote_char):
+            called.append((text, quote_char))
+            return text
+        self.mkfile('fr ed.txt')
+        completer.filename_dequoting_function = func
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
+        self.assertEqual(completion.line_buffer, "fr\\ ")
+
+    def test_empty_string(self):
+        def func(text, quote_char):
+            return ''
+        self.mkfile('fr ed.txt')
+        self.mkfile('fr ed.gif')
+        completer.filename_dequoting_function = func
+        completion.line_buffer = 'fr\\ '
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "'fr ed.") # XXX Match?
 
