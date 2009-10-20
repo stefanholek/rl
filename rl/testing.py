@@ -76,6 +76,10 @@ class JailSetup(unittest.TestCase):
             if isdir(self.tempdir):
                 shutil.rmtree(self.tempdir)
 
+    def mkdir(self, *names):
+        for name in names:
+            os.mkdir(name)
+
     def mkfile(self, *names):
         for name in names:
             f = open(name, 'wt')
