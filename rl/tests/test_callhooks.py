@@ -100,3 +100,99 @@ class DisplayMatchesTests(JailSetup):
         readline.complete_internal('?')
         self.assertEqual(called, [('fred.', ['fred.gif', 'fred.txt'], 8)])
 
+
+class WordBreakHookTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_nohook(self):
+        completer.word_break_characters = ' '
+        completion.line_buffer = 'fr ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 3)
+        self.assertEqual(completion.endidx, 5)
+
+    def test_nonehook(self):
+        def func(begidx, endidx):
+            return None
+        completer.word_break_hook = func
+        completer.word_break_characters = ' '
+        completion.line_buffer = 'fr ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 3)
+        self.assertEqual(completion.endidx, 5)
+
+    def test_badhook(self):
+        def func(begidx, endidx):
+            return 23
+        completer.word_break_hook = func
+        completer.word_break_characters = ' '
+        completion.line_buffer = 'fr ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 3)
+        self.assertEqual(completion.endidx, 5)
+
+    def test_replaces_word_break_characters(self):
+        def func(begidx, endidx):
+            return '!'
+        completer.word_break_hook = func
+        completer.word_break_characters = ' '
+        completion.line_buffer = 'f!r ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 2)
+        self.assertEqual(completion.endidx, 6)
+
+
+class CharIsQuotedFunctionTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_nohook(self):
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 4)
+        self.assertEqual(completion.endidx, 6)
+
+    def test_nonehook(self):
+        def func(text, index):
+            return None
+        completer.char_is_quoted_function = func
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 4)
+        self.assertEqual(completion.endidx, 6)
+
+    def test_badhook(self):
+        def func(text, index):
+            raise RuntimeError()
+        completer.char_is_quoted_function = func
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 4)
+        self.assertEqual(completion.endidx, 6)
+
+    def test_char_is_not_quoted(self):
+        def func(text, index):
+            return False
+        completer.char_is_quoted_function = func
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 4)
+        self.assertEqual(completion.endidx, 6)
+
+    def test_char_is_quoted(self):
+        def func(text, index):
+            return True
+        completer.char_is_quoted_function = func
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 0)
+        self.assertEqual(completion.endidx, 6)
+
