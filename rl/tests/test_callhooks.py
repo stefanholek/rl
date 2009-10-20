@@ -22,6 +22,12 @@ def filecomplete(text):
     return completion.complete_filename(text)
 
 
+def is_quoted(text, index):
+    if index < 1:
+        return False
+    return text[index-1] == '\\'
+
+
 class WordBreakTests(unittest.TestCase):
 
     def setUp(self):
@@ -106,14 +112,14 @@ class WordBreakHookTests(unittest.TestCase):
     def setUp(self):
         reset()
 
-    def test_nohook(self):
+    def test_no_hook(self):
         completer.word_break_characters = ' '
         completion.line_buffer = 'fr ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 3)
         self.assertEqual(completion.endidx, 5)
 
-    def test_nonehook(self):
+    def test_none_hook(self):
         def func(begidx, endidx):
             return None
         completer.word_break_hook = func
@@ -123,7 +129,7 @@ class WordBreakHookTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 3)
         self.assertEqual(completion.endidx, 5)
 
-    def test_badhook(self):
+    def test_bad_hook(self):
         def func(begidx, endidx):
             return 23
         completer.word_break_hook = func
@@ -149,14 +155,14 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
     def setUp(self):
         reset()
 
-    def test_nohook(self):
+    def test_no_hook(self):
         completer.quote_characters = '"\''
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
         self.assertEqual(completion.endidx, 6)
 
-    def test_nonehook(self):
+    def test_none_hook(self):
         def func(text, index):
             return None
         completer.char_is_quoted_function = func
@@ -166,19 +172,9 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 4)
         self.assertEqual(completion.endidx, 6)
 
-    def test_badhook(self):
+    def test_bad_hook(self):
         def func(text, index):
             raise RuntimeError()
-        completer.char_is_quoted_function = func
-        completer.quote_characters = '"\''
-        completion.line_buffer = 'fr\\ ed'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.begidx, 4)
-        self.assertEqual(completion.endidx, 6)
-
-    def test_char_is_not_quoted(self):
-        def func(text, index):
-            return False
         completer.char_is_quoted_function = func
         completer.quote_characters = '"\''
         completion.line_buffer = 'fr\\ ed'
@@ -196,18 +192,28 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 0)
         self.assertEqual(completion.endidx, 6)
 
+    def test_char_is_not_quoted(self):
+        def func(text, index):
+            return False
+        completer.char_is_quoted_function = func
+        completer.quote_characters = '"\''
+        completion.line_buffer = 'fr\\ ed'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.begidx, 4)
+        self.assertEqual(completion.endidx, 6)
+
 
 class CompleterTests(unittest.TestCase):
 
     def setUp(self):
         reset()
 
-    def test_nocompleter(self):
+    def test_no_completer(self):
         completion.line_buffer = 'fr'
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, 'fr')
 
-    def test_nonecompleter(self):
+    def test_none_completer(self):
         @generator
         def func(text):
             return None
@@ -216,19 +222,10 @@ class CompleterTests(unittest.TestCase):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, 'fr')
 
-    def test_badcompleter(self):
+    def test_bad_completer(self):
         @generator
         def func(text):
             raise RuntimeError()
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_no_matches(self):
-        @generator
-        def func(text):
-            return []
         completer.completer = func
         completion.line_buffer = 'fr'
         readline.complete_internal(TAB)
@@ -243,4 +240,76 @@ class CompleterTests(unittest.TestCase):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, 'fred ')
 
+    def test_no_matches(self):
+        @generator
+        def func(text):
+            return []
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+
+class DirectoryCompletionHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_none_hook(self):
+        def func(dirname):
+            return None
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_bad_hook(self):
+        def func(dirname):
+            return 23
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_directory_completion_hook(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname.replace('\\', '')
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flint\\ stone/'])
+        self.assertEqual(completion.line_buffer, "'flint stone/fred.txt' ")
+
+    def test_no_dequoting(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flint\\ stone/'])
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
 
