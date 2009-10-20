@@ -196,3 +196,51 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 0)
         self.assertEqual(completion.endidx, 6)
 
+
+class CompleterTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_nocompleter(self):
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_nonecompleter(self):
+        @generator
+        def func(text):
+            return None
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_badcompleter(self):
+        @generator
+        def func(text):
+            raise RuntimeError()
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_no_matches(self):
+        @generator
+        def func(text):
+            return []
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_complete(self):
+        @generator
+        def func(text):
+            return ['fred']
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fred ')
+
+
