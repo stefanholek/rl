@@ -31,6 +31,15 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#if (PY_MAJOR_VERSION >= 3)
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_AsLong PyLong_AsLong
+#define PyString_FromString PyUnicode_FromString
+#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
+#define PyString_FromFormat PyUnicode_FromFormat
+#define PyString_AsString _PyUnicode_AsString
+#endif
+
 #ifdef HAVE_RL_COMPLETION_MATCHES
 #define completion_matches(x, y) \
 	rl_completion_matches((x), ((rl_compentry_func_t *)(y)))
@@ -2397,13 +2406,13 @@ on_completion_display_matches_hook(char **matches,
 	r = PyObject_CallFunction(completion_display_matches_hook,
 				  "sOi", matches[0], m, max_length);
 
-	Py_DECREF(m), m=NULL;
+	Py_DECREF(m); m=NULL;
 	
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
 		goto error;
 	}
-	Py_XDECREF(r), r=NULL;
+	Py_XDECREF(r); r=NULL;
 
 	if (0) {
 	error:
@@ -2724,6 +2733,33 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU readline.");
 
+#if (PY_MAJOR_VERSION >= 3)
+static struct PyModuleDef readlinemodule = {
+       PyModuleDef_HEAD_INIT,
+       "_readline",
+       doc_module,
+       -1,
+       readline_methods,
+       NULL,
+       NULL,
+       NULL,
+       NULL
+};
+
+PyMODINIT_FUNC
+PyInit__readline(void)
+{
+	PyObject *m;
+
+	m = PyModule_Create(&readlinemodule);
+	if (m == NULL)
+		return NULL;
+
+	PyOS_ReadlineFunctionPointer = call_readline;
+	setup_readline();
+	return m;
+}
+#else
 PyMODINIT_FUNC
 init_readline(void)
 {
@@ -2737,3 +2773,4 @@ init_readline(void)
 	PyOS_ReadlineFunctionPointer = call_readline;
 	setup_readline();
 }
+#endif
