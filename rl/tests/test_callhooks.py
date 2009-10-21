@@ -420,3 +420,62 @@ class FilenameDequotingFunctionTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, "'fr ed.") # XXX Match?
 
+
+class IgnoreSomeCompletionsFunctionTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkfile('fred.txt')
+        self.mkfile('fred.gif')
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.")
+
+    def test_none_hook(self):
+        def func(substitution, matches):
+            return None
+        self.mkfile('fred.txt')
+        self.mkfile('fred.gif')
+        completer.ignore_some_completions_function = func
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.")
+
+    def test_bad_hook(self):
+        def func(substitution, matches):
+            return 23
+        self.mkfile('fred.txt')
+        self.mkfile('fred.gif')
+        completer.ignore_some_completions_function = func
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.")
+
+    def test_ignore_some_completions_function(self):
+        def func(substitution, matches):
+            called.append((substitution, matches))
+            return [x for x in matches if not x.endswith('gif')]
+        self.mkfile('fred.txt')
+        self.mkfile('fred.gif')
+        completer.ignore_some_completions_function = func
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [('fred.', ['fred.gif', 'fred.txt'])])
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_no_ignore(self):
+        def func(substitution, matches):
+            called.append((substitution, matches))
+            return matches
+        self.mkfile('fred.txt')
+        self.mkfile('fred.gif')
+        completer.ignore_some_completions_function = func
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [('fred.', ['fred.gif', 'fred.txt'])])
+        self.assertEqual(completion.line_buffer, "fred.")
+
