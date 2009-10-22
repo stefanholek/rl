@@ -7,6 +7,12 @@ Changelog
 - Add ``__slots__`` to interface objects to make them immutable.
   [stefan]
 
+- Support Python 2.5, 2.6 and 3.1 (thanks to distribute).
+  [stefan]
+
+- Approach something like test coverage.
+  [stefan]
+
 
 1.0a2 - 2009-10-08
 ------------------
