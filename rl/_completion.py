@@ -2,11 +2,7 @@
 
 import sys
 import _readline as readline
-
-
-def apply(func):
-    """Python3 has no ``apply``."""
-    return func()
+from _py3compat import apply
 
 
 class Completer(object):

@@ -1,11 +1,7 @@
 """Interface to the readline history."""
 
 import _readline as readline
-
-
-def apply(func):
-    """Python3 has no ``apply``."""
-    return func()
+from _py3compat import apply
 
 
 class History(object):
