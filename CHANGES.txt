@@ -4,6 +4,9 @@ Changelog
 1.0a4 - Unreleased
 ------------------
 
+- Implement the ``generator`` factory using an iterator instead of a list.
+  [stefan]
+
 
 1.0a3 - 2009-10-22
 ------------------
