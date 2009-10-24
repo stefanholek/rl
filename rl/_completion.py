@@ -495,7 +495,7 @@ def generator(func):
             d['matches'] = iter(func(*args))
         try:
             return d['matches'].next()
-        except (KeyError, StopIteration):
+        except StopIteration:
             return None
 
     # Allow to wrap callable non-functions which may not have a __name__

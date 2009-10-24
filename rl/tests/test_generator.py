@@ -76,11 +76,20 @@ class GeneratorTests(unittest.TestCase):
             return ['foo', 'bar', 'baz']
 
         self.assertRaises(IndexError, complete)
-        self.assertEqual(complete('test'), None)
-        self.assertEqual(complete('test', 'foo'), None)
-        self.assertEqual(complete('test', 1), None)
-        self.assertEqual(complete('test', 0, 1), None)
-        self.assertEqual(complete('test', 0, 1, 2), None)
+        self.assertRaises(KeyError, complete, 'test')
+        self.assertRaises(KeyError, complete, 'test', 'foo')
+        self.assertRaises(KeyError, complete, 1)
+        self.assertRaises(KeyError, complete, 0, 1)
+        self.assertRaises(KeyError, complete, 0, 1, 2)
+
+    def test_bad_completer(self):
+
+        @generator
+        def complete(text):
+            """Test completer"""
+            return None
+
+        self.assertRaises(TypeError, complete, 'test', 0)
 
     def test_separate_state(self):
 
@@ -117,15 +126,6 @@ class GeneratorTests(unittest.TestCase):
 
         match = g('test', 0)
         self.assertEqual(match, 'foo')
-
-    def test_bad_completer(self):
-
-        @generator
-        def complete(text):
-            """Test completer"""
-            return None
-
-        self.assertRaises(TypeError, complete, 'test', 0)
 
 
 class PrintExcTests(unittest.TestCase):
