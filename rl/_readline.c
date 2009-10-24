@@ -1502,13 +1502,13 @@ Return rl_end.");
 
 extern char _rl_find_completion_word(int *fp, int *dp);
 
+/*
 static PyObject *
 find_completion_word(PyObject *self, PyObject *noargs)
 {
 	int begidx, endidx;
 	PyObject *py_begidx, *py_endidx;
 
-	/* The magic incantation */
 	endidx = rl_point;
 	if (rl_point)
 		_rl_find_completion_word(NULL, NULL);
@@ -1527,6 +1527,7 @@ find_completion_word(PyObject *self, PyObject *noargs)
 PyDoc_STRVAR(doc_find_completion_word,
 "find_completion_word() -> (begidx, endidx)\n\
 Find the bounds of the word at or before the cursor position.");
+*/
 
 
 static PyObject *
@@ -2329,8 +2330,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_display_match_list},
 	{"get_rl_point", get_rl_point, METH_NOARGS, doc_get_rl_point},
 	{"get_rl_end", get_rl_end, METH_NOARGS, doc_get_rl_end},
+	/*
 	{"find_completion_word", find_completion_word,
 	 METH_NOARGS, doc_find_completion_word},
+	*/
 	{"complete_internal", complete_internal,
 	 METH_VARARGS, doc_complete_internal},
 	/* </_readline.c> */
