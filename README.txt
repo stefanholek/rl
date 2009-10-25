@@ -78,7 +78,9 @@ The code below implements system command completion similar to bash::
         command = raw_input('command: ')
         print 'You typed:', command
 
-See the ``examples`` subdirectory of the package for more.
+See the examples_ subdirectory of the package for more.
+
+.. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples/
 
 Repository Access
 -----------------
