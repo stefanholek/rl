@@ -64,7 +64,7 @@ setup(name='rl',
           readline,
       ],
       install_requires=[
-          'distribute',
+          'setuptools',
       ],
 )
 
