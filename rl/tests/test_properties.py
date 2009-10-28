@@ -160,11 +160,19 @@ class CompletionTests(unittest.TestCase):
         stream = StringIO.StringIO()
         completion.dump(stream)
 
-    #def test_begidx(self):
-    #    self.assertEqual(completion.begidx, 0)
+    def test_begidx(self):
+        self.assertEqual(completion.begidx, 0)
+        completion.begidx = 5
+        self.assertEqual(completion.begidx, 5)
+        completion.begidx = 0
+        self.assertEqual(completion.begidx, 0)
 
-    #def test_endidx(self):
-    #    self.assertEqual(completion.endidx, 0)
+    def test_endidx(self):
+        self.assertEqual(completion.endidx, 0)
+        completion.endidx = 5
+        self.assertEqual(completion.endidx, 5)
+        completion.endidx = 0
+        self.assertEqual(completion.endidx, 0)
 
     def test_line_buffer(self):
         self.assertEqual(completion.line_buffer, '')

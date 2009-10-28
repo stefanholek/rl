@@ -308,15 +308,23 @@ class Completion(object):
 
     __slots__ = ()
 
-    @property
-    def begidx(self):
-        """The start index of the word in the line."""
-        return readline.get_begidx()
+    @apply
+    def begidx():
+        doc="""The start index of the word in the line."""
+        def get(self):
+            return readline.get_begidx()
+        def set(self, int):
+            readline.set_begidx(int)
+        return property(get, set, doc=doc)
 
-    @property
-    def endidx(self):
-        """The end index of the word in the line."""
-        return readline.get_endidx()
+    @apply
+    def endidx():
+        doc="""The end index of the word in the line."""
+        def get(self):
+            return readline.get_endidx()
+        def set(self, int):
+            readline.set_endidx(int)
+        return property(get, set, doc=doc)
 
     @apply
     def line_buffer():

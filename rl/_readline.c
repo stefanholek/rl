@@ -1476,6 +1476,42 @@ PyDoc_STRVAR(doc_get_history_base,
 Return the history base position.");
 
 
+static PyObject *
+set_begidx(PyObject *self, PyObject *args)
+{
+	PyObject *value = NULL;
+
+	if (!PyArg_ParseTuple(args, "O:set_begidx", &value)) {
+		return NULL;
+	}
+	Py_DECREF(begidx);
+	begidx = value;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_begidx,
+"set_begidx(int) -> None\n\
+Set the beginning index of the readline tab-completion scope.");
+
+
+static PyObject *
+set_endidx(PyObject *self, PyObject *args)
+{
+	PyObject *value = NULL;
+
+	if (!PyArg_ParseTuple(args, "O:set_endidx", &value)) {
+		return NULL;
+	}
+	Py_DECREF(endidx);
+	endidx = value;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_endidx,
+"set_endidx(int) -> None\n\
+Set the ending index of the readline tab-completion scope.");
+
+
 /* Internals */
 
 static PyObject *
@@ -2276,6 +2312,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_completion_display_matches_hook},
 	{"get_startup_hook", get_startup_hook,
 	 METH_NOARGS, doc_get_startup_hook},
+	{"set_begidx", set_begidx, METH_VARARGS, doc_set_begidx},
+	{"set_endidx", set_endidx, METH_VARARGS, doc_set_endidx},
 #ifdef HAVE_RL_PRE_INPUT_HOOK
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},
