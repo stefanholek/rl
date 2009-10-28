@@ -744,6 +744,24 @@ if the word being completed contains any quoting character (including backslashe
 
 
 static PyObject *
+set_completion_found_quote(PyObject *self, PyObject *args)
+{
+	int value;
+
+	if (!PyArg_ParseTuple(args, "i:set_completion_found_quote", &value)) {
+		return NULL;
+	}
+	rl_completion_found_quote = value ? 1 : 0;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_completion_found_quote,
+"set_completion_found_quote(bool) -> None\n\
+When readline is completing quoted text, it sets this variable to True \
+if the word being completed contains any quoting character (including backslashes).");
+
+
+static PyObject *
 get_completion_quote_character(PyObject *self, PyObject *noarg)
 {
 	if (!rl_completion_quote_character)
@@ -754,6 +772,23 @@ get_completion_quote_character(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(doc_get_completion_quote_character,
 "get_completion_quote_character() -> string\n\
+When readline is completing quoted text, it sets this variable to the quoting character found.");
+
+
+static PyObject *
+set_completion_quote_character(PyObject *self, PyObject *args)
+{
+	char *value;
+
+	if (!PyArg_ParseTuple(args, "s:set_completion_quote_character", &value)) {
+		return NULL;
+	}
+	rl_completion_quote_character = (value && *value) ? *value : '\0';
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_completion_quote_character,
+"set_completion_quote_character(string) -> None\n\
 When readline is completing quoted text, it sets this variable to the quoting character found.");
 
 
@@ -2284,8 +2319,12 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_set_filename_quote_characters},
 	{"get_completion_found_quote", get_completion_found_quote,
 	 METH_NOARGS, doc_get_completion_found_quote},
+	{"set_completion_found_quote", set_completion_found_quote,
+	 METH_VARARGS, doc_set_completion_found_quote},
 	{"get_completion_quote_character", get_completion_quote_character,
 	 METH_NOARGS, doc_get_completion_quote_character},
+	{"set_completion_quote_character", set_completion_quote_character,
+	 METH_VARARGS, doc_set_completion_quote_character},
 	{"get_completion_suppress_quote", get_completion_suppress_quote,
 	 METH_NOARGS, doc_get_completion_suppress_quote},
 	{"set_completion_suppress_quote", set_completion_suppress_quote,

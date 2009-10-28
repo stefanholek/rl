@@ -365,10 +365,14 @@ class Completion(object):
             readline.set_completion_suppress_append(bool)
         return property(get, set, doc=doc)
 
-    @property
-    def quote_character(self):
-        """The quote character found (if any)."""
-        return readline.get_completion_quote_character()
+    @apply
+    def quote_character():
+        doc="""The quote character found (if any)."""
+        def get(self):
+            return readline.get_completion_quote_character()
+        def set(self, string):
+            readline.set_completion_quote_character(string)
+        return property(get, set, doc=doc)
 
     @apply
     def suppress_quote():
@@ -380,11 +384,15 @@ class Completion(object):
             readline.set_completion_suppress_quote(bool)
         return property(get, set, doc=doc)
 
-    @property
-    def found_quote(self):
-        """True if the word contains or is delimited by any quote
+    @apply
+    def found_quote():
+        doc="""True if the word contains or is delimited by any quote
         character, including backslashes."""
-        return readline.get_completion_found_quote()
+        def get(self):
+            return readline.get_completion_found_quote()
+        def set(self, bool):
+            readline.set_completion_found_quote(bool)
+        return property(get, set, doc=doc)
 
     @apply
     def filename_completion_desired():

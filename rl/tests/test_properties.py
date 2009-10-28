@@ -202,8 +202,12 @@ class CompletionTests(unittest.TestCase):
         completion.suppress_append = False
         self.assertEqual(completion.suppress_append, False)
 
-    #def test_quote_character(self):
-    #    self.assertEqual(completion.quote_character, '')
+    def test_quote_character(self):
+        self.assertEqual(completion.quote_character, '')
+        completion.quote_character = '"'
+        self.assertEqual(completion.quote_character, '"')
+        completion.quote_character = ''
+        self.assertEqual(completion.quote_character, '')
 
     def test_suppress_quote(self):
         self.assertEqual(completion.suppress_quote, False)
@@ -212,8 +216,12 @@ class CompletionTests(unittest.TestCase):
         completion.suppress_quote = False
         self.assertEqual(completion.suppress_quote, False)
 
-    #def test_found_quote(self):
-    #    self.assertEqual(completion.found_quote, False)
+    def test_found_quote(self):
+        self.assertEqual(completion.found_quote, False)
+        completion.found_quote = True
+        self.assertEqual(completion.found_quote, True)
+        completion.found_quote = False
+        self.assertEqual(completion.found_quote, False)
 
     def test_filename_completion_desired(self):
         self.assertEqual(completion.filename_completion_desired, False)
@@ -229,15 +237,15 @@ class CompletionTests(unittest.TestCase):
         completion.filename_quoting_desired = True
         self.assertEqual(completion.filename_quoting_desired, True)
 
-    #def test_rl_point(self):
-    #    self.assertEqual(completion.rl_point, 0)
-    #    completion.line_buffer = 'foo'
-    #    self.assertEqual(completion.rl_point, 3)
+    def test_rl_point(self):
+        self.assertEqual(completion.rl_point, 0)
+        completion.line_buffer = 'foo'
+        self.assertEqual(completion.rl_point, 3)
 
-    #def test_rl_end(self):
-    #    self.assertEqual(completion.rl_end, 0)
-    #    completion.line_buffer = 'foo'
-    #    self.assertEqual(completion.rl_end, 3)
+    def test_rl_end(self):
+        self.assertEqual(completion.rl_end, 0)
+        completion.line_buffer = 'foo'
+        self.assertEqual(completion.rl_end, 3)
 
     def test_slots(self):
         self.assertRaises(AttributeError, setattr, completion, 'foo', 1)

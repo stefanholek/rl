@@ -42,7 +42,9 @@ def reset_completion():
     completion.completion_type = ''
     completion.append_character = ' '
     completion.suppress_append = False
+    completion.quote_character = ''
     completion.suppress_quote = False
+    completion.found_quote = False
     completion.filename_completion_desired = False
     completion.filename_quoting_desired = True
 
