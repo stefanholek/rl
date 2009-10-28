@@ -39,6 +39,7 @@ def reset_completion():
     completion.begidx = 0
     completion.endidx = 0
     completion.line_buffer = ''
+    completion.completion_type = ''
     completion.append_character = ' '
     completion.suppress_append = False
     completion.suppress_quote = False

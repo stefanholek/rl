@@ -279,6 +279,9 @@ static PyObject *endidx = NULL;
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
 {
+	if (!rl_completion_type)
+		return PyString_FromStringAndSize(NULL, 0);
+
 	return PyString_FromFormat("%c", rl_completion_type);
 }
 
@@ -1512,6 +1515,23 @@ PyDoc_STRVAR(doc_set_endidx,
 Set the ending index of the readline tab-completion scope.");
 
 
+static PyObject *
+set_completion_type(PyObject *self, PyObject *args)
+{
+	char *value;
+
+	if (!PyArg_ParseTuple(args, "s:set_completion_type", &value)) {
+		return NULL;
+	}
+	rl_completion_type = (value && *value) ? *value : '\0';
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_completion_type,
+"set_completion_type(string) -> None\n\
+Set the type of completion being attempted.");
+
+
 /* Internals */
 
 static PyObject *
@@ -2314,6 +2334,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_startup_hook},
 	{"set_begidx", set_begidx, METH_VARARGS, doc_set_begidx},
 	{"set_endidx", set_endidx, METH_VARARGS, doc_set_endidx},
+	{"set_completion_type", set_completion_type,
+	 METH_VARARGS, doc_set_completion_type},
 #ifdef HAVE_RL_PRE_INPUT_HOOK
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},

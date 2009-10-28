@@ -181,8 +181,12 @@ class CompletionTests(unittest.TestCase):
         completion.line_buffer = ''
         self.assertEqual(completion.line_buffer, '')
 
-    #def test_completion_type(self):
-    #    self.assertEqual(completion.completion_type, '\0') # XXX
+    def test_completion_type(self):
+        self.assertEqual(completion.completion_type, '')
+        completion.completion_type = '?'
+        self.assertEqual(completion.completion_type, '?')
+        completion.completion_type = ''
+        self.assertEqual(completion.completion_type, '')
 
     def test_append_character(self):
         self.assertEqual(completion.append_character, ' ')

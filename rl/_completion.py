@@ -336,10 +336,14 @@ class Completion(object):
             readline.replace_line(string)
         return property(get, set, doc=doc)
 
-    @property
-    def completion_type(self):
-        """The type of completion readline performs."""
-        return readline.get_completion_type()
+    @apply
+    def completion_type():
+        doc="""The type of completion readline performs."""
+        def get(self):
+            return readline.get_completion_type()
+        def set(self, string):
+            readline.set_completion_type(string)
+        return property(get, set, doc=doc)
 
     @apply
     def append_character():
