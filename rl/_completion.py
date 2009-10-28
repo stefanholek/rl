@@ -328,7 +328,7 @@ class Completion(object):
 
     @apply
     def line_buffer():
-        doc="""The line buffer readline uses. This property
+        doc="""The line buffer readline uses. The property
         may be assigned to to change the contents of the line."""
         def get(self):
             return readline.get_line_buffer()
