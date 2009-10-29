@@ -26,8 +26,8 @@ generator
 print_exc
     Decorator printing exceptions to stderr.
 
-Readline Completion
-===================
+About Readline Completion
+=========================
 
 Completion is what happens when the user presses the TAB key.
 It has 3 phases:
@@ -76,12 +76,12 @@ Call Graph
 
                 * `Completion.display_match_list`
 
-Readline History
-================
+About Readline History
+======================
 
 History allows readline to save and recall lines the user has entered.
-The 'history' object (of class `History`) provides a list-like interface to
-the history buffer as well as functions to persist the history
+The ``history`` object (of class `History`) provides a list-like interface
+to the history buffer as well as functions to persist the history
 between sessions.
 
 Upstream Documentation
