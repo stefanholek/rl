@@ -1,4 +1,6 @@
 bin
+build
+dist
 include
 lib
 .long-description.html
