@@ -8,6 +8,11 @@ Changelog
   production, this allows us to write better tests.
   [stefan]
 
+- Improve API documentation and add a call graph for the completion
+  process. This goes a long way in explaining how readline completion
+  works.
+  [stefan]
+
 
 1.0a4 - 2009-10-27
 ------------------
