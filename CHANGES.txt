@@ -4,6 +4,10 @@ Changelog
 1.0a5 - Unreleased
 ------------------
 
+- Make all ``completion`` properties writable. While not useful in
+  production, this allows us to write better tests.
+  [stefan]
+
 
 1.0a4 - 2009-10-27
 ------------------
