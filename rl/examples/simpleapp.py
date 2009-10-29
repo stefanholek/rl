@@ -18,10 +18,6 @@ class MyCmd(cmd.Cmd):
         completer.word_break_characters = '! \t\n"\'><=;|&(:'
         # Characters that trigger filename quoting
         completer.filename_quote_characters = '\\ \t\n"\'><=;|&()@#$`?*[!:{'
-        # Exclude hidden files
-        completer.match_hidden_files = False
-        # Expand tildes during completion
-        completer.tilde_expansion = True
 
     def emptyline(self):
         pass
