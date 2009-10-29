@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a5 - Unreleased
+1.0a5 - 2009-10-29
 ------------------
 
 - Make all ``completion`` properties writable. While not useful in
