@@ -49,20 +49,6 @@ class CompleterTests(unittest.TestCase):
         completer.filename_quote_characters = ''
         self.assertEqual(completer.filename_quote_characters, '')
 
-    def test_match_hidden_files(self):
-        self.assertEqual(completer.match_hidden_files, True)
-        completer.match_hidden_files = False
-        self.assertEqual(completer.match_hidden_files, False)
-        completer.match_hidden_files = True
-        self.assertEqual(completer.match_hidden_files, True)
-
-    def test_tilde_expansion(self):
-        self.assertEqual(completer.tilde_expansion, False)
-        completer.tilde_expansion = True
-        self.assertEqual(completer.tilde_expansion, True)
-        completer.tilde_expansion = False
-        self.assertEqual(completer.tilde_expansion, False)
-
     def test_inhibit_completion(self):
         self.assertEqual(completer.inhibit_completion, False)
         completer.inhibit_completion = True

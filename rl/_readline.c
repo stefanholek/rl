@@ -1891,6 +1891,7 @@ Returns True if the insert was successful.");
 
 /* Tilde expansion flag */
 
+/*
 extern int rl_complete_with_tilde_expansion;
 
 static PyObject *
@@ -1919,10 +1920,12 @@ set_complete_with_tilde_expansion(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_complete_with_tilde_expansion,
 "set_complete_with_tilde_expansion(bool) -> None\n\
 If True, readline completion functions perform tilde expansion.");
+*/
 
 
 /* Match hidden files flag */
 
+/*
 extern int _rl_match_hidden_files;
 
 static PyObject *
@@ -1951,6 +1954,7 @@ set_match_hidden_files(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_set_match_hidden_files,
 "set_match_hidden_files(bool) -> None\n\
 If True, include hidden files when computing the list of matches.");
+*/
 
 
 /* StringArray helpers */
@@ -2407,6 +2411,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_directory_completion_hook},
 	{"set_directory_completion_hook", set_directory_completion_hook,
 	 METH_VARARGS, doc_set_directory_completion_hook},
+	/*
 	{"get_complete_with_tilde_expansion", get_complete_with_tilde_expansion,
 	 METH_NOARGS, doc_get_complete_with_tilde_expansion},
 	{"set_complete_with_tilde_expansion", set_complete_with_tilde_expansion,
@@ -2415,6 +2420,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_match_hidden_files},
 	{"set_match_hidden_files", set_match_hidden_files,
 	 METH_VARARGS, doc_set_match_hidden_files},
+	*/
 	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,

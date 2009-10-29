@@ -19,8 +19,6 @@ def reset_completer():
     completer.word_break_characters = DEFAULT_DELIMS
     completer.special_prefixes = ''
     completer.filename_quote_characters = ''
-    completer.match_hidden_files = True
-    completer.tilde_expansion = False
     completer.inhibit_completion = False
     completer.query_items = 100
     completer.completer = None
