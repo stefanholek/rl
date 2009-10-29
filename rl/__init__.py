@@ -46,6 +46,8 @@ properties.
 Call Graph
 ----------
 
+A calling sequence for filename completion may look like this:
+
 * complete_internal
 
     * find_completion_word
@@ -79,7 +81,7 @@ Call Graph
 About Readline History
 ======================
 
-History allows readline to save and recall lines the user has entered.
+History allows readline to save and later recall lines the user has entered.
 The ``history`` object (of class `History`) provides a list-like interface
 to the history buffer as well as functions to persist the history
 between sessions.
