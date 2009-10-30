@@ -78,9 +78,10 @@ The code below implements system command completion similar to bash::
         command = raw_input('command: ')
         print 'You typed:', command
 
-See the examples_ subdirectory of the package for more.
+More elaborate examples can be found here_ and in the gpgkeys_ package.
 
-.. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples/
+.. _here: http://github.com/stefanholek/rl/tree/master/rl/examples
+.. _gpgkeys: http://github.com/stefanholek/gpgkeys
 
 Repository Access
 -----------------
