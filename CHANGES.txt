@@ -8,6 +8,10 @@ Changelog
   just as well be made with ``parse_and_bind``.
   [stefan]
 
+- Fix a memory leak in ``username_completion_function`` and
+  ``filename_completion_function``.
+  [stefan]
+
 
 1.0a5 - 2009-10-29
 ------------------

@@ -1305,7 +1305,7 @@ on_char_is_quoted_function(const char *text, int index)
 }
 
 
-/* Stock completer functions */
+/* Stock completion functions */
 
 static PyObject *
 filename_completion_function(PyObject *self, PyObject *args)
@@ -1313,14 +1313,17 @@ filename_completion_function(PyObject *self, PyObject *args)
 	int state;
 	char *value;
 	char *completion;
+	PyObject* r;
 
 	if (!PyArg_ParseTuple(args, "si:filename_completion_function", &value, &state)) {
 		return NULL;
 	}
 	completion = rl_filename_completion_function(value, state);
-	if (completion)
-		/* We don't own the string so no freeing required */
-		return PyString_FromString(completion);
+	if (completion) {
+		r = PyString_FromString(completion);
+		free(completion);
+		return r;
+	}
 	Py_RETURN_NONE;
 }
 
@@ -1335,14 +1338,17 @@ username_completion_function(PyObject *self, PyObject *args)
 	int state;
 	char *value;
 	char *completion;
+	PyObject* r;
 
 	if (!PyArg_ParseTuple(args, "si:username_completion_function", &value, &state)) {
 		return NULL;
 	}
 	completion = rl_username_completion_function(value, state);
-	if (completion)
-		/* We don't own the string so no freeing required */
-		return PyString_FromString(completion);
+	if (completion) {
+		r = PyString_FromString(completion);
+		free(completion);
+		return r;
+	}
 	Py_RETURN_NONE;
 }
 
