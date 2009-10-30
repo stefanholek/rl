@@ -1,4 +1,4 @@
-"""Alternative readline interface focusing on completion.
+"""Python readline interface focusing on completion.
 
 Package Contents
 ================
@@ -6,15 +6,15 @@ Package Contents
 rl exports the following components:
 
 completer
-    Interface to the readline completer. Used to configure the completion
+    Interface to the readline `Completer`. Used to configure the completion
     aspects of readline.
 
 completion
-    Interface to the active readline completion. Used to interact with
+    Interface to the active readline `Completion`. Used to interact with
     readline when a completion is in progress.
 
 history
-    Interface to the readline history. Used to read and write history files
+    Interface to the readline `History`. Used to read and write history files
     and to manipulate history entries.
 
 readline
@@ -30,7 +30,7 @@ About Readline Completion
 =========================
 
 Completion is what happens when the user presses the TAB key.
-It has 3 phases:
+It has three phases:
 
 1. Word breaking
 
@@ -74,9 +74,9 @@ A calling sequence for filename completion may look like this:
 
     * display_matches
 
-            * `Completer.display_matches_hook`
+        * `Completer.display_matches_hook`
 
-                * `Completion.display_match_list`
+            * `Completion.display_match_list`
 
 About Readline History
 ======================
