@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0a6 - Unreleased
+1.0a6 - 2009-10-30
 ------------------
 
 - Unclutter the ``completer`` interface by removing settings that can
