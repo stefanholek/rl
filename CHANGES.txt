@@ -16,7 +16,7 @@ Changelog
   ``filename_completion_function``.
   [stefan]
 
-- Add a custom epydoc stylesheet to make its reST rendering more pleasent.
+- Add a custom epydoc stylesheet to make its reST rendering more pleasant.
   [stefan]
 
 
