@@ -1318,13 +1318,14 @@ filename_completion_function(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "si:filename_completion_function", &value, &state)) {
 		return NULL;
 	}
+
 	completion = rl_filename_completion_function(value, state);
-	if (completion) {
-		r = PyString_FromString(completion);
-		free(completion);
-		return r;
-	}
-	Py_RETURN_NONE;
+	if (!completion)
+		Py_RETURN_NONE;
+
+	r = PyString_FromString(completion);
+	free(completion);
+	return r;
 }
 
 PyDoc_STRVAR(doc_filename_completion_function,
@@ -1343,13 +1344,14 @@ username_completion_function(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "si:username_completion_function", &value, &state)) {
 		return NULL;
 	}
+
 	completion = rl_username_completion_function(value, state);
-	if (completion) {
-		r = PyString_FromString(completion);
-		free(completion);
-		return r;
-	}
-	Py_RETURN_NONE;
+	if (!completion)
+		Py_RETURN_NONE;
+
+	r = PyString_FromString(completion);
+	free(completion);
+	return r;
 }
 
 PyDoc_STRVAR(doc_username_completion_function,
