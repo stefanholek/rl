@@ -1217,8 +1217,8 @@ on_filename_dequoting_function(const char *text, char quote_char)
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
-	/* We really can't return NULL here, so we abort like
-	   readline's xmalloc. */
+	/* We really can't return NULL here, and since this is a hook
+	   we can't raise a Python exception either. */
 	if (result == NULL) {
 		fprintf(stderr, "readline: out of virtual memory\n");
 		exit(2);
