@@ -420,13 +420,13 @@ class Completion(object):
         """Built-in matches display."""
         readline.display_match_list(substitution, matches, longest_match_length)
 
-    def read_key(self):
-        """Read a key from readline's input stream (the keyboard)."""
-        return readline.read_key()
-
     def redisplay(self, force=False):
         """Refresh what's displayed on the screen."""
         readline.redisplay(force)
+
+    def read_key(self):
+        """Read a key from readline's input stream (the keyboard)."""
+        return readline.read_key()
 
     def _generate(self, text, entry_func):
         """Extract a list of matches from a generator function."""
