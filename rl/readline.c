@@ -2852,7 +2852,7 @@ PyDoc_STRVAR(doc_module,
 #if (PY_MAJOR_VERSION >= 3)
 static struct PyModuleDef readlinemodule = {
        PyModuleDef_HEAD_INIT,
-       "_readline",
+       "readline",
        doc_module,
        -1,
        readline_methods,
@@ -2863,7 +2863,7 @@ static struct PyModuleDef readlinemodule = {
 };
 
 PyMODINIT_FUNC
-PyInit__readline(void)
+PyInit_readline(void)
 {
 	PyObject *m;
 
@@ -2877,11 +2877,11 @@ PyInit__readline(void)
 }
 #else
 PyMODINIT_FUNC
-init_readline(void)
+initreadline(void)
 {
 	PyObject *m;
 
-	m = Py_InitModule4("_readline", readline_methods, doc_module,
+	m = Py_InitModule4("readline", readline_methods, doc_module,
 			   (PyObject *)NULL, PYTHON_API_VERSION);
 	if (m == NULL)
 		return;

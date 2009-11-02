@@ -2,8 +2,8 @@
 
 import cmd
 
-from _completion import completer
-from _completion import completion
+from rl import completer
+from rl import completion
 
 
 def cmdloop(self, intro=None):

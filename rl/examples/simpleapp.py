@@ -2,6 +2,7 @@
 
 import os
 import cmd
+
 from rl import completer
 from rl import completion
 

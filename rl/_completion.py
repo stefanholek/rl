@@ -1,8 +1,9 @@
 """Interface to the readline completer."""
 
 import sys
-import _readline as readline
-from _py3compat import apply
+
+from rl import readline
+from rl.utils import apply
 
 
 class Completer(object):

@@ -15,6 +15,11 @@
     font-weight: normal;
 }
 
+.rst-section dd {
+    font-weight: normal;
+    margin-bottom: 0.5em;
+}
+
 
 /* Default Colors & Styles
  *   - Set the default foreground & background color with 'body'; and 

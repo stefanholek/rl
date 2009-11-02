@@ -26,6 +26,15 @@ completion
     Interface to the active readline completion. Used to interact
     with readline when a completion is in progress.
 
+generator
+    A factory turning any callable into a `completion entry function` that
+    can be handed to readline.
+
+print_exc
+    A decorator printing exceptions to stderr. Useful when writing Python
+    completions and hooks, as exceptions occurring there are usually
+    swallowed by the in-between C code.
+
 history
     Interface to the readline history. Used to read and write history files
     and to manipulate history entries.
@@ -35,15 +44,6 @@ readline
     library plus extensions specific to the rl package.  The `completer`,
     `completion`, and `history` interfaces make use of this module, and
     you should rarely need to interact with it directly.
-
-generator
-    A factory turning any callable into a `completion entry function` that
-    can be handed to readline.
-
-print_exc
-    A decorator printing exceptions to stderr. Useful when writing Python
-    completions and hooks, as exceptions occurring there are usually
-    swallowed by the in-between C code.
 
 For further details, please refer to the `API Documentation`_.
 

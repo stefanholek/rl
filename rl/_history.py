@@ -1,7 +1,7 @@
 """Interface to the readline history."""
 
-import _readline as readline
-from _py3compat import apply
+from rl import readline
+from rl.utils import apply
 
 
 class History(object):

@@ -6,25 +6,22 @@ Package Contents
 rl exports the following components:
 
 completer
-    Interface to the readline `Completer`. Used to configure the completion
-    aspects of readline.
+    Interface to the readline completer.
 
 completion
-    Interface to the active readline `Completion`. Used to interact with
-    readline when a completion is in progress.
-
-history
-    Interface to the readline `History`. Used to read and write history files
-    and to manipulate history entries.
-
-readline
-    Basic readline interface module.
+    Interface to the active readline completion.
 
 generator
     Generator function factory.
 
 print_exc
     Decorator printing exceptions to stderr.
+
+history
+    Interface to the readline history.
+
+readline
+    Basic readline interface module.
 
 About Readline Completion
 =========================
@@ -87,20 +84,20 @@ http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 """
 
 # Grab the ReadlineFunctionPointer
-import readline
-import _readline as readline
+import rl.utils
+import rl.readline
 
-# Patch cmd.Cmd to use rl instead of readline
-import _cmd
-
-# For subclassing
-from _completion import Completer
-from _completion import Completion
-from _history import History
+# For subclassing (and epydoc)
+from rl._completion import Completer
+from rl._completion import Completion
+from rl._history import History
 
 # API
-from _completion import completer
-from _completion import completion
-from _completion import generator
-from _completion import print_exc
-from _history import history
+from rl._completion import completer
+from rl._completion import completion
+from rl._completion import generator
+from rl._completion import print_exc
+from rl._history import history
+
+# Patch cmd.Cmd to use rl instead of readline
+import rl._cmd
