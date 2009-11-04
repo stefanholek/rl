@@ -222,46 +222,6 @@ class Completer(object):
         """Parse one line of a readline initialization file."""
         return readline.parse_and_bind(line)
 
-    # Debugging
-
-    def dump(self, stream=sys.stdout):
-        """Dump properties to stream."""
-        stream.write("""\
-quote_characters:                 %r
-word_break_characters:            %r
-special_prefixes:                 %r
-filename_quote_characters:        %r
-query_items:                      %d
-inhibit_completion:               %s
-completer:                        %r
-startup_hook:                     %r
-pre_input_hook:                   %r
-word_break_hook:                  %r
-directory_completion_hook:        %r
-display_matches_hook:             %r
-char_is_quoted_function:          %r
-filename_quoting_function:        %r
-filename_dequoting_function:      %r
-ignore_some_completions_function: %r
-""" % (
-self.quote_characters,
-self.word_break_characters,
-self.special_prefixes,
-self.filename_quote_characters,
-self.query_items,
-self.inhibit_completion,
-self.completer,
-self.startup_hook,
-self.pre_input_hook,
-self.word_break_hook,
-self.directory_completion_hook,
-self.display_matches_hook,
-self.char_is_quoted_function,
-self.filename_quoting_function,
-self.filename_dequoting_function,
-self.ignore_some_completions_function,
-))
-
 completer = Completer()
 
 
@@ -440,36 +400,6 @@ class Completion(object):
                 i += 1
             else:
                 return matches
-
-    # Debugging
-
-    def dump(self, stream=sys.stdout):
-        """Dump properties to stream."""
-        stream.write("""\
-line_buffer:                      %r
-begidx:                           %d
-endidx:                           %d
-completion_type:                  %r
-append_character:                 %r
-suppress_append:                  %s
-found_quote:                      %s
-quote_character:                  %r
-suppress_quote:                   %s
-filename_completion_desired:      %s
-filename_quoting_desired:         %s
-""" % (
-self.line_buffer,
-self.begidx,
-self.endidx,
-self.completion_type,
-self.append_character,
-self.suppress_append,
-self.found_quote,
-self.quote_character,
-self.suppress_quote,
-self.filename_completion_desired,
-self.filename_quoting_desired,
-))
 
 completion = Completion()
 

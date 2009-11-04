@@ -17,10 +17,6 @@ class CompleterTests(unittest.TestCase):
     def setUp(self):
         reset()
 
-    def test_dump_completer(self):
-        stream = StringIO.StringIO()
-        completer.dump(stream)
-
     def test_quote_characters(self):
         self.assertEqual(completer.quote_characters, '')
         completer.quote_characters = '"\''
@@ -141,10 +137,6 @@ class CompletionTests(unittest.TestCase):
 
     def setUp(self):
         reset()
-
-    def test_dump_completion(self):
-        stream = StringIO.StringIO()
-        completion.dump(stream)
 
     def test_begidx(self):
         self.assertEqual(completion.begidx, 0)
