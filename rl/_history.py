@@ -1,4 +1,4 @@
-"""Interface to the readline history."""
+"""Readline history support."""
 
 from rl import readline
 from rl.utils import apply

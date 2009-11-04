@@ -1,4 +1,4 @@
-"""Interface to the readline completer."""
+"""Readline completion support."""
 
 import sys
 
