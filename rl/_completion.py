@@ -1,7 +1,5 @@
 """Readline completion support."""
 
-import sys
-
 from rl import readline
 from rl.utils import apply
 

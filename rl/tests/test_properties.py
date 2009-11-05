@@ -1,5 +1,4 @@
 import unittest
-import StringIO
 
 from rl import completer
 from rl import completion
