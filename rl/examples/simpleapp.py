@@ -36,18 +36,22 @@ class MyCmd(cmd.Cmd):
         # Select the completion type depending on position
         # and format of the word being completed
         if text.startswith('~') and (os.sep not in text):
-            return completion.complete_username(text)
+            matches = completion.complete_username(text)
+            if not matches:
+                matches = completion.complete_filename(text)
+            return matches
 
         if self.commandpos(line, begidx) and (os.sep not in text):
-            return self._complete_command(text)
+            return self.completecommand(text)
 
         return completion.complete_filename(text)
 
     def commandpos(self, line, begidx):
+        # Return True if we are completing a command name
         delta = line[0:begidx]
         return delta.strip() in ('!', 'shell')
 
-    def _complete_command(self, text):
+    def completecommand(self, text):
         # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
