@@ -4,6 +4,12 @@ Changelog
 1.0a7 - Unreleased
 ------------------
 
+- Rename ``_readline`` module to ``readline`` since it's not private.
+  [stefan]
+
+- Remove ``dump`` and ``read_key`` APIs from public interfaces.
+  [stefan]
+
 
 1.0a6 - 2009-10-30
 ------------------
