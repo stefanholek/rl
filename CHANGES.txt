@@ -4,6 +4,10 @@ Changelog
 1.0a8 - Unreleased
 ------------------
 
+- Close a memory leak in ``word_break_hook``. Three cheers for XCode's
+  ``leaks`` tool.
+  [stefan]
+
 
 1.0a7 - 2009-11-05
 ------------------

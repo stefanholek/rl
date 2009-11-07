@@ -1695,11 +1695,14 @@ A function to call when readline is deciding where to separate words for word co
 
 static char *
 on_completion_word_break_hook(void)
+/* Memory returned by this function is never freed. We must keep
+   it around in a static pointer and free it on the next call. */
 {
 	char *result = NULL;
 	char *s = NULL;
 	PyObject *r;
 	int begidx, endidx;
+	static char *last = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1727,6 +1730,9 @@ on_completion_word_break_hook(void)
 		if (s == NULL)
 			goto error;
 		result = strdup(s);
+		if (last != NULL)
+			free(last);
+		last = result;
 	}
 	Py_DECREF(r);
 	goto done;
