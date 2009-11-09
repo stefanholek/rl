@@ -2,7 +2,7 @@ from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 from sys import platform
 
-version = '1.0a8'
+version = '1.0'
 
 
 # On Linux, install libreadline5-dev (or equivalent) before attempting to
@@ -47,7 +47,7 @@ setup(name='rl',
           'Programming Language :: C',
           'Operating System :: Unix',
           'Operating System :: MacOS :: MacOS X',
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: Python Software Foundation License',
           'License :: OSI Approved :: BSD License',
       ],
