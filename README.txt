@@ -81,7 +81,7 @@ The code below implements system command completion similar to bash::
 More elaborate examples can be found here_ and in the gpgkeys_ package.
 
 .. _here: http://github.com/stefanholek/rl/tree/master/rl/examples
-.. _gpgkeys: http://github.com/stefanholek/gpgkeys
+.. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
 
 Repository Access
 -----------------
