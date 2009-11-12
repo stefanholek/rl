@@ -7,6 +7,9 @@ Changelog
 - Don't auto-redisplay the prompt at the end of display_match_list.
   [stefan]
 
+- Also reset ``rl_completion_mark_symlink_dirs`` in ``flex_complete``.
+  [stefan]
+
 - Remove all occurrences of old-style function typedefs to shut up
   some compiler warnings.
   [stefan]

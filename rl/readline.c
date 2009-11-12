@@ -2593,6 +2593,8 @@ on_completion(const char *text, int state)
 /* A more flexible constructor that saves the "begidx" and "endidx"
  * before calling the normal completer */
 
+extern int _rl_complete_mark_symlink_dirs;
+
 static char **
 flex_complete(char *text, int start, int end)
 {
@@ -2607,6 +2609,7 @@ flex_complete(char *text, int start, int end)
 	rl_completion_suppress_quote = 0;
 	rl_filename_completion_desired = 0;
 	rl_filename_quoting_desired = 1;
+	rl_completion_mark_symlink_dirs = _rl_complete_mark_symlink_dirs;
 
 	return completion_matches(text, *on_completion);
 }
