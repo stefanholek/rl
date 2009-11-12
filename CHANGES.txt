@@ -7,6 +7,10 @@ Changelog
 - Don't auto-redisplay the prompt at the end of display_match_list.
   [stefan]
 
+- Remove all occurrences of old-style function typedefs to shut up
+  some compiler warnings.
+  [stefan]
+
 
 1.0 - 2009-11-08
 ----------------
