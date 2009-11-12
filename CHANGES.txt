@@ -11,6 +11,10 @@ Changelog
   some compiler warnings.
   [stefan]
 
+- Silence another compiler warning by making sure readline.h defines
+  proper function prototypes.
+  [stefan]
+
 
 1.0 - 2009-11-08
 ----------------
