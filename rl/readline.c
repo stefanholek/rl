@@ -2141,8 +2141,6 @@ display_match_list(PyObject *self, PyObject *args)
 		goto error;
 
 	rl_display_match_list(strings, num_matches, max_length);
-	rl_forced_update_display();
-	rl_display_fixed = 1;
 
 	/* Clear KeyboardInterrupt */
 	if (PyErr_CheckSignals() == -1 &&

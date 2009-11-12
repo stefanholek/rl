@@ -4,6 +4,9 @@ Changelog
 1.0.1 - Unreleased
 ------------------
 
+- Don't auto-redisplay the prompt at the end of display_match_list.
+  [stefan]
+
 
 1.0 - 2009-11-08
 ----------------
