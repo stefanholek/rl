@@ -421,8 +421,9 @@ def generator(func):
 
     # Allow to wrap callable non-functions which may not have a __name__
     generator_func.__name__ = getattr(func, '__name__', func.__class__.__name__)
-    generator_func.__dict__ = func.__dict__
+    generator_func.__module__ = func.__module__
     generator_func.__doc__ = func.__doc__
+    generator_func.__dict__.update(func.__dict__)
     return generator_func
 
 
@@ -440,7 +441,8 @@ def print_exc(func):
             raise
 
     wrapped_func.__name__ = func.__name__
-    wrapped_func.__dict__ = func.__dict__
+    wrapped_func.__module__ = func.__module__
     wrapped_func.__doc__ = func.__doc__
+    wrapped_func.__dict__.update(func.__dict__)
     return wrapped_func
 
