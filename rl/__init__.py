@@ -58,6 +58,8 @@ A calling sequence for filename completion may look like this:
 
                 * `Completer.filename_dequoting_function`
 
+        * `Completer.ignore_some_completions_function`
+
     * insert_match
 
         * `Completer.filename_quoting_function`
