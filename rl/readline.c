@@ -52,9 +52,17 @@
 extern char **completion_matches(char *, rl_compentry_func_t *);
 #endif
 
+#ifndef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
+#if (RL_READLINE_VERSION >= 0x0400)
+#define HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
+#endif
+#endif
+
+#ifdef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
 static void
 on_completion_display_matches_hook(char **matches,
 				   int num_matches, int max_length);
+#endif
 
 
 /* Exported function to send one line to readline's init file parser */

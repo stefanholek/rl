@@ -4,19 +4,18 @@ Changelog
 1.0.1 - Unreleased
 ------------------
 
-- Don't auto-redisplay the prompt at the end of display_match_list.
+- Remove all occurrences of old-style function typedefs to silence
+  compiler warnings.
   [stefan]
 
-- Also reset ``rl_completion_mark_symlink_dirs`` in ``flex_complete``.
+- Make the ``display_matches_hook`` work in Python 2.5. Fixes rl `issue/1`_.
   [stefan]
 
-- Remove all occurrences of old-style function typedefs to shut up
-  some compiler warnings.
+- No longer auto-refresh the prompt at the end of ``display_match_list``.
+  Applications should call ``redisplay(force=True)`` to restore the prompt.
   [stefan]
 
-- Silence another compiler warning by making sure readline.h defines
-  proper function prototypes.
-  [stefan]
+.. _`issue/1`: http://github.com/stefanholek/rl/issues#issue/1
 
 
 1.0 - 2009-11-08
