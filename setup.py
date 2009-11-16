@@ -2,7 +2,7 @@ from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 from sys import platform
 
-version = '1.1'
+version = '1.2'
 
 
 # On Linux, install libreadline5-dev (or equivalent) before attempting to
