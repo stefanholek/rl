@@ -5,7 +5,7 @@ from rl import completion
 from rl import generator
 from rl import print_exc
 
-strings = ['foo-', 'bar-', 'baz+']
+strings = ['foo-', 'bar-', 'baz+', 'peng+']
 
 
 @print_exc

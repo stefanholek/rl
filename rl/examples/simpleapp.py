@@ -35,16 +35,17 @@ class MyCmd(cmd.Cmd):
     def complete_shell(self, text, line, begidx, endidx):
         # Select the completion type depending on position
         # and format of the word being completed
+        matches = []
         if text.startswith('~') and (os.sep not in text):
             matches = completion.complete_username(text)
             if not matches:
                 matches = completion.complete_filename(text)
-            return matches
-
-        if self.commandpos(line, begidx) and (os.sep not in text):
-            return self.completecommand(text)
-
-        return completion.complete_filename(text)
+        else:
+            if self.commandpos(line, begidx) and (os.sep not in text):
+                matches = self.completecommand(text)
+            else:
+                matches = completion.complete_filename(text)
+        return matches
 
     def commandpos(self, line, begidx):
         # Return True if we are completing a command name
