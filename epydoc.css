@@ -35,9 +35,9 @@ p                           { margin-top: 0.5em; margin-bottom: 0.5em; }
 a:link                      { color: #0000ff; }
 a:visited                   { color: #204080; }
 dt                          { font-weight: bold; }
-h1                          { font-size: +140%; font-style: italic;
+h1                          { font-size: +140%; font-style: normal;
                               font-weight: bold; }
-h2                          { font-size: +125%; font-style: italic;
+h2                          { font-size: +125%; font-style: normal;
                               font-weight: bold; }
 h3                          { font-size: +110%; font-style: italic;
                               font-weight: normal; }
