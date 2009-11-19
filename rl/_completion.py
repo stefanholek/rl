@@ -244,6 +244,25 @@ class Completion(object):
     __slots__ = ()
 
     @apply
+    def line_buffer():
+        doc="""The line buffer readline uses. The property
+        may be assigned to to change the contents of the line."""
+        def get(self):
+            return readline.get_line_buffer()
+        def set(self, string):
+            readline.replace_line(string)
+        return property(get, set, doc=doc)
+
+    @apply
+    def completion_type():
+        doc="""The type of completion readline performs."""
+        def get(self):
+            return readline.get_completion_type()
+        def set(self, string):
+            readline.set_completion_type(string)
+        return property(get, set, doc=doc)
+
+    @apply
     def begidx():
         doc="""The start index of the word in the line."""
         def get(self):
@@ -262,22 +281,32 @@ class Completion(object):
         return property(get, set, doc=doc)
 
     @apply
-    def line_buffer():
-        doc="""The line buffer readline uses. The property
-        may be assigned to to change the contents of the line."""
+    def found_quote():
+        doc="""True if the word contains or is delimited by any quote
+        character, including backslashes."""
         def get(self):
-            return readline.get_line_buffer()
-        def set(self, string):
-            readline.replace_line(string)
+            return readline.get_completion_found_quote()
+        def set(self, bool):
+            readline.set_completion_found_quote(bool)
         return property(get, set, doc=doc)
 
     @apply
-    def completion_type():
-        doc="""The type of completion readline performs."""
+    def quote_character():
+        doc="""The quote character found (not including backslashes)."""
         def get(self):
-            return readline.get_completion_type()
+            return readline.get_completion_quote_character()
         def set(self, string):
-            readline.set_completion_type(string)
+            readline.set_completion_quote_character(string)
+        return property(get, set, doc=doc)
+
+    @apply
+    def suppress_quote():
+        doc="""Do not append a matching quote character when completing
+        a quoted string. Defaults to False."""
+        def get(self):
+            return readline.get_completion_suppress_quote()
+        def set(self, bool):
+            readline.set_completion_suppress_quote(bool)
         return property(get, set, doc=doc)
 
     @apply
@@ -298,35 +327,6 @@ class Completion(object):
             return readline.get_completion_suppress_append()
         def set(self, bool):
             readline.set_completion_suppress_append(bool)
-        return property(get, set, doc=doc)
-
-    @apply
-    def quote_character():
-        doc="""The quote character found (if any)."""
-        def get(self):
-            return readline.get_completion_quote_character()
-        def set(self, string):
-            readline.set_completion_quote_character(string)
-        return property(get, set, doc=doc)
-
-    @apply
-    def suppress_quote():
-        doc="""Do not append a matching quote character when completing
-        a quoted string. Defaults to False."""
-        def get(self):
-            return readline.get_completion_suppress_quote()
-        def set(self, bool):
-            readline.set_completion_suppress_quote(bool)
-        return property(get, set, doc=doc)
-
-    @apply
-    def found_quote():
-        doc="""True if the word contains or is delimited by any quote
-        character, including backslashes."""
-        def get(self):
-            return readline.get_completion_found_quote()
-        def set(self, bool):
-            readline.set_completion_found_quote(bool)
         return property(get, set, doc=doc)
 
     @apply
