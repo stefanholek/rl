@@ -4,6 +4,9 @@ Changelog
 1.2 - Unreleased
 ----------------
 
+- Various API Documentation improvements.
+  [stefan]
+
 
 1.1 - 2009-11-16
 ----------------
