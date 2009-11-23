@@ -1890,7 +1890,9 @@ read_key(PyObject* self, PyObject* noargs)
 
 PyDoc_STRVAR(doc_read_key,
 "read_key() -> string\n\
-Read a key from readline's input stream, typically the keyboard.");
+Read a key from readline's input stream, typically the keyboard. \
+Returns characters inserted with ``stuff_char`` before starting to read \
+from the stream.");
 
 
 /* Stuff a character into the input stream */
