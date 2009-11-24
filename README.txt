@@ -99,7 +99,7 @@ On Linux, install libreadline5-dev (or equivalent) before attempting to build
 rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
 Python is linked to the BSD editline library and not GNU readline.
 
-rl requires distribute >= 0.6.6. If you have not upgraded your setuptools
+rl requires distribute >= 0.6.8. If you have not upgraded your setuptools
 yet, type::
 
     /path/to/easy_install distribute
