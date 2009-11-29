@@ -11,6 +11,15 @@
 #include <errno.h>
 #include <sys/time.h>
 
+#if (PY_MAJOR_VERSION >= 3)
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_AsLong PyLong_AsLong
+#define PyString_FromString PyUnicode_FromString
+#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
+#define PyString_FromFormat PyUnicode_FromFormat
+#define PyString_AsString _PyUnicode_AsString
+#endif
+
 #if defined(HAVE_SETLOCALE)
 /* GNU readline() mistakenly sets the LC_CTYPE locale.
  * This is evil.  Only the user or the app's main() should do this!
@@ -35,15 +44,6 @@
 #endif
 #include <readline/readline.h>
 #include <readline/history.h>
-
-#if (PY_MAJOR_VERSION >= 3)
-#define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong PyLong_AsLong
-#define PyString_FromString PyUnicode_FromString
-#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
-#define PyString_FromFormat PyUnicode_FromFormat
-#define PyString_AsString _PyUnicode_AsString
-#endif
 
 #ifdef HAVE_RL_COMPLETION_MATCHES
 #define completion_matches(x, y) \
