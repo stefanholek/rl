@@ -64,7 +64,8 @@ class Completer(object):
 
     @apply
     def inhibit_completion():
-        doc="""If True, completion is disabled. Defaults to False."""
+        doc="""If True, completion is disabled and the completion character
+        is inserted as any other character. Defaults to False."""
         def get(self):
             return readline.get_inhibit_completion()
         def set(self, bool):

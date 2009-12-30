@@ -1043,8 +1043,8 @@ set_inhibit_completion(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_inhibit_completion,
 "set_inhibit_completion(bool) -> None\n\
-If True, completion is disabled. \
-May only be called from within custom completers.");
+If True, completion is disabled and the completion character is inserted \
+as any other character.");
 
 
 /* Filename quoting/dequoting functions */
