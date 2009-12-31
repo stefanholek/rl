@@ -1596,6 +1596,19 @@ PyDoc_STRVAR(doc_set_completion_type,
 Set the type of completion being attempted.");
 
 
+static PyObject *
+readline_version(PyObject *self, PyObject *noarg)
+{
+	return PyInt_FromLong(rl_readline_version);
+}
+
+PyDoc_STRVAR(doc_readline_version,
+"readline_version() -> int\n\
+Return the readline library version encoded in an integer. \
+The format is ``0xMMmm``, where ``MM`` is the major and ``mm`` \
+the minor version number.");
+
+
 /* Internals */
 
 static PyObject *
@@ -2476,6 +2489,8 @@ static struct PyMethodDef readline_methods[] =
 	*/
 	{"complete_internal", complete_internal,
 	 METH_VARARGS, doc_complete_internal},
+	{"readline_version", readline_version,
+	 METH_NOARGS, doc_readline_version},
 	/* </_readline.c> */
 
 	{0, 0}

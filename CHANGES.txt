@@ -7,6 +7,9 @@ Changelog
 - Fix header detection under Fink on Mac OS X.
   [stefan]
 
+- Add ``readline_version`` API.
+  [stefan]
+
 
 1.2 - 2009-11-24
 ----------------
