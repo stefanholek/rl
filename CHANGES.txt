@@ -4,6 +4,9 @@ Changelog
 1.3 - Unreleased
 ----------------
 
+- Fix header detection under Fink on Mac OS X.
+  [stefan]
+
 
 1.2 - 2009-11-24
 ----------------

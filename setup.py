@@ -19,11 +19,9 @@ if platform == 'darwin':
     # MacPorts
     if exists('/opt/local/include'):
         include_dirs = ['/opt/local/include']
-        library_dirs = ['/opt/local/lib']
     # Fink
-    elif exists('/sw/local/include'):
-        include_dirs = ['/sw/local/include']
-        library_dirs = ['/sw/local/lib']
+    elif exists('/sw/include'):
+        include_dirs = ['/sw/include']
 
     libraries = ['readline', 'ncursesw']
 
@@ -31,9 +29,9 @@ if platform == 'darwin':
 readline = \
 Extension(name='rl.readline',
           sources=[join('rl', 'readline.c')],
-          libraries=libraries,
           include_dirs=include_dirs,
           library_dirs=library_dirs,
+          libraries=libraries,
 )
 
 
