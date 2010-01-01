@@ -91,6 +91,71 @@ class CompletionMatchesTests(JailSetup):
         self.assertEqual(called, [('fred flintstone.txt', True, '')])
 
 
+class CompleterTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_no_completer(self):
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_none_completer(self):
+        @generator
+        def func(text):
+            return None
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_bad_completer(self):
+        @generator
+        def func(text):
+            raise RuntimeError()
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_complete(self):
+        @generator
+        def func(text):
+            return ['fred']
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fred ')
+
+    def test_no_matches(self):
+        @generator
+        def func(text):
+            return []
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_none_matches(self):
+        @generator
+        def func(text):
+            return [None]
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr')
+
+    def test_empty_string(self):
+        @generator
+        def func(text):
+            return ['']
+        completer.completer = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, 'fr ') # XXX Single match?
+
+
 class DisplayMatchesTests(JailSetup):
 
     def setUp(self):
@@ -98,7 +163,6 @@ class DisplayMatchesTests(JailSetup):
         reset()
         called[:] = []
 
-    # XXX: Doesn't work in Python 2.5
     def test_display_matches_hook(self):
         completer.completer = filecomplete
         completer.display_matches_hook = hook
@@ -211,71 +275,6 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
         self.assertEqual(completion.endidx, 6)
-
-
-class CompleterTests(unittest.TestCase):
-
-    def setUp(self):
-        reset()
-
-    def test_no_completer(self):
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_none_completer(self):
-        @generator
-        def func(text):
-            return None
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_bad_completer(self):
-        @generator
-        def func(text):
-            raise RuntimeError()
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_complete(self):
-        @generator
-        def func(text):
-            return ['fred']
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fred ')
-
-    def test_no_matches(self):
-        @generator
-        def func(text):
-            return []
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_none_matches(self):
-        @generator
-        def func(text):
-            return [None]
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr')
-
-    def test_empty_string(self):
-        @generator
-        def func(text):
-            return ['']
-        completer.completer = func
-        completion.line_buffer = 'fr'
-        readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, 'fr ') # XXX Single match?
 
 
 class DirectoryCompletionHookTests(JailSetup):
