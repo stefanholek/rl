@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <sys/time.h>
 
+/* Python 3 support */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
 #define PyInt_AsLong PyLong_AsLong
@@ -52,6 +53,7 @@
 extern char **completion_matches(char *, rl_compentry_func_t *);
 #endif
 
+/* Python 2.5 does not define this */
 #ifndef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
 #if (RL_READLINE_VERSION >= 0x0400)
 #define HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
@@ -1018,6 +1020,8 @@ May only be called from within custom completers.");
 */
 
 
+/* Inhibit completion */
+
 static PyObject *
 get_inhibit_completion(PyObject *self, PyObject *noarg)
 {
@@ -1047,7 +1051,7 @@ If True, completion is disabled and the completion character is inserted \
 as any other character.");
 
 
-/* Filename quoting/dequoting functions */
+/* Filename quoting function */
 
 static PyObject *filename_quoting_function = NULL;
 static rl_quote_func_t *default_filename_quoting_function = NULL;
@@ -1145,6 +1149,8 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 }
 
 
+/* Filename dequoting function */
+
 static PyObject *filename_dequoting_function = NULL;
 
 static char *
@@ -1239,6 +1245,8 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	return result;
 }
 
+
+/* Char-is-quoted function */
 
 static PyObject *char_is_quoted_function = NULL;
 
