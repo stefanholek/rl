@@ -59,14 +59,6 @@ define_macros = [
 
 include_dirs = ['build', 'build/readline']
 libraries = ['ncurses']
-extra_compile_args = []
-extra_link_args = []
-
-if sys.platform == 'darwin':
-    extra_compile_args.extend([
-        '-Wno-all',
-        '-Wno-strict-prototypes',
-    ])
 
 
 configure = False
@@ -96,8 +88,6 @@ Extension(name='rl.readline',
           define_macros=define_macros,
           include_dirs=include_dirs,
           libraries=libraries,
-          extra_compile_args=extra_compile_args,
-          extra_link_args=extra_link_args,
 )
 
 
