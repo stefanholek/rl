@@ -4,6 +4,10 @@ Changelog
 1.4 - Unreleased
 ----------------
 
+- rl can now be installed into the system Python on Mac OS X, the only
+  dependency being XCode Tools.
+  [stefan]
+
 
 1.3 - 2010-01-03
 ----------------
