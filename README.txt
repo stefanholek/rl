@@ -95,14 +95,7 @@ Installation
 
 rl has been tested with GNU Readline versions 5 and 6.
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
-rl. On Mac OS X, make sure you have XCode Tools installed.
-
-For Python 3 support rl requires distribute >= 0.6.10. If you have not upgraded
-your setuptools yet, type::
-
-    easy_install distribute
-
-Then type::
+rl. On Mac OS X, make sure you have XCode Tools installed. Then type::
 
     easy_install rl
 
