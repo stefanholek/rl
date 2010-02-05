@@ -93,7 +93,6 @@ def use_static_readline():
         rm -rf readline-6.1 readline
         echo Fetching readline-6.1 from %(url)s
         curl --connect-timeout 30 -s %(url)s | tar xz
-        test $? -eq 0 || exit
         mv readline-6.1 readline
         cd readline
         ./configure %(quiet)s
