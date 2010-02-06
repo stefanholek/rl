@@ -5,7 +5,7 @@ Changelog
 ----------------
 
 - rl can now be installed into the system Python on Mac OS X, the only
-  dependency being XCode Tools.
+  dependency being Xcode Tools.
   [stefan]
 
 - Change license to PSF or GPL.
@@ -55,7 +55,7 @@ Changelog
 1.0a8 - 2009-11-07
 ------------------
 
-- Close a memory leak in ``word_break_hook``. Three cheers for XCode's
+- Close a memory leak in ``word_break_hook``. Three cheers for Xcode's
   ``leaks`` tool.
   [stefan]
 

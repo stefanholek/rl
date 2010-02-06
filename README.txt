@@ -94,8 +94,10 @@ Installation
 ============
 
 rl has been tested with GNU Readline versions 5 and 6.
+
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
-rl. On Mac OS X, make sure you have XCode Tools installed. Then type::
+rl. On Mac OS X, make sure you have Xcode Tools installed (Mac OS X Install
+DVD /Optional Installs/Xcode Tools). Then type::
 
     easy_install rl
 
