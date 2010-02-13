@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4 - Unreleased
+1.4 - 2010-02-13
 ----------------
 
 - rl can now be installed into the system Python on Mac OS X, the only
