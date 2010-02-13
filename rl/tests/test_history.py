@@ -125,7 +125,12 @@ class HistoryTests(unittest.TestCase):
 
     def test_invalid_pos(self):
         self.assertRaises(TypeError, history.get_item, 'foo')
-        self.assertRaises(TypeError, history.get_item, False)
+        self.assertRaises(TypeError, history.get_item, None)
+
+    def test_bool_is_int(self):
+        self.assertRaises(IndexError, history.get_item, False)
+        history.append('fred')
+        self.assertEqual(history.get_item(False), 'fred')
 
     def test_slots(self):
         self.assertRaises(AttributeError, setattr, history, 'foo', 1)
