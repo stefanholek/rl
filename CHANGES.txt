@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.4.1 - Unreleased
+1.4.1 - 2010-02-13
 ------------------
 
 - Fix GPL trove classifier.
