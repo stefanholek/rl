@@ -55,7 +55,7 @@ class Completer(object):
 
     @apply
     def filename_quote_characters():
-        doc="""Characters that trigger filename quoting."""
+        doc="""Characters that must be quoted when they appear in filenames."""
         def get(self):
             return readline.get_filename_quote_characters()
         def set(self, string):
