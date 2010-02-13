@@ -7,7 +7,7 @@ import os
 from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 
-version = '1.4'
+version = '1.4.1'
 
 sources = ['rl/readline.c']
 define_macros = []
@@ -136,7 +136,7 @@ setup(name='rl',
           'Operating System :: POSIX',
           'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: Python Software Foundation License',
-          'License :: OSI Approved :: GNU General Public License',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
       ],
       keywords='gnu readline completion interface',
       author='Stefan H. Holek',
