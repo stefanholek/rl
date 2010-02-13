@@ -129,8 +129,9 @@ setup(name='rl',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
-          'Programming Language :: Python',
           'Programming Language :: C',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 3',
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: POSIX',
           'Development Status :: 5 - Production/Stable',
