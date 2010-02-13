@@ -96,17 +96,10 @@ Installation
 rl has been tested with GNU Readline versions 5 and 6.
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
-rl. On Mac OS X, you need a Python built with MacPorts or Fink, as the system
-Python is linked to the BSD editline library and not GNU readline.
+rl. On Mac OS X, make sure you have Xcode Tools installed (Mac OS X Install
+DVD /Optional Installs/Xcode Tools). Then type::
 
-rl requires distribute >= 0.6.8. If you have not upgraded your setuptools
-yet, type::
-
-    /path/to/easy_install distribute
-
-Then type::
-
-    /path/to/easy_install rl
+    easy_install rl
 
 and watch the console. When it reads::
 
