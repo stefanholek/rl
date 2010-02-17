@@ -1,5 +1,5 @@
 # On Linux, install libreadline5-dev (or equivalent) before attempting
-# to build rl. On Mac OS X, make sure you have XCode Tools installed.
+# to build rl. On Mac OS X, make sure you have Xcode Tools installed.
 
 import sys
 import os
@@ -129,14 +129,14 @@ setup(name='rl',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
+          'Development Status :: 5 - Production/Stable',
+          'License :: OSI Approved :: GNU General Public License (GPL)',
+          'License :: OSI Approved :: Python Software Foundation License',
+          'Operating System :: MacOS :: MacOS X',
+          'Operating System :: POSIX',
           'Programming Language :: C',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 3',
-          'Operating System :: MacOS :: MacOS X',
-          'Operating System :: POSIX',
-          'Development Status :: 5 - Production/Stable',
-          'License :: OSI Approved :: Python Software Foundation License',
-          'License :: OSI Approved :: GNU General Public License (GPL)',
       ],
       keywords='gnu readline completion interface',
       author='Stefan H. Holek',
