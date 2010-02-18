@@ -628,10 +628,31 @@ set_completion_append_character(PyObject *self, PyObject *args)
 {
 	char *value;
 
+#if (PY_MAJOR_VERSION >= 3)
+	PyObject *unicode;
+	PyObject *bytes;
+
+	if (!PyArg_ParseTuple(args, "U:set_completion_append_character", &unicode)) {
+		return NULL;
+	}
+	bytes = PyUnicode_AsEncodedString(unicode, "ascii");
+	if (bytes == NULL) {
+		return NULL;
+	}
+	value = PyBytes_AsString(bytes);
+	if (value == NULL) {
+		Py_DECREF(bytes);
+		return NULL;
+	}
+#else
 	if (!PyArg_ParseTuple(args, "s:set_completion_append_character", &value)) {
 		return NULL;
 	}
+#endif
 	rl_completion_append_character = (value && *value) ? *value : '\0';
+#if (PY_MAJOR_VERSION >= 3)
+	Py_DECREF(bytes);
+#endif
 	Py_RETURN_NONE;
 }
 
