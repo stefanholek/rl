@@ -19,8 +19,8 @@
 #define PyString_FromStringAndSize PyUnicode_FromStringAndSize
 #define PyString_FromFormat PyUnicode_FromFormat
 #define PyString_AsString _PyUnicode_AsString
-#define DECODE(x, y, z) PyUnicode_Decode(x, strlen(x), y, z)
-#define ENCODE(x, y, z) PyUnicode_AsEncodedString(x, y, z)
+#define PyUnicode_DECODE(x, y, z) PyUnicode_Decode(x, strlen(x), y, z)
+#define PyUnicode_ENCODE(x, y, z) PyUnicode_AsEncodedString(x, y, z)
 #endif
 
 #if defined(HAVE_SETLOCALE)
@@ -98,9 +98,25 @@ static PyObject *
 read_init_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSConverter, &b)) {
+		return NULL;
+	}
+	if (b != NULL) {
+		s = PyBytes_AsString(b);
+		if (s == NULL) {
+			Py_DECREF(b);
+			return NULL;
+		}
+	}
+#else
 	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
 		return NULL;
+#endif
 	errno = rl_read_init_file(s);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
@@ -118,9 +134,25 @@ static PyObject *
 read_history_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSConverter, &b)) {
+		return NULL;
+	}
+	if (b != NULL) {
+		s = PyBytes_AsString(b);
+		if (s == NULL) {
+			Py_DECREF(b);
+			return NULL;
+		}
+	}
+#else
 	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
 		return NULL;
+#endif
 	errno = read_history(s);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
@@ -139,11 +171,27 @@ static PyObject *
 write_history_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSConverter, &b)) {
+		return NULL;
+	}
+	if (b != NULL) {
+		s = PyBytes_AsString(b);
+		if (s == NULL) {
+			Py_DECREF(b);
+			return NULL;
+		}
+	}
+#else
 	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
 		return NULL;
+#endif
 	errno = write_history(s);
 	if (!errno && _history_length >= 0)
 		history_truncate_file(s, _history_length);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
@@ -1146,11 +1194,9 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	char quote_char_string[2] = "\0\0";
 	PyObject *single_match = NULL;
 	PyObject *r = NULL;
-#if (PY_MAJOR_VERSION >= 3)
 	PyObject *t = NULL;
 	PyObject *q = NULL;
 	PyObject *b = NULL;
-#endif
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1161,8 +1207,8 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		quote_char_string[0] = *quote_pointer;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = DECODE(text, "utf-8", "replace");
-	q = DECODE(quote_char_string, "ascii", "replace");
+	t = PyUnicode_DECODE(text, Py_FileSystemDefaultEncoding, "surrogateescape");
+	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
 	r = PyObject_CallFunction(filename_quoting_function, "OOO",
 				  t, single_match, q);
 #else
@@ -1180,7 +1226,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 			s = PyBytes_AsString(r);
 		}
 		else {
-			b = ENCODE(r, "utf-8", "replace");
+			b = PyUnicode_ENCODE(r, "utf-8", "replace");
 			if (b == NULL)
 				goto error;
 			s = PyBytes_AsString(b);
@@ -1197,22 +1243,15 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	}
 	Py_DECREF(single_match);
 	Py_DECREF(r);
-#if (PY_MAJOR_VERSION >= 3)
-	Py_DECREF(t);
-	Py_DECREF(q);
-	Py_XDECREF(b);
-#endif
 	goto done;
   error:
 	PyErr_Clear();
 	Py_XDECREF(single_match);
 	Py_XDECREF(r);
-#if (PY_MAJOR_VERSION >= 3)
+  done:
 	Py_XDECREF(t);
 	Py_XDECREF(q);
 	Py_XDECREF(b);
-#endif
-  done:
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -1273,11 +1312,9 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	char *s = NULL;
 	char quote_char_string[2] = "\0\0";
 	PyObject *r = NULL;
-#if (PY_MAJOR_VERSION >= 3)
 	PyObject *t = NULL;
 	PyObject *q = NULL;
 	PyObject *b = NULL;
-#endif
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1286,8 +1323,8 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		quote_char_string[0] = quote_char;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = DECODE(text, "utf-8", "replace");
-	q = DECODE(quote_char_string, "ascii", "replace");
+	t = PyUnicode_DECODE(text, "utf-8", "replace");
+	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
 	r = PyObject_CallFunction(filename_dequoting_function, "OO",
 				  t, q);
 #else
@@ -1307,7 +1344,7 @@ on_filename_dequoting_function(const char *text, char quote_char)
 			s = PyBytes_AsString(r);
 		}
 		else {
-			b = ENCODE(r, "utf-8", "replace");
+			b = PyUnicode_ENCODE(r, Py_FileSystemDefaultEncoding, "surrogateescape");
 			if (b == NULL) {
 				result = strdup(text);
 				goto error;
@@ -1324,21 +1361,14 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		result = strdup(s);
 	}
 	Py_DECREF(r);
-#if (PY_MAJOR_VERSION >= 3)
-	Py_DECREF(t);
-	Py_DECREF(q);
-	Py_XDECREF(b);
-#endif
 	goto done;
   error:
 	PyErr_Clear();
 	Py_XDECREF(r);
-#if (PY_MAJOR_VERSION >= 3)
+  done:
 	Py_XDECREF(t);
 	Py_XDECREF(q);
 	Py_XDECREF(b);
-#endif
-  done:
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -1402,12 +1432,19 @@ on_char_is_quoted_function(const char *text, int index)
 {
 	int result = 0;
 	int i = 0;
-	PyObject *r;
+	PyObject *r = NULL;
+	PyObject *t = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+#if (PY_MAJOR_VERSION >= 3)
+	/* XXX Does i still have meaning after decoding? */
+	t = PyUnicode_DECODE(text, "utf-8", "replace");
+	r = PyObject_CallFunction(char_is_quoted_function, "Oi", t, index);
+#else
 	r = PyObject_CallFunction(char_is_quoted_function, "si", text, index);
+#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
@@ -1425,6 +1462,7 @@ on_char_is_quoted_function(const char *text, int index)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
+	Py_XDECREF(t);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
