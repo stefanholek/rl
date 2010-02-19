@@ -1,6 +1,11 @@
 import unittest
+import sys
+import os
+
+from os.path import isfile, expanduser
 
 from rl import history
+from rl.testing import JailSetup
 from rl.testing import reset
 
 
@@ -134,4 +139,88 @@ class HistoryTests(unittest.TestCase):
 
     def test_slots(self):
         self.assertRaises(AttributeError, setattr, history, 'foo', 1)
+
+    def test_clear(self):
+        history.append('fred')
+        history.clear()
+        self.assertEqual(len(history), 0)
+
+
+class HistoryFileTests(JailSetup):
+    # You will lose your ~/.history file when you run these tests
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        self.histfile = expanduser('~/.history')
+        self._remove_histfile()
+
+    def tearDown(self):
+        self._remove_histfile()
+        JailSetup.tearDown(self)
+
+    def _remove_histfile(self):
+        if isfile(self.histfile):
+            os.remove(self.histfile)
+
+    def test_no_histfile(self):
+        self.assertEqual(isfile(self.histfile), False)
+
+    def test_write_file(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file('my_history')
+        self.failUnless(isfile('my_history'))
+
+    def test_write_default_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file()
+        self.failUnless(isfile(self.histfile))
+
+    def test_write_None_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(None)
+        self.failUnless(isfile(self.histfile))
+
+    def test_read_file(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file('my_history')
+        history.clear()
+        history.read_file('my_history')
+        self.assertEqual(len(history), 2)
+
+    def test_read_default_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file()
+        history.clear()
+        history.read_file()
+        self.assertEqual(len(history), 2)
+
+    def test_read_None_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(None)
+        history.clear()
+        history.read_file(None)
+        self.assertEqual(len(history), 2)
+
+    if sys.version_info[0] >= 3:
+
+        def test_write_bytes_name(self):
+            history.append('fred')
+            history.append('wilma')
+            history.write_file(bytes('my_history', sys.getfilesystemencoding()))
+            self.failUnless(isfile('my_history'))
+
+        def test_read_bytes_name(self):
+            history.append('fred')
+            history.append('wilma')
+            history.write_file(bytes('my_history', sys.getfilesystemencoding()))
+            history.clear()
+            history.read_file(bytes('my_history', sys.getfilesystemencoding()))
+            self.assertEqual(len(history), 2)
 
