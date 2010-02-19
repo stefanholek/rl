@@ -21,6 +21,8 @@
 #define PyString_AsString _PyUnicode_AsString
 #define PyUnicode_DECODE(x, y, z) PyUnicode_Decode(x, strlen(x), y, z)
 #define PyUnicode_ENCODE(x, y, z) PyUnicode_AsEncodedString(x, y, z)
+#define Py_FileSystemEncoding Py_FileSystemDefaultEncoding
+#define Py_LocaleEncoding "utf-8"
 #endif
 
 #if defined(HAVE_SETLOCALE)
@@ -1207,7 +1209,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		quote_char_string[0] = *quote_pointer;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = PyUnicode_DECODE(text, Py_FileSystemDefaultEncoding, "surrogateescape");
+	t = PyUnicode_DECODE(text, Py_FileSystemEncoding, "surrogateescape");
 	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
 	r = PyObject_CallFunction(filename_quoting_function, "OOO",
 				  t, single_match, q);
@@ -1226,7 +1228,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 			s = PyBytes_AsString(r);
 		}
 		else {
-			b = PyUnicode_ENCODE(r, "utf-8", "replace");
+			b = PyUnicode_ENCODE(r, Py_LocaleEncoding, "replace");
 			if (b == NULL)
 				goto error;
 			s = PyBytes_AsString(b);
@@ -1323,7 +1325,7 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		quote_char_string[0] = quote_char;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = PyUnicode_DECODE(text, "utf-8", "replace");
+	t = PyUnicode_DECODE(text, Py_LocaleEncoding, "replace");
 	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
 	r = PyObject_CallFunction(filename_dequoting_function, "OO",
 				  t, q);
@@ -1344,7 +1346,7 @@ on_filename_dequoting_function(const char *text, char quote_char)
 			s = PyBytes_AsString(r);
 		}
 		else {
-			b = PyUnicode_ENCODE(r, Py_FileSystemDefaultEncoding, "surrogateescape");
+			b = PyUnicode_ENCODE(r, Py_FileSystemEncoding, "surrogateescape");
 			if (b == NULL) {
 				result = strdup(text);
 				goto error;
@@ -1440,7 +1442,7 @@ on_char_is_quoted_function(const char *text, int index)
 #endif
 #if (PY_MAJOR_VERSION >= 3)
 	/* XXX Does i still have meaning after decoding? */
-	t = PyUnicode_DECODE(text, "utf-8", "replace");
+	t = PyUnicode_DECODE(text, Py_LocaleEncoding, "replace");
 	r = PyObject_CallFunction(char_is_quoted_function, "Oi", t, index);
 #else
 	r = PyObject_CallFunction(char_is_quoted_function, "si", text, index);
