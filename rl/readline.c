@@ -629,19 +629,7 @@ set_completion_append_character(PyObject *self, PyObject *args)
 	char *value;
 
 #if (PY_MAJOR_VERSION >= 3)
-	PyObject *unicode;
-	PyObject *bytes;
-
-	if (!PyArg_ParseTuple(args, "U:set_completion_append_character", &unicode)) {
-		return NULL;
-	}
-	bytes = PyUnicode_AsEncodedString(unicode, "ascii");
-	if (bytes == NULL) {
-		return NULL;
-	}
-	value = PyBytes_AsString(bytes);
-	if (value == NULL) {
-		Py_DECREF(bytes);
+	if (!PyArg_ParseTuple(args, "et:set_completion_append_character", "ascii", &value)) {
 		return NULL;
 	}
 #else
@@ -651,7 +639,7 @@ set_completion_append_character(PyObject *self, PyObject *args)
 #endif
 	rl_completion_append_character = (value && *value) ? *value : '\0';
 #if (PY_MAJOR_VERSION >= 3)
-	Py_DECREF(bytes);
+	PyMem_Free(value);
 #endif
 	Py_RETURN_NONE;
 }
@@ -716,12 +704,21 @@ set_completer_quote_characters(PyObject *self, PyObject *args)
 {
 	char *value;
 
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "et:set_completer_quote_characters", "ascii", &value)) {
+		return NULL;
+	}
+#else
 	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &value)) {
 		return NULL;
 	}
+#endif
 	if (rl_completer_quote_characters)
 		free((void*)rl_completer_quote_characters);
 	rl_completer_quote_characters = strdup(value);
+#if (PY_MAJOR_VERSION >= 3)
+	PyMem_Free(value);
+#endif
 	Py_RETURN_NONE;
 }
 
@@ -751,12 +748,21 @@ set_filename_quote_characters(PyObject *self, PyObject *args)
 {
 	char *value;
 
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "et:set_filename_quote_characters", "ascii", &value)) {
+		return NULL;
+	}
+#else
 	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &value)) {
 		return NULL;
 	}
+#endif
 	if (rl_filename_quote_characters)
 		free((void*)rl_filename_quote_characters);
 	rl_filename_quote_characters = strdup(value);
+#if (PY_MAJOR_VERSION >= 3)
+	PyMem_Free(value);
+#endif
 	Py_RETURN_NONE;
 }
 
@@ -816,10 +822,19 @@ set_completion_quote_character(PyObject *self, PyObject *args)
 {
 	char *value;
 
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "et:set_completion_quote_character", "ascii", &value)) {
+		return NULL;
+	}
+#else
 	if (!PyArg_ParseTuple(args, "s:set_completion_quote_character", &value)) {
 		return NULL;
 	}
+#endif
 	rl_completion_quote_character = (value && *value) ? *value : '\0';
+#if (PY_MAJOR_VERSION >= 3)
+	PyMem_Free(value);
+#endif
 	Py_RETURN_NONE;
 }
 
@@ -1128,7 +1143,12 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	char *s = NULL;
 	char quote_char_string[2] = "\0\0";
 	PyObject *single_match = NULL;
-	PyObject *r;
+	PyObject *r = NULL;
+#if (PY_MAJOR_VERSION >= 3)
+	PyObject *u = NULL;
+	PyObject *q = NULL;
+	PyObject *b = NULL;
+#endif
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1139,15 +1159,33 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		quote_char_string[0] = *quote_pointer;
 	}
 
+#if (PY_MAJOR_VERSION >= 3)
+	u = PyUnicode_Decode(text, strlen(text), "utf-8", "replace");
+	q = PyUnicode_Decode(quote_char_string, 1, "ascii", "replace");
+	r = PyObject_CallFunction(filename_quoting_function, "OOO",
+				  u, single_match, q);
+#else
 	r = PyObject_CallFunction(filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
+#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = (char*)text;
 	}
 	else {
+#if (PY_MAJOR_VERSION >= 3)
+		if (PyBytes_Check(r)) {
+			s = PyBytes_AsString(r);
+		} else {
+			b = PyUnicode_AsEncodedString(r, "utf-8", "replace");
+			if (b == NULL)
+				goto error;
+			s = PyBytes_AsString(b);
+		}
+#else
 		s = PyString_AsString(r);
+#endif
 		if (s == NULL)
 			goto error;
 
@@ -1157,11 +1195,21 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	}
 	Py_DECREF(single_match);
 	Py_DECREF(r);
+#if (PY_MAJOR_VERSION >= 3)
+	Py_DECREF(u);
+	Py_DECREF(q);
+	Py_XDECREF(b);
+#endif
 	goto done;
   error:
 	PyErr_Clear();
 	Py_XDECREF(single_match);
 	Py_XDECREF(r);
+#if (PY_MAJOR_VERSION >= 3)
+	Py_XDECREF(u);
+	Py_XDECREF(q);
+	Py_XDECREF(b);
+#endif
   done:
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
