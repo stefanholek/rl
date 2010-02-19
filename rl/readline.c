@@ -19,6 +19,8 @@
 #define PyString_FromStringAndSize PyUnicode_FromStringAndSize
 #define PyString_FromFormat PyUnicode_FromFormat
 #define PyString_AsString _PyUnicode_AsString
+#define DECODE(x, y, z) PyUnicode_Decode(x, strlen(x), y, z)
+#define ENCODE(x, y, z) PyUnicode_AsEncodedString(x, y, z)
 #endif
 
 #if defined(HAVE_SETLOCALE)
@@ -1145,7 +1147,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	PyObject *single_match = NULL;
 	PyObject *r = NULL;
 #if (PY_MAJOR_VERSION >= 3)
-	PyObject *u = NULL;
+	PyObject *t = NULL;
 	PyObject *q = NULL;
 	PyObject *b = NULL;
 #endif
@@ -1158,12 +1160,11 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	if (quote_pointer && *quote_pointer) {
 		quote_char_string[0] = *quote_pointer;
 	}
-
 #if (PY_MAJOR_VERSION >= 3)
-	u = PyUnicode_Decode(text, strlen(text), "utf-8", "replace");
-	q = PyUnicode_Decode(quote_char_string, 1, "ascii", "replace");
+	t = DECODE(text, "utf-8", "replace");
+	q = DECODE(quote_char_string, "ascii", "replace");
 	r = PyObject_CallFunction(filename_quoting_function, "OOO",
-				  u, single_match, q);
+				  t, single_match, q);
 #else
 	r = PyObject_CallFunction(filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
@@ -1177,8 +1178,9 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 #if (PY_MAJOR_VERSION >= 3)
 		if (PyBytes_Check(r)) {
 			s = PyBytes_AsString(r);
-		} else {
-			b = PyUnicode_AsEncodedString(r, "utf-8", "replace");
+		}
+		else {
+			b = ENCODE(r, "utf-8", "replace");
 			if (b == NULL)
 				goto error;
 			s = PyBytes_AsString(b);
@@ -1196,7 +1198,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	Py_DECREF(single_match);
 	Py_DECREF(r);
 #if (PY_MAJOR_VERSION >= 3)
-	Py_DECREF(u);
+	Py_DECREF(t);
 	Py_DECREF(q);
 	Py_XDECREF(b);
 #endif
@@ -1206,7 +1208,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	Py_XDECREF(single_match);
 	Py_XDECREF(r);
 #if (PY_MAJOR_VERSION >= 3)
-	Py_XDECREF(u);
+	Py_XDECREF(t);
 	Py_XDECREF(q);
 	Py_XDECREF(b);
 #endif
