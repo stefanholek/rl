@@ -96,9 +96,19 @@ static PyObject *
 read_init_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSConverter, &b))
+		return NULL;
+	if (b != NULL)
+		s = PyBytes_AsString(b);
+#else
 	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
 		return NULL;
+#endif
 	errno = rl_read_init_file(s);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
@@ -116,9 +126,19 @@ static PyObject *
 read_history_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSConverter, &b))
+		return NULL;
+	if (b != NULL)
+		s = PyBytes_AsString(b);
+#else
 	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
 		return NULL;
+#endif
 	errno = read_history(s);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
@@ -137,11 +157,21 @@ static PyObject *
 write_history_file(PyObject *self, PyObject *args)
 {
 	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSConverter, &b))
+		return NULL;
+	if (b != NULL)
+		s = PyBytes_AsString(b);
+#else
 	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
 		return NULL;
+#endif
 	errno = write_history(s);
 	if (!errno && _history_length >= 0)
 		history_truncate_file(s, _history_length);
+	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
 	Py_RETURN_NONE;
