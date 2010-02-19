@@ -1172,7 +1172,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
-		result = (char*)text;
+		;
 	}
 	else {
 #if (PY_MAJOR_VERSION >= 3)
@@ -1272,7 +1272,12 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	char *result = NULL;
 	char *s = NULL;
 	char quote_char_string[2] = "\0\0";
-	PyObject *r;
+	PyObject *r = NULL;
+#if (PY_MAJOR_VERSION >= 3)
+	PyObject *t = NULL;
+	PyObject *q = NULL;
+	PyObject *b = NULL;
+#endif
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1280,9 +1285,15 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	if (quote_char) {
 		quote_char_string[0] = quote_char;
 	}
-
+#if (PY_MAJOR_VERSION >= 3)
+	t = DECODE(text, "utf-8", "replace");
+	q = DECODE(quote_char_string, "ascii", "replace");
+	r = PyObject_CallFunction(filename_dequoting_function, "OO",
+				  t, q);
+#else
 	r = PyObject_CallFunction(filename_dequoting_function, "ss",
 				  text, quote_char_string);
+#endif
 	if (r == NULL) {
 		result = strdup(text);
 		goto error;
@@ -1291,7 +1302,21 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		result = strdup(text);
 	}
 	else {
+#if (PY_MAJOR_VERSION >= 3)
+		if (PyBytes_Check(r)) {
+			s = PyBytes_AsString(r);
+		}
+		else {
+			b = ENCODE(r, "utf-8", "replace");
+			if (b == NULL) {
+				result = strdup(text);
+				goto error;
+			}
+			s = PyBytes_AsString(b);
+		}
+#else
 		s = PyString_AsString(r);
+#endif
 		if (s == NULL) {
 			result = strdup(text);
 			goto error;
@@ -1299,10 +1324,20 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		result = strdup(s);
 	}
 	Py_DECREF(r);
+#if (PY_MAJOR_VERSION >= 3)
+	Py_DECREF(t);
+	Py_DECREF(q);
+	Py_XDECREF(b);
+#endif
 	goto done;
   error:
 	PyErr_Clear();
 	Py_XDECREF(r);
+#if (PY_MAJOR_VERSION >= 3)
+	Py_XDECREF(t);
+	Py_XDECREF(q);
+	Py_XDECREF(b);
+#endif
   done:
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
