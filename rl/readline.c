@@ -103,16 +103,10 @@ read_init_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSConverter, &b)) {
+	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSConverter, &b))
 		return NULL;
-	}
-	if (b != NULL) {
+	if (b != NULL)
 		s = PyBytes_AsString(b);
-		if (s == NULL) {
-			Py_DECREF(b);
-			return NULL;
-		}
-	}
 #else
 	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
 		return NULL;
@@ -139,16 +133,10 @@ read_history_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSConverter, &b)) {
+	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSConverter, &b))
 		return NULL;
-	}
-	if (b != NULL) {
+	if (b != NULL)
 		s = PyBytes_AsString(b);
-		if (s == NULL) {
-			Py_DECREF(b);
-			return NULL;
-		}
-	}
 #else
 	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
 		return NULL;
@@ -176,16 +164,10 @@ write_history_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSConverter, &b)) {
+	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSConverter, &b))
 		return NULL;
-	}
-	if (b != NULL) {
+	if (b != NULL)
 		s = PyBytes_AsString(b);
-		if (s == NULL) {
-			Py_DECREF(b);
-			return NULL;
-		}
-	}
 #else
 	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
 		return NULL;
@@ -1229,9 +1211,8 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		}
 		else {
 			b = PyUnicode_ENCODE(r, Py_LocaleEncoding, "replace");
-			if (b == NULL)
-				goto error;
-			s = PyBytes_AsString(b);
+			if (b != NULL)
+				s = PyBytes_AsString(b);
 		}
 #else
 		s = PyString_AsString(r);
@@ -1347,11 +1328,8 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		}
 		else {
 			b = PyUnicode_ENCODE(r, Py_FileSystemEncoding, "surrogateescape");
-			if (b == NULL) {
-				result = strdup(text);
-				goto error;
-			}
-			s = PyBytes_AsString(b);
+			if (b != NULL)
+				s = PyBytes_AsString(b);
 		}
 #else
 		s = PyString_AsString(r);
