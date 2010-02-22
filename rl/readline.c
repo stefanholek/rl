@@ -10,20 +10,7 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-
-/* Python 3 support */
-#if (PY_MAJOR_VERSION >= 3)
-#define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong PyLong_AsLong
-#define PyString_FromString PyUnicode_FromString
-#define PyString_FromStringAndSize PyUnicode_FromStringAndSize
-#define PyString_FromFormat PyUnicode_FromFormat
-#define PyString_AsString _PyUnicode_AsString
-#define PyUnicode_DECODE(x, y, z) PyUnicode_Decode(x, strlen(x), y, z)
-#define PyUnicode_ENCODE(x, y, z) PyUnicode_AsEncodedString(x, y, z)
-#define Py_FileSystemEncoding Py_FileSystemDefaultEncoding
-#define Py_LocaleEncoding "utf-8"
-#endif
+#include "readlineutils.h"
 
 #if defined(HAVE_SETLOCALE)
 /* GNU readline() mistakenly sets the LC_CTYPE locale.
@@ -76,12 +63,21 @@ on_completion_display_matches_hook(char **matches,
 static PyObject *
 parse_and_bind(PyObject *self, PyObject *args)
 {
-	char *s, *copy;
+	char *s=NULL, *copy;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:parse_and_bind", PyUnicode_StrConverter, &b))
+		return NULL;
+	s = PyBytes_AsString(b);
+#else
 	if (!PyArg_ParseTuple(args, "s:parse_and_bind", &s))
 		return NULL;
+#endif
 	/* Make a copy -- rl_parse_and_bind() modifies its argument */
 	/* Bernard Herzog */
 	copy = strdup(s);
+	Py_XDECREF(b);
 	if (copy == NULL)
 		return PyErr_NoMemory();
 	rl_parse_and_bind(copy);
@@ -328,10 +324,13 @@ static PyObject *endidx = NULL;
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
 {
+#if (PY_MAJOR_VERSION >= 3)
+	return PyUnicode_DECODE_CHAR(rl_completion_type);
+#else
 	if (!rl_completion_type)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromFormat("%c", rl_completion_type);
+#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_type,
@@ -373,12 +372,19 @@ static PyObject *
 set_completer_delims(PyObject *self, PyObject *args)
 {
 	char *break_chars;
+	PyObject *b = NULL;
 
-	if(!PyArg_ParseTuple(args, "s:set_completer_delims", &break_chars)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:set_completer_delims", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	break_chars = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:set_completer_delims", &break_chars))
+		return NULL;
+#endif
 	free((void*)rl_completer_word_break_characters);
 	rl_completer_word_break_characters = strdup(break_chars);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -426,22 +432,27 @@ py_replace_history(PyObject *self, PyObject *args)
 	int entry_number;
 	char *line;
 	HIST_ENTRY *old_entry;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "is:replace_history", &entry_number,
-			      &line)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "iO&:replace_history", &entry_number, PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	line = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "is:replace_history", &entry_number, &line))
+		return NULL;
+#endif
 	if (entry_number < 0) {
 		PyErr_SetString(PyExc_ValueError,
 				"History index cannot be negative");
-		return NULL;
+		goto error;
 	}
 	old_entry = replace_history_entry(entry_number, line, (void *)NULL);
 	if (!old_entry) {
 		PyErr_Format(PyExc_ValueError,
 			     "No history item at position %d",
 			     entry_number);
-		return NULL;
+		goto error;
 	}
 	/* free memory allocated for the old history entry */
 	if (old_entry->line)
@@ -449,8 +460,11 @@ py_replace_history(PyObject *self, PyObject *args)
 	if (old_entry->data)
 	    free(old_entry->data);
 	free(old_entry);
-
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
+  error:
+  	Py_XDECREF(b);
+	return NULL;
 }
 
 PyDoc_STRVAR(doc_replace_history,
@@ -463,11 +477,18 @@ static PyObject *
 py_add_history(PyObject *self, PyObject *args)
 {
 	char *line;
+	PyObject *b = NULL;
 
-	if(!PyArg_ParseTuple(args, "s:add_history", &line)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if(!PyArg_ParseTuple(args, "O&:add_history", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	line = PyBytes_AsString(b);
+#else
+	if(!PyArg_ParseTuple(args, "s:add_history", &line))
+		return NULL;
+#endif
 	add_history(line);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -594,9 +615,18 @@ static PyObject *
 insert_text(PyObject *self, PyObject *args)
 {
 	char *s;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:insert_text", PyUnicode_StrConverter, &b))
+		return NULL;
+	s = PyBytes_AsString(b);
+#else
 	if (!PyArg_ParseTuple(args, "s:insert_text", &s))
 		return NULL;
+#endif
 	rl_insert_text(s);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -646,10 +676,13 @@ an up-to-date screen.");
 static PyObject *
 get_completion_append_character(PyObject *self, PyObject *noarg)
 {
+#if (PY_MAJOR_VERSION >= 3)
+	return PyUnicode_DECODE_CHAR(rl_completion_append_character);
+#else
 	if (!rl_completion_append_character)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromFormat("%c", rl_completion_append_character);
+#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_append_character,
@@ -660,21 +693,19 @@ Get the character appended after the current completion.");
 static PyObject *
 set_completion_append_character(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "et:set_completion_append_character", "ascii", &value)) {
+	if (!PyArg_ParseTuple(args, "O&:set_completion_append_character", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	s = PyBytes_AsString(b);
 #else
-	if (!PyArg_ParseTuple(args, "s:set_completion_append_character", &value)) {
+	if (!PyArg_ParseTuple(args, "s:set_completion_append_character", &s))
 		return NULL;
-	}
 #endif
-	rl_completion_append_character = (value && *value) ? *value : '\0';
-#if (PY_MAJOR_VERSION >= 3)
-	PyMem_Free(value);
-#endif
+	rl_completion_append_character = (s && *s) ? *s : '\0';
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -682,7 +713,6 @@ PyDoc_STRVAR(doc_set_completion_append_character,
 "set_completion_append_character(string) -> None\n\
 Set the character appended after the current completion. \
 May only be called from within custom completers.");
-
 #endif
 
 
@@ -723,8 +753,7 @@ static PyObject *
 get_completer_quote_characters(PyObject *self, PyObject *noarg)
 {
 	if (!rl_completer_quote_characters)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromString(rl_completer_quote_characters);
 }
 
@@ -736,23 +765,21 @@ Get list of characters that may be used to quote a substring of the line.");
 static PyObject *
 set_completer_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "et:set_completer_quote_characters", "ascii", &value)) {
+	if (!PyArg_ParseTuple(args, "O&:set_completer_quote_characters", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	s = PyBytes_AsString(b);
 #else
-	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &value)) {
+	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &s))
 		return NULL;
-	}
 #endif
 	if (rl_completer_quote_characters)
 		free((void*)rl_completer_quote_characters);
-	rl_completer_quote_characters = strdup(value);
-#if (PY_MAJOR_VERSION >= 3)
-	PyMem_Free(value);
-#endif
+	rl_completer_quote_characters = strdup(s);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -767,8 +794,7 @@ static PyObject *
 get_filename_quote_characters(PyObject *self, PyObject *noarg)
 {
 	if (!rl_filename_quote_characters)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromString(rl_filename_quote_characters);
 }
 
@@ -780,23 +806,21 @@ Get list of characters that cause a filename to be quoted by the completer.");
 static PyObject *
 set_filename_quote_characters(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "et:set_filename_quote_characters", "ascii", &value)) {
+	if (!PyArg_ParseTuple(args, "O&:set_filename_quote_characters", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	s = PyBytes_AsString(b);
 #else
-	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &value)) {
+	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &s))
 		return NULL;
-	}
 #endif
 	if (rl_filename_quote_characters)
 		free((void*)rl_filename_quote_characters);
-	rl_filename_quote_characters = strdup(value);
-#if (PY_MAJOR_VERSION >= 3)
-	PyMem_Free(value);
-#endif
+	rl_filename_quote_characters = strdup(s);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -840,10 +864,13 @@ if the word being completed contains any quoting character (including backslashe
 static PyObject *
 get_completion_quote_character(PyObject *self, PyObject *noarg)
 {
+#if (PY_MAJOR_VERSION >= 3)
+	return PyUnicode_DECODE_CHAR(rl_completion_quote_character);
+#else
 	if (!rl_completion_quote_character)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromFormat("%c", rl_completion_quote_character);
+#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_quote_character,
@@ -854,21 +881,19 @@ When readline is completing quoted text, it sets this variable to the quoting ch
 static PyObject *
 set_completion_quote_character(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "et:set_completion_quote_character", "ascii", &value)) {
+	if (!PyArg_ParseTuple(args, "O&:set_completion_quote_character", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	s = PyBytes_AsString(b);
 #else
-	if (!PyArg_ParseTuple(args, "s:set_completion_quote_character", &value)) {
+	if (!PyArg_ParseTuple(args, "s:set_completion_quote_character", &s))
 		return NULL;
-	}
 #endif
-	rl_completion_quote_character = (value && *value) ? *value : '\0';
-#if (PY_MAJOR_VERSION >= 3)
-	PyMem_Free(value);
-#endif
+	rl_completion_quote_character = (s && *s) ? *s : '\0';
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -1175,11 +1200,11 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 {
 	char *result = (char*)text;
 	char *s = NULL;
-	char quote_char_string[2] = "\0\0";
+	char quote_char_string[2] = "\0";
 	PyObject *single_match = NULL;
 	PyObject *r = NULL;
-	PyObject *t = NULL;
-	PyObject *q = NULL;
+	PyObject *u_text = NULL;
+	PyObject *u_quote_char = NULL;
 	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
@@ -1191,10 +1216,10 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		quote_char_string[0] = *quote_pointer;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = PyUnicode_DECODE(text, Py_FileSystemEncoding, "surrogateescape");
-	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
+	u_text = PyUnicode_DECODE(text);
+	u_quote_char = PyUnicode_DECODE(quote_char_string);
 	r = PyObject_CallFunction(filename_quoting_function, "OOO",
-				  t, single_match, q);
+				  u_text, single_match, u_quote_char);
 #else
 	r = PyObject_CallFunction(filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
@@ -1202,24 +1227,18 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
-		;
+		result = (char*)text;
 	}
 	else {
 #if (PY_MAJOR_VERSION >= 3)
-		if (PyBytes_Check(r)) {
-			s = PyBytes_AsString(r);
-		}
-		else {
-			b = PyUnicode_ENCODE(r, Py_LocaleEncoding, "replace");
-			if (b != NULL)
-				s = PyBytes_AsString(b);
-		}
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
 #else
 		s = PyString_AsString(r);
 #endif
 		if (s == NULL)
 			goto error;
-
 		s = strdup(s);
 		if (s != NULL)
 			result = s;
@@ -1232,8 +1251,8 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	Py_XDECREF(single_match);
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(t);
-	Py_XDECREF(q);
+	Py_XDECREF(u_text);
+	Py_XDECREF(u_quote_char);
 	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -1293,10 +1312,10 @@ on_filename_dequoting_function(const char *text, char quote_char)
 {
 	char *result = NULL;
 	char *s = NULL;
-	char quote_char_string[2] = "\0\0";
+	char quote_char_string[2] = "\0";
 	PyObject *r = NULL;
-	PyObject *t = NULL;
-	PyObject *q = NULL;
+	PyObject *u_text = NULL;
+	PyObject *u_quote_char = NULL;
 	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
@@ -1306,10 +1325,10 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		quote_char_string[0] = quote_char;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	t = PyUnicode_DECODE(text, Py_LocaleEncoding, "replace");
-	q = PyUnicode_DECODE(quote_char_string, "ascii", "replace");
+	u_text = PyUnicode_DECODE(text);
+	u_quote_char = PyUnicode_DECODE(quote_char_string);
 	r = PyObject_CallFunction(filename_dequoting_function, "OO",
-				  t, q);
+				  u_text, u_quote_char);
 #else
 	r = PyObject_CallFunction(filename_dequoting_function, "ss",
 				  text, quote_char_string);
@@ -1323,14 +1342,9 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	}
 	else {
 #if (PY_MAJOR_VERSION >= 3)
-		if (PyBytes_Check(r)) {
-			s = PyBytes_AsString(r);
-		}
-		else {
-			b = PyUnicode_ENCODE(r, Py_FileSystemEncoding, "surrogateescape");
-			if (b != NULL)
-				s = PyBytes_AsString(b);
-		}
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
 #else
 		s = PyString_AsString(r);
 #endif
@@ -1346,8 +1360,8 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(t);
-	Py_XDECREF(q);
+	Py_XDECREF(u_text);
+	Py_XDECREF(u_quote_char);
 	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -1413,15 +1427,16 @@ on_char_is_quoted_function(const char *text, int index)
 	int result = 0;
 	int i = 0;
 	PyObject *r = NULL;
-	PyObject *t = NULL;
+	PyObject *u_text = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+
 #if (PY_MAJOR_VERSION >= 3)
-	/* XXX Does i still have meaning after decoding? */
-	t = PyUnicode_DECODE(text, Py_LocaleEncoding, "replace");
-	r = PyObject_CallFunction(char_is_quoted_function, "Oi", t, index);
+	u_text = PyUnicode_DECODE(text);
+	r = PyObject_CallFunction(char_is_quoted_function, "Oi", u_text,
+				  PyUnicode_AdjustIndex(text, index));
 #else
 	r = PyObject_CallFunction(char_is_quoted_function, "si", text, index);
 #endif
@@ -1442,7 +1457,7 @@ on_char_is_quoted_function(const char *text, int index)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(t);
+	Py_XDECREF(u_text);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -1456,18 +1471,23 @@ static PyObject *
 filename_completion_function(PyObject *self, PyObject *args)
 {
 	int state;
-	char *value;
+	char *s;
 	char *completion;
-	PyObject* r;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "si:filename_completion_function", &value, &state)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&i:filename_completion_function", PyUnicode_StrConverter, &b, &state))
 		return NULL;
-	}
-
-	completion = rl_filename_completion_function(value, state);
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "si:filename_completion_function", &s, &state))
+		return NULL;
+#endif
+	completion = rl_filename_completion_function(s, state);
+	Py_XDECREF(b);
 	if (!completion)
 		Py_RETURN_NONE;
-
 	r = PyString_FromString(completion);
 	free(completion);
 	return r;
@@ -1482,18 +1502,23 @@ static PyObject *
 username_completion_function(PyObject *self, PyObject *args)
 {
 	int state;
-	char *value;
+	char *s;
 	char *completion;
-	PyObject* r;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "si:username_completion_function", &value, &state)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&i:username_completion_function", PyUnicode_StrConverter, &b, &state))
 		return NULL;
-	}
-
-	completion = rl_username_completion_function(value, state);
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "si:username_completion_function", &s, &state))
+		return NULL;
+#endif
+	completion = rl_username_completion_function(s, state);
+	Py_XDECREF(b);
 	if (!completion)
 		Py_RETURN_NONE;
-
 	r = PyString_FromString(completion);
 	free(completion);
 	return r;
@@ -1507,16 +1532,22 @@ A built-in generator function for username completion.");
 static PyObject *
 py_tilde_expand(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
 	char *expanded;
-	PyObject *r;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:tilde_expand", &value)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:tilde_expand", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
-
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:tilde_expand", &s))
+		return NULL;
+#endif
 	/* tilde_expand aborts on out of memory condition */
-	expanded = tilde_expand(value);
+	expanded = tilde_expand(s);
+	Py_XDECREF(b);
 	r = PyString_FromString(expanded);
 	free(expanded);
 	return r;
@@ -1533,8 +1564,7 @@ static PyObject *
 get_special_prefixes(PyObject *self, PyObject *noarg)
 {
 	if (!rl_special_prefixes)
-		return PyString_FromStringAndSize(NULL, 0);
-
+		return PyString_FromString("");
 	return PyString_FromString(rl_special_prefixes);
 }
 
@@ -1547,14 +1577,21 @@ when it is passed to the completion function.");
 static PyObject *
 set_special_prefixes(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &value)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:set_special_prefixes", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &s))
+		return NULL;
+#endif
 	if (rl_special_prefixes)
 		free((void*)rl_special_prefixes);
-	rl_special_prefixes = strdup(value);
+	rl_special_prefixes = strdup(s);
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -1600,7 +1637,11 @@ Up to this many items will be displayed in response to a possible-completions ca
 static PyObject *
 get_completion_invoking_key(PyObject *self, PyObject *noarg)
 {
+#if (PY_MAJOR_VERSION >= 3)
+	return PyUnicode_DECODE_CHAR(rl_completion_invoking_key);
+#else
 	return PyString_FromFormat("%c", rl_completion_invoking_key);
+#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_invoking_key,
@@ -1706,12 +1747,19 @@ Set the ending index of the readline tab-completion scope.");
 static PyObject *
 set_completion_type(PyObject *self, PyObject *args)
 {
-	char *value;
+	char *s;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:set_completion_type", &value)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:set_completion_type", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
-	rl_completion_type = (value && *value) ? *value : '\0';
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:set_completion_type", &s))
+		return NULL;
+#endif
+	rl_completion_type = (s && *s) ? *s : '\0';
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -1790,15 +1838,20 @@ Find the bounds of the word at or before the cursor position.");
 static PyObject *
 complete_internal(PyObject *self, PyObject *args)
 {
-	char *what_to_do = NULL;
+	char *what_to_do;
 	int result = 1;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:complete_internal", &what_to_do)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:complete_internal", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
-	if (what_to_do) {
-		result = rl_complete_internal(*what_to_do);
-	}
+	what_to_do = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:complete_internal", &what_to_do))
+		return NULL;
+#endif
+	result = rl_complete_internal(*what_to_do);
+	Py_XDECREF(b);
 	return PyInt_FromLong(result);
 }
 
@@ -1858,14 +1911,15 @@ on_completion_word_break_hook(void)
 {
 	char *result = NULL;
 	char *s = NULL;
-	PyObject *r;
-	int begidx, endidx;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+	int start, end;
 	static char *last = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	endidx = rl_point;
+	end = rl_point;
 	if (rl_point) {
 		/* Unhook ourselves to avoid infinite recursion */
 		rl_completion_word_break_hook = NULL;
@@ -1873,18 +1927,30 @@ on_completion_word_break_hook(void)
 		rl_completion_word_break_hook =
 			(rl_cpvfunc_t *)on_completion_word_break_hook;
 	}
-	begidx = rl_point;
-	rl_point = endidx;
+	start = rl_point;
+	rl_point = end;
 
+#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(completion_word_break_hook, "ii",
-	                          begidx, endidx);
+				  PyUnicode_AdjustIndex(rl_line_buffer, start),
+				  PyUnicode_AdjustIndex(rl_line_buffer, end));
+#else
+	r = PyObject_CallFunction(completion_word_break_hook, "ii",
+	                          start, end);
+#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = NULL;
 	}
 	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
 		s = PyString_AsString(r);
+#endif
 		if (s == NULL)
 			goto error;
 		result = strdup(s);
@@ -1898,6 +1964,7 @@ on_completion_word_break_hook(void)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
+	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -1954,22 +2021,35 @@ on_directory_completion_hook(char **directory)
 {
 	int result = 0;
 	char *s = NULL;
-	PyObject *r;
+	PyObject *r = NULL;
+	PyObject *u_directory = NULL;
+	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	u_directory = PyUnicode_DECODE(*directory);
+	r = PyObject_CallFunction(directory_completion_hook, "O", u_directory);
+#else
 	r = PyObject_CallFunction(directory_completion_hook, "s", *directory);
+#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = 0;
 	}
 	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
 		s = PyString_AsString(r);
+#endif
 		if (s == NULL)
 			goto error;
-
 		s = strdup(s);
 		if (s != NULL) {
 			free(*directory);
@@ -1983,6 +2063,8 @@ on_directory_completion_hook(char **directory)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
+	Py_XDECREF(u_directory);
+	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -1995,16 +2077,23 @@ on_directory_completion_hook(char **directory)
 static PyObject *
 replace_line(PyObject *self, PyObject *args)
 {
-	char *value = NULL;
+	char *s = NULL;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:replace_line", &value)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:replace_line", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
-	if (value) {
-		rl_replace_line(value, 0);
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:replace_line", &s))
+		return NULL;
+#endif
+	if (s) {
+		rl_replace_line(s, 0);
 		/* Move rl_point to end of line */
 		rl_point = rl_end;
 	}
+	Py_XDECREF(b);
 	Py_RETURN_NONE;
 }
 
@@ -2030,7 +2119,11 @@ read_key(PyObject* self, PyObject* noargs)
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
 
+#if (PY_MAJOR_VERSION >= 3)
+	return PyUnicode_DECODE_CHAR(c);
+#else
 	return PyString_FromFormat("%c", c);
+#endif
 }
 
 PyDoc_STRVAR(doc_read_key,
@@ -2045,15 +2138,21 @@ from the stream.");
 static PyObject *
 stuff_char(PyObject *self, PyObject *args)
 {
-	char *value = NULL;
+	char *s = NULL;
 	int r = 0;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "s:stuff_char", &value)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:stuff_char", PyUnicode_StrConverter, &b))
 		return NULL;
-	}
-	if (value && *value) {
-		r = rl_stuff_char(*value);
-	}
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:stuff_char", &s))
+		return NULL;
+#endif
+	if (s && *s)
+		r = rl_stuff_char(*s);
+	Py_XDECREF(b);
 	return PyBool_FromLong(r);
 }
 
@@ -2131,140 +2230,6 @@ If True, include hidden files when computing the list of matches.");
 */
 
 
-/* StringArray helpers */
-
-static char**
-StringArray_new(size_t size)
-{
-	char **p;
-
-	p = calloc(size+1, sizeof(char*));
-	if (p == NULL)
-		PyErr_NoMemory();
-	return p;
-}
-
-
-static void
-StringArray_free(char **strings)
-{
-	char **p;
-
-	if (strings) {
-		for (p = strings; *p; p++)
-			free(*p);
-		free(strings);
-	}
-}
-
-
-static size_t
-StringArray_size(char **strings)
-{
-	char **p;
-	size_t size = 0;
-
-	for (p = strings; *p; p++)
-		size++;
-	return size;
-}
-
-
-static int
-StringArray_insert(char ***strings, size_t pos, char *string)
-{
-	char **new;
-	char **p;
-	size_t size, i;
-
-	size = StringArray_size(*strings);
-	if (size == -1)
-		return -1;
-
-	new = StringArray_new(size+1);
-	if (new == NULL)
-		return -1;
-
-	for (p = *strings, i = 0; *p; p++) {
-		if (i == pos)
-			new[i++] = string;
-		new[i++] = *p;
-	}
-	free(*strings);
-	*strings = new;
-	return 0;
-}
-
-
-/* StringArray to PyList and back */
-
-static PyObject*
-PyList_FromStringArray(char **strings)
-{
-	PyObject *list;
-	PyObject *s;
-	size_t size, i;
-
-	size = StringArray_size(strings);
-	if (size == -1)
-		return NULL;
-
-	list = PyList_New(size);
-	if (list == NULL)
-		return NULL;
-
-	for (i = 0; i < size; i++) {
-		s = PyString_FromString(strings[i]);
-		if (s == NULL)
-			goto error;
-		if (PyList_SetItem(list, i, s) == -1)
-			goto error;
-	}
-	return list;
-  error:
-	Py_XDECREF(list);
-	return NULL;
-}
-
-
-static char**
-PyList_AsStringArray(PyObject *list)
-{
-	char **strings;
-	char **p;
-	char *s;
-	PyObject *r;
-	Py_ssize_t size, i;
-
-	size = PyList_Size(list);
-	if (size == -1)
-		return NULL;
-
-	strings = StringArray_new(size);
-	if (strings == NULL)
-		return NULL;
-
-	for (p = strings, i = 0; i < size; i++) {
-		r = PyList_GetItem(list, i);
-		if (r == NULL)
-			goto error;
-		s = PyString_AsString(r);
-		if (s == NULL)
-			goto error;
-		s = strdup(s);
-		if (s == NULL) {
-			PyErr_NoMemory();
-			goto error;
-		}
-		*p++ = s;
-	}
-	return strings;
-  error:
-	StringArray_free(strings);
-	return NULL;
-}
-
-
 /* Display match list function */
 
 static PyObject*
@@ -2274,21 +2239,27 @@ display_match_list(PyObject *self, PyObject *args)
 	PyObject *matches = NULL;
 	Py_ssize_t num_matches = 0;
 	int max_length = 0;
-	char **strings;
+	char **strings = NULL;
 	char *s;
+	PyObject *b = NULL;
 
-	if (!PyArg_ParseTuple(args, "sOi:display_match_list",
-			      &substitution, &matches, &max_length)) {
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&Oi:display_match_list",
+			      PyUnicode_StrConverter, &b, &matches, &max_length))
 		return NULL;
-	}
-
+	substitution = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "sOi:display_match_list",
+			      &substitution, &matches, &max_length))
+		return NULL;
+#endif
 	num_matches = PyList_Size(matches);
 	if (num_matches == -1)
-		return NULL;
+		goto error;
 
 	strings = PyList_AsStringArray(matches);
 	if (strings == NULL)
-		return NULL;
+		goto error;
 
 	s = strdup(substitution);
 	if (s == NULL) {
@@ -2307,9 +2278,11 @@ display_match_list(PyObject *self, PyObject *args)
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
 
+	Py_XDECREF(b);
 	StringArray_free(strings);
 	Py_RETURN_NONE;
   error:
+	Py_XDECREF(b);
 	StringArray_free(strings);
 	return NULL;
 }
@@ -2372,6 +2345,7 @@ on_ignore_some_completions_function(char **matches)
 	Py_ssize_t old_size, new_size;
 	PyObject *m = NULL;
 	PyObject *r = NULL;
+	PyObject *u_subst = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -2380,8 +2354,14 @@ on_ignore_some_completions_function(char **matches)
 	if (m == NULL)
 		goto error;
 
+#if (PY_MAJOR_VERSION >= 3)
+	u_subst = PyUnicode_DECODE(matches[0]);
+	r = PyObject_CallFunction(ignore_some_completions_function, "OO",
+				  u_subst, m);
+#else
 	r = PyObject_CallFunction(ignore_some_completions_function, "sO",
 				  matches[0], m);
+#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
@@ -2418,6 +2398,7 @@ on_ignore_some_completions_function(char **matches)
 	Py_XDECREF(m);
 	Py_XDECREF(r);
   done:
+  	Py_XDECREF(u_subst);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -2678,6 +2659,8 @@ on_completion_display_matches_hook(char **matches,
 				   int num_matches, int max_length)
 {
 	PyObject *m=NULL, *r=NULL;
+	PyObject *u_subst = NULL;
+
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
@@ -2685,10 +2668,16 @@ on_completion_display_matches_hook(char **matches,
 	if (m == NULL)
 		goto error;
 
+#if (PY_MAJOR_VERSION >= 3)
+	u_subst = PyUnicode_DECODE(matches[0]);
+	r = PyObject_CallFunction(completion_display_matches_hook,
+				  "OOi", u_subst, m, max_length);
+#else
 	r = PyObject_CallFunction(completion_display_matches_hook,
 				  "sOi", matches[0], m, max_length);
-
+#endif
 	Py_DECREF(m); m=NULL;
+	Py_XDECREF(u_subst);
 	
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
@@ -2714,20 +2703,35 @@ static char *
 on_completion(const char *text, int state)
 {
 	char *result = NULL;
+	char *s = NULL;
+	PyObject *u_text = NULL;
+	PyObject *b = NULL;
+
 	if (completer != NULL) {
 		PyObject *r;
-#ifdef WITH_THREAD	      
+#ifdef WITH_THREAD
 		PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
 		rl_attempted_completion_over = 1;
+#if (PY_MAJOR_VERSION >= 3)
+		u_text = PyUnicode_DECODE(text);
+		r = PyObject_CallFunction(completer, "Oi", u_text, state);
+#else
 		r = PyObject_CallFunction(completer, "si", text, state);
+#endif
 		if (r == NULL)
 			goto error;
 		if (r == Py_None) {
 			result = NULL;
 		}
 		else {
-			char *s = PyString_AsString(r);
+#if (PY_MAJOR_VERSION >= 3)
+			b = PyUnicode_ENCODE(r);
+			if (b != NULL)
+				s = PyBytes_AsString(b);
+#else
+			s = PyString_AsString(r);
+#endif
 			if (s == NULL)
 				goto error;
 			result = strdup(s);
@@ -2738,7 +2742,9 @@ on_completion(const char *text, int state)
 		PyErr_Clear();
 		Py_XDECREF(r);
 	  done:
-#ifdef WITH_THREAD	      
+	  	Py_XDECREF(u_text);
+	  	Py_XDECREF(b);
+#ifdef WITH_THREAD
 		PyGILState_Release(gilstate);
 #endif
 		return result;
@@ -2757,9 +2763,14 @@ flex_complete(char *text, int start, int end)
 {
 	Py_XDECREF(begidx);
 	Py_XDECREF(endidx);
+
+#if (PY_MAJOR_VERSION >= 3)
+	begidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, start));
+	endidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, end));
+#else
 	begidx = PyInt_FromLong((long) start);
 	endidx = PyInt_FromLong((long) end);
-
+#endif
 	/* Reset completion variables like readline 6 does */
 	rl_completion_append_character = ' ';
 	rl_completion_suppress_append = 0;

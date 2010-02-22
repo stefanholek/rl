@@ -9,7 +9,7 @@ from os.path import join, exists
 
 version = '1.5'
 
-sources = ['rl/readline.c']
+sources = ['rl/readline.c', 'rl/readlineutils.c']
 define_macros = []
 include_dirs = []
 libraries = ['readline', 'ncurses']
