@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5 - Unreleased
+1.5 - 2010-02-25
 ----------------
 
 - In Python 3, convert to and from Unicode using filesystem encoding
