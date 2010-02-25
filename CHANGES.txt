@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.1 - Unreleased
+1.5.1 - 2010-02-25
 ------------------
 
 - Switch readline download location to ftp.gnu.org for speed.
