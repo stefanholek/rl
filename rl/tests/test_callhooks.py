@@ -4,28 +4,30 @@ from rl import completer
 from rl import completion
 from rl import generator
 from rl import readline
+from rl import print_exc
 
 from rl.testing import JailSetup
 from rl.testing import reset
 
 TAB = '\t'
 
-
 called = []
 
+
+@print_exc
 def hook(*args):
     called.append(args)
 
 
+@print_exc
 @generator
 def filecomplete(text):
     return completion.complete_filename(text)
 
 
+@print_exc
 def is_quoted(text, index):
-    if index < 1:
-        return False
-    return text[index-1] == '\\'
+    return index > 0 and text[index-1] == '\\'
 
 
 class WordBreakTests(unittest.TestCase):
@@ -42,7 +44,7 @@ class WordBreakTests(unittest.TestCase):
 
     def test_char_is_quoted_function(self):
         completer.char_is_quoted_function = hook
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\'
         readline.complete_internal(TAB)
         self.assertEqual(called, [('fr\\', 2), ('fr\\', 2)]) # Called twice
@@ -156,7 +158,7 @@ class CompleterTests(unittest.TestCase):
         self.assertEqual(completion.line_buffer, 'fr ') # XXX Single match?
 
 
-class DisplayMatchesTests(JailSetup):
+class DisplayMatchesHookTests(JailSetup):
 
     def setUp(self):
         JailSetup.setUp(self)
@@ -230,7 +232,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         reset()
 
     def test_no_hook(self):
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
@@ -240,7 +242,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         def func(text, index):
             return None
         completer.char_is_quoted_function = func
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
@@ -250,7 +252,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         def func(text, index):
             raise RuntimeError()
         completer.char_is_quoted_function = func
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
@@ -260,7 +262,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         def func(text, index):
             return True
         completer.char_is_quoted_function = func
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 0)
@@ -270,7 +272,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         def func(text, index):
             return False
         completer.char_is_quoted_function = func
-        completer.quote_characters = '"\''
+        completer.quote_characters = '"'
         completion.line_buffer = 'fr\\ ed'
         readline.complete_internal(TAB)
         self.assertEqual(completion.begidx, 4)
