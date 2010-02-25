@@ -7,7 +7,7 @@ import os
 from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 
-version = '1.5'
+version = '1.5.1'
 
 sources = ['rl/readline.c', 'rl/readlineutils.c']
 define_macros = []
@@ -86,7 +86,7 @@ def use_static_readline():
             quiet = '>' + os.devnull
 
     if configure and not exists(join('build', 'readline', 'config.h')):
-        url = 'ftp://ftp.cwru.edu/pub/bash/readline-6.1.tar.gz'
+        url = 'ftp://ftp.gnu.org/gnu/readline/readline-6.1.tar.gz'
         os.system("""\
         mkdir -p build
         cd build
