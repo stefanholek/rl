@@ -4,9 +4,11 @@ Changelog
 1.5 - Unreleased
 ----------------
 
-- In Python 3, convert to and from Unicode using the filesystem encoding
-  and the ``surrogateescape`` error handler. See PEP 383.
+- In Python 3, convert to and from Unicode using filesystem encoding
+  and "surrogateescape" error handler. See `PEP 383`_ for the low-down.
   [stefan]
+
+.. _`PEP 383`: http://www.python.org/dev/peps/pep-0383/
 
 
 1.4.1 - 2010-02-13
