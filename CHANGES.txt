@@ -1,15 +1,22 @@
 Changelog
 =========
 
+1.5.3 - 2010-02-26
+------------------
+
+- Re-release with link to the correct issue.
+  [stefan]
+
+
 1.5.2 - 2010-02-26
 ------------------
 
 - Work around segfaults under Python 3 on Linux, which are caused by bad or
   missing codecs. This restricts Linux to UTF-8 and Latin-1 locales only.
-  Also see rl `issue/4`_.
+  Also see rl `issue/5`_.
   [stefan]
 
-.. _`issue/4`: http://github.com/stefanholek/rl/issues#issue/4
+.. _`issue/5`: http://github.com/stefanholek/rl/issues#issue/5
 
 
 1.5.1 - 2010-02-25
