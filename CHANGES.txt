@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.2 - Unreleased
+1.5.2 - 2010-02-26
 ------------------
 
 - Work around segfaults under Python 3 on Linux, which are caused by bad or
