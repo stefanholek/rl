@@ -2257,7 +2257,7 @@ display_match_list(PyObject *self, PyObject *args)
 	if (num_matches == -1)
 		goto error;
 
-	strings = PyList_AsStringArray(matches);
+	strings = StringArray_FromPyList(matches);
 	if (strings == NULL)
 		goto error;
 
@@ -2376,7 +2376,7 @@ on_ignore_some_completions_function(char **matches)
 		if (new_size > old_size)
 			goto error;
 
-		strings = PyList_AsStringArray(r);
+		strings = StringArray_FromPyList(r);
 		if (strings == NULL)
 			goto error;
 

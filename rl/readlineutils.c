@@ -67,7 +67,7 @@ StringArray_insert(char ***strings, size_t pos, char *string)
 }
 
 
-/* StringArray to PyList */
+/* PyList from StringArray */
 
 PyObject *
 PyList_FromStringArray(char **strings)
@@ -98,10 +98,10 @@ PyList_FromStringArray(char **strings)
 }
 
 
-/* PyList to StringArray */
+/* StringArray from PyList */
 
 char **
-PyList_AsStringArray(PyObject *list)
+StringArray_FromPyList(PyObject *list)
 {
 	char **strings;
 	char **p;

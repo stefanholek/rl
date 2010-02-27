@@ -10,7 +10,7 @@ size_t StringArray_size(char **strings);
 int StringArray_insert(char ***strings, size_t pos, char *string);
 
 PyObject *PyList_FromStringArray(char **strings);
-char **PyList_AsStringArray(PyObject *list);
+char **StringArray_FromPyList(PyObject *list);
 
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
