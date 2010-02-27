@@ -158,24 +158,10 @@ PyList_AsStringArray(PyObject *list)
 #define _ERRORS "surrogateescape"
 
 
-/* XXX Unknown codecs cause segfaults on Linux. This includes 'iso8859-1'.
-       Force all 'isoXXX' encodings to 'latin-1' as a workaround.
-*/
-static const char *
-get_encoding(void)
-{
-	static char latin1[] = "latin-1";
-
-	if (strncasecmp(_ENCODING, "iso", 3) == 0)
-		return latin1;
-	return _ENCODING;
-}
-
-
 PyObject *
 PyUnicode_DECODE(const char *text)
 {
-	return PyUnicode_Decode(text, strlen(text), get_encoding(), _ERRORS);
+	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
 }
 
 
@@ -195,7 +181,7 @@ PyUnicode_AdjustIndex(const char *text, Py_ssize_t index)
 	PyObject *u;
 	Py_ssize_t i;
 
-	u = PyUnicode_Decode(text, index, get_encoding(), _ERRORS);
+	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
 	if (u == NULL)
 		return -1;
 	i = PyUnicode_GET_SIZE(u);
@@ -213,7 +199,7 @@ PyUnicode_ENCODE(PyObject *text)
 	u = PyUnicode_FromObject(text);
 	if (u == NULL)
 		return NULL;
-	b = PyUnicode_AsEncodedString(u, get_encoding(), _ERRORS);
+	b = PyUnicode_AsEncodedString(u, _ENCODING, _ERRORS);
 	Py_DECREF(u);
 	return b;
 }

@@ -2761,6 +2761,9 @@ extern int _rl_complete_mark_symlink_dirs;
 static char **
 flex_complete(char *text, int start, int end)
 {
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
 	Py_XDECREF(begidx);
 	Py_XDECREF(endidx);
 
@@ -2779,6 +2782,9 @@ flex_complete(char *text, int start, int end)
 	rl_filename_quoting_desired = 1;
 	rl_completion_mark_symlink_dirs = _rl_complete_mark_symlink_dirs;
 
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
 	return completion_matches(text, *on_completion);
 }
 
