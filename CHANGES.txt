@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.5.4 - Unreleased
+------------------
+
+- Avoid segfaults during codec lookup by calling ``PyGILState_Ensure`` in all
+  the right places. Fixes rl `issue/5`_. Removes the workaround introduced in
+  1.5.2.
+  [stefan]
+
+
 1.5.3 - 2010-02-26
 ------------------
 

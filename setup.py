@@ -7,7 +7,7 @@ import os
 from setuptools import setup, find_packages, Extension
 from os.path import join, exists
 
-version = '1.5.3'
+version = '1.5.4'
 
 sources = ['rl/readline.c', 'rl/readlineutils.c']
 define_macros = []
