@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.5.4 - Unreleased
+1.5.4 - 2010-03-01
 ------------------
 
 - Avoid segfaults during codec lookup by calling ``PyGILState_Ensure`` in all
