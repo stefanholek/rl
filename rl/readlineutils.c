@@ -5,7 +5,7 @@
 /* StringArray support */
 
 char **
-StringArray_new(size_t size)
+StringArray_New(size_t size)
 {
 	char **p;
 
@@ -17,7 +17,7 @@ StringArray_new(size_t size)
 
 
 void
-StringArray_free(char **strings)
+StringArray_Free(char **strings)
 {
 	char **p;
 
@@ -30,7 +30,7 @@ StringArray_free(char **strings)
 
 
 size_t
-StringArray_size(char **strings)
+StringArray_Size(char **strings)
 {
 	char **p;
 	size_t size = 0;
@@ -42,17 +42,17 @@ StringArray_size(char **strings)
 
 
 int
-StringArray_insert(char ***strings, size_t pos, char *string)
+StringArray_Insert(char ***strings, size_t pos, char *string)
 {
 	char **new;
 	char **p;
 	size_t size, i;
 
-	size = StringArray_size(*strings);
+	size = StringArray_Size(*strings);
 	if (size == -1)
 		return -1;
 
-	new = StringArray_new(size+1);
+	new = StringArray_New(size+1);
 	if (new == NULL)
 		return -1;
 
@@ -76,7 +76,7 @@ PyList_FromStringArray(char **strings)
 	PyObject *s;
 	size_t size, i;
 
-	size = StringArray_size(strings);
+	size = StringArray_Size(strings);
 	if (size == -1)
 		return NULL;
 
@@ -114,7 +114,7 @@ StringArray_FromPyList(PyObject *list)
 	if (size == -1)
 		return NULL;
 
-	strings = StringArray_new(size);
+	strings = StringArray_New(size);
 	if (strings == NULL)
 		return NULL;
 
@@ -144,7 +144,7 @@ StringArray_FromPyList(PyObject *list)
 	return strings;
   error:
 	Py_XDECREF(b);
-	StringArray_free(strings);
+	StringArray_Free(strings);
 	return NULL;
 }
 

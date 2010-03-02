@@ -4,10 +4,10 @@
 #include "Python.h"
 
 /* StringArray support */
-char **StringArray_new(size_t size);
-void StringArray_free(char **strings);
-size_t StringArray_size(char **strings);
-int StringArray_insert(char ***strings, size_t pos, char *string);
+char **StringArray_New(size_t size);
+void StringArray_Free(char **strings);
+size_t StringArray_Size(char **strings);
+int StringArray_Insert(char ***strings, size_t pos, char *string);
 PyObject *PyList_FromStringArray(char **strings);
 char **StringArray_FromPyList(PyObject *list);
 

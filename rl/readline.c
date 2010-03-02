@@ -2268,7 +2268,7 @@ display_match_list(PyObject *self, PyObject *args)
 	}
 
 	/* Put the substitution back into the list at position 0 */
-	if (StringArray_insert(&strings, 0, s) == -1)
+	if (StringArray_Insert(&strings, 0, s) == -1)
 		goto error;
 
 	rl_display_match_list(strings, num_matches, max_length);
@@ -2279,11 +2279,11 @@ display_match_list(PyObject *self, PyObject *args)
 		PyErr_Clear();
 
 	Py_XDECREF(b);
-	StringArray_free(strings);
+	StringArray_Free(strings);
 	Py_RETURN_NONE;
   error:
 	Py_XDECREF(b);
-	StringArray_free(strings);
+	StringArray_Free(strings);
 	return NULL;
 }
 
