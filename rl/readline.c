@@ -2416,6 +2416,57 @@ on_ignore_some_completions_function(char **matches)
 }
 
 
+/* History stifling */
+
+PyObject *
+get_history_max_entries(PyObject *self, PyObject *noargs)
+{
+	return PyInt_FromLong(history_max_entries);
+}
+
+PyDoc_STRVAR(doc_get_history_max_entries,
+"get_history_max_entries() -> int\n\
+Return the current history size limit.");
+
+
+PyObject *
+py_stifle_history(PyObject *self, PyObject *args)
+{
+	int max;
+
+	if (!PyArg_ParseTuple(args, "i:stifle_history", &max))
+		return NULL;
+	stifle_history(max);
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_stifle_history,
+"stifle_history(max) -> None\n\
+Limit the history size to ``max`` entries.");
+
+
+PyObject *
+py_unstifle_history(PyObject *self, PyObject *noargs)
+{
+	return PyInt_FromLong(unstifle_history());
+}
+
+PyDoc_STRVAR(doc_unstifle_history,
+"unstifle_history() -> int\n\
+Remove the history size limit.");
+
+
+PyObject *
+py_history_is_stifled(PyObject *self, PyObject *noargs)
+{
+	return PyBool_FromLong(history_is_stifled());
+}
+
+PyDoc_STRVAR(doc_history_is_stifled,
+"history_is_stifled() -> bool\n\
+True if a history size limit is set.");
+
+
 /* </_readline.c> */
 
 
@@ -2606,6 +2657,14 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_complete_internal},
 	{"readline_version", readline_version,
 	 METH_NOARGS, doc_readline_version},
+	{"get_history_max_entries", get_history_max_entries,
+	 METH_NOARGS, doc_get_history_max_entries},
+	{"stifle_history", py_stifle_history,
+	 METH_VARARGS, doc_stifle_history},
+	{"unstifle_history", py_unstifle_history,
+	 METH_NOARGS, doc_unstifle_history},
+	{"history_is_stifled", py_history_is_stifled,
+	 METH_NOARGS, doc_history_is_stifled},
 	/* </_readline.c> */
 
 	{0, 0}

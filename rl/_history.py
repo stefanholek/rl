@@ -25,14 +25,25 @@ class History(object):
 
     __slots__ = ()
 
-    @property
-    def _base(self):
-        """The logical base of the history list."""
-        return readline.get_history_base()
+    @apply
+    def max_entries():
+        doc="""The maximum number of history entries kept. Beyond this point
+        the history list is truncated by removing the oldest entry.
+        A negative value means no limit. Defaults to -1."""
+        def get(self):
+            if readline.history_is_stifled():
+                return readline.get_history_max_entries()
+            return -1
+        def set(self, int):
+            if int < 0:
+                readline.unstifle_history()
+            else:
+                readline.stifle_history(int)
+        return property(get, set, doc=doc)
 
     @apply
     def length():
-        doc="""The number of lines saved in the history file. A negative
+        doc="""The maximum number of lines written to the history file. A negative
         value means no limit. Defaults to -1."""
         def get(self):
             return readline.get_history_length()
@@ -54,7 +65,7 @@ class History(object):
 
     def __getitem__(self, index):
         """Return the history item at index."""
-        return readline.get_history_item(self._base + self._norm_index(index))
+        return readline.get_history_item(readline.get_history_base() + self._norm_index(index))
 
     def __delitem__(self, index):
         """Remove the history item at index."""

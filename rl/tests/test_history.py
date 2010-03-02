@@ -146,6 +146,77 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 0)
 
 
+class HistoryStiflingTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+
+    def test_fixture(self):
+        self.assertEqual(history[0], 'fred')
+        self.assertEqual(history[1], 'wilma')
+        self.assertEqual(history[2], 'barney')
+        self.assertEqual(history[3], 'betty')
+        self.assertEqual(history[4], 'pebbles')
+        self.assertEqual(len(history), 5)
+
+    def test_stifled(self):
+        history.max_entries = 5
+        # Extend history beyond 5 entries
+        history.append('bammbamm')
+        self.assertEqual(history[0], 'wilma')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'betty')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bammbamm')
+        self.assertEqual(len(history), 5)
+        # Add one more
+        history.append('dino')
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'betty')
+        self.assertEqual(history[2], 'pebbles')
+        self.assertEqual(history[3], 'bammbamm')
+        self.assertEqual(history[4], 'dino')
+        self.assertEqual(len(history), 5)
+
+    def test_unstifled(self):
+        history.max_entries = -1
+        # Extend history beyond 5 entries
+        history.append('bammbamm')
+        self.assertEqual(history[0], 'fred')
+        self.assertEqual(history[1], 'wilma')
+        self.assertEqual(history[2], 'barney')
+        self.assertEqual(history[3], 'betty')
+        self.assertEqual(history[4], 'pebbles')
+        self.assertEqual(history[5], 'bammbamm')
+        self.assertEqual(len(history), 6)
+
+    def test_is_stifled(self):
+        history.max_entries = 5
+        self.assertEqual(history.max_entries, 5)
+        history.max_entries = -1
+        self.assertEqual(history.max_entries, -1)
+
+    def test_stifle_truncates_existing(self):
+        history.max_entries = -1
+        # Extend history beyond 5 entries
+        history.append('bammbamm')
+        history.append('dino')
+        self.assertEqual(len(history), 7)
+        # Now stifle
+        history.max_entries = 5
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'betty')
+        self.assertEqual(history[2], 'pebbles')
+        self.assertEqual(history[3], 'bammbamm')
+        self.assertEqual(history[4], 'dino')
+        self.assertEqual(len(history), 5)
+
+
 class HistoryFileTests(JailSetup):
     # You will lose your ~/.history file when you run these tests
 
@@ -153,13 +224,13 @@ class HistoryFileTests(JailSetup):
         JailSetup.setUp(self)
         reset()
         self.histfile = expanduser('~/.history')
-        self._remove_histfile()
+        self.remove_histfile()
 
     def tearDown(self):
-        self._remove_histfile()
+        self.remove_histfile()
         JailSetup.tearDown(self)
 
-    def _remove_histfile(self):
+    def remove_histfile(self):
         if isfile(self.histfile):
             os.remove(self.histfile)
 
@@ -223,4 +294,24 @@ class HistoryFileTests(JailSetup):
             history.clear()
             history.read_file(bytes('my_history', sys.getfilesystemencoding()))
             self.assertEqual(len(history), 2)
+
+    def test_read_file_stifled(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        history.append('dino')
+        self.assertEqual(len(history), 7)
+        history.write_file('my_history')
+        history.clear()
+        history.max_entries = 5
+        history.read_file('my_history')
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'betty')
+        self.assertEqual(history[2], 'pebbles')
+        self.assertEqual(history[3], 'bammbamm')
+        self.assertEqual(history[4], 'dino')
+        self.assertEqual(len(history), 5)
 
