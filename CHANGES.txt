@@ -4,6 +4,9 @@ Changelog
 1.6 - Unreleased
 ----------------
 
+- Close a memory leak in ``get_current_history_length``.
+  [stefan]
+
 
 1.5.4 - 2010-03-01
 ------------------
