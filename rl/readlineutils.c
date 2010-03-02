@@ -85,7 +85,11 @@ PyList_FromStringArray(char **strings)
 		return NULL;
 
 	for (i = 0; i < size; i++) {
+#if (PY_MAJOR_VERSION >= 3)
+		s = PyUnicode_DECODE(strings[i]);
+#else
 		s = PyString_FromString(strings[i]);
+#endif
 		if (s == NULL)
 			goto error;
 		if (PyList_SetItem(list, i, s) == -1)

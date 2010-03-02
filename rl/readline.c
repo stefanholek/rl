@@ -57,6 +57,13 @@ on_completion_display_matches_hook(char **matches,
 				   int num_matches, int max_length);
 #endif
 
+/* Python 3 compatibility */
+#if (PY_MAJOR_VERSION >= 3)
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_AsLong PyLong_AsLong
+#define PyString_FromString PyUnicode_DECODE
+#endif
+
 
 /* Exported function to send one line to readline's init file parser */
 
