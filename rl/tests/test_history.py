@@ -14,11 +14,6 @@ class HistoryTests(unittest.TestCase):
     def setUp(self):
         reset()
 
-    def test_length(self):
-        self.assertEqual(history.length, -1)
-        history.length = 100
-        self.assertEqual(history.length, 100)
-
     def test_add_item(self):
         self.assertEqual(len(history), 0)
         history.add_item('fred')
@@ -307,6 +302,27 @@ class HistoryFileTests(JailSetup):
         history.write_file('my_history')
         history.clear()
         history.max_entries = 5
+        history.read_file('my_history')
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'betty')
+        self.assertEqual(history[2], 'pebbles')
+        self.assertEqual(history[3], 'bammbamm')
+        self.assertEqual(history[4], 'dino')
+        self.assertEqual(len(history), 5)
+
+    def test_write_file_stifled(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        history.append('dino')
+        self.assertEqual(len(history), 7)
+        history.max_entries = 5
+        history.write_file('my_history')
+        history.clear()
+        history.max_entries = -1
         history.read_file('my_history')
         self.assertEqual(history[0], 'barney')
         self.assertEqual(history[1], 'betty')

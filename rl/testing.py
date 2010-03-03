@@ -50,7 +50,6 @@ def reset_completion():
 def reset_history():
     history.clear()
     history.max_entries = -1
-    history.length = -1
 
 
 def reset():

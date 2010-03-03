@@ -18,8 +18,8 @@ class History(object):
         from rl import history
         import atexit
 
+        history.max_entries = 250
         history.read_file(histfile)
-        history.length = 100
         atexit.register(history.write_file, histfile)
     """
 
@@ -39,16 +39,6 @@ class History(object):
                 readline.unstifle_history()
             else:
                 readline.stifle_history(int)
-        return property(get, set, doc=doc)
-
-    @apply
-    def length():
-        doc="""The maximum number of lines written to the history file. A negative
-        value means no limit. Defaults to -1."""
-        def get(self):
-            return readline.get_history_length()
-        def set(self, int):
-            readline.set_history_length(int)
         return property(get, set, doc=doc)
 
     def __len__(self):
