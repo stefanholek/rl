@@ -4,6 +4,11 @@ Changelog
 1.6 - Unreleased
 ----------------
 
+- Implement history size limitation ("stifling") by means of the
+  ``history.max_entries`` property. Supersedes ``history.length``
+  which has been removed.
+  [stefan]
+
 - Close a memory leak in ``get_current_history_length``.
   [stefan]
 
