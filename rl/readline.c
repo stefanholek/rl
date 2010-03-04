@@ -2114,8 +2114,8 @@ Replace the line buffer contents with string.");
 
 /* Read a key (from the keyboard) */
 
-static PyObject*
-read_key(PyObject* self, PyObject* noargs)
+static PyObject *
+read_key(PyObject *self, PyObject *noargs)
 {
 	int c;
 
