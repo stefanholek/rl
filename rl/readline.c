@@ -467,6 +467,7 @@ py_replace_history(PyObject *self, PyObject *args)
 	if (old_entry->data)
 	    free(old_entry->data);
 	free(old_entry);
+
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
   error:
