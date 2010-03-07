@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.6 - Unreleased
+1.6 - 2010-03-07
 ----------------
 
 - The history size can now be limited ("stifled") by setting
