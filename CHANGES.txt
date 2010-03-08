@@ -4,6 +4,9 @@ Changelog
 1.7 - Unreleased
 ----------------
 
+- Support installation into MacPython for Mac OS X.
+  [stefan]
+
 
 1.6 - 2010-03-07
 ----------------
