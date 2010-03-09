@@ -549,6 +549,7 @@ PyDoc_STRVAR(doc_get_completer,
 \n\
 Returns current completer function.");
 
+
 /* Exported function to get any element of history */
 
 static PyObject *
@@ -559,7 +560,7 @@ get_history_item(PyObject *self, PyObject *args)
 
 	if (!PyArg_ParseTuple(args, "i:index", &idx))
 		return NULL;
-	if ((hist_ent = history_get(idx)))
+	if ((hist_ent = history_get(history_base + idx)))
 		return PyString_FromString(hist_ent->line);
 	else {
 		Py_RETURN_NONE;
@@ -1709,17 +1710,6 @@ Get the current pre_input_hook function.");
 
 
 static PyObject *
-get_history_base(PyObject *self, PyObject *noarg)
-{
-	return PyInt_FromLong(history_base);
-}
-
-PyDoc_STRVAR(doc_get_history_base,
-"get_history_base() -> int\n\
-Return the history base position.");
-
-
-static PyObject *
 set_begidx(PyObject *self, PyObject *args)
 {
 	PyObject *value = NULL;
@@ -2640,8 +2630,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
 	 METH_VARARGS, doc_set_ignore_some_completions_function},
-	{"get_history_base", get_history_base,
-	 METH_NOARGS, doc_get_history_base},
 	{"tilde_expand", py_tilde_expand, METH_VARARGS, doc_tilde_expand},
 	{"replace_line", replace_line, METH_VARARGS, doc_replace_line},
 	{"read_key", read_key, METH_NOARGS, doc_read_key},

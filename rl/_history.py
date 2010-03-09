@@ -55,7 +55,7 @@ class History(object):
 
     def __getitem__(self, index):
         """Return the history item at index."""
-        return readline.get_history_item(readline.get_history_base() + self._norm_index(index))
+        return readline.get_history_item(self._norm_index(index))
 
     def __delitem__(self, index):
         """Remove the history item at index."""
