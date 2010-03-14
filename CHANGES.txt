@@ -4,7 +4,8 @@ Changelog
 1.8 - Unreleased
 ----------------
 
-- Make ``readline.get_history_item`` zero-based.
+- Make ``readline.get_history_item`` zero-based and remove
+  ``readline.get_history_base``.
   [stefan]
 
 
