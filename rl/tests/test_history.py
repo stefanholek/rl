@@ -211,6 +211,57 @@ class HistoryStiflingTests(unittest.TestCase):
         self.assertEqual(history[4], 'dino')
         self.assertEqual(len(history), 5)
 
+    def test_remove(self):
+        history.max_entries = 5
+        history.append('bammbamm')
+        self.assertEqual(history[0], 'wilma')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'betty')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bammbamm')
+        del history[2]
+        self.assertEqual(history[0], 'wilma')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'pebbles')
+        self.assertEqual(history[3], 'bammbamm')
+        self.assertEqual(len(history), 4)
+        del history[0]
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'pebbles')
+        self.assertEqual(history[2], 'bammbamm')
+        self.assertEqual(len(history), 3)
+        del history[-1]
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'pebbles')
+        self.assertEqual(len(history), 2)
+
+    def test_replace(self):
+        history.max_entries = 5
+        history.append('bammbamm')
+        self.assertEqual(history[0], 'wilma')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'betty')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bammbamm')
+        history[2] = 'dino'
+        self.assertEqual(history[0], 'wilma')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'dino')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bammbamm')
+        history[0] = 'hopper'
+        self.assertEqual(history[0], 'hopper')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'dino')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bammbamm')
+        history[-1] = 'bedrock'
+        self.assertEqual(history[0], 'hopper')
+        self.assertEqual(history[1], 'barney')
+        self.assertEqual(history[2], 'dino')
+        self.assertEqual(history[3], 'pebbles')
+        self.assertEqual(history[4], 'bedrock')
+
 
 class HistoryFileTests(JailSetup):
     # You will lose your ~/.history file when you run these tests
