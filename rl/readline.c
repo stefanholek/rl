@@ -477,7 +477,7 @@ py_replace_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_replace_history,
 "replace_history_item(pos, line) -> None\n\
-Replaces history item given by its position with contents of line.");
+Replace history item given by its position with contents of line.");
 
 /* Add a line to the history buffer */
 
