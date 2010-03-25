@@ -24,11 +24,11 @@
 #ifdef SAVE_LOCALE
 #  define RESTORE_LOCALE(sl) { setlocale(LC_CTYPE, sl); free(sl); }
 #else
-#  define RESTORE_LOCALE(sl) 
+#  define RESTORE_LOCALE(sl)
 #endif
 
 /* GNU readline definitions */
-#undef HAVE_CONFIG_H /* Else readline/chardefs.h includes strings.h */
+#undef HAVE_CONFIG_H  /* Else readline/chardefs.h includes strings.h */
 #define _FUNCTION_DEF /* Else readline/rltypedefs.h defines old-style types */
 #ifdef __STDC__
 #define PREFER_STDARG /* Use well-formed function prototypes */
@@ -37,25 +37,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#ifdef HAVE_RL_COMPLETION_MATCHES
 #define completion_matches(x, y) \
 	rl_completion_matches((x), ((rl_compentry_func_t *)(y)))
-#else
-extern char **completion_matches(char *, rl_compentry_func_t *);
-#endif
-
-/* Python 2.5 does not define this */
-#ifndef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
-#if (RL_READLINE_VERSION >= 0x0400)
-#define HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
-#endif
-#endif
-
-#ifdef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
-static void
-on_completion_display_matches_hook(char **matches,
-				   int num_matches, int max_length);
-#endif
 
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
@@ -259,22 +242,23 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 static PyObject *completion_display_matches_hook = NULL;
 static PyObject *startup_hook = NULL;
 
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 static PyObject *pre_input_hook = NULL;
-#endif
+
+static void
+on_completion_display_matches_hook(char **matches,
+				   int num_matches, int max_length);
+
 
 static PyObject *
 set_completion_display_matches_hook(PyObject *self, PyObject *args)
 {
 	PyObject *result = set_hook("completion_display_matches_hook",
 			&completion_display_matches_hook, args);
-#ifdef HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK
 	/* We cannot set this hook globally, since it replaces the
 	   default completion display. */
 	rl_completion_display_matches_hook =
 		completion_display_matches_hook ?
 		(rl_compdisp_func_t *)on_completion_display_matches_hook : 0;
-#endif
 	return result;
 
 }
@@ -285,6 +269,9 @@ Set or remove the completion display function.\n\
 The function is called as \
   ``function(substitution, matches, longest_match_length)`` \
 once each time matches need to be displayed.");
+
+
+/* Set startup hook */
 
 static PyObject *
 set_startup_hook(PyObject *self, PyObject *args)
@@ -298,8 +285,6 @@ Set or remove the startup_hook function.\n\
 The function is called with no arguments just\n\
 before readline prints the first prompt.");
 
-
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 
 /* Set pre-input hook */
 
@@ -315,8 +300,6 @@ Set or remove the pre_input_hook function.\n\
 The function is called with no arguments after the first prompt\n\
 has been printed and just before readline starts reading input\n\
 characters.");
-
-#endif
 
 
 /* Exported function to specify a word completer in Python */
@@ -612,8 +595,6 @@ PyDoc_STRVAR(doc_get_line_buffer,
 Return the current contents of the line buffer.");
 
 
-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
-
 /* Exported function to clear the current history */
 
 static PyObject *
@@ -626,7 +607,6 @@ py_clear_history(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_clear_history,
 "clear_history() -> None\n\
 Clear the current readline history.");
-#endif
 
 
 /* Exported function to insert text into the line buffer */
@@ -690,8 +670,6 @@ an up-to-date screen.");
 /* http://tiswww.case.edu/php/chet/readline/readline.html#SEC44 */
 
 
-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
-
 /* Get/set completion append character */
 
 static PyObject *
@@ -734,7 +712,6 @@ PyDoc_STRVAR(doc_set_completion_append_character,
 "set_completion_append_character(string) -> None\n\
 Set the character appended after the current completion. \
 May only be called from within custom completers.");
-#endif
 
 
 /* Get/set completion suppress append */
@@ -2510,11 +2487,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_set_completion_display_matches_hook},
 	{"set_startup_hook", set_startup_hook,
 	 METH_VARARGS, doc_set_startup_hook},
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 	{"set_pre_input_hook", set_pre_input_hook,
 	 METH_VARARGS, doc_set_pre_input_hook},
-#endif
-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 	{"clear_history", py_clear_history, METH_NOARGS, doc_clear_history},
 
 	/* <rl.readline> */
@@ -2522,7 +2496,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_completion_append_character},
 	{"set_completion_append_character", set_completion_append_character,
 	 METH_VARARGS, doc_set_completion_append_character},
-#endif
 	{"get_completion_suppress_append", get_completion_suppress_append,
 	 METH_NOARGS, doc_get_completion_suppress_append},
 	{"set_completion_suppress_append", set_completion_suppress_append,
@@ -2593,10 +2566,8 @@ static struct PyMethodDef readline_methods[] =
 	{"set_endidx", set_endidx, METH_VARARGS, doc_set_endidx},
 	{"set_completion_type", set_completion_type,
 	 METH_VARARGS, doc_set_completion_type},
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},
-#endif
 	/* readline 6
 	{"get_completion_invoking_key", get_completion_invoking_key,
 	 METH_NOARGS, doc_get_completion_invoking_key},
@@ -2710,13 +2681,11 @@ on_startup_hook(void)
 	return on_hook(startup_hook);
 }
 
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 static int
 on_pre_input_hook(void)
 {
 	return on_hook(pre_input_hook);
 }
-#endif
 
 
 /* C function to call the Python completion_display_matches */
@@ -2881,18 +2850,14 @@ setup_readline(void)
 	rl_bind_key_in_map ('\033', rl_complete, emacs_meta_keymap);
 	/* Set our hook functions */
 	rl_startup_hook = (rl_hook_func_t *)on_startup_hook;
-#ifdef HAVE_RL_PRE_INPUT_HOOK
 	rl_pre_input_hook = (rl_hook_func_t *)on_pre_input_hook;
-#endif
 	/* Set our completion function */
 	rl_attempted_completion_function = (rl_completion_func_t *)flex_complete;
 	/* Set Python word break characters */
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 	rl_completion_append_character = ' ';
-#endif
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 
@@ -2908,10 +2873,10 @@ setup_readline(void)
 	RESTORE_LOCALE(saved_locale)
 }
 
+
 /* Wrapper around GNU readline that handles signals differently. */
 
-
-#if defined(HAVE_RL_CALLBACK) && defined(HAVE_SELECT)
+#if defined(HAVE_SELECT)
 
 static	char *completed_input_string;
 static void
@@ -2930,9 +2895,7 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 	fd_set selectset;
 
 	*signal = 0;
-#ifdef HAVE_RL_CATCH_SIGNAL
 	rl_catch_signals = 0;
-#endif
 
 	rl_callback_handler_install (prompt, rlhandler);
 	FD_ZERO(&selectset);
@@ -3021,7 +2984,7 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 
     return p;
 }
-#endif /*defined(HAVE_RL_CALLBACK) && defined(HAVE_SELECT) */
+#endif /* defined(HAVE_SELECT) */
 
 
 static char *
@@ -3041,9 +3004,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 	if (sys_stdin != rl_instream || sys_stdout != rl_outstream) {
 		rl_instream = sys_stdin;
 		rl_outstream = sys_stdout;
-#ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 		rl_prep_terminal (1);
-#endif
 	}
 
 	p = readline_until_enter_or_signal(prompt, &signal);

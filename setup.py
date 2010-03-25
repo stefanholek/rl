@@ -61,13 +61,6 @@ def use_static_readline():
     define_macros.extend([
         ('HAVE_CONFIG_H', None),
         ('RL_LIBRARY_VERSION', '"6.1"'),
-        ('HAVE_RL_CALLBACK', None),
-        ('HAVE_RL_CATCH_SIGNAL', None),
-        ('HAVE_RL_COMPLETION_APPEND_CHARACTER', None),
-        ('HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK', None),
-        ('HAVE_RL_COMPLETION_MATCHES', None),
-        ('HAVE_RL_COMPLETION_SUPPRESS_APPEND', None),
-        ('HAVE_RL_PRE_INPUT_HOOK', None),
     ])
 
     include_dirs.extend(['build', 'build/readline'])
