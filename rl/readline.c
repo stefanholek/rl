@@ -328,6 +328,7 @@ static PyObject *endidx = NULL;
 
 
 /* Get the completion type for the scope of the tab-completion */
+
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
 {
@@ -687,6 +688,7 @@ an up-to-date screen.");
 
 /* <_readline.c> */
 /* http://tiswww.case.edu/php/chet/readline/readline.html#SEC44 */
+
 
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 
