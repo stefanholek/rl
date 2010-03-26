@@ -568,13 +568,7 @@ Return the current contents of history item at pos.");
 static PyObject *
 get_current_history_length(PyObject *self, PyObject *noarg)
 {
-	HISTORY_STATE *hist_st;
-	PyObject *length;
-
-	hist_st = history_get_history_state();
-	length = PyInt_FromLong(hist_st ? (long) hist_st->length : (long) 0);
-	free(hist_st);
-	return length;
+	return PyInt_FromLong(history_length);
 }
 
 PyDoc_STRVAR(doc_get_current_history_length,
