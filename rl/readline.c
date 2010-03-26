@@ -399,13 +399,16 @@ PyDoc_STRVAR(doc_set_completer_delims,
 "set_completer_delims(string) -> None\n\
 Set the readline word delimiters for tab-completion.");
 
+
+/* Remove a history item */
+
 static PyObject *
 py_remove_history(PyObject *self, PyObject *args)
 {
 	int entry_number;
 	HIST_ENTRY *entry;
 
-	if (!PyArg_ParseTuple(args, "i:remove_history", &entry_number))
+	if (!PyArg_ParseTuple(args, "i:remove_history_item", &entry_number))
 		return NULL;
 	if (entry_number < 0) {
 		PyErr_SetString(PyExc_ValueError,
@@ -433,6 +436,9 @@ PyDoc_STRVAR(doc_remove_history,
 "remove_history_item(pos) -> None\n\
 Remove history item given by its position.");
 
+
+/* Replace a history item */
+
 static PyObject *
 py_replace_history(PyObject *self, PyObject *args)
 {
@@ -442,11 +448,11 @@ py_replace_history(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "iO&:replace_history", &entry_number, PyUnicode_StrConverter, &b))
+	if (!PyArg_ParseTuple(args, "iO&:replace_history_item", &entry_number, PyUnicode_StrConverter, &b))
 		return NULL;
 	line = PyBytes_AsString(b);
 #else
-	if (!PyArg_ParseTuple(args, "is:replace_history", &entry_number, &line))
+	if (!PyArg_ParseTuple(args, "is:replace_history_item", &entry_number, &line))
 		return NULL;
 #endif
 	if (entry_number < 0) {
@@ -478,6 +484,7 @@ py_replace_history(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_replace_history,
 "replace_history_item(pos, line) -> None\n\
 Replace history item given by its position with contents of line.");
+
 
 /* Add a line to the history buffer */
 
@@ -558,7 +565,7 @@ get_history_item(PyObject *self, PyObject *args)
 	int idx = 0;
 	HIST_ENTRY *hist_ent;
 
-	if (!PyArg_ParseTuple(args, "i:index", &idx))
+	if (!PyArg_ParseTuple(args, "i:get_history_item", &idx))
 		return NULL;
 	if ((hist_ent = history_get(history_base + idx)))
 		return PyString_FromString(hist_ent->line);
