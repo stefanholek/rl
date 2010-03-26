@@ -686,7 +686,7 @@ refresh the display even if its internal state indicates \
 an up-to-date screen.");
 
 
-/* <_readline.c> */
+/* <rl.readline> */
 /* http://tiswww.case.edu/php/chet/readline/readline.html#SEC44 */
 
 
@@ -2467,7 +2467,7 @@ PyDoc_STRVAR(doc_history_is_stifled,
 True if a history size limit is set.");
 
 
-/* </_readline.c> */
+/* </rl.readline> */
 
 
 /* Table of functions exported by the module */
@@ -2517,7 +2517,7 @@ static struct PyMethodDef readline_methods[] =
 #ifdef HAVE_RL_COMPLETION_APPEND_CHARACTER
 	{"clear_history", py_clear_history, METH_NOARGS, doc_clear_history},
 
-	/* <_readline.c> */
+	/* <rl.readline> */
 	{"get_completion_append_character", get_completion_append_character,
 	 METH_NOARGS, doc_get_completion_append_character},
 	{"set_completion_append_character", set_completion_append_character,
@@ -2663,7 +2663,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_unstifle_history},
 	{"history_is_stifled", py_history_is_stifled,
 	 METH_NOARGS, doc_history_is_stifled},
-	/* </_readline.c> */
+	/* </rl.readline> */
 
 	{0, 0}
 };
