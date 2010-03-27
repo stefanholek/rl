@@ -2857,11 +2857,7 @@ setup_readline(void)
 
 	begidx = PyInt_FromLong(0L);
 	endidx = PyInt_FromLong(0L);
-	/* Initialize (allows .inputrc to override)
-	 *
-	 * XXX: A bug in the readline-2.2 library causes a memory leak
-	 * inside this function.  Nothing we can do about it.
-	 */
+	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
 	RESTORE_LOCALE(saved_locale)
@@ -3029,12 +3025,6 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 			line = "";
 		if (strcmp(p, line))
 			add_history(p);
-		/* the history docs don't say so, but the address of state
-		   changes each time history_get_history_state is called
-		   which makes me think it's freshly malloc'd memory...
-		   on the other hand, the address of the last line stays the
-		   same as long as history isn't extended, so it appears to
-		   be malloc'd but managed by the history package... */
 		free(state);
 	}
 	/* Copy the malloc'ed buffer into a PyMem_Malloc'ed one and
