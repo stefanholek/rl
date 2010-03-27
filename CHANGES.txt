@@ -4,6 +4,12 @@ Changelog
 1.9 - Unreleased
 ----------------
 
+- Remove unused defines; we don't support libedit or readline < 5.0.
+  [stefan]
+
+- Improve performance of ``get_current_history_length``.
+  [stefan]
+
 
 1.8 - 2010-03-14
 ----------------
