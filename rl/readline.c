@@ -1693,13 +1693,13 @@ Get the current pre_input_hook function.");
 static PyObject *
 set_begidx(PyObject *self, PyObject *args)
 {
-	PyObject *value = NULL;
+	int value;
 
-	if (!PyArg_ParseTuple(args, "O:set_begidx", &value)) {
+	if (!PyArg_ParseTuple(args, "i:set_begidx", &value)) {
 		return NULL;
 	}
 	Py_DECREF(begidx);
-	begidx = value;
+	begidx = PyInt_FromLong(value);
 	Py_RETURN_NONE;
 }
 
@@ -1711,13 +1711,13 @@ Set the beginning index of the readline tab-completion scope.");
 static PyObject *
 set_endidx(PyObject *self, PyObject *args)
 {
-	PyObject *value = NULL;
+	int value;
 
-	if (!PyArg_ParseTuple(args, "O:set_endidx", &value)) {
+	if (!PyArg_ParseTuple(args, "i:set_endidx", &value)) {
 		return NULL;
 	}
 	Py_DECREF(endidx);
-	endidx = value;
+	endidx = PyInt_FromLong(value);
 	Py_RETURN_NONE;
 }
 
@@ -2793,15 +2793,15 @@ flex_complete(char *text, int start, int end)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	Py_XDECREF(begidx);
-	Py_XDECREF(endidx);
+	Py_DECREF(begidx);
+	Py_DECREF(endidx);
 
 #if (PY_MAJOR_VERSION >= 3)
 	begidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, start));
 	endidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, end));
 #else
-	begidx = PyInt_FromLong((long) start);
-	endidx = PyInt_FromLong((long) end);
+	begidx = PyInt_FromLong(start);
+	endidx = PyInt_FromLong(end);
 #endif
 
 #if (RL_READLINE_VERSION < 0x0600)
