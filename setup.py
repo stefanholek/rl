@@ -93,7 +93,7 @@ def use_static_readline():
 
 
 if sys.platform == 'darwin':
-    # System & MacPython
+    # System
     if system_python():
         use_static_readline()
     # MacPorts
@@ -135,7 +135,7 @@ setup(name='rl',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
       url='http://pypi.python.org/pypi/rl',
-      license='PSF or GPL',
+      license='GPL or PSF',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
