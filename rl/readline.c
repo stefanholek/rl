@@ -2787,8 +2787,6 @@ on_completion(const char *text, int state)
 /* A more flexible constructor that saves the "begidx" and "endidx"
  * before calling the normal completer */
 
-extern int _rl_complete_mark_symlink_dirs;
-
 static char **
 flex_complete(char *text, int start, int end)
 {
@@ -2805,13 +2803,11 @@ flex_complete(char *text, int start, int end)
 	begidx = PyInt_FromLong((long) start);
 	endidx = PyInt_FromLong((long) end);
 #endif
-	/* Reset completion variables like readline 6 does */
+
+#if (RL_READLINE_VERSION < 0x0600)
+	/* Unify readline 5 and 6 behavior */
 	rl_completion_append_character = ' ';
-	rl_completion_suppress_append = 0;
-	rl_completion_suppress_quote = 0;
-	rl_filename_completion_desired = 0;
-	rl_filename_quoting_desired = 1;
-	rl_completion_mark_symlink_dirs = _rl_complete_mark_symlink_dirs;
+#endif
 
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -2852,7 +2848,6 @@ setup_readline(void)
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
-	rl_completion_append_character = ' ';
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 
