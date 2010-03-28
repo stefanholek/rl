@@ -10,7 +10,8 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-#include "readlineutils.h"
+#include "stringarray.h"
+#include "unicode.h"
 
 #if defined(HAVE_SETLOCALE)
 /* GNU readline() mistakenly sets the LC_CTYPE locale.
