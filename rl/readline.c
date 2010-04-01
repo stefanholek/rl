@@ -10,8 +10,6 @@
 #include <signal.h>
 #include <errno.h>
 #include <sys/time.h>
-#include "stringarray.h"
-#include "unicode.h"
 
 #if defined(HAVE_SETLOCALE)
 /* GNU readline() mistakenly sets the LC_CTYPE locale.
@@ -40,6 +38,10 @@
 
 #define completion_matches(x, y) \
 	rl_completion_matches((x), ((rl_compentry_func_t *)(y)))
+
+/* Custom definitions */
+#include "stringarray.h"
+#include "unicode.h"
 
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
