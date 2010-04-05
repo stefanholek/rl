@@ -309,8 +309,8 @@ characters.");
 
 static PyObject *completer = NULL;
 
-static PyObject *begidx = NULL;
-static PyObject *endidx = NULL;
+static Py_ssize_t begidx = 0;
+static Py_ssize_t endidx = 0;
 
 
 /* Get the completion type for the scope of the tab-completion */
@@ -337,8 +337,7 @@ Get the type of completion being attempted.");
 static PyObject *
 get_begidx(PyObject *self, PyObject *noarg)
 {
-	Py_INCREF(begidx);
-	return begidx;
+	return PyInt_FromLong(begidx);
 }
 
 PyDoc_STRVAR(doc_get_begidx,
@@ -351,8 +350,7 @@ Get the beginning index of the readline tab-completion scope.");
 static PyObject *
 get_endidx(PyObject *self, PyObject *noarg)
 {
-	Py_INCREF(endidx);
-	return endidx;
+	return PyInt_FromLong(endidx);
 }
 
 PyDoc_STRVAR(doc_get_endidx,
@@ -1700,8 +1698,7 @@ set_begidx(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "i:set_begidx", &value)) {
 		return NULL;
 	}
-	Py_DECREF(begidx);
-	begidx = PyInt_FromLong(value);
+	begidx = value;
 	Py_RETURN_NONE;
 }
 
@@ -1718,8 +1715,7 @@ set_endidx(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "i:set_endidx", &value)) {
 		return NULL;
 	}
-	Py_DECREF(endidx);
-	endidx = PyInt_FromLong(value);
+	endidx = value;
 	Py_RETURN_NONE;
 }
 
@@ -2795,15 +2791,13 @@ flex_complete(char *text, int start, int end)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	Py_DECREF(begidx);
-	Py_DECREF(endidx);
 
 #if (PY_MAJOR_VERSION >= 3)
-	begidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, start));
-	endidx = PyLong_FromLong(PyUnicode_AdjustIndex(rl_line_buffer, end));
+	begidx = PyUnicode_AdjustIndex(rl_line_buffer, start);
+	endidx = PyUnicode_AdjustIndex(rl_line_buffer, end);
 #else
-	begidx = PyInt_FromLong(start);
-	endidx = PyInt_FromLong(end);
+	begidx = start;
+	endidx = end;
 #endif
 
 #if (RL_READLINE_VERSION < 0x0600)
@@ -2853,8 +2847,8 @@ setup_readline(void)
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 
-	begidx = PyInt_FromLong(0L);
-	endidx = PyInt_FromLong(0L);
+	begidx = 0;
+	endidx = 0;
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
