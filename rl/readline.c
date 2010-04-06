@@ -242,10 +242,73 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 
 /* Exported functions to specify hook functions in Python */
 
-static PyObject *completion_display_matches_hook = NULL;
 static PyObject *startup_hook = NULL;
-
 static PyObject *pre_input_hook = NULL;
+static PyObject *completion_display_matches_hook = NULL;
+
+
+/* Startup hook */
+
+static PyObject *
+set_startup_hook(PyObject *self, PyObject *args)
+{
+	return set_hook("startup_hook", &startup_hook, args);
+}
+
+PyDoc_STRVAR(doc_set_startup_hook,
+"set_startup_hook([function]) -> None\n\
+Set or remove the startup_hook function.\n\
+The function is called with no arguments just\n\
+before readline prints the first prompt.");
+
+
+static PyObject *
+get_startup_hook(PyObject *self, PyObject *noargs)
+{
+	if (startup_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(startup_hook);
+	return startup_hook;
+}
+
+PyDoc_STRVAR(doc_get_startup_hook,
+"get_startup_hook() -> function\n\
+Get the current startup_hook function.");
+
+
+/* Pre-input hook */
+
+static PyObject *
+set_pre_input_hook(PyObject *self, PyObject *args)
+{
+	return set_hook("pre_input_hook", &pre_input_hook, args);
+}
+
+PyDoc_STRVAR(doc_set_pre_input_hook,
+"set_pre_input_hook([function]) -> None\n\
+Set or remove the pre_input_hook function.\n\
+The function is called with no arguments after the first prompt\n\
+has been printed and just before readline starts reading input\n\
+characters.");
+
+
+static PyObject *
+get_pre_input_hook(PyObject *self, PyObject *noargs)
+{
+	if (pre_input_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(pre_input_hook);
+	return pre_input_hook;
+}
+
+PyDoc_STRVAR(doc_get_pre_input_hook,
+"get_pre_input_hook() -> function\n\
+Get the current pre_input_hook function.");
+
+
+/* Display matches hook */
 
 static void
 on_completion_display_matches_hook(char **matches,
@@ -274,38 +337,22 @@ The function is called as \
 once each time matches need to be displayed.");
 
 
-/* Set startup hook */
-
 static PyObject *
-set_startup_hook(PyObject *self, PyObject *args)
+get_completion_display_matches_hook(PyObject *self, PyObject *noargs)
 {
-	return set_hook("startup_hook", &startup_hook, args);
+	if (completion_display_matches_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(completion_display_matches_hook);
+	return completion_display_matches_hook;
 }
 
-PyDoc_STRVAR(doc_set_startup_hook,
-"set_startup_hook([function]) -> None\n\
-Set or remove the startup_hook function.\n\
-The function is called with no arguments just\n\
-before readline prints the first prompt.");
+PyDoc_STRVAR(doc_get_completion_display_matches_hook,
+"get_completion_display_matches_hook() -> function\n\
+Get the current completion display function.");
 
 
-/* Set pre-input hook */
-
-static PyObject *
-set_pre_input_hook(PyObject *self, PyObject *args)
-{
-	return set_hook("pre_input_hook", &pre_input_hook, args);
-}
-
-PyDoc_STRVAR(doc_set_pre_input_hook,
-"set_pre_input_hook([function]) -> None\n\
-Set or remove the pre_input_hook function.\n\
-The function is called with no arguments after the first prompt\n\
-has been printed and just before readline starts reading input\n\
-characters.");
-
-
-/* Exported function to specify a word completer in Python */
+/* Exported functions to specify a word completer in Python */
 
 static PyObject *completer = NULL;
 
@@ -313,7 +360,37 @@ static Py_ssize_t begidx = 0;
 static Py_ssize_t endidx = 0;
 
 
-/* Get the completion type for the scope of the tab-completion */
+static PyObject *
+set_completer(PyObject *self, PyObject *args)
+{
+	return set_hook("completer", &completer, args);
+}
+
+PyDoc_STRVAR(doc_set_completer,
+"set_completer([function]) -> None\n\
+Set or remove the completer function.\n\
+The function is called as ``function(text, state)``,\n\
+for state in 0, 1, 2, ..., until it returns a non-string.\n\
+It should return the next possible completion starting with ``text``.");
+
+
+static PyObject *
+get_completer(PyObject *self, PyObject *noargs)
+{
+	if (completer == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(completer);
+	return completer;
+}
+
+PyDoc_STRVAR(doc_get_completer,
+"get_completer() -> function\n\
+\n\
+Returns the current completer function.");
+
+
+/* Get/set the completion type for the scope of the tab-completion */
 
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
@@ -332,7 +409,31 @@ PyDoc_STRVAR(doc_get_completion_type,
 Get the type of completion being attempted.");
 
 
-/* Get the beginning index for the scope of the tab-completion */
+static PyObject *
+set_completion_type(PyObject *self, PyObject *args)
+{
+	char *s;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "O&:set_completion_type", PyUnicode_StrConverter, &b))
+		return NULL;
+	s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "s:set_completion_type", &s))
+		return NULL;
+#endif
+	rl_completion_type = (s && *s) ? *s : '\0';
+	Py_XDECREF(b);
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_completion_type,
+"set_completion_type(string) -> None\n\
+Set the type of completion being attempted.");
+
+
+/* Get/set the beginning index for the scope of the tab-completion */
 
 static PyObject *
 get_begidx(PyObject *self, PyObject *noarg)
@@ -345,7 +446,24 @@ PyDoc_STRVAR(doc_get_begidx,
 Get the beginning index of the readline tab-completion scope.");
 
 
-/* Get the ending index for the scope of the tab-completion */
+static PyObject *
+set_begidx(PyObject *self, PyObject *args)
+{
+	int value;
+
+	if (!PyArg_ParseTuple(args, "i:set_begidx", &value)) {
+		return NULL;
+	}
+	begidx = value;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_begidx,
+"set_begidx(int) -> None\n\
+Set the beginning index of the readline tab-completion scope.");
+
+
+/* Get/set the ending index for the scope of the tab-completion */
 
 static PyObject *
 get_endidx(PyObject *self, PyObject *noarg)
@@ -358,7 +476,36 @@ PyDoc_STRVAR(doc_get_endidx,
 Get the ending index of the readline tab-completion scope.");
 
 
-/* Set the tab-completion word-delimiters that readline uses */
+static PyObject *
+set_endidx(PyObject *self, PyObject *args)
+{
+	int value;
+
+	if (!PyArg_ParseTuple(args, "i:set_endidx", &value)) {
+		return NULL;
+	}
+	endidx = value;
+	Py_RETURN_NONE;
+}
+
+
+PyDoc_STRVAR(doc_set_endidx,
+"set_endidx(int) -> None\n\
+Set the ending index of the readline tab-completion scope.");
+
+
+/* Get/set the tab-completion word-delimiters that readline uses */
+
+static PyObject *
+get_completer_delims(PyObject *self, PyObject *noarg)
+{
+	return PyString_FromString(rl_completer_word_break_characters);
+}
+
+PyDoc_STRVAR(doc_get_completer_delims,
+"get_completer_delims() -> string\n\
+Get the readline word delimiters for tab-completion.");
+
 
 static PyObject *
 set_completer_delims(PyObject *self, PyObject *args)
@@ -498,51 +645,6 @@ PyDoc_STRVAR(doc_add_history,
 Add a line to the history buffer.");
 
 
-/* Get the tab-completion word-delimiters that readline uses */
-
-static PyObject *
-get_completer_delims(PyObject *self, PyObject *noarg)
-{
-	return PyString_FromString(rl_completer_word_break_characters);
-}
-
-PyDoc_STRVAR(doc_get_completer_delims,
-"get_completer_delims() -> string\n\
-Get the readline word delimiters for tab-completion.");
-
-
-/* Set the completer function */
-
-static PyObject *
-set_completer(PyObject *self, PyObject *args)
-{
-	return set_hook("completer", &completer, args);
-}
-
-PyDoc_STRVAR(doc_set_completer,
-"set_completer([function]) -> None\n\
-Set or remove the completer function.\n\
-The function is called as ``function(text, state)``,\n\
-for state in 0, 1, 2, ..., until it returns a non-string.\n\
-It should return the next possible completion starting with ``text``.");
-
-
-static PyObject *
-get_completer(PyObject *self, PyObject *noargs)
-{
-	if (completer == NULL) {
-		Py_RETURN_NONE;
-	}
-	Py_INCREF(completer);
-	return completer;
-}
-
-PyDoc_STRVAR(doc_get_completer,
-"get_completer() -> function\n\
-\n\
-Returns current completer function.");
-
-
 /* Exported function to get any element of history */
 
 static PyObject *
@@ -578,19 +680,6 @@ PyDoc_STRVAR(doc_get_current_history_length,
 Return the current (not the maximum) length of history.");
 
 
-/* Exported function to read the current line buffer */
-
-static PyObject *
-get_line_buffer(PyObject *self, PyObject *noarg)
-{
-	return PyString_FromString(rl_line_buffer);
-}
-
-PyDoc_STRVAR(doc_get_line_buffer,
-"get_line_buffer() -> string\n\
-Return the current contents of the line buffer.");
-
-
 /* Exported function to clear the current history */
 
 static PyObject *
@@ -603,6 +692,19 @@ py_clear_history(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_clear_history,
 "clear_history() -> None\n\
 Clear the current readline history.");
+
+
+/* Exported function to read the current line buffer */
+
+static PyObject *
+get_line_buffer(PyObject *self, PyObject *noarg)
+{
+	return PyString_FromString(rl_line_buffer);
+}
+
+PyDoc_STRVAR(doc_get_line_buffer,
+"get_line_buffer() -> string\n\
+Return the current contents of the line buffer.");
 
 
 /* Exported function to insert text into the line buffer */
@@ -1501,110 +1603,7 @@ PyDoc_STRVAR(doc_set_completion_query_items,
 Up to this many items will be displayed in response to a possible-completions call.");
 
 
-/* Missing APIs */
-
-static PyObject *
-get_completion_display_matches_hook(PyObject *self, PyObject *noargs)
-{
-	if (completion_display_matches_hook == NULL) {
-		Py_RETURN_NONE;
-	}
-	Py_INCREF(completion_display_matches_hook);
-	return completion_display_matches_hook;
-}
-
-PyDoc_STRVAR(doc_get_completion_display_matches_hook,
-"get_completion_display_matches_hook() -> function\n\
-Get the current completion display function.");
-
-
-static PyObject *
-get_startup_hook(PyObject *self, PyObject *noargs)
-{
-	if (startup_hook == NULL) {
-		Py_RETURN_NONE;
-	}
-	Py_INCREF(startup_hook);
-	return startup_hook;
-}
-
-PyDoc_STRVAR(doc_get_startup_hook,
-"get_startup_hook() -> function\n\
-Get the current startup_hook function.");
-
-
-static PyObject *
-get_pre_input_hook(PyObject *self, PyObject *noargs)
-{
-	if (pre_input_hook == NULL) {
-		Py_RETURN_NONE;
-	}
-	Py_INCREF(pre_input_hook);
-	return pre_input_hook;
-}
-
-PyDoc_STRVAR(doc_get_pre_input_hook,
-"get_pre_input_hook() -> function\n\
-Get the current pre_input_hook function.");
-
-
-static PyObject *
-set_begidx(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_begidx", &value)) {
-		return NULL;
-	}
-	begidx = value;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_begidx,
-"set_begidx(int) -> None\n\
-Set the beginning index of the readline tab-completion scope.");
-
-
-static PyObject *
-set_endidx(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_endidx", &value)) {
-		return NULL;
-	}
-	endidx = value;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_endidx,
-"set_endidx(int) -> None\n\
-Set the ending index of the readline tab-completion scope.");
-
-
-static PyObject *
-set_completion_type(PyObject *self, PyObject *args)
-{
-	char *s;
-	PyObject *b = NULL;
-
-#if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "O&:set_completion_type", PyUnicode_StrConverter, &b))
-		return NULL;
-	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completion_type", &s))
-		return NULL;
-#endif
-	rl_completion_type = (s && *s) ? *s : '\0';
-	Py_XDECREF(b);
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_completion_type,
-"set_completion_type(string) -> None\n\
-Set the type of completion being attempted.");
-
+/* Readline version */
 
 static PyObject *
 readline_version(PyObject *self, PyObject *noarg)
@@ -1675,6 +1674,8 @@ static PyObject *completion_word_break_hook = NULL;
 static char *
 on_completion_word_break_hook(void);
 
+extern char _rl_find_completion_word(int *fp, int *dp);
+
 
 static PyObject *
 set_completion_word_break_hook(PyObject *self, PyObject *args)
@@ -1711,8 +1712,6 @@ PyDoc_STRVAR(doc_get_completion_word_break_hook,
 "get_completion_word_break_hook() -> function\n\
 A function to call when readline is deciding where to separate words for word completion.");
 
-
-extern char _rl_find_completion_word(int *fp, int *dp);
 
 static char *
 on_completion_word_break_hook(void)
@@ -2407,7 +2406,7 @@ on_pre_input_hook(void)
 }
 
 
-/* C function to call the Python completion_display_matches */
+/* C function to call the Python completion_display_matches_hook. */
 
 static void
 on_completion_display_matches_hook(char **matches,
@@ -2508,11 +2507,11 @@ on_completion(const char *text, int state)
 }
 
 
-/* A more flexible constructor that saves the "begidx" and "endidx"
+/* A more flexible constructor that saves "begidx" and "endidx"
  * before calling the normal completer */
 
 static char **
-flex_complete(char *text, int start, int end)
+flex_completer(char *text, int start, int end)
 {
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -2565,7 +2564,7 @@ setup_readline(void)
 	rl_startup_hook = (rl_hook_func_t *)on_startup_hook;
 	rl_pre_input_hook = (rl_hook_func_t *)on_pre_input_hook;
 	/* Set our completion function */
-	rl_attempted_completion_function = (rl_completion_func_t *)flex_complete;
+	rl_attempted_completion_function = (rl_completion_func_t *)flex_completer;
 	/* Set Python word break characters */
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
