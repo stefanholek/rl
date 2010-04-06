@@ -985,130 +985,6 @@ If True, filenames will be quoted. \
 May only be called from within custom completers.");
 
 
-/*
-static PyObject *
-get_attempted_completion_over(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(rl_attempted_completion_over);
-}
-
-PyDoc_STRVAR(doc_get_attempted_completion_over,
-"get_attempted_completion_over() -> bool\n\
-If True, do not fall back to the default filename completion, even if the current \
-completion returns no matches.");
-
-
-static PyObject *
-set_attempted_completion_over(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_attempted_completion_over", &value)) {
-		return NULL;
-	}
-	rl_attempted_completion_over = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_attempted_completion_over,
-"set_attempted_completion_over(bool) -> None\n\
-If True, do not fall back to the default filename completion, even if the current \
-completion returns no matches. \
-May only be called from within custom completers.");
-*/
-
-
-/* Misc flags */
-
-/*
-static PyObject *
-get_sort_completion_matches(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(rl_sort_completion_matches);
-}
-
-PyDoc_STRVAR(doc_get_sort_completion_matches,
-"get_sort_completion_matches() -> bool\n\
-If an application sets this variable to False, readline will not sort the list of completions.");
-
-
-static PyObject *
-set_sort_completion_matches(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_sort_completion_matches", &value)) {
-		return NULL;
-	}
-	rl_sort_completion_matches = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_sort_completion_matches,
-"set_sort_completion_matches(bool) -> None\n\
-If an application sets this variable to False, readline will not sort the list of completions. \
-May only be called from within custom completers.");
-
-
-static PyObject *
-get_ignore_completion_duplicates(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(rl_ignore_completion_duplicates);
-}
-
-PyDoc_STRVAR(doc_get_ignore_completion_duplicates,
-"get_ignore_completion_duplicates() -> bool\n\
-If an application sets this variable to False, readline will not remove duplicates from the list of completions.");
-
-
-static PyObject *
-set_ignore_completion_duplicates(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_ignore_completion_duplicates", &value)) {
-		return NULL;
-	}
-	rl_ignore_completion_duplicates = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_ignore_completion_duplicates,
-"set_ignore_completion_duplicates(bool) -> None\n\
-If an application sets this variable to False, readline will not remove duplicates from the list of completions. \
-May only be called from within custom completers.");
-
-
-static PyObject *
-get_completion_mark_symlink_dirs(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(rl_completion_mark_symlink_dirs);
-}
-
-PyDoc_STRVAR(doc_get_completion_mark_symlink_dirs,
-"get_completion_mark_symlink_dirs() -> bool\n\
-If True, a slash will be appended to completed filenames that are symbolic links to directory names.");
-
-
-static PyObject *
-set_completion_mark_symlink_dirs(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_completion_mark_symlink_dirs", &value)) {
-		return NULL;
-	}
-	rl_completion_mark_symlink_dirs = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_completion_mark_symlink_dirs,
-"set_completion_mark_symlink_dirs(bool) -> None\n\
-If True, a slash will be appended to completed filenames that are symbolic links to directory names. \
-May only be called from within custom completers.");
-*/
-
-
 /* Inhibit completion */
 
 static PyObject *
@@ -1625,25 +1501,6 @@ PyDoc_STRVAR(doc_set_completion_query_items,
 Up to this many items will be displayed in response to a possible-completions call.");
 
 
-/* Invoking key */
-
-/*
-static PyObject *
-get_completion_invoking_key(PyObject *self, PyObject *noarg)
-{
-#if (PY_MAJOR_VERSION >= 3)
-	return PyUnicode_DECODE_CHAR(rl_completion_invoking_key);
-#else
-	return PyString_FromFormat("%c", rl_completion_invoking_key);
-#endif
-}
-
-PyDoc_STRVAR(doc_get_completion_invoking_key,
-"get_completion_invoking_key() -> string\n\
-The final character in the key sequence that invoked the completion function.");
-*/
-
-
 /* Missing APIs */
 
 static PyObject *
@@ -1786,36 +1643,6 @@ PyDoc_STRVAR(doc_get_rl_end,
 Return rl_end.");
 
 
-extern char _rl_find_completion_word(int *fp, int *dp);
-
-/*
-static PyObject *
-find_completion_word(PyObject *self, PyObject *noargs)
-{
-	int begidx, endidx;
-	PyObject *py_begidx, *py_endidx;
-
-	endidx = rl_point;
-	if (rl_point)
-		_rl_find_completion_word(NULL, NULL);
-	begidx = rl_point;
-	rl_point = endidx;
-
-	py_begidx = PyInt_FromLong(begidx);
-	py_endidx = PyInt_FromLong(endidx);
-
-	if (!py_begidx || !py_endidx)
-		return NULL;
-
-	return PyTuple_Pack(2, py_begidx, py_endidx);
-}
-
-PyDoc_STRVAR(doc_find_completion_word,
-"find_completion_word() -> (begidx, endidx)\n\
-Find the bounds of the word at or before the cursor position.");
-*/
-
-
 static PyObject *
 complete_internal(PyObject *self, PyObject *args)
 {
@@ -1884,6 +1711,8 @@ PyDoc_STRVAR(doc_get_completion_word_break_hook,
 "get_completion_word_break_hook() -> function\n\
 A function to call when readline is deciding where to separate words for word completion.");
 
+
+extern char _rl_find_completion_word(int *fp, int *dp);
 
 static char *
 on_completion_word_break_hook(void)
@@ -2141,74 +1970,6 @@ PyDoc_STRVAR(doc_stuff_char,
 "stuff_char(string) -> bool\n\
 Insert a character into readline's input stream. \
 Returns True if the insert was successful.");
-
-
-/* Tilde expansion flag */
-
-/*
-extern int rl_complete_with_tilde_expansion;
-
-static PyObject *
-get_complete_with_tilde_expansion(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(rl_complete_with_tilde_expansion);
-}
-
-PyDoc_STRVAR(doc_get_complete_with_tilde_expansion,
-"get_complete_with_tilde_expansion() -> bool\n\
-If True, readline completion functions perform tilde expansion.");
-
-
-static PyObject *
-set_complete_with_tilde_expansion(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_complete_with_tilde_expansion", &value)) {
-		return NULL;
-	}
-	rl_complete_with_tilde_expansion = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_complete_with_tilde_expansion,
-"set_complete_with_tilde_expansion(bool) -> None\n\
-If True, readline completion functions perform tilde expansion.");
-*/
-
-
-/* Match hidden files flag */
-
-/*
-extern int _rl_match_hidden_files;
-
-static PyObject *
-get_match_hidden_files(PyObject *self, PyObject *noarg)
-{
-	return PyBool_FromLong(_rl_match_hidden_files);
-}
-
-PyDoc_STRVAR(doc_get_match_hidden_files,
-"get_match_hidden_files() -> bool\n\
-If True, include hidden files when computing the list of matches.");
-
-
-static PyObject *
-set_match_hidden_files(PyObject *self, PyObject *args)
-{
-	int value;
-
-	if (!PyArg_ParseTuple(args, "i:set_match_hidden_files", &value)) {
-		return NULL;
-	}
-	_rl_match_hidden_files = value ? 1 : 0;
-	Py_RETURN_NONE;
-}
-
-PyDoc_STRVAR(doc_set_match_hidden_files,
-"set_match_hidden_files(bool) -> None\n\
-If True, include hidden files when computing the list of matches.");
-*/
 
 
 /* Display match list function */
@@ -2522,12 +2283,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_filename_quoting_desired},
 	{"set_filename_quoting_desired", set_filename_quoting_desired,
 	 METH_VARARGS, doc_set_filename_quoting_desired},
-	/*
-	{"get_attempted_completion_over", get_attempted_completion_over,
-	 METH_NOARGS, doc_get_attempted_completion_over},
-	{"set_attempted_completion_over", set_attempted_completion_over,
-	 METH_VARARGS, doc_set_attempted_completion_over},
-	*/
 	{"filename_completion_function", filename_completion_function,
 	 METH_VARARGS, doc_filename_completion_function},
 	{"username_completion_function", username_completion_function,
@@ -2562,22 +2317,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_set_completion_type},
 	{"get_pre_input_hook", get_pre_input_hook,
 	 METH_NOARGS, doc_get_pre_input_hook},
-	/* readline 6
-	{"get_completion_invoking_key", get_completion_invoking_key,
-	 METH_NOARGS, doc_get_completion_invoking_key},
-	{"get_sort_completion_matches", get_sort_completion_matches,
-	 METH_NOARGS, doc_get_sort_completion_matches},
-	{"set_sort_completion_matches", set_sort_completion_matches,
-	 METH_VARARGS, doc_set_sort_completion_matches},
-	{"get_ignore_completion_duplicates", get_ignore_completion_duplicates,
-	 METH_NOARGS, doc_get_ignore_completion_duplicates},
-	{"set_ignore_completion_duplicates", set_ignore_completion_duplicates,
-	 METH_VARARGS, doc_set_ignore_completion_duplicates},
-	{"get_completion_mark_symlink_dirs", get_completion_mark_symlink_dirs,
-	 METH_NOARGS, doc_get_completion_mark_symlink_dirs},
-	{"set_completion_mark_symlink_dirs", set_completion_mark_symlink_dirs,
-	 METH_VARARGS, doc_set_completion_mark_symlink_dirs},
-	*/
 	{"get_inhibit_completion", get_inhibit_completion,
 	 METH_NOARGS, doc_get_inhibit_completion},
 	{"set_inhibit_completion", set_inhibit_completion,
@@ -2590,16 +2329,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_directory_completion_hook},
 	{"set_directory_completion_hook", set_directory_completion_hook,
 	 METH_VARARGS, doc_set_directory_completion_hook},
-	/*
-	{"get_complete_with_tilde_expansion", get_complete_with_tilde_expansion,
-	 METH_NOARGS, doc_get_complete_with_tilde_expansion},
-	{"set_complete_with_tilde_expansion", set_complete_with_tilde_expansion,
-	 METH_VARARGS, doc_set_complete_with_tilde_expansion},
-	{"get_match_hidden_files", get_match_hidden_files,
-	 METH_NOARGS, doc_get_match_hidden_files},
-	{"set_match_hidden_files", set_match_hidden_files,
-	 METH_VARARGS, doc_set_match_hidden_files},
-	*/
 	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
@@ -2612,10 +2341,6 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_display_match_list},
 	{"get_rl_point", get_rl_point, METH_NOARGS, doc_get_rl_point},
 	{"get_rl_end", get_rl_end, METH_NOARGS, doc_get_rl_end},
-	/*
-	{"find_completion_word", find_completion_word,
-	 METH_NOARGS, doc_find_completion_word},
-	*/
 	{"complete_internal", complete_internal,
 	 METH_VARARGS, doc_complete_internal},
 	{"readline_version", readline_version,
