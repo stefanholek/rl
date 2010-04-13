@@ -1400,6 +1400,7 @@ on_char_is_quoted_function(const char *text, int index)
 	int i = 0;
 	PyObject *r = NULL;
 	PyObject *u_text = NULL;
+	begidx = endidx = 0;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1724,6 +1725,7 @@ on_completion_word_break_hook(void)
 	PyObject *b = NULL;
 	int start, end;
 	static char *last = NULL;
+	begidx = endidx = 0;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -2571,9 +2573,8 @@ setup_readline(void)
 		/* All nonalphanums except '.' */
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
-
-	begidx = 0;
-	endidx = 0;
+	/* Reset completion variables */
+	begidx = endidx = 0;
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 

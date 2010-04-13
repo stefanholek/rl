@@ -4,6 +4,9 @@ Changelog
 1.10 - Unreleased
 -----------------
 
+- Make sure ``begidx`` and ``endidx`` completion variables are reset to 0.
+  [stefan]
+
 
 1.9 - 2010-04-02
 ----------------
