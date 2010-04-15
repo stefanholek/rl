@@ -667,6 +667,42 @@ PyDoc_STRVAR(doc_get_history_item,
 Return the current contents of history item at pos.");
 
 
+/* Exported function to get the entire history as a Python list */
+
+static PyObject *
+get_history_list(PyObject *self, PyObject *noarg)
+{
+	HIST_ENTRY **hist;
+	PyObject *list;
+	PyObject *s;
+	size_t i;
+
+	list = PyList_New(history_length);
+	if (list == NULL)
+		return NULL;
+
+	hist = history_list();
+	if (hist == NULL)
+		return list;
+
+	for (i = 0; i < history_length; i++) {
+		s = PyString_FromString(hist[i]->line);
+		if (s == NULL)
+			goto error;
+		PyList_SET_ITEM(list, i, s);
+	}
+	return list;
+  error:
+	Py_XDECREF(list);
+	return NULL;
+}
+
+PyDoc_STRVAR(doc_get_history_list,
+"get_history_list() -> list\n\
+Return the entire history as a Python list. \
+Element 0 of the list is the beginning of time.");
+
+
 /* Exported function to get current length of history */
 
 static PyObject *
@@ -2354,6 +2390,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_unstifle_history},
 	{"history_is_stifled", py_history_is_stifled,
 	 METH_NOARGS, doc_history_is_stifled},
+	{"get_history_list", get_history_list,
+	 METH_NOARGS, doc_get_history_list},
 	/* </rl.readline> */
 
 	{0, 0}
