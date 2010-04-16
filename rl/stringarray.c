@@ -93,8 +93,7 @@ PyList_FromStringArray(char **strings)
 #endif
 		if (s == NULL)
 			goto error;
-		if (PyList_SetItem(list, i, s) == -1)
-			goto error;
+		PyList_SET_ITEM(list, i, s);
 	}
 	return list;
   error:
