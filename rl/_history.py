@@ -16,11 +16,13 @@ class History(object):
     Example::
 
         from rl import history
-        import atexit
 
-        history.max_entries = 250
+        history.max_entries = 300
         history.read_file(histfile)
-        atexit.register(history.write_file, histfile)
+
+    History entries can be accessed like elements of a Python list.
+    The item at index 0 is the oldest, the item at -1 the most recent
+    history item.
     """
 
     __slots__ = ()
@@ -65,11 +67,9 @@ class History(object):
         """Replace the history item at index."""
         readline.replace_history_item(self._norm_index(index), line)
 
-    # Alternative API
-    add_item = append
-    get_item = __getitem__
-    remove_item = __delitem__
-    replace_item = __setitem__
+    def __iter__(self):
+        """Iterate over history items."""
+        return iter(readline.get_history_list())
 
     def _norm_index(self, index):
         """Support negative indexes."""
