@@ -10,6 +10,9 @@ Changelog
 - Make sure ``begidx`` and ``endidx`` completion variables are reset to 0.
   [stefan]
 
+- Fix how the last history item is retrieved in ``call_readline``.
+  [stefan]
+
 
 1.9 - 2010-04-02
 ----------------

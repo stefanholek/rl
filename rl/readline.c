@@ -2774,14 +2774,12 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 	n = strlen(p);
 	if (n > 0) {
 		char *line;
-		HISTORY_STATE *state = history_get_history_state();
-		if (state->length > 0)
-			line = history_get(state->length)->line;
+		if (history_length > 0)
+			line = history_get(history_base + history_length - 1)->line;
 		else
 			line = "";
-		if (strcmp(p, line))
+		if (strcmp(p, line) != 0)
 			add_history(p);
-		free(state);
 	}
 	/* Copy the malloc'ed buffer into a PyMem_Malloc'ed one and
 	   release the original. */
