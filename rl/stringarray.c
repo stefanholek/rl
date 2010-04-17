@@ -123,9 +123,7 @@ StringArray_FromPyList(PyObject *list)
 		return NULL;
 
 	for (p = strings, i = 0; i < size; i++) {
-		r = PyList_GetItem(list, i);
-		if (r == NULL)
-			goto error;
+		r = PyList_GET_ITEM(list, i);
 #if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
