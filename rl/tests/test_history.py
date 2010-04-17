@@ -233,6 +233,15 @@ class HistoryStiflingTests(unittest.TestCase):
         self.assertEqual(history[3], 'pebbles')
         self.assertEqual(history[4], 'bedrock')
 
+    def test__iter__items(self):
+        history.max_entries = 5
+        history.append('bammbamm')
+        self.assertEqual([x for x in history], ['wilma', 'barney', 'betty', 'pebbles', 'bammbamm'])
+        history.append('dino')
+        self.assertEqual([x for x in history], ['barney', 'betty', 'pebbles', 'bammbamm', 'dino'])
+        history[0] = 'hopper'
+        self.assertEqual([x for x in history], ['hopper', 'betty', 'pebbles', 'bammbamm', 'dino'])
+
 
 class HistoryFileTests(JailSetup):
     # You will lose your ~/.history file when you run these tests
