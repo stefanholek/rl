@@ -38,6 +38,18 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(len(history), 4)
         self.assertEqual([x for x in history], ['fred', 'wilma', 'barney', 'betty'])
 
+    def test__reversed__empty(self):
+        self.assertEqual(len(history), 0)
+        self.assertEqual([x for x in reversed(history)], [])
+
+    def test__reversed__items(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual(len(history), 4)
+        self.assertEqual([x for x in reversed(history)], ['betty', 'barney', 'wilma', 'fred'])
+
     def test__getitem__(self):
         history.append('fred')
         history.append('wilma')
@@ -241,6 +253,15 @@ class HistoryStiflingTests(unittest.TestCase):
         self.assertEqual([x for x in history], ['barney', 'betty', 'pebbles', 'bammbamm', 'dino'])
         history[0] = 'hopper'
         self.assertEqual([x for x in history], ['hopper', 'betty', 'pebbles', 'bammbamm', 'dino'])
+
+    def test__reversed__items(self):
+        history.max_entries = 5
+        history.append('bammbamm')
+        self.assertEqual([x for x in reversed(history)], ['bammbamm', 'pebbles', 'betty', 'barney', 'wilma'])
+        history.append('dino')
+        self.assertEqual([x for x in reversed(history)], ['dino', 'bammbamm', 'pebbles', 'betty', 'barney'])
+        history[0] = 'hopper'
+        self.assertEqual([x for x in reversed(history)], ['dino', 'bammbamm', 'pebbles', 'betty', 'hopper'])
 
 
 class HistoryFileTests(JailSetup):

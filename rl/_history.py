@@ -71,6 +71,10 @@ class History(object):
         """Iterate over history items."""
         return iter(readline.get_history_list())
 
+    def __reversed__(self):
+        """Reverse-iterate over history items."""
+        return reversed(readline.get_history_list())
+
     def _norm_index(self, index):
         """Support negative indexes."""
         if not isinstance(index, int):
