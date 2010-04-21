@@ -359,6 +359,8 @@ static PyObject *completer = NULL;
 static Py_ssize_t begidx = 0;
 static Py_ssize_t endidx = 0;
 
+static void set_completion_defaults(void);
+
 
 static PyObject *
 set_completer(PyObject *self, PyObject *args)
@@ -1436,11 +1438,11 @@ on_char_is_quoted_function(const char *text, int index)
 	int i = 0;
 	PyObject *r = NULL;
 	PyObject *u_text = NULL;
-	begidx = endidx = 0;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
 	u_text = PyUnicode_DECODE(text);
@@ -1761,11 +1763,13 @@ on_completion_word_break_hook(void)
 	PyObject *b = NULL;
 	int start, end;
 	static char *last = NULL;
-	begidx = endidx = 0;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	set_completion_defaults();
+
+	/* Determine word boundaries */
 	end = rl_point;
 	if (rl_point) {
 		/* Unhook ourselves to avoid infinite recursion */
@@ -2556,6 +2560,7 @@ flex_completer(char *text, int start, int end)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
 	begidx = PyUnicode_AdjustIndex(rl_line_buffer, start);
@@ -2565,15 +2570,23 @@ flex_completer(char *text, int start, int end)
 	endidx = end;
 #endif
 
-#if (RL_READLINE_VERSION < 0x0600)
-	/* Unify readline 5 and 6 behavior */
-	rl_completion_append_character = ' ';
-#endif
-
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
 	return completion_matches(text, *on_completion);
+}
+
+
+/* Helper to reset completion variables. Sadly no hook. */
+
+static void
+set_completion_defaults(void)
+{
+	begidx = endidx = 0;
+
+#if (RL_READLINE_VERSION < 0x0600)
+	rl_completion_append_character = ' ';
+#endif
 }
 
 
@@ -2612,7 +2625,7 @@ setup_readline(void)
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 	/* Reset completion variables */
-	begidx = endidx = 0;
+	set_completion_defaults();
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
