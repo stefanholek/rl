@@ -4,13 +4,13 @@ Changelog
 1.10 - Unreleased
 -----------------
 
-- Revise the history interface: Implement iteration and remove redundant APIs.
+- Rework the history interface: Implement iteration and remove redundant APIs.
   [stefan]
 
 - Make sure ``begidx`` and ``endidx`` completion variables are reset to 0.
   [stefan]
 
-- Fix how the last history item is retrieved in ``call_readline``.
+- History stifling caused duplicate history entries.
   [stefan]
 
 

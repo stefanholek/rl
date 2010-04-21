@@ -1,22 +1,34 @@
 ==
 rl
 ==
-------------------------------------------------
-Python readline interface focusing on completion
-------------------------------------------------
+--------------------------------------------
+Alternative Python bindings for GNU Readline
+--------------------------------------------
 
 Introduction
 ============
 
-The rl package aims to provide a full implementation of the
-GNU Readline `Custom Completer`_ interface.
+`GNU Readline`_ is the canonical implementation of command line
+editing, tab completion, and history for console-based applications.
+It is developed as part of Bash and available on virtually any platform.
 
+While Python ships with readline bindings in its standard library, they
+only implement a subset of readline's features, just enough to perform
+identifier completion at the Python interpreter prompt.
+
+The **rl** package aims to provide full implementations of the
+GNU Readline `Custom Completer`_ and `History`_ interfaces.
+It also contains high-level APIs to better organize the namespace and
+shield applications from low-level verbosity.
+
+.. _`GNU Readline`: http://tiswww.case.edu/php/chet/readline/rltop.html
 .. _`Custom Completer`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`History`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 Package Contents
 ----------------
 
-rl exports the following components:
+rl exports these components:
 
 completer
     Interface to the readline completer. Used to configure the completion
@@ -40,7 +52,7 @@ history
     and to manipulate history entries.
 
 readline
-    The readline interface module. Contains everything known from the standard
+    The readline bindings module. Contains everything known from the standard
     library plus extensions specific to the rl package.  The `completer`,
     `completion`, and `history` interfaces make use of this module, and
     you should rarely need to interact with it directly.
@@ -78,7 +90,7 @@ The code below implements system command completion similar to bash::
         command = raw_input('command: ')
         print 'You typed:', command
 
-More elaborate examples can be found here_ and in the gpgkeys_ package.
+More examples are available here_ and in the gpgkeys_ package.
 
 .. _here: http://github.com/stefanholek/rl/tree/master/rl/examples
 .. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
