@@ -12,7 +12,7 @@ simpleapp.py
     and filename completion on the same line.
 
 email.py
-    Implements completion of email addresses (username + @ + hostname).
+    Demonstrates email address completion (username + @ + hostname).
 
 pre_input_hook.py
     Shows how to use prompt and pre_input_hook to pre-populate the line.
