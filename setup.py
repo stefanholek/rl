@@ -118,7 +118,7 @@ Extension(name='rl.readline',
 
 setup(name='rl',
       version=version,
-      description='Python readline interface focusing on completion',
+      description='Alternative Python bindings for GNU Readline',
       long_description=open('README.txt').read() + '\n' +
                        open('CHANGES.txt').read(),
       classifiers=[
