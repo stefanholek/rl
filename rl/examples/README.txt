@@ -15,7 +15,7 @@ email.py
     Implements completion of email addresses (username + @ + hostname).
 
 pre_input_hook.py
-    Shows how to use prompt and pre_input_hook to prepopulate the line.
+    Shows how to use prompt and pre_input_hook to pre-populate the line.
 
 static.py
     Complete from a static list of strings.
