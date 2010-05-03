@@ -7,10 +7,10 @@ Changelog
 - Rework the history interface: Implement iteration and remove redundant APIs.
   [stefan]
 
-- Make sure ``begidx`` and ``endidx`` completion variables are reset to 0.
+- History stifling could cause duplicate history entries.
   [stefan]
 
-- History stifling caused duplicate history entries.
+- Make sure ``begidx`` and ``endidx`` completion variables are reset to 0.
   [stefan]
 
 

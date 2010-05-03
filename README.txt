@@ -90,9 +90,11 @@ The code below implements system command completion similar to bash::
         command = raw_input('command: ')
         print 'You typed:', command
 
-More examples are available here_ and in the gpgkeys_ package.
+More examples_ are included in the package source.
+Also see gpgkeys_, a front-end for GnuPG built entirely around
+tab completion.
 
-.. _here: http://github.com/stefanholek/rl/tree/master/rl/examples
+.. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples
 .. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
 
 Repository Access
@@ -105,7 +107,7 @@ rl development is hosted on github_.
 Installation
 ============
 
-rl has been tested with GNU Readline versions 5 and 6.
+rl requires Python 2.5 or higher and GNU Readline 5.0 or higher.
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
 rl. On Mac OS X, make sure you have Xcode Tools installed (Mac OS X Install
