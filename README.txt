@@ -54,8 +54,8 @@ history
 readline
     The readline bindings module. Contains everything known from the standard
     library plus extensions specific to the rl package.  The `completer`,
-    `completion`, and `history` interfaces make use of this module, and
-    you should rarely need to interact with it directly.
+    `completion`, and `history` interfaces make use of this module, and you
+    should rarely need to interact with it directly.
 
 For further details, please refer to the `API Documentation`_.
 
@@ -90,9 +90,8 @@ The code below implements system command completion similar to bash::
         command = raw_input('command: ')
         print 'You typed:', command
 
-More examples_ are included in the package source.
-Also see gpgkeys_, a front-end for GnuPG built entirely around
-tab completion.
+More examples_ are included in the package source. Also see gpgkeys_, a
+front-end for GnuPG built entirely around tab completion.
 
 .. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples
 .. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
