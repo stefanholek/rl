@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.10 - Unreleased
+1.10 - 2010-05-05
 -----------------
 
 - Rework the history interface: Implement iteration and remove redundant APIs.
