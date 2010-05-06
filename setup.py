@@ -84,7 +84,7 @@ def use_static_readline():
         mkdir -p build
         cd build
         rm -rf readline-6.1 readline
-        echo Fetching readline-6.1 from %(url)s
+        echo Downloading %(url)s
         curl --connect-timeout 30 -s %(url)s | tar xz
         mv readline-6.1 readline
         cd readline
