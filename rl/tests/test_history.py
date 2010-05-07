@@ -123,6 +123,25 @@ class HistoryTests(unittest.TestCase):
         history.clear()
         self.assertEqual(len(history), 0)
 
+    def test_max_entries(self):
+        self.assertEqual(history.max_entries, -1)
+        history.max_entries = 300
+        self.assertEqual(history.max_entries, 300)
+        history.max_entries = 200
+        self.assertEqual(history.max_entries, 200)
+        history.max_entries = 100
+        self.assertEqual(history.max_entries, 100)
+        history.max_entries = 1
+        self.assertEqual(history.max_entries, 1)
+        history.max_entries = 0
+        self.assertEqual(history.max_entries, 0)
+        history.max_entries = -1
+        self.assertEqual(history.max_entries, -1)
+        history.max_entries = -2
+        self.assertEqual(history.max_entries, -1)
+        history.max_entries = -3
+        self.assertEqual(history.max_entries, -1)
+
 
 class HistoryStiflingTests(unittest.TestCase):
 
