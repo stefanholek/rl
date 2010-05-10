@@ -366,11 +366,11 @@ class Completion(object):
 
     def complete_filename(self, text):
         """Built-in filename completion."""
-        return self._generate(text, readline.filename_completion_function)
+        return self._generate(readline.filename_completion_function, text)
 
     def complete_username(self, text):
         """Built-in username completion."""
-        return self._generate(text, readline.username_completion_function)
+        return self._generate(readline.username_completion_function, text)
 
     def expand_tilde(self, text):
         """Built-in tilde expansion."""
@@ -384,7 +384,7 @@ class Completion(object):
         """Refresh what's displayed on the screen."""
         readline.redisplay(force)
 
-    def _generate(self, text, entry_func):
+    def _generate(self, entry_func, text):
         """Extract a list of matches from a generator function."""
         matches = []
         i = 0
