@@ -2420,7 +2420,7 @@ on_hook(PyObject *func)
 			result = 0;
 		else {
 			result = PyInt_AsLong(r);
-			if (result == -1 && PyErr_Occurred()) 
+			if (result == -1 && PyErr_Occurred())
 				goto error;
 		}
 		Py_DECREF(r);
@@ -2476,7 +2476,7 @@ on_completion_display_matches_hook(char **matches,
 #endif
 	Py_DECREF(m); m=NULL;
 	Py_XDECREF(u_subst);
-	
+
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
 		goto error;
@@ -2658,7 +2658,7 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 
 	rl_callback_handler_install (prompt, rlhandler);
 	FD_ZERO(&selectset);
-	
+
 	completed_input_string = not_done_reading;
 
 	while (completed_input_string == not_done_reading) {
@@ -2667,10 +2667,10 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 		while (!has_input)
 		{	struct timeval timeout = {0, 100000}; /* 0.1 seconds */
 
-			/* [Bug #1552726] Only limit the pause if an input hook has been 
+			/* [Bug #1552726] Only limit the pause if an input hook has been
 			   defined.  */
 			struct timeval *timeoutp = NULL;
-			if (PyOS_InputHook) 
+			if (PyOS_InputHook)
 				timeoutp = &timeout;
 			FD_SET(fileno(rl_instream), &selectset);
 			/* select resets selectset if no input was available */
@@ -2689,7 +2689,7 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 #endif
 			s = PyErr_CheckSignals();
 #ifdef WITH_THREAD
-			PyEval_SaveThread();	
+			PyEval_SaveThread();
 #endif
 			if (s < 0) {
 				rl_free_line_state();
@@ -2724,7 +2724,7 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 {
 	PyOS_sighandler_t old_inthandler;
 	char *p;
-    
+
 	*signal = 0;
 
 	old_inthandler = PyOS_setsig(SIGINT, onintr);
@@ -2767,7 +2767,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 	}
 
 	p = readline_until_enter_or_signal(prompt, &signal);
-	
+
 	/* we got an interrupt signal */
 	if (signal) {
 		RESTORE_LOCALE(saved_locale)
