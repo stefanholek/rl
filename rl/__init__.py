@@ -1,4 +1,4 @@
-"""Python readline interface focusing on completion.
+"""Python bindings for GNU Readline.
 
 Package Contents
 ================
@@ -21,7 +21,7 @@ history
     Interface to the readline history.
 
 readline
-    Basic readline interface module.
+    Readline bindings module.
 
 About Readline Completion
 =========================
@@ -81,8 +81,10 @@ between sessions.
 Upstream Documentation
 ======================
 
-The GNU Readline Library documentation:
-http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+The `GNU Readline Library`_ and the `GNU History Library`_.
+
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`GNU History Library`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
 """
 
 # Grab the ReadlineFunctionPointer
