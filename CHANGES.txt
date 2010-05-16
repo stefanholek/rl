@@ -4,6 +4,9 @@ Changelog
 1.11 - Unreleased
 -----------------
 
+- Update documentation and examples.
+  [stefan]
+
 
 1.10 - 2010-05-05
 -----------------
