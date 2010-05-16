@@ -5,7 +5,7 @@ from rl import completer
 from rl import print_exc
 
 
-class Complete(object):
+class CommandCompleter(object):
     # A completion function implementing readline's
     # generator protocol
 
@@ -28,10 +28,10 @@ class Complete(object):
 
 def main():
     # Set the completion function
-    completer.completer = Complete()
+    completer.completer = CommandCompleter()
 
     # Enable TAB completion
-    completer.parse_and_bind('tab: complete')
+    completer.parse_and_bind('TAB: complete')
 
     command = raw_input('command> ')
     print 'You typed:', command

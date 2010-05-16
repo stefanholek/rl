@@ -7,12 +7,12 @@ raw_input.py
 factory.py
     The same as before, but the completion function is created by factory.
 
+email.py
+    Demonstrates email address completion (username + @ + hostname).
+
 simpleapp.py
     A simple cmd.Cmd-based app that demonstrates shell command completion
     and filename completion on the same line.
-
-email.py
-    Demonstrates email address completion (username + @ + hostname).
 
 pre_input_hook.py
     Shows how to use prompt and pre_input_hook to pre-populate the line.

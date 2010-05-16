@@ -11,7 +11,7 @@ from rl import print_exc
 
 
 @print_exc
-def complete(text):
+def complete_command(text):
     # Return executables matching 'text'
     for dir in os.environ.get('PATH').split(':'):
         dir = os.path.expanduser(dir)
@@ -24,10 +24,10 @@ def complete(text):
 
 def main():
     # Set the completion function
-    completer.completer = generator(complete)
+    completer.completer = generator(complete_command)
 
     # Enable TAB completion
-    completer.parse_and_bind('tab: complete')
+    completer.parse_and_bind('TAB: complete')
 
     command = raw_input('command> ')
     print 'You typed:', command

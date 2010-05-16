@@ -1,17 +1,20 @@
 # Complete email addresses
 
+# In real life, the completion function oftentimes is a dispatcher,
+# forwarding calls to more specific matcher functions.
+
 from rl import completer
 from rl import completion
 from rl import generator
 
 
-def complete(text):
-    # We receive the '@' as part of the word
-    if text.startswith('@'):
-        return complete_hostname(text)
-    else:
+def complete_email(text):
+    # Dispatch to username or hostname completion
+    if not text.startswith('@'):
         completion.append_character = '@'
         return completion.complete_username(text)
+    else:
+        return complete_hostname(text)
 
 
 def complete_hostname(text):
@@ -32,13 +35,13 @@ def main():
     completer.special_prefixes = '@'
 
     # Set the completion function
-    completer.completer = generator(complete)
+    completer.completer = generator(complete_email)
 
     # Enable TAB completion
-    completer.parse_and_bind('tab: complete')
+    completer.parse_and_bind('TAB: complete')
 
-    email = raw_input('email address: ')
-    print 'Your email is:', email.strip()
+    email = raw_input('email> ')
+    print 'You typed:', email.strip()
 
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
 # Complete system commands and filenames on the same line
 
+# The cmd.Cmd class installs its own dispatcher to invoke completion
+# functions defined by subclasses. It also enables TAB completion for us.
+
 import os
 import cmd
 
@@ -7,10 +10,10 @@ from rl import completer
 from rl import completion
 
 
-class MyCmd(cmd.Cmd):
+class SimpleApp(cmd.Cmd):
 
     intro = 'Completion example (type Ctrl+D to exit)\n'
-    prompt = 'command> '
+    prompt = 'simpleapp> '
 
     def preloop(self):
         # Characters used to quote substrings
@@ -33,26 +36,28 @@ class MyCmd(cmd.Cmd):
         os.system(args)
 
     def complete_shell(self, text, line, begidx, endidx):
-        # Select the completion type depending on position
-        # and format of the word being completed
+        # This function is called when the simpleapp command line
+        # starts with an exclamation mark. It further dispatches
+        # to filename completion or command completion, depending
+        # on format and position of the completion word.
         matches = []
         if text.startswith('~') and (os.sep not in text):
             matches = completion.complete_username(text)
             if not matches:
                 matches = completion.complete_filename(text)
         else:
-            if self.commandpos(line, begidx) and (os.sep not in text):
-                matches = self.completecommand(text)
+            if self._is_command_pos(line, begidx) and (os.sep not in text):
+                matches = self._complete_command(text)
             else:
                 matches = completion.complete_filename(text)
         return matches
 
-    def commandpos(self, line, begidx):
+    def _is_command_pos(self, line, begidx):
         # Return True if we are completing a command name
         delta = line[0:begidx]
         return delta.strip() in ('!', 'shell')
 
-    def completecommand(self, text):
+    def _complete_command(self, text):
         # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
@@ -64,8 +69,8 @@ class MyCmd(cmd.Cmd):
 
 
 def main():
-    c = MyCmd()
-    c.cmdloop()
+    app = SimpleApp()
+    app.cmdloop()
 
 
 if __name__ == '__main__':

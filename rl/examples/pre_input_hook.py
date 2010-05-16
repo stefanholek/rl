@@ -6,7 +6,7 @@ from rl import completion
 
 class Questionnaire(object):
 
-    prompts = ('My job is', 'My hobby is', 'I have always wanted to be a')
+    questions = ('My job is', 'My hobby is', 'I have always wanted to be a')
     defaults = ('great', 'golf', 'fireman')
 
     def __init__(self):
@@ -17,14 +17,14 @@ class Questionnaire(object):
         print '--------------------------------------'
         # The prompt area is used for text the user
         # must not overwrite or change
-        for self.step in range(len(self.prompts)):
-            raw_input(self.prompts[self.step]+': ')
+        for self.index in range(len(self.questions)):
+            raw_input(self.questions[self.index]+': ')
         print 'Thank you!'
 
     def pre_input_hook(self):
         # The pre-input hook is used to insert text into
         # the line buffer which the user may then edit
-        completion.line_buffer = self.defaults[self.step]
+        completion.line_buffer = self.defaults[self.index]
         completion.redisplay()
 
 

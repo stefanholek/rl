@@ -9,20 +9,20 @@ strings = ['foo-', 'bar-', 'baz+', 'peng+']
 
 
 @print_exc
-def complete(text):
+def complete_string(text):
     completion.suppress_append = True
     return [x for x in strings if x.startswith(text)]
 
 
 def main():
     # Set the completion function
-    completer.completer = generator(complete)
+    completer.completer = generator(complete_string)
 
     # Enable TAB completion
-    completer.parse_and_bind('tab: complete')
+    completer.parse_and_bind('TAB: complete')
 
-    line = raw_input('> ')
-    print 'You typed:', line
+    line = raw_input('string> ')
+    print 'You typed:', line.strip()
 
 
 if __name__ == '__main__':
