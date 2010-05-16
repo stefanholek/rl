@@ -8,7 +8,7 @@ Alternative Python bindings for GNU Readline
 Introduction
 ============
 
-`GNU Readline`_ is the canonical implementation of command line
+The `GNU Readline Library`_ is the canonical implementation of command line
 editing, tab completion, and history for console-based applications.
 It is developed as part of Bash and available on virtually any platform.
 
@@ -16,12 +16,12 @@ While Python ships with readline bindings in its standard library, they
 only implement a subset of readline's features, just enough to perform
 identifier completion at the Python interpreter prompt.
 
-The **rl** package aims to provide full implementations of the
-GNU Readline `Custom Completer`_ and `History`_ interfaces.
+The **rl** package aims to provide full implementations of GNU Readline's
+`Custom Completer`_ and `History`_ interfaces.
 It also contains high-level APIs to better organize the namespace and
 shield applications from low-level verbosity.
 
-.. _`GNU Readline`: http://tiswww.case.edu/php/chet/readline/rltop.html
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/rltop.html
 .. _`Custom Completer`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
 .. _`History`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
@@ -39,7 +39,7 @@ completion
     with readline when a completion is in progress.
 
 generator
-    A factory turning any callable into a `completion entry function` that
+    A factory turning any callable into a *completion entry function* that
     can be handed to readline.
 
 print_exc
@@ -53,8 +53,8 @@ history
 
 readline
     The readline bindings module. Contains everything known from the standard
-    library plus extensions specific to the rl package.  The `completer`,
-    `completion`, and `history` interfaces make use of this module, and you
+    library plus extensions specific to the rl package.  The *completer*,
+    *completion*, and *history* interfaces make use of this module, and you
     should rarely need to interact with it directly.
 
 For further details, please refer to the `API Documentation`_.
@@ -70,7 +70,7 @@ The code below implements system command completion similar to bash::
     from rl import completer
     from rl import generator
 
-    def complete(text):
+    def complete_command(text):
         # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
@@ -82,12 +82,12 @@ The code below implements system command completion similar to bash::
 
     def main():
         # Set the completion function
-        completer.completer = generator(complete)
+        completer.completer = generator(complete_command)
 
         # Enable TAB completion
-        completer.parse_and_bind('tab: complete')
+        completer.parse_and_bind('TAB: complete')
 
-        command = raw_input('command: ')
+        command = raw_input('command> ')
         print 'You typed:', command
 
 More examples_ are included in the package source. Also see gpgkeys_, a
