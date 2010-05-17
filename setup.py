@@ -110,6 +110,8 @@ if sys.platform == 'darwin':
     elif exists('/sw/include'):
         include_dirs = ['/sw/include']
         libraries = ['readline', 'ncursesw']
+    else:
+        use_static_readline()
 
 
 rl_readline = \
