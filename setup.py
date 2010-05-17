@@ -18,7 +18,13 @@ extra_compile_args = []
 
 def system_python():
     for dir in sys.path:
-        if '/Library/Frameworks/Python.framework' in dir:
+        if dir.startswith('/System/Library/Frameworks/Python.framework'):
+            return True
+
+
+def mac_python():
+    for dir in sys.path:
+        if dir.startswith('/Library/Frameworks/Python.framework'):
             return True
 
 
@@ -94,7 +100,7 @@ def use_static_readline():
 
 if sys.platform == 'darwin':
     # System
-    if system_python():
+    if system_python() or mac_python():
         use_static_readline()
     # MacPorts
     elif exists('/opt/local/include'):

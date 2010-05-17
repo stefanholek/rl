@@ -4,6 +4,9 @@ Changelog
 1.11 - Unreleased
 -----------------
 
+- MacPython detection caught other framework builds as well.
+  [stefan]
+
 - Update documentation and examples.
   [stefan]
 
