@@ -137,7 +137,7 @@ read_history_file(PyObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static int _history_length = -1; /* do not truncate history by default */
+static int history_file_length = -1; /* do not truncate history by default */
 PyDoc_STRVAR(doc_read_history_file,
 "read_history_file([filename]) -> None\n\
 Load a readline history file.\n\
@@ -162,8 +162,8 @@ write_history_file(PyObject *self, PyObject *args)
 		return NULL;
 #endif
 	errno = write_history(s);
-	if (!errno && _history_length >= 0)
-		history_truncate_file(s, _history_length);
+	if (!errno && history_file_length >= 0)
+		history_truncate_file(s, history_file_length);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
@@ -181,10 +181,10 @@ The default filename is ~/.history.");
 static PyObject*
 set_history_length(PyObject *self, PyObject *args)
 {
-	int length = _history_length;
+	int length = history_file_length;
 	if (!PyArg_ParseTuple(args, "i:set_history_length", &length))
 		return NULL;
-	_history_length = length;
+	history_file_length = length;
 	Py_RETURN_NONE;
 }
 
@@ -200,7 +200,7 @@ history truncation.");
 static PyObject*
 get_history_length(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(_history_length);
+	return PyInt_FromLong(history_file_length);
 }
 
 PyDoc_STRVAR(get_history_length_doc,
