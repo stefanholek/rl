@@ -64,7 +64,7 @@ For further details, please refer to the `API Documentation`_.
 Example Code
 ------------
 
-The code below implements system command completion similar to bash::
+The code below implements system command completion similar to Bash::
 
     import os
     from rl import completer
