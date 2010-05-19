@@ -105,11 +105,9 @@ if sys.platform == 'darwin':
     # MacPorts
     elif exists('/opt/local/include'):
         include_dirs = ['/opt/local/include']
-        libraries = ['readline', 'ncursesw']
     # Fink
     elif exists('/sw/include'):
         include_dirs = ['/sw/include']
-        libraries = ['readline', 'ncursesw']
 
 
 rl_readline = \
