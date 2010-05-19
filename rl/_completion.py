@@ -19,7 +19,7 @@ class Completer(object):
 
         completer.quote_characters = '"\\''
         completer.query_items = 100
-        completer.parse_and_bind('tab: complete')
+        completer.parse_and_bind('TAB: complete')
     """
 
     __slots__ = ()
