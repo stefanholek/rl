@@ -4,7 +4,7 @@ Changelog
 1.11 - Unreleased
 -----------------
 
-- Update API documentation and examples.
+- Update README, API documentation, and examples.
   [stefan]
 
 - MacPython detection caught other framework builds as well.
