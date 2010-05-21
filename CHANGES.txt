@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.11 - Unreleased
+1.11 - 2010-05-21
 -----------------
 
 - Update README, API documentation, and examples.
