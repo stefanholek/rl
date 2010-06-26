@@ -85,7 +85,7 @@ def use_static_readline():
             quiet = '>' + os.devnull
 
     if configure and not exists(join('build', 'readline', 'config.h')):
-        url = 'ftp://ftp.gnu.org/gnu/readline/readline-6.1.tar.gz'
+        url = 'http://ftp.gnu.org/gnu/readline/readline-6.1.tar.gz'
         os.system("""\
         mkdir -p build
         cd build
