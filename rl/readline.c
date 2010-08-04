@@ -359,7 +359,7 @@ static PyObject *completer = NULL;
 static Py_ssize_t begidx = 0;
 static Py_ssize_t endidx = 0;
 
-static void set_completion_defaults(void);
+static void _py_set_completion_defaults(void);
 
 
 static PyObject *
@@ -1445,7 +1445,7 @@ on_char_is_quoted_function(const char *text, int index)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	set_completion_defaults();
+	_py_set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
 	u_text = PyUnicode_DECODE(text);
@@ -1770,7 +1770,7 @@ on_completion_word_break_hook(void)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	set_completion_defaults();
+	_py_set_completion_defaults();
 
 	/* Determine word boundaries */
 	end = rl_point;
@@ -2563,7 +2563,7 @@ flex_completer(char *text, int start, int end)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
-	set_completion_defaults();
+	_py_set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
 	begidx = PyUnicode_AdjustIndex(rl_line_buffer, start);
@@ -2583,7 +2583,7 @@ flex_completer(char *text, int start, int end)
 /* Helper to reset completion variables. Sadly no hook. */
 
 static void
-set_completion_defaults(void)
+_py_set_completion_defaults(void)
 {
 	begidx = endidx = 0;
 
@@ -2628,7 +2628,7 @@ setup_readline(void)
 	/* Save a reference to the default implementation */
 	default_filename_quoting_function = rl_filename_quoting_function;
 	/* Reset completion variables */
-	set_completion_defaults();
+	_py_set_completion_defaults();
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
