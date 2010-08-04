@@ -4,6 +4,12 @@ Changelog
 1.12 - Unreleased
 -----------------
 
+- Fix memory leaks in ``py_remove_history`` and ``py_replace_history``.
+  See Python `issue 9450`_.
+  [stefan]
+
+.. _`issue 9450`: http://bugs.python.org/issue9450
+
 
 1.11 - 2010-05-21
 -----------------
@@ -60,8 +66,11 @@ Changelog
   removed.
   [stefan]
 
-- Close a memory leak in ``get_current_history_length``.
+- Close a memory leak in ``get_current_history_length``. Also see Python
+  `issue 8065`_.
   [stefan]
+
+.. _`issue 8065`: http://bugs.python.org/issue8065
 
 
 1.5.4 - 2010-03-01

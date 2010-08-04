@@ -535,6 +535,17 @@ PyDoc_STRVAR(doc_set_completer_delims,
 Set the readline word delimiters for tab-completion.");
 
 
+/* Free memory allocated for a history entry */
+/* http://bugs.python.org/issue9450 */
+
+static void
+_py_free_history_entry(HIST_ENTRY* entry)
+{
+	histdata_t data = free_history_entry(entry);
+	free(data);
+}
+
+
 /* Remove a history item */
 
 static PyObject *
@@ -558,11 +569,7 @@ py_remove_history(PyObject *self, PyObject *args)
 		return NULL;
 	}
 	/* free memory allocated for the history entry */
-	if (entry->line)
-		free(entry->line);
-	if (entry->data)
-		free(entry->data);
-	free(entry);
+	_py_free_history_entry(entry);
 
 	Py_RETURN_NONE;
 }
@@ -603,11 +610,7 @@ py_replace_history(PyObject *self, PyObject *args)
 		goto error;
 	}
 	/* free memory allocated for the old history entry */
-	if (old_entry->line)
-	    free(old_entry->line);
-	if (old_entry->data)
-	    free(old_entry->data);
-	free(old_entry);
+	_py_free_history_entry(old_entry);
 
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
