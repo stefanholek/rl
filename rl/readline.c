@@ -539,7 +539,7 @@ Set the readline word delimiters for tab-completion.");
 /* http://bugs.python.org/issue9450 */
 
 static void
-_py_free_history_entry(HIST_ENTRY* entry)
+_py_free_history_entry(HIST_ENTRY *entry)
 {
 	histdata_t data = free_history_entry(entry);
 	free(data);
