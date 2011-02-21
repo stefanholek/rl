@@ -307,19 +307,19 @@ class HistoryFileTests(JailSetup):
         history.append('fred')
         history.append('wilma')
         history.write_file('my_history')
-        self.failUnless(isfile('my_history'))
+        self.assertTrue(isfile('my_history'))
 
     def test_write_default_name(self):
         history.append('fred')
         history.append('wilma')
         history.write_file()
-        self.failUnless(isfile(self.histfile))
+        self.assertTrue(isfile(self.histfile))
 
     def test_write_None_name(self):
         history.append('fred')
         history.append('wilma')
         history.write_file(None)
-        self.failUnless(isfile(self.histfile))
+        self.assertTrue(isfile(self.histfile))
 
     def test_read_file(self):
         history.append('fred')
@@ -351,7 +351,7 @@ class HistoryFileTests(JailSetup):
             history.append('fred')
             history.append('wilma')
             history.write_file(bytes('my_history', sys.getfilesystemencoding()))
-            self.failUnless(isfile('my_history'))
+            self.assertTrue(isfile('my_history'))
 
         def test_read_bytes_name(self):
             history.append('fred')
