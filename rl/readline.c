@@ -372,7 +372,7 @@ PyDoc_STRVAR(doc_set_completer,
 "set_completer([function]) -> None\n\
 Set or remove the completer function.\n\
 The function is called as ``function(text, state)``,\n\
-for state in 0, 1, 2, ..., until it returns a non-string.\n\
+for state in 0, 1, 2, ..., until it returns None.\n\
 It should return the next possible completion starting with ``text``.");
 
 
