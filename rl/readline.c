@@ -2815,7 +2815,25 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 /* Initialize the module */
 
 PyDoc_STRVAR(doc_module,
-"Importing this module enables command line editing using GNU readline.");
+"Importing this module enables command line editing using GNU readline.\n\
+\n\
+The `rl.readline` module contains everything known from the standard library.\n\
+The standard library documentation applies with the following exceptions:\n\
+\n\
+1. `get_completion_type` returns a string not an integer.\n\
+2. `get_completion_append_character` defaults to the space character.\n\
+3. `redisplay` accepts an optional ``force`` argument.\n\
+4. `get_history_item` is zero-based.\n\
+\n\
+Beyond that `rl.readline` adds a host of new functionality which is\n\
+documented in the high-level interfaces (`Completer`, `Completion`, `History`.)\n\
+Functions not exposed through a high-level interface:\n\
+\n\
+- `readline_version` returns the readline library version as an integer.\n\
+- `read_key` reads a character from the keyboard.\n\
+- `stuff_char` stuffs a character into the input stream.\n\
+- `complete_internal` executes the completer. Used in tests.\n\
+");
 
 #if (PY_MAJOR_VERSION >= 3)
 static struct PyModuleDef readlinemodule = {
