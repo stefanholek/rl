@@ -104,10 +104,10 @@ if sys.platform == 'darwin':
         use_static_readline()
     # MacPorts
     elif exists('/opt/local/include'):
-        include_dirs = ['/opt/local/include']
+        include_dirs.extend(['/opt/local/include'])
     # Fink
     elif exists('/sw/include'):
-        include_dirs = ['/sw/include']
+        include_dirs.extend(['/sw/include'])
 
 
 rl_readline = \
