@@ -20,9 +20,12 @@ class History(object):
         history.max_entries = 300
         history.read_file(histfile)
 
-    History entries can be accessed like elements of a Python list.
+    History entries can be manipulated like elements in a Python list.
     The item at index 0 is the oldest, the item at -1 the most recent
-    history item.
+    history entry::
+
+        if current != history[-1]:
+            history.append(current)
     """
 
     __slots__ = ()
@@ -76,11 +79,15 @@ class History(object):
         return reversed(readline.get_history_list())
 
     def read_file(self, filename=None, raise_exc=False):
-        """Load a readline history file. The default filename is ~/.history."""
+        """Load a readline history file. The default filename is ~/.history.
+        If ``raise_exc`` is True, IOErrors will be allowed to propagate.
+        """
         self._file_op(readline.read_history_file, filename, raise_exc)
 
     def write_file(self, filename=None, raise_exc=False):
-        """Save a readline history file. The default filename is ~/.history."""
+        """Save a readline history file. The default filename is ~/.history.
+        If ``raise_exc`` is True, IOErrors will be allowed to propagate.
+        """
         self._file_op(readline.write_history_file, filename, raise_exc)
 
     def _norm_index(self, index):
