@@ -1,4 +1,4 @@
-"""Python bindings for GNU Readline.
+"""Alternative Python bindings for GNU Readline.
 
 Package Contents
 ================
