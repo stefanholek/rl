@@ -3,121 +3,183 @@
 
 import sys
 import os
+import re
 
 from setuptools import setup, find_packages, Extension
+from setuptools.command.build_ext import build_ext
+from distutils.sysconfig import get_config_vars
+from distutils.spawn import find_executable
 from os.path import join, exists
 
 version = '1.13'
 
-sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c']
-define_macros = []
-include_dirs = []
-libraries = ['readline', 'ncurses']
-extra_compile_args = []
 
-
-def is_system_python():
+def sys_path_contains(string):
     for dir in sys.path:
-        if dir.startswith('/System/Library/Frameworks/Python.framework'):
+        if dir.startswith(string):
             return True
 
 
-def is_mac_python():
-    for dir in sys.path:
-        if dir.startswith('/Library/Frameworks/Python.framework'):
-            return True
+class ReadlineExtension(Extension):
+
+    def __init__(self, name):
+        sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c']
+        libraries = ['readline']
+        Extension.__init__(self, name, sources, libraries=libraries)
+
+        self.use_cppflags()
+        self.use_ldflags()
+
+        if sys.platform == 'darwin':
+            # System Python
+            if sys_path_contains('/System/Library/Frameworks/Python.framework'):
+                self.use_static_readline()
+            # Mac Python
+            elif sys_path_contains('/Library/Frameworks/Python.framework'):
+                self.use_static_readline()
+                self.library_dirs.extend([
+                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3]])
+            # MacPorts
+            elif '/opt/local/include' in self.include_dirs:
+                pass
+            # Fink
+            elif '/sw/include' in self.include_dirs:
+                pass
+            # Other Python
+            else:
+                self.use_static_readline()
+
+    def use_cppflags(self):
+        cppflags, srcdir = get_config_vars('CPPFLAGS', 'srcdir')
+
+        for match in re.finditer(r'-I\s*(\S+)', cppflags):
+            if match.group(1) not in ['.', 'Include', '%s/Include' % srcdir]:
+                self.include_dirs.extend([match.group(1)])
+
+    def use_ldflags(self):
+        ldflags, = get_config_vars('LDFLAGS')
+
+        for match in re.finditer(r'-L\s*(\S+)', ldflags):
+            self.library_dirs.extend([match.group(1)])
+
+    def use_static_readline(self):
+        self.sources.extend([
+            'build/readline/bind.c',
+            'build/readline/callback.c',
+            'build/readline/compat.c',
+            'build/readline/complete.c',
+            'build/readline/display.c',
+            'build/readline/funmap.c',
+            'build/readline/histexpand.c',
+            'build/readline/histfile.c',
+            'build/readline/history.c',
+            'build/readline/histsearch.c',
+            'build/readline/input.c',
+            'build/readline/isearch.c',
+            'build/readline/keymaps.c',
+            'build/readline/kill.c',
+            'build/readline/macro.c',
+            'build/readline/mbutil.c',
+            'build/readline/misc.c',
+            'build/readline/nls.c',
+            'build/readline/parens.c',
+            'build/readline/readline.c',
+            'build/readline/rltty.c',
+            'build/readline/savestring.c',
+            'build/readline/search.c',
+            'build/readline/shell.c',
+            'build/readline/signals.c',
+            'build/readline/terminal.c',
+            'build/readline/text.c',
+            'build/readline/tilde.c',
+            'build/readline/undo.c',
+            'build/readline/util.c',
+            'build/readline/vi_mode.c',
+            'build/readline/xmalloc.c',
+        ])
+
+        self.define_macros.extend([
+            ('HAVE_CONFIG_H', None),
+            ('RL_LIBRARY_VERSION', '"6.1"'),
+        ])
+
+        self.include_dirs = ['build', 'build/readline'] + self.include_dirs
+        self.libraries.remove('readline')
+
+        if sys.platform == 'darwin':
+            self.extra_compile_args.extend(['-Wno-all', '-Wno-strict-prototypes'])
 
 
-def use_static_readline():
-    sources.extend([
-        'build/readline/bind.c',
-        'build/readline/callback.c',
-        'build/readline/compat.c',
-        'build/readline/complete.c',
-        'build/readline/display.c',
-        'build/readline/funmap.c',
-        'build/readline/histexpand.c',
-        'build/readline/histfile.c',
-        'build/readline/history.c',
-        'build/readline/histsearch.c',
-        'build/readline/input.c',
-        'build/readline/isearch.c',
-        'build/readline/keymaps.c',
-        'build/readline/kill.c',
-        'build/readline/macro.c',
-        'build/readline/mbutil.c',
-        'build/readline/misc.c',
-        'build/readline/nls.c',
-        'build/readline/parens.c',
-        'build/readline/readline.c',
-        'build/readline/rltty.c',
-        'build/readline/savestring.c',
-        'build/readline/search.c',
-        'build/readline/shell.c',
-        'build/readline/signals.c',
-        'build/readline/terminal.c',
-        'build/readline/text.c',
-        'build/readline/tilde.c',
-        'build/readline/undo.c',
-        'build/readline/util.c',
-        'build/readline/vi_mode.c',
-        'build/readline/xmalloc.c',
-    ])
+class BuildReadlineExtension(build_ext):
 
-    define_macros.extend([
-        ('HAVE_CONFIG_H', None),
-        ('RL_LIBRARY_VERSION', '"6.1"'),
-    ])
+    def build_extension(self, ext):
+        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
+        lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
+        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
+        termcap = ''
 
-    include_dirs.extend(['build', 'build/readline'])
-    libraries.remove('readline')
+        # Find a termcap library
+        if 'readline' in ext.libraries:
+            readline = self.compiler.find_library_file(lib_dirs, 'readline')
+            termcap = self.get_termcap_from(readline)
 
-    if sys.platform == 'darwin':
-        extra_compile_args.extend(['-Wno-all', '-Wno-strict-prototypes'])
+        if not termcap:
+            pyreadline = join(lib_dynload, 'readline.so')
+            termcap = self.get_termcap_from(pyreadline)
 
-    configure = False
-    quiet = ''
+        if not termcap:
+            pycurses = join(lib_dynload, '_curses.so')
+            termcap = self.get_termcap_from(pycurses)
 
-    for arg in sys.argv[1:]:
-        if arg.startswith(('bdist', 'build', 'develop', 'test', 'install')):
-            configure = True
-        if arg in ('-q', '--quiet'):
-            quiet = '>' + os.devnull
+        if not termcap:
+            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+                if self.compiler.find_library_file(lib_dirs, name):
+                    termcap = name
+                    break
 
-    if configure and not exists(join('build', 'readline', 'config.h')):
+        if termcap:
+            ext.libraries.extend([termcap])
+
+        # Prepare the source tree
+        if 'readline' not in ext.libraries:
+            self.configure_static_readline()
+
+        return build_ext.build_extension(self, ext)
+
+    def get_termcap_from(self, module):
+        if module and exists(module):
+            fp = None
+            if sys.platform == 'darwin':
+                if find_executable('otool'):
+                    fp = os.popen('otool -L "%s"' % module)
+            elif find_executable('ldd'):
+                fp = os.popen('ldd "%s"' % module)
+            if fp is not None:
+                libraries = fp.read()
+                fp.close()
+                for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+                     if 'lib%s.' % name in libraries:
+                        return name
+        return ''
+
+    def configure_static_readline(self):
         url = 'http://ftp.gnu.org/gnu/readline/readline-6.1.tar.gz'
-        os.system("""\
-        mkdir -p build
-        cd build
-        rm -rf readline-6.1 readline
-        echo Downloading %(url)s
-        curl --connect-timeout 30 -s %(url)s | tar xz
-        mv readline-6.1 readline
-        cd readline
-        ./configure %(quiet)s
-        """ % locals())
+        stdout = ''
 
+        if not self.distribution.verbose:
+            stdout = '>%s' % os.devnull
 
-if sys.platform == 'darwin':
-    # System
-    if is_system_python() or is_mac_python():
-        use_static_readline()
-    # MacPorts
-    elif exists('/opt/local/include'):
-        include_dirs.extend(['/opt/local/include'])
-    # Fink
-    elif exists('/sw/include'):
-        include_dirs.extend(['/sw/include'])
-
-
-rl_readline = \
-Extension(name='rl.readline',
-          sources=sources,
-          define_macros=define_macros,
-          include_dirs=include_dirs,
-          libraries=libraries,
-          extra_compile_args=extra_compile_args,
-)
+        if not exists(join('build', 'readline', 'config.h')):
+            os.system("""\
+            mkdir -p build
+            cd build
+            rm -rf readline-6.1 readline
+            echo downloading %(url)s %(stdout)s
+            curl --connect-timeout 30 -s %(url)s | tar zx
+            mv readline-6.1 readline
+            cd readline
+            ./configure %(stdout)s
+            """ % locals())
 
 
 setup(name='rl',
@@ -146,8 +208,11 @@ setup(name='rl',
       use_2to3=True,
       test_suite='rl.tests',
       ext_modules=[
-          rl_readline,
+          ReadlineExtension(name='rl.readline'),
       ],
+      cmdclass={
+          'build_ext': BuildReadlineExtension,
+      },
       install_requires=[
           'setuptools',
       ],
