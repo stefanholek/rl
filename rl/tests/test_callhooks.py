@@ -430,7 +430,10 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.filename_dequoting_function = func
         completion.line_buffer = 'fr\\ '
         readline.complete_internal(TAB)
-        self.assertEqual(completion.line_buffer, "'fr ed.") # XXX Match?
+        if readline.readline_version() >= 0x0602:
+            self.assertEqual(completion.line_buffer, "fr\\ ")
+        else:
+            self.assertEqual(completion.line_buffer, "'fr ed.") # XXX Match?
 
 
 class IgnoreSomeCompletionsFunctionTests(JailSetup):

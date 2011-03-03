@@ -100,7 +100,7 @@ class ReadlineExtension(Extension):
 
         self.define_macros.extend([
             ('HAVE_CONFIG_H', None),
-            ('RL_LIBRARY_VERSION', '"6.1"'),
+            ('RL_LIBRARY_VERSION', '"6.2"'),
         ])
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
@@ -163,7 +163,7 @@ class BuildReadlineExtension(build_ext):
         return ''
 
     def configure_static_readline(self):
-        url = 'http://ftp.gnu.org/gnu/readline/readline-6.1.tar.gz'
+        url = 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
         stdout = ''
 
         if not self.distribution.verbose:
@@ -173,10 +173,10 @@ class BuildReadlineExtension(build_ext):
             os.system("""\
             mkdir -p build
             cd build
-            rm -rf readline-6.1 readline
+            rm -rf readline-6.2 readline
             echo downloading %(url)s %(stdout)s
             curl --connect-timeout 30 -s %(url)s | tar zx
-            mv readline-6.1 readline
+            mv readline-6.2 readline
             cd readline
             ./configure %(stdout)s
             """ % locals())

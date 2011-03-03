@@ -7,6 +7,9 @@ Changelog
 - Use a custom build_ext command to find the best termcap library.
   [stefan]
 
+- Update static builds to GNU Readline 6.2.
+  [stefan]
+
 
 1.12 - 2010-08-04
 -----------------
