@@ -4,6 +4,9 @@ Changelog
 1.13 - Unreleased
 -----------------
 
+- Use a custom build_ext command to find the best termcap library.
+  [stefan]
+
 
 1.12 - 2010-08-04
 -----------------
