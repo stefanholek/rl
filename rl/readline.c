@@ -370,7 +370,7 @@ set_completer(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_completer,
 "set_completer([function]) -> None\n\
-Set or remove the completer function.\n\
+Set or remove the completion entry function.\n\
 The function is called as ``function(text, state)``,\n\
 for state in 0, 1, 2, ..., until it returns None.\n\
 It should return the next possible completion starting with ``text``.");
@@ -389,7 +389,7 @@ get_completer(PyObject *self, PyObject *noargs)
 PyDoc_STRVAR(doc_get_completer,
 "get_completer() -> function\n\
 \n\
-Returns the current completer function.");
+Get the current completion entry function.");
 
 
 /* Get/set the completion type for the scope of the tab-completion */
@@ -2817,22 +2817,25 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU readline.\n\
 \n\
-The `rl.readline` module contains everything known from the standard library.\n\
-The standard library documentation applies with the following exceptions:\n\
+The `rl.readline` module contains everything known from the standard library's\n\
+readline_ module. The standard library documentation applies with the following\n\
+exceptions:\n\
 \n\
 1. `get_completion_type` returns a string not an integer.\n\
 2. `get_completion_append_character` defaults to the space character.\n\
 3. `redisplay` accepts an optional ``force`` argument.\n\
 4. `get_history_item` is zero-based.\n\
 \n\
-Beyond that `rl.readline` adds a host of new functionality which is\n\
-documented in the high-level interfaces (`Completer`, `Completion`, `History`.)\n\
+Beyond that, `rl.readline` adds a plethora of new functionality which is\n\
+documented in the high-level interfaces `Completer`, `Completion`, and `History`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
 - `readline_version` returns the readline library version as an integer.\n\
 - `read_key` reads a character from the keyboard.\n\
 - `stuff_char` stuffs a character into the input stream.\n\
 - `complete_internal` executes the completer. Used in tests.\n\
+\n\
+.. _readline: http://docs.python.org/library/readline.html\n\
 ");
 
 #if (PY_MAJOR_VERSION >= 3)

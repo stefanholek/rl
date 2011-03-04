@@ -79,13 +79,17 @@ class History(object):
         return reversed(readline.get_history_list())
 
     def read_file(self, filename=None, raise_exc=False):
-        """Load a readline history file. The default filename is ~/.history.
+        """Load a readline history file.
+
+        The default filename is ~/.history.
         If ``raise_exc`` is True, IOErrors will be allowed to propagate.
         """
         self._file_op(readline.read_history_file, filename, raise_exc)
 
     def write_file(self, filename=None, raise_exc=False):
-        """Save a readline history file. The default filename is ~/.history.
+        """Save a readline history file.
+
+        The default filename is ~/.history.
         If ``raise_exc`` is True, IOErrors will be allowed to propagate.
         """
         self._file_op(readline.write_history_file, filename, raise_exc)
