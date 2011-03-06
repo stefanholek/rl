@@ -5,22 +5,22 @@ Package Contents
 
 rl exports the following components:
 
-completer
+:rl:`completer`
     Interface to the readline completer.
 
-completion
+:rl:`completion`
     Interface to the active readline completion.
 
-generator
+:rl:`generator`
     Generator function factory.
 
-print_exc
+:rl:`print_exc`
     Decorator printing exceptions to stderr.
 
-history
+:rl:`history`
     Interface to the readline history.
 
-readline
+:rl:`readline`
     Readline bindings module.
 
 About Readline Completion
