@@ -8,10 +8,10 @@ class History(object):
     """Interface to the readline history.
 
     This class is not intended for instantiation beyond
-    the one ``history`` object in this module.
-    Applications wanting to use the History interface will
-    typically import the ``history`` object and use its
-    properties and methods to work with readline history.
+    the one ``history`` object in this package.
+    Typically, applications will import the ``history``
+    object and use its properties and methods to work with
+    readline history.
 
     Example::
 
@@ -20,7 +20,7 @@ class History(object):
         history.max_entries = 300
         history.read_file(histfile)
 
-    History entries can be manipulated like elements in a Python list.
+    History entries can be accessed like elements in a Python list.
     The item at index 0 is the oldest, the item at -1 the most recent
     history entry::
 
@@ -80,17 +80,15 @@ class History(object):
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file.
-
-        The default filename is ~/.history.
-        If ``raise_exc`` is True, IOErrors will be allowed to propagate.
+        The default filename is ~/.history. If ``raise_exc`` is True,
+        IOErrors will be allowed to propagate.
         """
         self._file_op(readline.read_history_file, filename, raise_exc)
 
     def write_file(self, filename=None, raise_exc=False):
         """Save a readline history file.
-
-        The default filename is ~/.history.
-        If ``raise_exc`` is True, IOErrors will be allowed to propagate.
+        The default filename is ~/.history. If ``raise_exc`` is True,
+        IOErrors will be allowed to propagate.
         """
         self._file_op(readline.write_history_file, filename, raise_exc)
 

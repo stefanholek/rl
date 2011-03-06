@@ -8,10 +8,14 @@ class Completer(object):
     """Interface to the readline completer.
 
     This class is not intended for instantiation beyond
-    the one ``completer`` object in this module.
-    Applications wanting to use the Completer interface will
-    typically import the ``completer`` object and use its
-    properties and methods to configure readline.
+    the one ``completer`` object in this package.
+    Typically, applications will import the ``completer``
+    object and use its properties and methods to configure
+    readline.
+
+    Settings made through the ``completer`` object are global
+    and permanent. If you want them restored you have to take
+    care of it yourself.
 
     Example::
 
@@ -228,10 +232,15 @@ class Completion(object):
     """Interface to the active readline completion.
 
     This class is not intended for instantiation beyond
-    the one ``completion`` object in this module.
-    Applications wanting to use the Completion interface will
-    typically import the ``completion`` object and use its
-    properties and methods to implement custom completions.
+    the one ``completion`` object in this package.
+    Typically, applications will import the ``completion``
+    object and use its properties and methods when implementing
+    custom completions.
+
+    Settings made through the ``completion`` object
+    are only valid for the duration of the current completion.
+    They are reset to their defaults when a new completion
+    starts.
 
     Example::
 
