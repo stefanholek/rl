@@ -1,5 +1,3 @@
-
-
 /* Epydoc CSS Stylesheet
  *
  * This stylesheet can be used to customize the appearance of epydoc's
@@ -7,19 +5,42 @@
  *
  */
 
+/*
+body {
+    font-family: Helvetica,Arial,sans-serif;
+}
+
+strong.uidlink {
+    font-weight: normal;
+}
+*/
+
+table.navbar,
+h1,
+h2,
+span.table-header {
+    font-family: Helvetica,Arial,sans-serif;
+}
+
+.rst-section dt {
+    font-family: monospace; /* Firefox */
+    font-weight: normal;
+    margin-bottom: 0.25em;
+}
+
+.rst-section dd {
+    margin-bottom: 0.25em;
+}
+
 .rst-section ul ul {
     border-left: 1px solid #dddddd;
 }
 
-/*
-.rst-section dt {
-    font-weight: normal;
+table.summary span.codelink,
+table.details span.codelink {
+    display: none;
 }
 
-.rst-section dd {
-    font-weight: normal;
-}
-*/
 
 /* Default Colors & Styles
  *   - Set the default foreground & background color with 'body'; and 
@@ -30,8 +51,7 @@
  *     either class='epydoc' or class='toc' (CSS styles for both
  *     defined below).
  */
-body                        { background: #ffffff; color: #000000;
-                              font-family: Helvetica, sans-serif; }
+body                        { background: #ffffff; color: #000000; }
 p                           { margin-top: 0.5em; margin-bottom: 0.5em; }
 a:link                      { color: #0000ff; }
 a:visited                   { color: #204080; }
@@ -69,7 +89,7 @@ table.navbar table          { color: #000000; }
 th.navbar-select            { background: #70b0ff;
                               color: #000000; } 
 table.navbar a              { text-decoration: none; }  
-table.navbar a:link         { color: #0000ff; }
+table.navbar a:link         { color: #204080; }
 table.navbar a:visited      { color: #204080; }
 span.breadcrumbs            { font-size: 85%; font-weight: bold; }
 span.options                { font-size: 70%; }
