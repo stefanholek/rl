@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.13 - Unreleased
+1.13 - 2011-03-11
 -----------------
 
 - Use a custom build_ext command to find the best termcap library.
