@@ -59,7 +59,7 @@ readline
 
 For further details, please refer to the `API Documentation`_.
 
-.. _`API Documentation`: http://packages.python.org/rl/
+.. _`API Documentation`: http://packages.python.org/rl
 
 Example Code
 ------------
