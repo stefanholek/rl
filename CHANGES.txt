@@ -4,6 +4,9 @@ Changelog
 1.14 - Unreleased
 -----------------
 
+- Add xfree.c to sources when building GNU Readline 6.2.
+  [stefan]
+
 
 1.13 - 2011-03-11
 -----------------
