@@ -97,6 +97,18 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(history[-2], 'barney')
         self.assertEqual(history[-1], 'betty')
 
+    def test_list_long_pos(self):
+        list = ['fred']
+        self.assertEqual(len(list), 1)
+        self.assertEqual(list[0L], 'fred')
+        self.assertEqual(list[-1L], 'fred')
+
+    def test_history_long_pos(self):
+        history.append('fred')
+        self.assertEqual(len(history), 1)
+        self.assertEqual(history[0L], 'fred')
+        self.assertEqual(history[-1L], 'fred')
+
     def test_out_of_range_pos(self):
         history.append('fred')
         history.append('wilma')

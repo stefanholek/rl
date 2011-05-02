@@ -7,6 +7,9 @@ Changelog
 - Add xfree.c to sources when building GNU Readline 6.2.
   [stefan]
 
+- Allow history indexes of type long.
+  [stefan]
+
 
 1.13 - 2011-03-11
 -----------------

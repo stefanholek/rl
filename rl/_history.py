@@ -94,7 +94,7 @@ class History(object):
 
     def _norm_index(self, index):
         """Support negative indexes."""
-        if not isinstance(index, int):
+        if not isinstance(index, (int, long)):
             raise TypeError('an integer is required')
         if index < 0:
             index = len(self) + index
