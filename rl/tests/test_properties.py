@@ -3,7 +3,7 @@ import unittest
 from rl import completer
 from rl import completion
 
-from rl.testing import DEFAULT_DELIMS
+from rl.utils import DEFAULT_DELIMS
 from rl.testing import reset
 
 

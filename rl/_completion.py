@@ -2,6 +2,7 @@
 
 from rl import readline
 from rl.utils import apply
+from rl.utils import DEFAULT_DELIMS
 
 
 class Completer(object):
@@ -225,6 +226,25 @@ class Completer(object):
         """Parse one line of a readline initialization file."""
         return readline.parse_and_bind(line)
 
+    def reset(self):
+        """Reset all completer variables to their default values."""
+        self.quote_characters = ''
+        self.word_break_characters = DEFAULT_DELIMS
+        self.special_prefixes = ''
+        self.filename_quote_characters = ''
+        self.inhibit_completion = False
+        self.query_items = 100
+        self.completer = None
+        self.startup_hook = None
+        self.pre_input_hook = None
+        self.word_break_hook = None
+        self.directory_completion_hook = None
+        self.display_matches_hook = None
+        self.char_is_quoted_function = None
+        self.filename_quoting_function = None
+        self.filename_dequoting_function = None
+        self.ignore_some_completions_function = None
+
 completer = Completer()
 
 
@@ -404,6 +424,20 @@ class Completion(object):
                 i += 1
             else:
                 return matches
+
+    def reset(self):
+        """Reset all completion variables to their default values (used in tests)."""
+        self.begidx = 0
+        self.endidx = 0
+        self.line_buffer = ''
+        self.completion_type = ''
+        self.append_character = ' '
+        self.suppress_append = False
+        self.quote_character = ''
+        self.suppress_quote = False
+        self.found_quote = False
+        self.filename_completion_desired = False
+        self.filename_quoting_desired = True
 
 completion = Completion()
 

@@ -113,5 +113,10 @@ class History(object):
             if raise_exc:
                 raise
 
+    def reset(self):
+        """Clear the history and reset all variables to their default values."""
+        self.clear()
+        self.max_entries = -1
+
 history = History()
 

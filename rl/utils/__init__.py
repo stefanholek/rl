@@ -1,12 +1,14 @@
-"""Python version compatibility hacks."""
+"""Global constants and utility functions."""
 
-# Python2 needs help importing global modules
+# Python expects these word break characters by default
+DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
+
+# Python 2 needs help importing global modules
 import readline
 
 
-# Python3 has no apply
-
+# Python 3 has no apply
 def apply(func, *args, **kw):
     """Call ``func`` with args and kwargs."""
     return func(*args, **kw)
