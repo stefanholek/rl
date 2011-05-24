@@ -77,7 +77,7 @@ a.link                      { font-family: monospace; }
  *   - The footer consists of a navigation bar, a timestamp, and a
  *     pointer to epydoc's homepage.
  */ 
-h1.epydoc                   { margin: 0; font-size: +140%; font-weight: bold; }
+h1.epydoc                   { margin: 0; font-size: +180%; font-weight: bold; }
 h2.epydoc                   { font-size: +130%; font-weight: bold; }
 h3.epydoc                   { font-size: +115%; font-weight: bold;
                               margin-top: 0.2em; }

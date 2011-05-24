@@ -4,6 +4,9 @@ Changelog
 1.15 - Unreleased
 -----------------
 
+- Add ``reset`` functions to completer, completion, and history.
+  [stefan]
+
 
 1.14 - 2011-05-05
 -----------------
