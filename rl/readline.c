@@ -725,7 +725,17 @@ Return the current (not the maximum) length of history.");
 
 static PyObject *
 py_clear_history(PyObject *self, PyObject *noarg)
+/* Reimplemented here to avoid a memory leak in GNU Readline. */
 {
+	HIST_ENTRY **hist;
+	size_t i;
+
+	hist = history_list();
+	for (i = 0; i < history_length; i++) {
+		_py_free_history_entry(hist[i]);
+		hist[i] = (HIST_ENTRY *)NULL;
+	}
+	history_length = 0;
 	clear_history();
 	Py_RETURN_NONE;
 }
