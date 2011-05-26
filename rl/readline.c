@@ -537,12 +537,23 @@ Set the readline word delimiters for tab-completion.");
 
 /* Free memory allocated for a history entry */
 /* http://bugs.python.org/issue9450 */
+/* http://bugs.python.org/issue12186 */
 
 static void
 _py_free_history_entry(HIST_ENTRY *entry)
 {
-	histdata_t data = free_history_entry(entry);
-	free(data);
+	UNDO_LIST *undo_list;
+	UNDO_LIST *release;
+
+	/* A history entry may have an undo_list attached */
+	undo_list = (UNDO_LIST *)free_history_entry(entry);
+	while (undo_list) {
+		release = undo_list;
+		undo_list = undo_list->next;
+		if (release->what == UNDO_DELETE)
+			free(release->text);
+		free(release);
+	}
 }
 
 
@@ -725,7 +736,17 @@ Return the current (not the maximum) length of history.");
 
 static PyObject *
 py_clear_history(PyObject *self, PyObject *noarg)
+/* Reimplemented here to avoid a memory leak in GNU Readline. */
 {
+	HIST_ENTRY **hist;
+	size_t i;
+
+	hist = history_list();
+	for (i = 0; i < history_length; i++) {
+		_py_free_history_entry(hist[i]);
+		hist[i] = (HIST_ENTRY *)NULL;
+	}
+	history_length = 0;
 	clear_history();
 	Py_RETURN_NONE;
 }
