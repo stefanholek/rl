@@ -537,12 +537,23 @@ Set the readline word delimiters for tab-completion.");
 
 /* Free memory allocated for a history entry */
 /* http://bugs.python.org/issue9450 */
+/* http://bugs.python.org/issue12186 */
 
 static void
 _py_free_history_entry(HIST_ENTRY *entry)
 {
-	histdata_t data = free_history_entry(entry);
-	free(data);
+	UNDO_LIST *undo_list;
+	UNDO_LIST *release;
+
+	/* A history entry may have an undo_list attached */
+	undo_list = (UNDO_LIST *)free_history_entry(entry);
+	while (undo_list) {
+		release = undo_list;
+		undo_list = undo_list->next;
+		if (release->what == UNDO_DELETE)
+			free(release->text);
+		free(release);
+	}
 }
 
 

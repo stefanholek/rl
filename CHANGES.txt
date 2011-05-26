@@ -7,6 +7,11 @@ Changelog
 - Add ``reset`` functions to completer, completion, and history.
   [stefan]
 
+- Fix another round of memory leaks in ``py_remove_history``,
+  ``py_replace_history``, and ``py_clear_history``. See Python `issue 12186`_.
+
+.. _`issue 12186`: http://bugs.python.org/issue12186
+
 
 1.14 - 2011-05-05
 -----------------
