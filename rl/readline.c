@@ -313,6 +313,9 @@ Get the current pre_input_hook function.");
 static void
 on_completion_display_matches_hook(char **matches,
 				   int num_matches, int max_length);
+static void
+default_display_matches_hook(char **matches,
+			     int num_matches, int max_length);
 
 
 static PyObject *
@@ -324,7 +327,8 @@ set_completion_display_matches_hook(PyObject *self, PyObject *args)
 	   default completion display. */
 	rl_completion_display_matches_hook =
 		completion_display_matches_hook ?
-		(rl_compdisp_func_t *)on_completion_display_matches_hook : 0;
+		(rl_compdisp_func_t *)on_completion_display_matches_hook :
+		(rl_compdisp_func_t *)default_display_matches_hook;
 	return result;
 
 }
@@ -2078,7 +2082,14 @@ display_match_list(PyObject *self, PyObject *args)
 	if (StringArray_Insert(&strings, 0, s) == -1)
 		goto error;
 
-	rl_display_match_list(strings, num_matches, max_length);
+	/* Temporarily unset callback state so the pager works */
+	if (RL_ISSTATE(RL_STATE_CALLBACK)) {
+		RL_UNSETSTATE(RL_STATE_CALLBACK);
+		rl_display_match_list(strings, num_matches, max_length);
+		RL_SETSTATE(RL_STATE_CALLBACK);
+	}
+	else
+		rl_display_match_list(strings, num_matches, max_length);
 
 	/* Clear KeyboardInterrupt */
 	if (PyErr_CheckSignals() == -1 &&
@@ -2263,6 +2274,83 @@ PyDoc_STRVAR(doc_history_is_stifled,
 "history_is_stifled() -> bool\n\
 True if a history size limit is set.");
 
+
+/* Default display matches hook */
+
+static int
+get_y_or_n()
+/* Readline's implementation of get_y_or_n() is private. */
+{
+	int c;
+
+	for (;;) {
+		RL_SETSTATE(RL_STATE_MOREINPUT);
+		c = rl_read_key();
+		RL_UNSETSTATE(RL_STATE_MOREINPUT);
+
+		if (c == 'y' || c == 'Y' || c == ' ')
+			return 1;
+		if (c == 'n' || c == 'N' || c == RUBOUT)
+			return 0;
+		if (c == ABORT_CHAR || c < 0)
+			_rl_abort_internal();
+		rl_ding();
+	}
+}
+
+
+static void
+default_display_matches_hook(char **matches, int num_matches, int max_length)
+/* Readline's implementation does not read from the keyboard in
+   callback mode. */
+{
+	int completion_y_or_n = 1;
+
+	if (rl_completion_query_items > 0 && num_matches >= rl_completion_query_items)
+	{
+		rl_crlf();
+		fprintf(rl_outstream, "Display all %d possibilities? (y or n)", num_matches);
+		fflush(rl_outstream);
+
+		/* Temporarily unset callback state */
+		if (RL_ISSTATE(RL_STATE_CALLBACK)) {
+			RL_UNSETSTATE(RL_STATE_CALLBACK);
+			completion_y_or_n = get_y_or_n();
+			RL_SETSTATE(RL_STATE_CALLBACK);
+		}
+		else
+			completion_y_or_n = get_y_or_n();
+
+		/* Clear KeyboardInterrupt */
+		if (PyErr_CheckSignals() == -1 &&
+		    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
+			PyErr_Clear();
+
+		if (completion_y_or_n == 0) {
+			rl_crlf();
+			rl_forced_update_display();
+			rl_display_fixed = 1;
+			return;
+		}
+	}
+
+	/* Temporarily unset callback state so the pager works */
+	if (RL_ISSTATE(RL_STATE_CALLBACK)) {
+		RL_UNSETSTATE(RL_STATE_CALLBACK);
+		rl_display_match_list(matches, num_matches, max_length);
+		RL_SETSTATE(RL_STATE_CALLBACK);
+	}
+	else
+		rl_display_match_list(matches, num_matches, max_length);
+
+	/* Clear KeyboardInterrupt */
+	if (PyErr_CheckSignals() == -1 &&
+	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
+		PyErr_Clear();
+
+	rl_forced_update_display();
+	rl_display_fixed = 1;
+}
 
 /* </rl.readline> */
 
@@ -2646,7 +2734,9 @@ setup_readline(void)
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
-	/* Save a reference to the default implementation */
+	/* Set default display matches hook */
+	rl_completion_display_matches_hook = default_display_matches_hook;
+	/* Save a reference to the default filename quoting function */
 	default_filename_quoting_function = rl_filename_quoting_function;
 	/* Reset completion variables */
 	_py_set_completion_defaults();
@@ -2688,8 +2778,8 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 	while (completed_input_string == not_done_reading) {
 		int has_input = 0;
 
-		while (!has_input)
-		{	struct timeval timeout = {0, 100000}; /* 0.1 seconds */
+		while (!has_input) {
+			struct timeval timeout = {0, 100000}; /* 0.1 seconds */
 
 			/* [Bug #1552726] Only limit the pause if an input hook has been
 			   defined.  */
