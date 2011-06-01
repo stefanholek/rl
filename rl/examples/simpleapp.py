@@ -16,14 +16,13 @@ class SimpleApp(cmd.Cmd):
     prompt = 'simpleapp> '
 
     def preloop(self):
-        # Characters used to quote substrings
-        completer.quote_characters = '\'"'
-        # Characters used to find word boundaries
+        # Configure the completer for filename completion
+        completer.quote_characters = '"\''
         completer.word_break_characters = '! \t\n"\'><=;|&(:'
-        # Characters that trigger filename quoting
         completer.filename_quote_characters = '\\ \t\n"\'><=;|&()@#$`?*[!:{'
 
     def emptyline(self):
+        # Do nothing
         pass
 
     def do_EOF(self, args):
@@ -32,32 +31,29 @@ class SimpleApp(cmd.Cmd):
         return True
 
     def do_shell(self, args):
-        """Usage: !command [filename ...]"""
+        """Usage: !<command> [<filename> ...]"""
         os.system(args)
 
     def complete_shell(self, text, line, begidx, endidx):
-        # This function is called when the simpleapp command line
-        # starts with an exclamation mark. It further dispatches
-        # to filename completion or command completion, depending
-        # on format and position of the completion word.
+        # This function is called when the command line starts
+        # with an exclamation mark. It further dispatches to
+        # filename completion or command completion, depending
+        # on the format and position of the completion word.
+        if line[0:begidx].strip() in ('!', 'shell'):
+            if not text.startswith('~') and (os.sep not in text):
+                return self.completecommand(text)
+        return self.completefilename(text)
+
+    def completefilename(self, text):
+        # Return files and directories matching 'text'
         matches = []
-        if text.startswith('~') and (os.sep not in text):
+        if text.startswith('~') and os.sep not in text:
             matches = completion.complete_username(text)
-            if not matches:
-                matches = completion.complete_filename(text)
-        else:
-            if self._is_command_pos(line, begidx) and (os.sep not in text):
-                matches = self._complete_command(text)
-            else:
-                matches = completion.complete_filename(text)
+        if not matches:
+            matches = completion.complete_filename(text)
         return matches
 
-    def _is_command_pos(self, line, begidx):
-        # Return True if we are completing a command name
-        delta = line[0:begidx]
-        return delta.strip() in ('!', 'shell')
-
-    def _complete_command(self, text):
+    def completecommand(self, text):
         # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
             dir = os.path.expanduser(dir)
@@ -69,8 +65,7 @@ class SimpleApp(cmd.Cmd):
 
 
 def main():
-    app = SimpleApp()
-    app.cmdloop()
+    SimpleApp().cmdloop()
 
 
 if __name__ == '__main__':
