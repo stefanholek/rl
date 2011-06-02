@@ -2306,6 +2306,9 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 {
 	int completion_y_or_n = 1;
 
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
 	if (rl_completion_query_items > 0 && num_matches >= rl_completion_query_items)
 	{
 		rl_crlf();
@@ -2330,7 +2333,7 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 			rl_crlf();
 			rl_forced_update_display();
 			rl_display_fixed = 1;
-			return;
+			goto done;
 		}
 	}
 
@@ -2350,6 +2353,11 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 
 	rl_forced_update_display();
 	rl_display_fixed = 1;
+  done:
+	;
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
 }
 
 /* </rl.readline> */
