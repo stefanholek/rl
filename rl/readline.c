@@ -1198,7 +1198,7 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 	rl_filename_quoting_function =
 		filename_quoting_function ?
 		(rl_quote_func_t *)on_filename_quoting_function :
-		default_filename_quoting_function;
+		(rl_quote_func_t *)default_filename_quoting_function;
 
 	return result;
 }
