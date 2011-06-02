@@ -176,7 +176,7 @@ Save a readline history file.\n\
 The default filename is ~/.history.");
 
 
-/* Set history length */
+/* Set history file length */
 
 static PyObject*
 set_history_length(PyObject *self, PyObject *args)
@@ -195,7 +195,7 @@ the history file. A negative length is used to inhibit\n\
 history truncation.");
 
 
-/* Get history length */
+/* Get history file length */
 
 static PyObject*
 get_history_length(PyObject *self, PyObject *noarg)
