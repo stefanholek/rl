@@ -2306,9 +2306,6 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 {
 	int completion_y_or_n = 1;
 
-#ifdef WITH_THREAD
-	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	if (rl_completion_query_items > 0 && num_matches >= rl_completion_query_items)
 	{
 		rl_crlf();
@@ -2323,17 +2320,21 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 		}
 		else
 			completion_y_or_n = get_y_or_n();
-
+#ifdef WITH_THREAD
+		PyEval_RestoreThread(_PyOS_ReadlineTState);
+#endif
 		/* Clear KeyboardInterrupt */
 		if (PyErr_CheckSignals() == -1 &&
 		    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 			PyErr_Clear();
-
+#ifdef WITH_THREAD
+		PyEval_SaveThread();
+#endif
 		if (completion_y_or_n == 0) {
 			rl_crlf();
 			rl_forced_update_display();
 			rl_display_fixed = 1;
-			goto done;
+			return;
 		}
 	}
 
@@ -2346,18 +2347,18 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 	else
 		rl_display_match_list(matches, num_matches, max_length);
 
+#ifdef WITH_THREAD
+	PyEval_RestoreThread(_PyOS_ReadlineTState);
+#endif
 	/* Clear KeyboardInterrupt */
 	if (PyErr_CheckSignals() == -1 &&
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
-
+#ifdef WITH_THREAD
+	PyEval_SaveThread();
+#endif
 	rl_forced_update_display();
 	rl_display_fixed = 1;
-  done:
-	;
-#ifdef WITH_THREAD
-	PyGILState_Release(gilstate);
-#endif
 }
 
 /* </rl.readline> */
