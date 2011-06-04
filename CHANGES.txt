@@ -1,19 +1,19 @@
 Changelog
 =========
 
-1.15 - Unreleased
+1.15 - 2011-06-04
 -----------------
 
-- Add ``reset`` functions to completer, completion, and history.
+- Fix memory leaks in ``py_remove_history``, ``py_replace_history``, and
+  ``py_clear_history`` which can occur when history entries are edited.
+  See Python `issue 12186`_.
   [stefan]
 
 - Add a default ``display_matches_hook`` that behaves exactly like readline
   behaves in Bash.
   [stefan]
 
-- Fix memory leaks in ``py_remove_history``, ``py_replace_history``, and
-  ``py_clear_history`` which can occur when history entries are edited.
-  See Python `issue 12186`_.
+- Add ``reset`` functions to completer, completion, and history.
   [stefan]
 
 .. _`issue 12186`: http://bugs.python.org/issue12186
