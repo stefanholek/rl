@@ -102,6 +102,3 @@ from rl._completion import completion
 from rl._completion import generator
 from rl._completion import print_exc
 from rl._history import history
-
-# Patch cmd.Cmd to use rl instead of readline
-import rl._cmd
