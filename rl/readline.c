@@ -2278,7 +2278,7 @@ True if a history size limit is set.");
 /* Default display matches hook */
 
 static int
-get_y_or_n()
+get_y_or_n(void)
 /* Readline's implementation of get_y_or_n() is private. */
 {
 	int c;
