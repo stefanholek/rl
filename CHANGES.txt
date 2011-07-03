@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.15.2 - 2011-07-03
+-------------------
+
+- Silence a second C compiler warning in function ``get_y_or_n``.
+  [stefan]
+
+
 1.15.1 - 2011-07-03
 -------------------
 
