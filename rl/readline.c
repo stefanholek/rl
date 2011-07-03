@@ -2292,8 +2292,6 @@ get_y_or_n()
 			return 1;
 		if (c == 'n' || c == 'N' || c == RUBOUT)
 			return 0;
-		if (c == ABORT_CHAR || c < 0)
-			_rl_abort_internal();
 		rl_ding();
 	}
 }
