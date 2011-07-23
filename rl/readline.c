@@ -1475,7 +1475,7 @@ on_char_is_quoted_function(const char *text, int index)
 #if (PY_MAJOR_VERSION >= 3)
 	u_text = PyUnicode_DECODE(text);
 	r = PyObject_CallFunction(char_is_quoted_function, "Oi", u_text,
-				  PyUnicode_AdjustIndex(text, index));
+				  PyUnicode_INDEX(text, index));
 #else
 	r = PyObject_CallFunction(char_is_quoted_function, "si", text, index);
 #endif
@@ -1811,8 +1811,8 @@ on_completion_word_break_hook(void)
 
 #if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(completion_word_break_hook, "ii",
-				  PyUnicode_AdjustIndex(rl_line_buffer, start),
-				  PyUnicode_AdjustIndex(rl_line_buffer, end));
+				  PyUnicode_INDEX(rl_line_buffer, start),
+				  PyUnicode_INDEX(rl_line_buffer, end));
 #else
 	r = PyObject_CallFunction(completion_word_break_hook, "ii",
 	                          start, end);
@@ -2682,8 +2682,8 @@ flex_completer(char *text, int start, int end)
 	_py_set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
-	begidx = PyUnicode_AdjustIndex(rl_line_buffer, start);
-	endidx = PyUnicode_AdjustIndex(rl_line_buffer, end);
+	begidx = PyUnicode_INDEX(rl_line_buffer, start);
+	endidx = PyUnicode_INDEX(rl_line_buffer, end);
 #else
 	begidx = start;
 	endidx = end;
