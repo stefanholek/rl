@@ -333,6 +333,12 @@ class HistoryFileTests(JailSetup):
         history.write_file(None)
         self.assertTrue(isfile(self.histfile))
 
+    def test_write_tilde_expanded(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file('~/.history')
+        self.assertTrue(isfile(self.histfile))
+
     def test_read_file(self):
         history.append('fred')
         history.append('wilma')
@@ -355,6 +361,14 @@ class HistoryFileTests(JailSetup):
         history.write_file(None)
         history.clear()
         history.read_file(None)
+        self.assertEqual(len(history), 2)
+
+    def test_read_tilde_expanded(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(self.histfile)
+        history.clear()
+        history.read_file('~/.history')
         self.assertEqual(len(history), 2)
 
     if sys.version_info[0] >= 3:
