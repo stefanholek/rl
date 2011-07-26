@@ -151,6 +151,18 @@ Load a readline history file.\n\
 The default filename is ~/.history.");
 
 
+/* Save and truncate a readline history file */
+
+static int
+_py_write_history(const char *s)
+{
+	errno = write_history(s);
+	if (!errno && history_file_length >= 0)
+		history_truncate_file(s, history_file_length);
+	return errno;
+}
+
+
 /* Exported function to save a readline history file */
 
 static PyObject *
@@ -170,16 +182,11 @@ write_history_file(PyObject *self, PyObject *args)
 #endif
 	if (s != NULL && strchr(s, '~')) {
 		s = tilde_expand(s);
-		errno = write_history(s);
-		if (!errno && history_file_length >= 0)
-			history_truncate_file(s, history_file_length);
+		errno = _py_write_history(s);
 		free(s);
 	}
-	else {
-		errno = write_history(s);
-		if (!errno && history_file_length >= 0)
-			history_truncate_file(s, history_file_length);
-	}
+	else
+		errno = _py_write_history(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
