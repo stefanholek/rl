@@ -29,7 +29,7 @@ PyUnicode_DECODE_CHAR(char character)
 
 
 Py_ssize_t
-PyUnicode_AdjustIndex(const char *text, Py_ssize_t index)
+PyUnicode_INDEX(const char *text, Py_ssize_t index)
 {
 	PyObject *u;
 	Py_ssize_t i;
