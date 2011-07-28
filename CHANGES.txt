@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.16 - Unreleased
+1.16 - 2011-07-28
 -----------------
 
 - Tilde-expand filenames in ``read_history_file`` and ``write_history_file``.
