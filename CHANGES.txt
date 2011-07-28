@@ -4,6 +4,9 @@ Changelog
 1.16 - Unreleased
 -----------------
 
+- Tilde-expand filenames in ``read_history_file`` and ``write_history_file``.
+  [stefan]
+
 
 1.15.2 - 2011-07-03
 -------------------
