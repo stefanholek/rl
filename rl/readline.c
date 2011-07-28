@@ -2959,7 +2959,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 /* Initialize the module */
 
 PyDoc_STRVAR(doc_module,
-"Importing this module enables command line editing using GNU readline.\n\
+"Importing this module enables command line editing using GNU Readline.\n\
 \n\
 The `rl.readline` module contains everything known from the standard library's\n\
 readline_ module. The standard library documentation applies with the following\n\
