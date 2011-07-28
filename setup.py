@@ -11,7 +11,7 @@ from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from os.path import join, exists
 
-version = '1.17'
+version = '2.0'
 
 
 def sys_path_contains(string):
