@@ -220,7 +220,10 @@ class Completer(object):
 
     def read_init_file(self, filename):
         """Parse a readline initialization file."""
-        return readline.read_init_file(filename)
+        if filename is not None:
+            return readline.read_init_file(filename)
+        else:
+            return readline.read_init_file()
 
     def parse_and_bind(self, line):
         """Parse one line of a readline initialization file."""

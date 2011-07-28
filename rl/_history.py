@@ -107,7 +107,7 @@ class History(object):
     def _file_op(self, op, filename, raise_exc):
         """Perform a file operation optionally suppressing IOErrors."""
         try:
-            if filename:
+            if filename is not None:
                 op(filename)
             else:
                 op()
