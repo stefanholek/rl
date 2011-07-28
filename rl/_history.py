@@ -92,6 +92,8 @@ class History(object):
         """
         self._file_op(readline.write_history_file, filename, raise_exc)
 
+    # Helpers
+
     def _norm_index(self, index):
         """Support negative indexes."""
         if not isinstance(index, (int, long)):

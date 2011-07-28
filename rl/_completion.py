@@ -226,6 +226,8 @@ class Completer(object):
         """Parse one line of a readline initialization file."""
         return readline.parse_and_bind(line)
 
+    # Helpers
+
     def reset(self):
         """Reset all completer variables to their default values."""
         self.quote_characters = ''
@@ -412,6 +414,8 @@ class Completion(object):
     def redisplay(self, force=False):
         """Refresh what's displayed on the screen."""
         readline.redisplay(force)
+
+    # Helpers
 
     def _generate(self, entry_func, text):
         """Extract a list of matches from a generator function."""
