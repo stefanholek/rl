@@ -426,7 +426,7 @@ class Completion(object):
                 return matches
 
     def reset(self):
-        """Reset all completion variables to their default values (used in tests)."""
+        """Reset all completion variables to their default values."""
         self.begidx = 0
         self.endidx = 0
         self.line_buffer = ''
