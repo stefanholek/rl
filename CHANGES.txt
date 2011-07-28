@@ -1,15 +1,8 @@
 Changelog
 =========
 
-1.17 - Unreleased
------------------
-
-
-1.16 - 2011-07-28
------------------
-
-- Tilde-expand filenames in ``read_history_file`` and ``write_history_file``.
-  [stefan]
+2.0 - Unreleased
+----------------
 
 - Remove support for cmd.Cmd. You now must derive your command
   interpreters from `kmd.Kmd`_ to use rl_ features.
@@ -17,6 +10,13 @@ Changelog
 
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
 .. _rl: http://pypi.python.org/pypi/rl
+
+
+1.16 - 2011-07-28
+-----------------
+
+- Tilde-expand filenames in ``read_history_file`` and ``write_history_file``.
+  [stefan]
 
 
 1.15.2 - 2011-07-03
