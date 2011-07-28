@@ -5,11 +5,10 @@ Changelog
 ----------------
 
 - Remove support for cmd.Cmd. You now must derive your command
-  interpreters from `kmd.Kmd`_ to use rl_ features.
+  interpreters from `kmd.Kmd`_ to use rl features.
   [stefan]
 
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
-.. _rl: http://pypi.python.org/pypi/rl
 
 
 1.16 - 2011-07-28
