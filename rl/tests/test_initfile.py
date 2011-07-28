@@ -53,5 +53,5 @@ class ReadInitFileTests(JailSetup):
 
         def test_read_bytes_name(self):
             self.mkfile(bytes('my_init', sys.getfilesystemencoding()))
-            completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()), raise_exc=True)
+            completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()))
 
