@@ -10,10 +10,6 @@ factory.py
 email.py
     Demonstrates email address completion (username + @ + hostname).
 
-simpleapp.py
-    A simple cmd.Cmd-based app that demonstrates shell command completion
-    and filename completion on the same line.
-
 pre_input_hook.py
     Shows how to use prompt and pre_input_hook to pre-populate the line.
 
