@@ -100,6 +100,7 @@ read_init_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
 		return NULL;
 #endif
+	/* rl_read_init_file calls tilde_expand internally */
 	errno = rl_read_init_file(s);
 	Py_XDECREF(b);
 	if (errno)
@@ -130,7 +131,13 @@ read_history_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
 		return NULL;
 #endif
-	errno = read_history(s);
+	if (s != NULL && strchr(s, '~')) {
+		s = tilde_expand(s);
+		errno = read_history(s);
+		free(s);
+	}
+	else
+		errno = read_history(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
@@ -142,6 +149,18 @@ PyDoc_STRVAR(doc_read_history_file,
 "read_history_file([filename]) -> None\n\
 Load a readline history file.\n\
 The default filename is ~/.history.");
+
+
+/* Save and truncate a readline history file */
+
+static int
+_py_write_history(const char *s)
+{
+	errno = write_history(s);
+	if (!errno && history_file_length >= 0)
+		history_truncate_file(s, history_file_length);
+	return errno;
+}
 
 
 /* Exported function to save a readline history file */
@@ -161,9 +180,13 @@ write_history_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
 		return NULL;
 #endif
-	errno = write_history(s);
-	if (!errno && history_file_length >= 0)
-		history_truncate_file(s, history_file_length);
+	if (s != NULL && strchr(s, '~')) {
+		s = tilde_expand(s);
+		errno = _py_write_history(s);
+		free(s);
+	}
+	else
+		errno = _py_write_history(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
@@ -1572,7 +1595,6 @@ static PyObject *
 py_tilde_expand(PyObject *self, PyObject *args)
 {
 	char *s;
-	char *expanded;
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
@@ -1584,11 +1606,15 @@ py_tilde_expand(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:tilde_expand", &s))
 		return NULL;
 #endif
-	/* tilde_expand aborts on out of memory condition */
-	expanded = tilde_expand(s);
+	if (strchr(s, '~')) {
+		/* tilde_expand aborts when out of memory */
+		s = tilde_expand(s);
+		r = PyString_FromString(s);
+		free(s);
+	}
+	else
+		r = PyString_FromString(s);
 	Py_XDECREF(b);
-	r = PyString_FromString(expanded);
-	free(expanded);
 	return r;
 }
 
