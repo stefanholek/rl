@@ -94,6 +94,18 @@ class HistoryFileTests(JailSetup):
         history.read_file(None, raise_exc=True)
         self.assertEqual(len(history), 2)
 
+    def test_write_empty_string(self):
+        history.append('fred')
+        history.append('wilma')
+        self.assertRaises(IOError, history.write_file, '', raise_exc=True)
+
+    def test_read_empty_string(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(self.histfile, raise_exc=True)
+        history.clear()
+        self.assertRaises(IOError, history.read_file, '', raise_exc=True)
+
     def test_write_tilde_expanded(self):
         history.append('fred')
         history.append('wilma')
