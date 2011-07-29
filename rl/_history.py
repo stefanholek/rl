@@ -107,6 +107,7 @@ class History(object):
     def _file_op(self, op, filename, raise_exc):
         """Perform a file operation optionally suppressing IOErrors."""
         try:
+            # Must not pass None to PyUnicode_FSConverter in Python 3
             if filename is not None:
                 op(filename)
             else:
