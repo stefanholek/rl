@@ -109,8 +109,7 @@ Installation
 rl requires Python 2.5 or higher and GNU Readline 5.0 or higher.
 
 On Linux, install libreadline5-dev (or equivalent) before attempting to build
-rl. On Mac OS X, make sure you have Xcode Tools installed (Mac OS X Install
-DVD /Optional Installs/Xcode Tools). Then type::
+rl. On Mac OS X, make sure you have Xcode Tools installed. Then type::
 
     easy_install rl
 
