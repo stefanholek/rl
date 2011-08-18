@@ -90,13 +90,10 @@ The code below implements system command completion similar to Bash::
         command = raw_input('command> ')
         print 'You typed:', command
 
-More examples_ are included in the package source. If you are building a
-command-interpreter type application, check out `kmd.Kmd`_, an rl-aware
-replacement for cmd.Cmd. Also see gpgkeys_, a front-end for
-GnuPG built entirely around tab completion.
+More examples_ are included in the package source. Also see gpgkeys_, a
+front-end for GnuPG built entirely around tab completion.
 
 .. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples
-.. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
 .. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
 
 Repository Access
@@ -122,4 +119,11 @@ and watch the console. When it reads::
     Finished processing dependencies for rl
 
 you are done and rl is ready to use.
+
+Related
+=======
+
+`kmd.Kmd`_ is an rl-aware replacement for cmd.Cmd.
+
+.. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
 
