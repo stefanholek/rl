@@ -99,9 +99,9 @@ front-end for GnuPG built entirely around tab completion.
 Repository Access
 -----------------
 
-rl development is hosted on github_.
+rl development is hosted on GitHub_.
 
-.. _github: http://github.com/stefanholek/rl
+.. _GitHub: http://github.com/stefanholek/rl
 
 Installation
 ============
