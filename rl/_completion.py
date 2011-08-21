@@ -421,18 +421,6 @@ class Completion(object):
 
     # Helpers
 
-    def _generate(self, entry_func, text):
-        """Extract a list of matches from a generator function."""
-        matches = []
-        i = 0
-        while True:
-            n = entry_func(text, i)
-            if n is not None:
-                matches.append(n)
-                i += 1
-            else:
-                return matches
-
     def reset(self):
         """Reset all completion variables to their default values."""
         self.begidx = 0
@@ -446,6 +434,18 @@ class Completion(object):
         self.found_quote = False
         self.filename_completion_desired = False
         self.filename_quoting_desired = True
+
+    def _generate(self, entry_func, text):
+        """Extract a list of matches from a generator function."""
+        matches = []
+        i = 0
+        while True:
+            n = entry_func(text, i)
+            if n is not None:
+                matches.append(n)
+                i += 1
+            else:
+                return matches
 
 completion = Completion()
 

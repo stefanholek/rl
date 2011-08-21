@@ -94,6 +94,11 @@ class History(object):
 
     # Helpers
 
+    def reset(self):
+        """Clear the history and reset all variables to their default values."""
+        self.clear()
+        self.max_entries = -1
+
     def _norm_index(self, index):
         """Support negative indexes."""
         if not isinstance(index, (int, long)):
@@ -115,11 +120,6 @@ class History(object):
         except IOError:
             if raise_exc:
                 raise
-
-    def reset(self):
-        """Clear the history and reset all variables to their default values."""
-        self.clear()
-        self.max_entries = -1
 
 history = History()
 
