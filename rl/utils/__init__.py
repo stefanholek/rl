@@ -1,6 +1,6 @@
 """Global constants and utility functions."""
 
-# Python expects these word break characters by default
+# Python uses these word break characters by default
 DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
