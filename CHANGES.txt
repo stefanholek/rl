@@ -8,6 +8,9 @@ Changelog
   interpreters from `kmd.Kmd`_ to use rl features.
   [stefan]
 
+- Accept None as argument to file operations in Python 3 as well.
+  [stefan]
+
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
 
 
