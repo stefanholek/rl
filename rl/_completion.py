@@ -220,11 +220,7 @@ class Completer(object):
 
     def read_init_file(self, filename):
         """Parse a readline initialization file."""
-        # Must not pass None to PyUnicode_FSConverter in Python 3
-        if filename is not None:
-            readline.read_init_file(filename)
-        else:
-            readline.read_init_file()
+        readline.read_init_file(filename)
 
     def parse_and_bind(self, line):
         """Parse one line of a readline initialization file."""

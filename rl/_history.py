@@ -83,14 +83,22 @@ class History(object):
         The default filename is ~/.history. If ``raise_exc`` is True,
         IOErrors will be allowed to propagate.
         """
-        self._file_op(readline.read_history_file, filename, raise_exc)
+        try:
+            readline.read_history_file(filename)
+        except IOError:
+            if raise_exc:
+                raise
 
     def write_file(self, filename=None, raise_exc=False):
         """Save a readline history file.
         The default filename is ~/.history. If ``raise_exc`` is True,
         IOErrors will be allowed to propagate.
         """
-        self._file_op(readline.write_history_file, filename, raise_exc)
+        try:
+            readline.write_history_file(filename)
+        except IOError:
+            if raise_exc:
+                raise
 
     # Helpers
 
@@ -108,18 +116,6 @@ class History(object):
         if index < 0 or index >= len(self):
             raise IndexError('history index out of range')
         return index
-
-    def _file_op(self, op, filename, raise_exc):
-        """Perform a file operation optionally suppressing IOErrors."""
-        try:
-            # Must not pass None to PyUnicode_FSConverter in Python 3
-            if filename is not None:
-                op(filename)
-            else:
-                op()
-        except IOError:
-            if raise_exc:
-                raise
 
 history = History()
 
