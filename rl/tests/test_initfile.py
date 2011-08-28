@@ -14,7 +14,7 @@ class ReadInitFileTests(JailSetup):
     def setUp(self):
         JailSetup.setUp(self)
         reset()
-        self.initfile = expanduser('~/.$$$.$$$')
+        self.initfile = expanduser('~/.$$$')
         self.remove_initfile()
 
     def tearDown(self):
@@ -31,10 +31,14 @@ class ReadInitFileTests(JailSetup):
     def test_read_init_file_raises_exception(self):
         self.assertRaises(IOError, completer.read_init_file, 'my_init')
 
-    def DISABLED_test_read_None_name(self):
+    def test_read_None_name(self):
+        self.mkfile('my_init')
+        self.mkfile(self.initfile)
         completer.read_init_file(None)
 
-    def DISABLED_test_read_empty_string(self):
+    def test_read_empty_string(self):
+        self.mkfile('my_init')
+        self.mkfile(self.initfile)
         completer.read_init_file('')
 
     def test_read_relative(self):
@@ -47,7 +51,7 @@ class ReadInitFileTests(JailSetup):
 
     def test_read_tilde_expanded(self):
         self.mkfile(self.initfile)
-        completer.read_init_file('~/.$$$.$$$')
+        completer.read_init_file('~/.$$$')
 
     if sys.version_info[0] >= 3:
 
