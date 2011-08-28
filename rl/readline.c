@@ -92,7 +92,7 @@ read_init_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSConverter, &b))
+	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
@@ -123,7 +123,7 @@ read_history_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSConverter, &b))
+	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
@@ -172,7 +172,7 @@ write_history_file(PyObject *self, PyObject *args)
 	PyObject *b = NULL;
 
 #if (PY_MAJOR_VERSION >= 3)
-	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSConverter, &b))
+	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);

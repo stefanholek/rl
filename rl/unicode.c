@@ -81,5 +81,39 @@ PyUnicode_StrConverter(PyObject *text, void *addr)
 	return Py_CLEANUP_SUPPORTED;
 }
 
+
+int
+PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
+{
+	PyObject *b;
+
+	/* Cleanup stage */
+	if (text == NULL) {
+		Py_DECREF(*(PyObject**)addr);
+		return 1;
+	}
+	/* Conversion stage */
+	if (text == Py_None) {
+		*(PyObject**)addr = NULL;
+		return 1;
+	}
+	if (PyBytes_Check(text)) {
+		b = text;
+		Py_INCREF(b);
+	}
+	else {
+		b = PyUnicode_ENCODE(text);
+		if (b == NULL)
+			return 0;
+	}
+	if (PyBytes_GET_SIZE(b) != strlen(PyBytes_AS_STRING(b))) {
+		PyErr_SetString(PyExc_TypeError, "embedded NUL character");
+		Py_DECREF(b);
+		return 0;
+	}
+	*(PyObject**)addr = b;
+	return Py_CLEANUP_SUPPORTED;
+}
+
 #endif /* Python 3 */
 
