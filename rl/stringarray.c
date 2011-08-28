@@ -48,6 +48,7 @@ StringArray_Insert(char ***strings, size_t pos, char *string)
 	char **new;
 	char **p;
 	size_t size, i;
+	int inserted = 0;
 
 	size = StringArray_Size(*strings);
 	if (size == -1)
@@ -58,10 +59,15 @@ StringArray_Insert(char ***strings, size_t pos, char *string)
 		return -1;
 
 	for (p = *strings, i = 0; *p; p++) {
-		if (i == pos)
+		if (i == pos) {
 			new[i++] = string;
+			inserted = 1;
+		}
 		new[i++] = *p;
 	}
+	if (!inserted)
+		new[i] = string;
+
 	free(*strings);
 	*strings = new;
 	return 0;
