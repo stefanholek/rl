@@ -24,7 +24,7 @@ PyUnicode_DECODE_CHAR(char character)
 	char string[2] = "\0";
 
 	string[0] = character;
-	return PyUnicode_DECODE(string);
+	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
 }
 
 
