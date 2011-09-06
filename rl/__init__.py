@@ -1,29 +1,29 @@
 """Alternative Python bindings for GNU Readline.
 
-Package Contents
+Package contents
 ================
 
 rl exports the following components:
 
-:rl:`completer`
+:class:`rl.completer <rl._completion.Completer>`
     Interface to the readline completer.
 
-:rl:`completion`
+:class:`rl.completion <rl._completion.Completion>`
     Interface to the active readline completion.
 
-:rl:`generator`
+:func:`rl.generator() <rl._completion.generator>`
     Generator function factory.
 
-:rl:`print_exc`
+:func:`rl.print_exc() <rl._completion.print_exc>`
     Decorator printing exceptions to stderr.
 
-:rl:`history`
+:class:`rl.history <rl._history.History>`
     Interface to the readline history.
 
-:rl:`readline`
+:mod:`rl.readline`
     Readline bindings module.
 
-About Readline Completion
+Readline completion
 =========================
 
 Completion is the process initiated when the user presses the TAB key.
@@ -32,53 +32,53 @@ match display.
 
 For each phase, readline provides configuration settings and hooks that
 allow applications to control the way the library behaves. See the
-`Completer` and `Completion` classes for detailed descriptions of available
-properties.
+:class:`~rl._completion.Completer` and :class:`~rl._completion.Completion`
+classes for detailed descriptions of available properties.
 
-Call Graph
+Call graph
 ----------
 
 A calling sequence for filename completion may look like this:
 
-* complete_internal
+* :func:`complete_internal`
 
-    * find_completion_word
+    * :func:`find_completion_word`
 
-        * `Completer.word_break_hook`
+        * :attr:`~rl._completion.Completer.word_break_hook`
 
-        * `Completer.char_is_quoted_function`
+        * :attr:`~rl._completion.Completer.char_is_quoted_function`
 
-    * gen_completion_matches
+    * :func:`gen_completion_matches`
 
-        * `Completer.completer`
+        * :attr:`~rl._completion.Completer.completer`
 
-            * `Completion.complete_filename`
+            * :meth:`~rl._completion.Completion.complete_filename`
 
-                * `Completer.directory_completion_hook`
+                * :attr:`~rl._completion.Completer.directory_completion_hook`
 
-                * `Completer.filename_dequoting_function`
+                * :attr:`~rl._completion.Completer.filename_dequoting_function`
 
-        * `Completer.ignore_some_completions_function`
+        * :attr:`~rl._completion.Completer.ignore_some_completions_function`
 
-    * insert_match
+    * :func:`insert_match`
 
-        * `Completer.filename_quoting_function`
+        * :attr:`~rl._completion.Completer.filename_quoting_function`
 
-    * display_matches
+    * :func:`display_matches`
 
-        * `Completer.display_matches_hook`
+        * :attr:`~rl._completion.Completer.display_matches_hook`
 
-            * `Completion.display_match_list`
+            * :meth:`~rl._completion.Completion.display_match_list`
 
-About Readline History
+Readline history
 ======================
 
 History allows readline to save and later recall lines the user has entered.
-The ``history`` object (of class `History`) provides a list-like interface
-to the history buffer as well as functions to persist the history
-between sessions.
+The ``history`` object (of class :class:`~rl._history.History`) provides a
+list-like interface to the history buffer as well as functions to persist the
+history between sessions.
 
-Upstream Documentation
+Upstream documentation
 ======================
 
 The `GNU Readline Library`_ and the `GNU History Library`_.

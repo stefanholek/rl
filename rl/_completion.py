@@ -14,10 +14,6 @@ class Completer(object):
     object and use its properties and methods to configure
     readline.
 
-    Settings made through the ``completer`` object are global
-    and permanent. If you want them restored you have to take
-    care of it yourself.
-
     Example::
 
         from rl import completer
@@ -25,6 +21,10 @@ class Completer(object):
         completer.quote_characters = '"\\''
         completer.query_items = 100
         completer.parse_and_bind('TAB: complete')
+
+    Settings made through the ``completer`` object are global
+    and permanent. If you want them restored you have to take
+    care of it yourself.
     """
 
     __slots__ = ()
@@ -261,11 +261,6 @@ class Completion(object):
     object and use its properties and methods when implementing
     custom completions.
 
-    Settings made through the ``completion`` object
-    are only valid for the duration of the current completion.
-    They are reset to their defaults when a new completion
-    starts.
-
     Example::
 
         from rl import completion
@@ -273,6 +268,11 @@ class Completion(object):
         def complete(text):
             completion.append_character = '@'
             return completion.complete_username(text)
+
+    Settings made through the ``completion`` object
+    are only valid for the duration of the current completion.
+    They are reset to their defaults when a new completion
+    starts.
     """
 
     __slots__ = ()

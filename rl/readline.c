@@ -2961,23 +2961,24 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU Readline.\n\
 \n\
-The `rl.readline` module contains everything known from the standard library's\n\
+The :mod:`rl.readline` module contains everything known from the standard library's\n\
 readline_ module. The standard library documentation applies with the following\n\
 exceptions:\n\
 \n\
-1. `get_completion_type` returns a string not an integer.\n\
-2. `get_completion_append_character` defaults to the space character.\n\
-3. `redisplay` accepts an optional ``force`` argument.\n\
-4. `get_history_item` is zero-based.\n\
+1. :func:`get_completion_type` returns a string not an integer.\n\
+2. :func:`get_completion_append_character` defaults to the space character.\n\
+3. :func:`redisplay` accepts an optional ``force`` argument.\n\
+4. :func:`get_history_item` is zero-based.\n\
 \n\
-Beyond that, `rl.readline` adds a plethora of new functionality which is\n\
-documented in the high-level interfaces `Completer`, `Completion`, and `History`.\n\
+Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
+documented in the high-level interfaces :class:`~rl._completion.Completer`,\n\
+:class:`~rl._completion.Completion`, and :class:`~rl._history.History`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
-- `readline_version` returns the readline library version as an integer.\n\
-- `read_key` reads a character from the keyboard.\n\
-- `stuff_char` stuffs a character into the input stream.\n\
-- `complete_internal` executes the completer. Used in tests.\n\
+- :func:`readline_version` returns the readline library version as an integer.\n\
+- :func:`read_key` reads a character from the keyboard.\n\
+- :func:`stuff_char` stuffs a character into the input stream.\n\
+- :func:`complete_internal` executes the completer. Used in tests.\n\
 \n\
 .. _readline: http://docs.python.org/library/readline.html\n\
 ");
