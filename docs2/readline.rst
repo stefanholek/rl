@@ -1,5 +1,6 @@
-Readline Module
-===============
+=================
+Readline Bindings
+=================
 
 .. toctree::
    :maxdepth: 2

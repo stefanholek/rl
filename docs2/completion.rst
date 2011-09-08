@@ -1,10 +1,14 @@
-Completion Module
-=================
+==================
+Completion Support
+==================
 
 .. toctree::
    :maxdepth: 2
 
 .. automodule:: rl._completion
+
+Completer object
+================
 
 .. autoclass:: rl._completion.Completer
 
@@ -30,6 +34,9 @@ Completion Module
    .. automethod:: parse_and_bind
    .. automethod:: reset
 
+Completion object
+=================
+
 .. autoclass:: rl._completion.Completion
 
    .. autoattribute:: line_buffer
@@ -52,6 +59,9 @@ Completion Module
    .. automethod:: display_match_list
    .. automethod:: redisplay
    .. automethod:: reset
+
+Functions
+=========
 
 .. autofunction:: generator
 .. autofunction:: print_exc
