@@ -11,9 +11,7 @@ class History(object):
     the one ``history`` object in this package.
     Typically, applications will import the ``history``
     object and use its properties and methods to work with
-    readline history.
-
-    Example::
+    readline history::
 
         from rl import history
 
@@ -54,21 +52,21 @@ class History(object):
         """Append a line to the history."""
         readline.add_history(line)
 
+    def __len__(self):
+        """The current history length."""
+        return readline.get_current_history_length()
+
     def __getitem__(self, index):
         """Return the history item at index."""
         return readline.get_history_item(self._norm_index(index))
-
-    def __delitem__(self, index):
-        """Remove the history item at index."""
-        readline.remove_history_item(self._norm_index(index))
 
     def __setitem__(self, index, line):
         """Replace the history item at index."""
         readline.replace_history_item(self._norm_index(index), line)
 
-    def __len__(self):
-        """The current history length."""
-        return readline.get_current_history_length()
+    def __delitem__(self, index):
+        """Remove the history item at index."""
+        readline.remove_history_item(self._norm_index(index))
 
     def __iter__(self):
         """Iterate over history items."""

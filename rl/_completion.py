@@ -12,9 +12,7 @@ class Completer(object):
     the one ``completer`` object in this package.
     Typically, applications will import the ``completer``
     object and use its properties and methods to configure
-    readline.
-
-    Example::
+    readline::
 
         from rl import completer
 
@@ -259,9 +257,7 @@ class Completion(object):
     the one ``completion`` object in this package.
     Typically, applications will import the ``completion``
     object and use its properties and methods when implementing
-    custom completions.
-
-    Example::
+    custom completions::
 
         from rl import completion
 
