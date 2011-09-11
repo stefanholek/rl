@@ -7,22 +7,22 @@ History Support
 
 .. automodule:: rl._history
 
-History object
-==============
+History Interface
+=================
 
-.. autoclass:: rl._history.History
+.. autoclass:: rl.History
 
-   .. autoattribute:: max_entries
+.. autoattribute:: rl.History.max_entries
 
-   .. automethod:: clear
-   .. automethod:: append
-   .. automethod:: __len__
-   .. automethod:: __getitem__
-   .. automethod:: __setitem__
-   .. automethod:: __delitem__
-   .. automethod:: __iter__
-   .. automethod:: __reversed__
-   .. automethod:: read_file
-   .. automethod:: write_file
-   .. automethod:: reset
+.. automethod:: rl.History.clear
+.. automethod:: rl.History.append
+.. automethod:: rl.History.__len__
+.. automethod:: rl.History.__getitem__
+.. automethod:: rl.History.__setitem__
+.. automethod:: rl.History.__delitem__
+.. automethod:: rl.History.__iter__
+.. automethod:: rl.History.__reversed__
+.. automethod:: rl.History.read_file
+.. automethod:: rl.History.write_file
+.. automethod:: rl.History.reset
 

@@ -1,13 +1,13 @@
-=========================================================
+===================================================================
 :mod:`rl` -- GNU Readline Bindings
-=========================================================
+===================================================================
 
 .. toctree::
    :maxdepth: 2
 
 .. automodule:: rl
 
-API documentation
+API Documentation
 =================
 
 .. toctree::
@@ -17,7 +17,15 @@ API documentation
    history
    readline
 
-Indices and tables
+Upstream Documentation
+======================
+
+The `GNU Readline Library`_ and the `GNU History Library`_.
+
+.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
+.. _`GNU History Library`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
+
+Indices and Tables
 ==================
 
 * :ref:`genindex`

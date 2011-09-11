@@ -2971,8 +2971,8 @@ exceptions:\n\
 4. :func:`get_history_item` is zero-based.\n\
 \n\
 Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
-documented in the high-level interfaces :class:`~rl._completion.Completer`,\n\
-:class:`~rl._completion.Completion`, and :class:`~rl._history.History`.\n\
+documented in the high-level interfaces :obj:`completer <rl.Completer>`,\n\
+:obj:`completion <rl.Completion>`, and :obj:`history <rl.History>`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
 - :func:`readline_version` returns the readline library version as an integer.\n\

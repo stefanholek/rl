@@ -6,11 +6,12 @@ from rl.utils import DEFAULT_DELIMS
 
 
 class Completer(object):
-    """Interface to the readline completer.
+    """Interface to the readline completer. Used to configure
+    the completion aspects of readline.
 
     This class is not intended for instantiation beyond
-    the one ``completer`` object in this package.
-    Typically, applications will import the ``completer``
+    the one :obj:`completer <rl.Completer>` object in this package.
+    Typically, applications will import the :obj:`completer <rl.Completer>`
     object and use its properties and methods to configure
     readline::
 
@@ -20,7 +21,7 @@ class Completer(object):
         completer.query_items = 100
         completer.parse_and_bind('TAB: complete')
 
-    Settings made through the ``completer`` object are global
+    Settings made through the :obj:`completer <rl.Completer>` object are global
     and permanent. If you want them restored you have to take
     care of it yourself.
     """
@@ -251,11 +252,12 @@ completer = Completer()
 
 
 class Completion(object):
-    """Interface to the active readline completion.
+    """Interface to the active readline completion. Used to interact
+    with readline when a completion is in progress.
 
     This class is not intended for instantiation beyond
-    the one ``completion`` object in this package.
-    Typically, applications will import the ``completion``
+    the one :obj:`completion <rl.Completion>` object in this package.
+    Typically, applications will import the :obj:`completion <rl.Completion>`
     object and use its properties and methods when implementing
     custom completions::
 
@@ -265,7 +267,7 @@ class Completion(object):
             completion.append_character = '@'
             return completion.complete_username(text)
 
-    Settings made through the ``completion`` object
+    Settings made through the :obj:`completion <rl.Completion>` object
     are only valid for the duration of the current completion.
     They are reset to their defaults when a new completion
     starts.
@@ -275,7 +277,7 @@ class Completion(object):
 
     @apply
     def line_buffer():
-        doc="""The line buffer readline uses. The property
+        doc="""The line buffer readline uses. This property
         may be assigned to to change the contents of the line."""
         def get(self):
             return readline.get_line_buffer()
