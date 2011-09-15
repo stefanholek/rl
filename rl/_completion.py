@@ -81,7 +81,7 @@ class Completer(object):
         doc="""Threshold above which the user is prompted if he
         really wants to see all matches. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed if a custom
-        ``display_matches_hook`` is installed."""
+        :attr:`~rl.Completer.display_matches_hook` is installed."""
         def get(self):
             return readline.get_completion_query_items()
         def set(self, int):
@@ -378,7 +378,7 @@ class Completion(object):
     @apply
     def filename_quoting_desired():
         doc="""If results are filenames, quote them. Defaults to True.
-        Has no effect if ``filename_completion_desired`` is False."""
+        Has no effect if :attr:`~rl.Completion.filename_completion_desired` is False."""
         def get(self):
             return readline.get_filename_quoting_desired()
         def set(self, bool):
