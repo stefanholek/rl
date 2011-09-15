@@ -6,8 +6,7 @@ from rl.utils import DEFAULT_DELIMS
 
 
 class Completer(object):
-    """Interface to the readline completer. Used to configure
-    the completion aspects of readline.
+    """Interface to the readline completer.
 
     This class is not intended for instantiation beyond
     the one :obj:`completer <rl.Completer>` object in this module.
@@ -93,7 +92,7 @@ class Completer(object):
         doc="""The completion entry function.
         The function is called as ``function(text, state)`` for state
         in 0, 1, 2, ... until it returns None. It should return the
-        next possible completion starting with ``text``.
+        next possible completion for ``text``.
         See the :func:`~rl.generator` factory for a simple way to
         support this protocol."""
         def get(self):
@@ -161,7 +160,7 @@ class Completer(object):
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
         :meth:`~rl.Completion.display_match_list` to do the actual work. Note that
-        ``longest_match_length`` is not a character count but the *printed length*
+        ``longest_match_length`` is not a character count but the printed length
         of the longest string in ``matches``, ready to be used for column formatting."""
         def get(self):
             return readline.get_completion_display_matches_hook()
@@ -255,8 +254,7 @@ completer = Completer()
 
 
 class Completion(object):
-    """Interface to the active readline completion. Used to interact
-    with readline when a completion is in progress.
+    """Interface to the active readline completion.
 
     This class is not intended for instantiation beyond
     the one :obj:`completion <rl.Completion>` object in this module.
@@ -417,7 +415,8 @@ class Completion(object):
     def redisplay(self, force=False):
         """Update the screen to reflect the current contents of
         :attr:`~rl.Completion.line_buffer`. If ``force`` is True, readline
-        redraws the entire line, including the prompt area."""
+        resets its internal state and redisplays the entire line, including
+        the prompt area."""
         readline.redisplay(force)
 
     # Helpers

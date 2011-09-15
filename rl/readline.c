@@ -686,7 +686,7 @@ py_add_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_add_history,
 "add_history(string) -> None\n\
-Add a line to the history buffer.");
+Add a line to the readline history.");
 
 
 /* Exported function to get any element of history */
@@ -849,9 +849,9 @@ redisplay(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_redisplay,
 "redisplay([force]) -> None\n\
 Update the screen to reflect the current \
-contents of the line buffer. If ``force`` is True, readline will \
-refresh the display even if its internal state indicates \
-an up-to-date screen.");
+contents of the line buffer. If ``force`` is True, readline\n\
+resets its internal state and \
+redisplays the entire line, including the prompt area.");
 
 
 /* <rl.readline> */

@@ -14,21 +14,21 @@ rl exports the following components:
     with readline when a completion is in progress.
 
 :obj:`rl.history <rl.History>`
-    Interface to the readline history. Used to
-    manipulate history entries and to read and write history files.
+    Interface to the readline history. Used to read and write history files
+    and to manipulate history entries.
 
-:mod:`rl.readline <rl.readline>`
+:mod:`rl.readline`
     The readline bindings module. Contains everything known from the standard
     library plus extensions specific to the rl package.  The :obj:`completer <rl.Completer>`,
     :obj:`completion <rl.Completion>`, and :obj:`history <rl.History>`
-    interfaces make use of this module, and you should rarely need to interact
+    objects make use of this module, and you should rarely need to interact
     with it directly.
 
-:func:`rl.generator() <rl.generator>`
+:func:`rl.generator`
     A factory turning any callable into a *completion entry function* that
     can be handed to readline.
 
-:func:`rl.print_exc() <rl.print_exc>`
+:func:`rl.print_exc`
     A decorator printing exceptions to stderr. Useful when writing Python
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
@@ -42,7 +42,7 @@ match display.
 
 For each phase, readline provides configuration settings and hooks that
 allow applications to control the way the library behaves. See the
-:class:`Completer <rl.Completer>` and :class:`Completion <rl.Completion>`
+:class:`~rl.Completer` and :class:`~rl.Completion`
 classes for detailed descriptions of available properties.
 
 Call Graph
@@ -84,7 +84,7 @@ Readline History
 ================
 
 History allows readline to save and later recall lines the user has entered.
-The :class:`History <rl.History>` class provides a list-like interface to the
+The :class:`~rl.History` class provides a list-like interface to the
 history buffer as well as functions to persist the history between sessions.
 """
 
