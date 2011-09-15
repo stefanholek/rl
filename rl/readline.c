@@ -144,7 +144,6 @@ read_history_file(PyObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static int history_file_length = -1; /* do not truncate history by default */
 PyDoc_STRVAR(doc_read_history_file,
 "read_history_file([filename]) -> None\n\
 Load a readline history file.\n\
@@ -153,8 +152,10 @@ The default filename is ~/.history.");
 
 /* Save and truncate a readline history file */
 
+static int history_file_length = -1; /* do not truncate history by default */
+
 static int
-_py_write_history(const char *s)
+_py_write_history_file(const char *s)
 {
 	errno = write_history(s);
 	if (!errno && history_file_length >= 0)
@@ -182,11 +183,11 @@ write_history_file(PyObject *self, PyObject *args)
 #endif
 	if (s != NULL && strchr(s, '~')) {
 		s = tilde_expand(s);
-		errno = _py_write_history(s);
+		errno = _py_write_history_file(s);
 		free(s);
 	}
 	else
-		errno = _py_write_history(s);
+		errno = _py_write_history_file(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
@@ -202,33 +203,33 @@ The default filename is ~/.history.");
 /* Set history file length */
 
 static PyObject*
-set_history_length(PyObject *self, PyObject *args)
+set_history_file_length(PyObject *self, PyObject *args)
 {
 	int length = history_file_length;
-	if (!PyArg_ParseTuple(args, "i:set_history_length", &length))
+	if (!PyArg_ParseTuple(args, "i:set_history_file_length", &length))
 		return NULL;
 	history_file_length = length;
 	Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(set_history_length_doc,
-"set_history_length(length) -> None\n\
-Set the maximal number of items which will be written to\n\
-the history file. A negative length is used to inhibit\n\
-history truncation.");
+PyDoc_STRVAR(set_history_file_length_doc,
+"set_history_file_length(int) -> None\n\
+Set the maximum number of items written to\n\
+the history file. A negative value inhibits\n\
+history file truncation.");
 
 
 /* Get history file length */
 
 static PyObject*
-get_history_length(PyObject *self, PyObject *noarg)
+get_history_file_length(PyObject *self, PyObject *noarg)
 {
 	return PyInt_FromLong(history_file_length);
 }
 
-PyDoc_STRVAR(get_history_length_doc,
-"get_history_length() -> int\n\
-Return the maximum number of items that will be written to\n\
+PyDoc_STRVAR(get_history_file_length_doc,
+"get_history_file_length() -> int\n\
+Return the maximum number of items written to\n\
 the history file.");
 
 
@@ -2405,10 +2406,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_get_history_item},
 	{"get_current_history_length", (PyCFunction)get_current_history_length,
 	 METH_NOARGS, doc_get_current_history_length},
-	{"set_history_length", set_history_length,
-	 METH_VARARGS, set_history_length_doc},
-	{"get_history_length", get_history_length,
-	 METH_NOARGS, get_history_length_doc},
+	{"set_history_file_length", set_history_file_length,
+	 METH_VARARGS, set_history_file_length_doc},
+	{"get_history_file_length", get_history_file_length,
+	 METH_NOARGS, get_history_file_length_doc},
 	{"set_completer", set_completer, METH_VARARGS, doc_set_completer},
 	{"get_completer", get_completer, METH_NOARGS, doc_get_completer},
 	{"get_completion_type", get_completion_type,
@@ -2965,10 +2966,11 @@ The :mod:`rl.readline` module contains everything known from the standard librar
 readline_ module. The standard library documentation applies with the following\n\
 exceptions:\n\
 \n\
-1. :func:`get_completion_type` returns a string not an integer.\n\
-2. :func:`get_completion_append_character` defaults to the space character.\n\
-3. :func:`redisplay` accepts an optional ``force`` argument.\n\
-4. :func:`get_history_item` is zero-based.\n\
+#. :func:`get_completion_type` returns a string not an integer.\n\
+#. :func:`get_completion_append_character` defaults to the space character.\n\
+#. :func:`get_history_item` is zero-based.\n\
+#. :func:`get_history_length() <get_history_file_length>` has been renamed to :func:`get_history_file_length`.\n\
+#. :func:`redisplay` accepts an optional ``force`` argument.\n\
 \n\
 Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
 documented in the high-level interfaces :obj:`completer <rl.Completer>`,\n\
