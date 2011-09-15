@@ -9,7 +9,7 @@ class History(object):
     history files and to manipulate history entries.
 
     This class is not intended for instantiation beyond
-    the one :obj:`history <rl.History>` object in this package.
+    the one :obj:`history <rl.History>` object in this module.
     Typically, applications will import the :obj:`history <rl.History>`
     object and use its properties and methods to work with
     readline history::

@@ -10,7 +10,7 @@ class Completer(object):
     the completion aspects of readline.
 
     This class is not intended for instantiation beyond
-    the one :obj:`completer <rl.Completer>` object in this package.
+    the one :obj:`completer <rl.Completer>` object in this module.
     Typically, applications will import the :obj:`completer <rl.Completer>`
     object and use its properties and methods to configure
     readline::
@@ -93,7 +93,9 @@ class Completer(object):
         doc="""The completion entry function.
         The function is called as ``function(text, state)`` for state
         in 0, 1, 2, ... until it returns None. It should return the
-        next possible completion starting with ``text``."""
+        next possible completion starting with ``text``.
+        See the :func:`~rl.generator` factory for a simple way to
+        support this protocol."""
         def get(self):
             return readline.get_completer()
         def set(self, function):
@@ -158,9 +160,9 @@ class Completer(object):
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
-        ``display_match_list`` to do the actual work. Note that ``longest_match_length``
-        is not a character count but the *printed length* of the longest string in
-        ``matches``, ready to be used for column formatting."""
+        :meth:`~rl.Completion.display_match_list` to do the actual work. Note that
+        ``longest_match_length`` is not a character count but the *printed length*
+        of the longest string in ``matches``, ready to be used for column formatting."""
         def get(self):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
@@ -257,7 +259,7 @@ class Completion(object):
     with readline when a completion is in progress.
 
     This class is not intended for instantiation beyond
-    the one :obj:`completion <rl.Completion>` object in this package.
+    the one :obj:`completion <rl.Completion>` object in this module.
     Typically, applications will import the :obj:`completion <rl.Completion>`
     object and use its properties and methods when implementing
     custom completions::
@@ -391,7 +393,7 @@ class Completion(object):
     @property
     def rl_end(self):
         """The last position in the line. The cursor range
-        is defined as: ``0 <= rl_point <= rl_end``."""
+        is defined as: ``0 <= rl_point <= rl_end``"""
         return readline.get_rl_end()
 
     # Built-in functions
@@ -413,7 +415,9 @@ class Completion(object):
         readline.display_match_list(substitution, matches, longest_match_length)
 
     def redisplay(self, force=False):
-        """Refresh what's displayed on the screen."""
+        """Update the screen to reflect the current contents of
+        :attr:`~rl.Completion.line_buffer`. If ``force`` is True, readline
+        redraws the entire line, including the prompt area."""
         readline.redisplay(force)
 
     # Helpers

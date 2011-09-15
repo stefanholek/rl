@@ -42,8 +42,8 @@ match display.
 
 For each phase, readline provides configuration settings and hooks that
 allow applications to control the way the library behaves. See the
-:obj:`completer <rl.Completer>` and :obj:`completion <rl.Completion>`
-objects for detailed descriptions of available properties.
+:class:`Completer <rl.Completer>` and :class:`Completion <rl.Completion>`
+classes for detailed descriptions of available properties.
 
 Call Graph
 ----------
@@ -84,7 +84,7 @@ Readline History
 ================
 
 History allows readline to save and later recall lines the user has entered.
-The :obj:`history <rl.History>` object provides a list-like interface to the
+The :class:`History <rl.History>` class provides a list-like interface to the
 history buffer as well as functions to persist the history between sessions.
 """
 
