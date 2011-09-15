@@ -4,11 +4,14 @@ Changelog
 2.0 - Unreleased
 ----------------
 
-- Remove support for cmd.Cmd. You now must derive your command
+- Drop support for cmd.Cmd. You now must derive your command
   interpreters from `kmd.Kmd`_ to use rl features.
   [stefan]
 
-- Accept None as argument to file operations in Python 3 as well.
+- Accept None as argument to file operations under Python 3.
+  [stefan]
+
+- Rename ``get_history_length`` to ``get_history_file_length``, same for ``set_*``.
   [stefan]
 
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
