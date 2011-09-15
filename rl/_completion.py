@@ -219,8 +219,9 @@ class Completer(object):
 
     # Configuration functions
 
-    def read_init_file(self, filename):
-        """Parse a readline initialization file."""
+    def read_init_file(self, filename=None):
+        """Parse a readline initialization file.
+        The default filename is the last filename used."""
         readline.read_init_file(filename)
 
     def parse_and_bind(self, line):
