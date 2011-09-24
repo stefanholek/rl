@@ -122,7 +122,8 @@ you are done and rl is ready to use.
 Related
 =======
 
-`kmd.Kmd`_ is an rl-aware replacement for cmd.Cmd.
+`kmd.Kmd`_ is an rl-aware replacement for `cmd.Cmd`_.
 
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
+.. _`cmd.Cmd`: http://docs.python.org/library/cmd.html
 
