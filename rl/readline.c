@@ -155,7 +155,7 @@ The default filename is ~/.history.");
 static int history_file_length = -1; /* do not truncate history by default */
 
 static int
-_py_write_history_file(const char *s)
+_py_write_history(const char *s)
 {
 	errno = write_history(s);
 	if (!errno && history_file_length >= 0)
@@ -183,11 +183,11 @@ write_history_file(PyObject *self, PyObject *args)
 #endif
 	if (s != NULL && strchr(s, '~')) {
 		s = tilde_expand(s);
-		errno = _py_write_history_file(s);
+		errno = _py_write_history(s);
 		free(s);
 	}
 	else
-		errno = _py_write_history_file(s);
+		errno = _py_write_history(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
@@ -203,17 +203,17 @@ The default filename is ~/.history.");
 /* Set history file length */
 
 static PyObject*
-set_history_file_length(PyObject *self, PyObject *args)
+set_history_length(PyObject *self, PyObject *args)
 {
 	int length = history_file_length;
-	if (!PyArg_ParseTuple(args, "i:set_history_file_length", &length))
+	if (!PyArg_ParseTuple(args, "i:set_history_length", &length))
 		return NULL;
 	history_file_length = length;
 	Py_RETURN_NONE;
 }
 
-PyDoc_STRVAR(set_history_file_length_doc,
-"set_history_file_length(int) -> None\n\
+PyDoc_STRVAR(set_history_length_doc,
+"set_history_length(int) -> None\n\
 Set the maximum number of items written to\n\
 the history file. A negative value inhibits\n\
 history file truncation.");
@@ -222,13 +222,13 @@ history file truncation.");
 /* Get history file length */
 
 static PyObject*
-get_history_file_length(PyObject *self, PyObject *noarg)
+get_history_length(PyObject *self, PyObject *noarg)
 {
 	return PyInt_FromLong(history_file_length);
 }
 
-PyDoc_STRVAR(get_history_file_length_doc,
-"get_history_file_length() -> int\n\
+PyDoc_STRVAR(get_history_length_doc,
+"get_history_length() -> int\n\
 Return the maximum number of items written to\n\
 the history file.");
 
@@ -2406,10 +2406,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_get_history_item},
 	{"get_current_history_length", (PyCFunction)get_current_history_length,
 	 METH_NOARGS, doc_get_current_history_length},
-	{"set_history_file_length", set_history_file_length,
-	 METH_VARARGS, set_history_file_length_doc},
-	{"get_history_file_length", get_history_file_length,
-	 METH_NOARGS, get_history_file_length_doc},
+	{"set_history_length", set_history_length,
+	 METH_VARARGS, set_history_length_doc},
+	{"get_history_length", get_history_length,
+	 METH_NOARGS, get_history_length_doc},
 	{"set_completer", set_completer, METH_VARARGS, doc_set_completer},
 	{"get_completer", get_completer, METH_NOARGS, doc_get_completer},
 	{"get_completion_type", get_completion_type,
@@ -2972,7 +2972,6 @@ exceptions:\n\
 #. :func:`get_completion_type` returns a string not an integer.\n\
 #. :func:`get_completion_append_character` defaults to the space character.\n\
 #. :func:`get_history_item` is zero-based.\n\
-#. :func:`get_history_length() <get_history_file_length>` has been renamed to :func:`get_history_file_length`.\n\
 #. :func:`redisplay` accepts an optional ``force`` argument.\n\
 \n\
 Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\

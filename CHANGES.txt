@@ -11,9 +11,6 @@ Changelog
 - Accept None as argument to file operations under Python 3.
   [stefan]
 
-- Rename ``get_history_length`` to ``get_history_file_length``, same for ``set_*``.
-  [stefan]
-
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
 
 
