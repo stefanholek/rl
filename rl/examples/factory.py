@@ -1,10 +1,11 @@
 # Complete system commands
 
 # Instead of implementing the generator protocol directly,
-# we can provide a matcher function and use the generator
+# we can provide a matcher function and use the 'generator'
 # factory on it.
 
 import os
+
 from rl import completer
 from rl import generator
 from rl import print_exc

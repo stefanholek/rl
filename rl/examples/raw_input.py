@@ -1,18 +1,20 @@
 # Complete system commands
 
 import os
+
 from rl import completer
 from rl import print_exc
 
 
 class CommandCompleter(object):
-    # A completion function implementing readline's
+    # A completion "function" implementing readline's
     # generator protocol
 
     @print_exc
     def __call__(self, text, state):
         if state == 0:
             self.matches = []
+            # Find executables matching 'text'
             for dir in os.environ.get('PATH').split(':'):
                 dir = os.path.expanduser(dir)
                 if os.path.isdir(dir):

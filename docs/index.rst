@@ -16,6 +16,7 @@ API Documentation
    completion
    history
    readline
+   examples
 
 Upstream Documentation
 ======================
