@@ -2,9 +2,6 @@
 Completion Support
 ==================
 
-.. toctree::
-   :maxdepth: 2
-
 .. automodule:: rl._completion
 
 Completer Interface

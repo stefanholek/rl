@@ -2,9 +2,6 @@
 :mod:`rl` -- GNU Readline Bindings
 ===================================================================
 
-.. toctree::
-   :maxdepth: 2
-
 .. automodule:: rl
 
 API Documentation

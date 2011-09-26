@@ -2,9 +2,6 @@
 History Support
 ===============
 
-.. toctree::
-   :maxdepth: 2
-
 .. automodule:: rl._history
 
 History Interface

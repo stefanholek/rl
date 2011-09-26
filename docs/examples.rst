@@ -2,9 +2,6 @@
 Example Code
 ==================
 
-.. toctree::
-   :maxdepth: 2
-
 Introductory code examples.
 
 Completion Function
