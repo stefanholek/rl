@@ -84,7 +84,7 @@ Readline History
 ================
 
 History allows readline to save and later recall lines the user has entered.
-The :class:`~rl.History` class provides a list-like interface to the
+The :obj:`history <rl.History>` object provides a list-like interface to the
 history buffer as well as functions to persist the history between sessions.
 """
 
