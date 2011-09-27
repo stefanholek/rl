@@ -7,7 +7,7 @@ Introductory code examples.
 Completion Function
 ===================
 
-The *completion entry function* is called as ``function(text, state)`` for
+The completion entry function is called as ``function(text, state)`` for
 state in 0, 1, 2, ... until it returns None. It should return the next
 possible completion for ``text``:
 
@@ -24,7 +24,7 @@ protocol:
 Multiple Completions
 ====================
 
-Most of the time the *completion entry function* is itself a dispatcher,
+Most of the time the completion entry function is itself a dispatcher,
 forwarding calls to more specific completion functions depending on
 position and format of the completion word:
 
