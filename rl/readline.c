@@ -850,8 +850,7 @@ PyDoc_STRVAR(doc_redisplay,
 "redisplay([force]) -> None\n\
 Update the screen to reflect the current \
 contents of the line buffer. If ``force`` is True, readline\n\
-resets its internal state and \
-redisplays the entire line, including the prompt area.");
+redisplays the prompt area as well as the line.");
 
 
 /* <rl.readline> */

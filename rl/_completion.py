@@ -415,8 +415,7 @@ class Completion(object):
     def redisplay(self, force=False):
         """Update the screen to reflect the current contents of
         :attr:`~rl.Completion.line_buffer`. If ``force`` is True, readline
-        resets its internal state and redisplays the entire line, including
-        the prompt area."""
+        redisplays the prompt area as well as the line."""
         readline.redisplay(force)
 
     # Helpers
