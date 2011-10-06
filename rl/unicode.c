@@ -21,9 +21,9 @@ PyUnicode_DECODE(const char *text)
 PyObject *
 PyUnicode_DECODE_CHAR(char character)
 {
-	char string[2] = "\0";
+	char text[2] = "\0";
 
-	string[0] = character;
+	text[0] = character;
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
 }
 
