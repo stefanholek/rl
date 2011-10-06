@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.1 - Unreleased
+2.0.1 - 2011-10-06
 ------------------
 
 - Fix a C compiler issue under Python 3 on Linux.
