@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0 - Unreleased
+2.0 - 2011-10-06
 ----------------
 
 - Drop support for cmd.Cmd. You now must derive your command
@@ -11,7 +11,7 @@ Changelog
 - Accept None as argument to file operations under Python 3.
   [stefan]
 
-- Switch to pretty Sphinx 1.1 based docs.
+- Switch to pretty Sphinx-based docs.
   [stefan]
 
 .. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
