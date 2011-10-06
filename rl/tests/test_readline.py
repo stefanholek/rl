@@ -49,6 +49,11 @@ class ReadlineTests(JailSetup):
     def test_parse_and_bind_empty_string(self):
         self.assertEqual(readline.parse_and_bind(''), None)
 
+    def test_read_initfile_noarg(self):
+        self.mkfile('my_init')
+        self.mkfile(self.initfile)
+        readline.read_init_file()
+
     def test_read_initfile_None(self):
         self.mkfile('my_init')
         self.mkfile(self.initfile)
@@ -59,6 +64,10 @@ class ReadlineTests(JailSetup):
         self.mkfile(self.initfile)
         self.assertEqual(readline.read_init_file(''), None)
 
+    def test_read_history_file_noarg(self):
+        self.mkfile(self.histfile)
+        readline.read_history_file()
+
     def test_read_history_file_None(self):
         self.mkfile(self.histfile)
         readline.read_history_file(None)
@@ -66,6 +75,10 @@ class ReadlineTests(JailSetup):
     def test_read_history_file_empty_string(self):
         self.mkfile(self.histfile)
         self.assertRaises(IOError, readline.read_history_file, '')
+
+    def test_write_history_file_noarg(self):
+        readline.write_history_file()
+        self.assertTrue(isfile(self.histfile))
 
     def test_write_history_file_None(self):
         readline.write_history_file(None)

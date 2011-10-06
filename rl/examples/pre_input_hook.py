@@ -1,7 +1,8 @@
-# Show a pre-input hook at work
+# Demonstrate prompt and pre-input hook
 
 from rl import completer
 from rl import completion
+from rl import print_exc
 
 
 class Questionnaire(object):
@@ -21,6 +22,7 @@ class Questionnaire(object):
             raw_input(self.questions[self.index]+': ')
         print 'Thank you!'
 
+    @print_exc
     def pre_input_hook(self):
         # The pre-input hook is used to insert text into
         # the line buffer which the user may then edit

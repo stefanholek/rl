@@ -144,7 +144,6 @@ read_history_file(PyObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-static int history_file_length = -1; /* do not truncate history by default */
 PyDoc_STRVAR(doc_read_history_file,
 "read_history_file([filename]) -> None\n\
 Load a readline history file.\n\
@@ -152,6 +151,8 @@ The default filename is ~/.history.");
 
 
 /* Save and truncate a readline history file */
+
+static int history_file_length = -1; /* do not truncate history by default */
 
 static int
 _py_write_history(const char *s)
@@ -212,10 +213,10 @@ set_history_length(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(set_history_length_doc,
-"set_history_length(length) -> None\n\
-Set the maximal number of items which will be written to\n\
-the history file. A negative length is used to inhibit\n\
-history truncation.");
+"set_history_length(int) -> None\n\
+Set the maximum number of items written to\n\
+the history file. A negative value inhibits\n\
+history file truncation.");
 
 
 /* Get history file length */
@@ -228,7 +229,7 @@ get_history_length(PyObject *self, PyObject *noarg)
 
 PyDoc_STRVAR(get_history_length_doc,
 "get_history_length() -> int\n\
-Return the maximum number of items that will be written to\n\
+Return the maximum number of items written to\n\
 the history file.");
 
 
@@ -658,8 +659,8 @@ py_replace_history(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_replace_history,
-"replace_history_item(pos, line) -> None\n\
-Replace history item given by its position with contents of line.");
+"replace_history_item(pos, string) -> None\n\
+Replace history item given by its position with string.");
 
 
 /* Add a line to the history buffer */
@@ -685,7 +686,7 @@ py_add_history(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_add_history,
 "add_history(string) -> None\n\
-Add a line to the history buffer.");
+Add a line to the readline history.");
 
 
 /* Exported function to get any element of history */
@@ -847,10 +848,9 @@ redisplay(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_redisplay,
 "redisplay([force]) -> None\n\
-Change what's displayed on the screen to reflect the current \
-contents of the line buffer. If ``force`` is True, readline will \
-refresh the display even if its internal state indicates \
-an up-to-date screen.");
+Update the screen to reflect the current \
+contents of the line buffer. If ``force`` is True, readline\n\
+redisplays the prompt area as well as the line.");
 
 
 /* <rl.readline> */
@@ -2034,7 +2034,7 @@ read_key(PyObject *self, PyObject *noargs)
 PyDoc_STRVAR(doc_read_key,
 "read_key() -> string\n\
 Read a key from readline's input stream, typically the keyboard. \
-Returns characters inserted with ``stuff_char`` before starting to read \
+Returns characters inserted with :func:`stuff_char` before starting to read \
 from the stream.");
 
 
@@ -2275,8 +2275,8 @@ py_stifle_history(PyObject *self, PyObject *args)
 }
 
 PyDoc_STRVAR(doc_stifle_history,
-"stifle_history(max) -> None\n\
-Limit the history size to ``max`` entries.");
+"stifle_history(max_entries) -> None\n\
+Limit the history size to ``max_entries`` entries.");
 
 
 PyObject *
@@ -2961,23 +2961,27 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU Readline.\n\
 \n\
-The `rl.readline` module contains everything known from the standard library's\n\
+Readline Interface\n\
+===================\n\
+\n\
+The :mod:`rl.readline` module contains everything known from the standard library's\n\
 readline_ module. The standard library documentation applies with the following\n\
 exceptions:\n\
 \n\
-1. `get_completion_type` returns a string not an integer.\n\
-2. `get_completion_append_character` defaults to the space character.\n\
-3. `redisplay` accepts an optional ``force`` argument.\n\
-4. `get_history_item` is zero-based.\n\
+#. :func:`get_completion_type` returns a string not an integer.\n\
+#. :func:`get_completion_append_character` defaults to the space character.\n\
+#. :func:`get_history_item` is zero-based.\n\
+#. :func:`redisplay` accepts an optional ``force`` argument.\n\
 \n\
-Beyond that, `rl.readline` adds a plethora of new functionality which is\n\
-documented in the high-level interfaces `Completer`, `Completion`, and `History`.\n\
+Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
+documented in the high-level interfaces :obj:`Completer <rl.Completer>`,\n\
+:obj:`Completion <rl.Completion>`, and :obj:`History <rl.History>`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
-- `readline_version` returns the readline library version as an integer.\n\
-- `read_key` reads a character from the keyboard.\n\
-- `stuff_char` stuffs a character into the input stream.\n\
-- `complete_internal` executes the completer. Used in tests.\n\
+- :func:`readline_version` returns the readline library version as an integer.\n\
+- :func:`read_key` reads a character from the keyboard.\n\
+- :func:`stuff_char` stuffs a character into the input stream.\n\
+- :func:`complete_internal` executes the completer. Used in tests.\n\
 \n\
 .. _readline: http://docs.python.org/library/readline.html\n\
 ");

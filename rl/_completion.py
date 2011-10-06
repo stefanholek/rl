@@ -9,22 +9,20 @@ class Completer(object):
     """Interface to the readline completer.
 
     This class is not intended for instantiation beyond
-    the one ``completer`` object in this package.
-    Typically, applications will import the ``completer``
+    the one :obj:`completer <rl.Completer>` object in this module.
+    Typically, applications will import the :obj:`completer <rl.Completer>`
     object and use its properties and methods to configure
-    readline.
-
-    Settings made through the ``completer`` object are global
-    and permanent. If you want them restored you have to take
-    care of it yourself.
-
-    Example::
+    readline::
 
         from rl import completer
 
         completer.quote_characters = '"\\''
         completer.query_items = 100
         completer.parse_and_bind('TAB: complete')
+
+    Settings made through the :obj:`completer <rl.Completer>` object are global
+    and permanent. If you want them restored you have to take
+    care of it yourself.
     """
 
     __slots__ = ()
@@ -82,7 +80,7 @@ class Completer(object):
         doc="""Threshold above which the user is prompted if he
         really wants to see all matches. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed if a custom
-        ``display_matches_hook`` is installed."""
+        :attr:`~rl.Completer.display_matches_hook` is installed."""
         def get(self):
             return readline.get_completion_query_items()
         def set(self, int):
@@ -94,7 +92,9 @@ class Completer(object):
         doc="""The completion entry function.
         The function is called as ``function(text, state)`` for state
         in 0, 1, 2, ... until it returns None. It should return the
-        next possible completion starting with ``text``."""
+        next possible completion for ``text``.
+        See the :func:`~rl.generator` factory for a simple way to
+        support this protocol."""
         def get(self):
             return readline.get_completer()
         def set(self, function):
@@ -159,9 +159,9 @@ class Completer(object):
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
-        ``display_match_list`` to do the actual work. Note that ``longest_match_length``
-        is not a character count but the *printed length* of the longest string in
-        ``matches``, ready to be used for column formatting."""
+        :meth:`~rl.Completion.display_match_list` to do the actual work. Note that
+        ``longest_match_length`` is not a character count but the printed length
+        of the longest string in ``matches``, ready to be used for column formatting."""
         def get(self):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
@@ -220,8 +220,9 @@ class Completer(object):
 
     # Configuration functions
 
-    def read_init_file(self, filename):
-        """Parse a readline initialization file."""
+    def read_init_file(self, filename=None):
+        """Parse a readline initialization file.
+        The default filename is the last filename used."""
         readline.read_init_file(filename)
 
     def parse_and_bind(self, line):
@@ -256,30 +257,28 @@ class Completion(object):
     """Interface to the active readline completion.
 
     This class is not intended for instantiation beyond
-    the one ``completion`` object in this package.
-    Typically, applications will import the ``completion``
+    the one :obj:`completion <rl.Completion>` object in this module.
+    Typically, applications will import the :obj:`completion <rl.Completion>`
     object and use its properties and methods when implementing
-    custom completions.
-
-    Settings made through the ``completion`` object
-    are only valid for the duration of the current completion.
-    They are reset to their defaults when a new completion
-    starts.
-
-    Example::
+    custom completions::
 
         from rl import completion
 
         def complete(text):
             completion.append_character = '@'
             return completion.complete_username(text)
+
+    Settings made through the :obj:`completion <rl.Completion>` object
+    are only valid for the duration of the current completion.
+    They are reset to their defaults when a new completion
+    starts.
     """
 
     __slots__ = ()
 
     @apply
     def line_buffer():
-        doc="""The line buffer readline uses. The property
+        doc="""The line buffer readline uses. This property
         may be assigned to to change the contents of the line."""
         def get(self):
             return readline.get_line_buffer()
@@ -377,7 +376,7 @@ class Completion(object):
     @apply
     def filename_quoting_desired():
         doc="""If results are filenames, quote them. Defaults to True.
-        Has no effect if ``filename_completion_desired`` is False."""
+        Has no effect if :attr:`~rl.Completion.filename_completion_desired` is False."""
         def get(self):
             return readline.get_filename_quoting_desired()
         def set(self, bool):
@@ -392,7 +391,7 @@ class Completion(object):
     @property
     def rl_end(self):
         """The last position in the line. The cursor range
-        is defined as: ``0 <= rl_point <= rl_end``."""
+        is defined as: ``0 <= rl_point <= rl_end``"""
         return readline.get_rl_end()
 
     # Built-in functions
@@ -414,7 +413,9 @@ class Completion(object):
         readline.display_match_list(substitution, matches, longest_match_length)
 
     def redisplay(self, force=False):
-        """Refresh what's displayed on the screen."""
+        """Update the screen to reflect the current contents of
+        :attr:`~rl.Completion.line_buffer`. If ``force`` is True, readline
+        redisplays the prompt area as well as the line."""
         readline.redisplay(force)
 
     # Helpers

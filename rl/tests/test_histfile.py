@@ -177,3 +177,17 @@ class HistoryFileTests(JailSetup):
         self.assertEqual(history[4], 'dino')
         self.assertEqual(len(history), 5)
 
+    def test_write_file_replaces_file(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file('my_history', raise_exc=True)
+        history.clear()
+        history.append('barney')
+        history.append('betty')
+        history.write_file('my_history', raise_exc=True)
+        history.clear()
+        history.read_file('my_history', raise_exc=True)
+        self.assertEqual(len(history), 2)
+        self.assertEqual(history[0], 'barney')
+        self.assertEqual(history[1], 'betty')
+
