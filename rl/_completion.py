@@ -1,8 +1,8 @@
 """Readline completion support."""
 
 from rl import readline
-from rl.utils import apply
 from rl.utils import DEFAULT_DELIMS
+from apply import apply
 
 
 class Completer(object):

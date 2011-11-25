@@ -1,7 +1,7 @@
 """Readline history support."""
 
 from rl import readline
-from rl.utils import apply
+from apply import apply
 
 
 class History(object):

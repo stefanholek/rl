@@ -4,6 +4,11 @@ Changelog
 2.1 - Unreleased
 ----------------
 
+- Use apply_ instead of a local implementation.
+  [stefan]
+
+.. _apply: http://pypi.python.org/pypi/apply
+
 
 2.0.1 - 2011-10-06
 ------------------
