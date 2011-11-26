@@ -164,7 +164,9 @@ class BuildReadlineExtension(build_ext):
         return ''
 
     def configure_static_readline(self):
-        url = 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
+        tarball = 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
+        patches = 'http://ftp.gnu.org/gnu/readline/readline-6.2-patches'
+        have_patch = find_executable('patch') and 'true' or 'false'
         stdout = ''
 
         if not self.distribution.verbose:
@@ -175,10 +177,14 @@ class BuildReadlineExtension(build_ext):
             mkdir -p build
             cd build
             rm -rf readline-6.2 readline
-            echo downloading %(url)s %(stdout)s
-            curl --connect-timeout 30 -s %(url)s | tar zx
+            echo downloading %(tarball)s %(stdout)s
+            curl --connect-timeout 30 -s %(tarball)s | tar zx
             mv readline-6.2 readline
             cd readline
+            if [ "%(have_patch)s" = "true" ]; then
+                curl --connect-timeout 30 -s %(patches)s/readline62-001 | patch -p0
+                curl --connect-timeout 30 -s %(patches)s/readline62-002 | patch -p0
+            fi
             ./configure %(stdout)s
             """ % locals())
 

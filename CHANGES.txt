@@ -4,6 +4,9 @@ Changelog
 2.1 - Unreleased
 ----------------
 
+- Include readline 6.2 patches in static builds.
+  [stefan]
+
 - Use apply_ instead of a local implementation.
   [stefan]
 
