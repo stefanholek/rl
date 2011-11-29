@@ -4,6 +4,10 @@ Changelog
 2.1 - Unreleased
 ----------------
 
+- Force a static build when the RL_BUILD_STATIC_READLINE environment
+  variable is set.
+  [stefan]
+
 - Include readline 6.2 patches in static builds.
   [stefan]
 

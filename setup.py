@@ -9,6 +9,7 @@ from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
+from distutils import log
 from os.path import join, exists
 
 version = '2.1'
@@ -30,7 +31,12 @@ class ReadlineExtension(Extension):
         self.use_cppflags()
         self.use_ldflags()
 
-        if sys.platform == 'darwin':
+        # Build statically if environment variable is set
+        if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
+            self.use_static_readline()
+
+        # Mac OS X ships with libedit
+        elif sys.platform == 'darwin':
             # System Python
             if sys_path_contains('/System/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
@@ -39,15 +45,21 @@ class ReadlineExtension(Extension):
                 self.use_static_readline()
                 self.library_dirs.extend([
                     '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3]])
-            # MacPorts
+            # MacPorts Python
             elif '/opt/local/include' in self.include_dirs:
                 pass
-            # Fink
+            # Fink Python
             elif '/sw/include' in self.include_dirs:
                 pass
             # Other Python
             else:
                 self.use_static_readline()
+
+    def have_curl(self):
+        if not find_executable('curl'):
+            log.warn('WARNING: Cannot build statically. Command not found: curl')
+            return False
+        return True
 
     def use_cppflags(self):
         cppflags, srcdir = get_config_vars('CPPFLAGS', 'srcdir')
