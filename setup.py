@@ -31,11 +31,11 @@ class ReadlineExtension(Extension):
         self.use_cppflags()
         self.use_ldflags()
 
-        # Build statically if environment variable is set
+        # Force static build when environment variable is set
         if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
             self.use_static_readline()
 
-        # Mac OS X ships with libedit
+        # Mac OS X ships with libedit which we cannot use
         elif sys.platform == 'darwin':
             # System Python
             if sys_path_contains('/System/Library/Frameworks/Python.framework'):
