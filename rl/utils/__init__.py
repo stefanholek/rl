@@ -5,4 +5,7 @@ DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
 # Python 2 needs help importing global modules
-import readline
+try:
+    import readline
+except ImportError:
+    pass
