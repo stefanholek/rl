@@ -28,8 +28,8 @@ class ReadlineExtension(Extension):
         libraries = ['readline']
         Extension.__init__(self, name, sources, libraries=libraries)
 
-        self.use_cppflags()
-        self.use_ldflags()
+        self.use_include_dirs()
+        self.use_library_dirs()
 
         # Force static build when environment variable is set
         if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
@@ -61,18 +61,27 @@ class ReadlineExtension(Extension):
             return False
         return True
 
-    def use_cppflags(self):
+    def use_include_dirs(self):
         cppflags, srcdir = get_config_vars('CPPFLAGS', 'srcdir')
 
         for match in re.finditer(r'-I\s*(\S+)', cppflags):
             if match.group(1) not in ['.', 'Include', '%s/Include' % srcdir]:
                 self.include_dirs.extend([match.group(1)])
 
-    def use_ldflags(self):
+    def use_library_dirs(self):
         ldflags, = get_config_vars('LDFLAGS')
 
         for match in re.finditer(r'-L\s*(\S+)', ldflags):
             self.library_dirs.extend([match.group(1)])
+
+    def suppress_warnings(self):
+        cflags, = get_config_vars('CFLAGS')
+        cflags = cflags.split()
+
+        if '-Wall' in cflags:
+            self.extra_compile_args.append('-Wno-all')
+        if '-Wstrict-prototypes' in cflags:
+            self.extra_compile_args.append('-Wno-strict-prototypes')
 
     def use_static_readline(self):
         self.sources.extend([
@@ -119,8 +128,7 @@ class ReadlineExtension(Extension):
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
         self.libraries.remove('readline')
 
-        if sys.platform == 'darwin':
-            self.extra_compile_args.extend(['-Wno-all', '-Wno-strict-prototypes'])
+        self.suppress_warnings()
 
 
 class BuildReadlineExtension(build_ext):
