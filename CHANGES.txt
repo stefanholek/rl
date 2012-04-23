@@ -11,6 +11,9 @@ Changelog
 - Include readline 6.2 patches in static builds.
   [stefan]
 
+- Suppress compiler warnings on more platforms.
+  [stefan]
+
 - Use apply_ instead of a local implementation.
   [stefan]
 
