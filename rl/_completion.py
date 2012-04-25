@@ -2,7 +2,7 @@
 
 from rl import readline
 from rl.utils import DEFAULT_DELIMS
-from apply import apply
+from rl.utils import apply
 
 
 class Completer(object):

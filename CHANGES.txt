@@ -14,11 +14,6 @@ Changelog
 - Suppress compiler warnings on more platforms.
   [stefan]
 
-- Depend on apply_ to replace local implementation.
-  [stefan]
-
-.. _apply: http://pypi.python.org/pypi/apply
-
 
 2.0.1 - 2011-10-06
 ------------------
