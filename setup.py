@@ -43,8 +43,8 @@ class ReadlineExtension(Extension):
             # Mac Python
             elif sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
-                self.library_dirs.extend([
-                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3]])
+                self.library_dirs.append(
+                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
             # MacPorts Python
             elif '/opt/local/include' in self.include_dirs:
                 pass
@@ -66,13 +66,13 @@ class ReadlineExtension(Extension):
 
         for match in re.finditer(r'-I\s*(\S+)', cppflags):
             if match.group(1) not in ['.', 'Include', '%s/Include' % srcdir]:
-                self.include_dirs.extend([match.group(1)])
+                self.include_dirs.append(match.group(1))
 
     def use_library_dirs(self):
         ldflags, = get_config_vars('LDFLAGS')
 
         for match in re.finditer(r'-L\s*(\S+)', ldflags):
-            self.library_dirs.extend([match.group(1)])
+            self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
         cflags, = get_config_vars('CFLAGS')
@@ -159,7 +159,7 @@ class BuildReadlineExtension(build_ext):
                     break
 
         if termcap:
-            ext.libraries.extend([termcap])
+            ext.libraries.append(termcap)
 
         # Prepare the source tree
         if 'readline' not in ext.libraries:
