@@ -4,7 +4,7 @@ Changelog
 2.1 - Unreleased
 ----------------
 
-- Force a static build when the RL_BUILD_STATIC_READLINE environment
+- Force a static build if the RL_BUILD_STATIC_READLINE environment
   variable is set.
   [stefan]
 

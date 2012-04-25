@@ -31,7 +31,7 @@ class ReadlineExtension(Extension):
         self.use_include_dirs()
         self.use_library_dirs()
 
-        # Force static build when environment variable is set
+        # Force static build if environment variable is set
         if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
             self.use_static_readline()
 
