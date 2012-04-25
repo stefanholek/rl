@@ -24,10 +24,12 @@ def sys_path_contains(string):
 class ReadlineExtension(Extension):
 
     def __init__(self, name):
+        # Describe the extension
         sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c']
         libraries = ['readline']
         Extension.__init__(self, name, sources, libraries=libraries)
 
+        # Use include and library dirs from Python build
         self.use_include_dirs()
         self.use_library_dirs()
 
