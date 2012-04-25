@@ -131,7 +131,7 @@ class ReadlineExtension(Extension):
         self.suppress_warnings()
 
 
-class BuildReadlineExtension(build_ext):
+class ReadlineExtensionBuilder(build_ext):
 
     def build_extension(self, ext):
         lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
@@ -238,7 +238,7 @@ setup(name='rl',
           ReadlineExtension(name='rl.readline'),
       ],
       cmdclass={
-          'build_ext': BuildReadlineExtension,
+          'build_ext': ReadlineExtensionBuilder,
       },
       install_requires=[
           'setuptools',
