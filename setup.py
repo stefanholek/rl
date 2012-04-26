@@ -1,6 +1,8 @@
 # On Linux, install libreadline5-dev (or equivalent) before attempting
 # to build rl. On Mac OS X, make sure you have Xcode Tools installed.
 
+from __future__ import with_statement
+
 import sys
 import os
 import re
@@ -24,10 +26,12 @@ def sys_path_contains(string):
 class ReadlineExtension(Extension):
 
     def __init__(self, name):
+        # Describe the extension
         sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c']
         libraries = ['readline']
         Extension.__init__(self, name, sources, libraries=libraries)
 
+        # Use include and library dirs from Python build
         self.use_include_dirs()
         self.use_library_dirs()
 
@@ -140,17 +144,19 @@ class ReadlineExtensionBuilder(build_ext):
         termcap = ''
 
         # Find a termcap library
-        if 'readline' in ext.libraries:
-            readline = self.compiler.find_library_file(lib_dirs, 'readline')
-            termcap = self.get_termcap_from(readline)
+        if self.can_inspect_libraries():
 
-        if not termcap:
-            pyreadline = join(lib_dynload, 'readline.so')
-            termcap = self.get_termcap_from(pyreadline)
+            if 'readline' in ext.libraries:
+                readline = self.compiler.find_library_file(lib_dirs, 'readline')
+                termcap = self.get_termcap_from(readline)
 
-        if not termcap:
-            pycurses = join(lib_dynload, '_curses.so')
-            termcap = self.get_termcap_from(pycurses)
+            if not termcap:
+                pyreadline = join(lib_dynload, 'readline.so')
+                termcap = self.get_termcap_from(pyreadline)
+
+            if not termcap:
+                pycurses = join(lib_dynload, '_curses.so')
+                termcap = self.get_termcap_from(pycurses)
 
         if not termcap:
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
@@ -167,20 +173,27 @@ class ReadlineExtensionBuilder(build_ext):
 
         return build_ext.build_extension(self, ext)
 
+    def can_inspect_libraries(self):
+        if sys.platform == 'darwin':
+            cmd = 'otool'
+        else:
+            cmd = 'ldd'
+        if not find_executable(cmd):
+            log.warn('WARNING: Command not found: %s' % cmd)
+            return False
+        return True
+
     def get_termcap_from(self, module):
         if module and exists(module):
-            fp = None
             if sys.platform == 'darwin':
-                if find_executable('otool'):
-                    fp = os.popen('otool -L "%s"' % module)
-            elif find_executable('ldd'):
-                fp = os.popen('ldd "%s"' % module)
-            if fp is not None:
+                cmd = 'otool -L "%s"' % module
+            else:
+                cmd = 'ldd "%s"' % module
+            with os.popen(cmd) as fp:
                 libraries = fp.read()
-                fp.close()
-                for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                     if 'lib%s.' % name in libraries:
-                        return name
+            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+                 if 'lib%s.' % name in libraries:
+                    return name
         return ''
 
     def configure_static_readline(self):
