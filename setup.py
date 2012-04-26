@@ -144,7 +144,7 @@ class ReadlineExtensionBuilder(build_ext):
         termcap = ''
 
         # Find a termcap library
-        if self.have_otool():
+        if self.can_inspect_libraries():
 
             if 'readline' in ext.libraries:
                 readline = self.compiler.find_library_file(lib_dirs, 'readline')
@@ -173,7 +173,7 @@ class ReadlineExtensionBuilder(build_ext):
 
         return build_ext.build_extension(self, ext)
 
-    def have_otool(self):
+    def can_inspect_libraries(self):
         if sys.platform == 'darwin':
             cmd = 'otool'
         else:
