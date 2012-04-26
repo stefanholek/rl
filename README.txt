@@ -119,6 +119,16 @@ and watch the console. When it reads::
 
 you are done and rl is ready to use.
 
+Static Builds
+-------------
+
+Normally, rl.readline will attempt to link against your system's libreadline.
+If this is not possible, notably on Mac OS X which ships with libedit, a
+static version of GNU Readline 6.2 is built.
+
+To force a static build, set the RL_BUILD_STATIC_READLINE environment
+variable.
+
 Related
 =======
 
