@@ -14,7 +14,7 @@ from distutils.spawn import find_executable
 from distutils import log
 from os.path import join, exists
 
-version = '2.1'
+version = '2.2'
 
 
 def sys_path_contains(string):
