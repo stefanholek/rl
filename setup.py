@@ -82,8 +82,10 @@ class ReadlineExtension(Extension):
         cflags, = get_config_vars('CFLAGS')
         cflags = cflags.split()
 
-        if '-Wall' in cflags:
+        # -Wno-all is not supported by gcc < 4.2
+        if sys.platform == 'darwin':
             self.extra_compile_args.append('-Wno-all')
+
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
 
