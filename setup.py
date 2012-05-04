@@ -217,8 +217,8 @@ class ReadlineExtensionBuilder(build_ext):
             mv readline-6.2 readline
             cd readline
             if [ "%(have_patch)s" = "true" ]; then
-                curl --connect-timeout 30 -s %(patches)s/readline62-001 | patch -p0
-                curl --connect-timeout 30 -s %(patches)s/readline62-002 | patch -p0
+                curl --connect-timeout 30 -s %(patches)s/readline62-001 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline62-002 | patch -p0 %(stdout)s
             fi
             ./configure %(stdout)s
             """ % locals())
