@@ -166,6 +166,8 @@ class ReadlineExtensionBuilder(build_ext):
 
         if termcap:
             ext.libraries.append(termcap)
+        else:
+            log.warn('WARNING: Failed to find a termcap library')
 
         # Prepare the source tree
         if 'readline' not in ext.libraries:
