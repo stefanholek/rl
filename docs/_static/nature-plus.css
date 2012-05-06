@@ -7,3 +7,11 @@ div#call-graph ul ul {
 a tt.xref {
     color: #005b81;
 }
+
+h1 a tt.xref {
+    color: black;
+}
+
+div.related {
+    text-transform: lowercase;
+}
