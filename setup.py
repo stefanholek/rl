@@ -1,4 +1,4 @@
-# On Linux, install libreadline5-dev (or equivalent) before attempting
+# On Linux, install libreadline6-dev (or equivalent) before attempting
 # to build rl. On Mac OS X, make sure you have Xcode Tools installed.
 
 from __future__ import with_statement
