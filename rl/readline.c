@@ -2965,7 +2965,7 @@ Readline Interface\n\
 ===================\n\
 \n\
 The :mod:`rl.readline` module contains everything known from the standard library's\n\
-readline_ module. The standard library documentation applies with the following\n\
+:mod:`readline <py:readline>` module. The standard library documentation applies with the following\n\
 exceptions:\n\
 \n\
 #. :func:`get_completion_type` returns a string not an integer.\n\
@@ -2982,8 +2982,6 @@ Functions not exposed through a high-level interface:\n\
 - :func:`read_key` reads a character from the keyboard.\n\
 - :func:`stuff_char` stuffs a character into the input stream.\n\
 - :func:`complete_internal` executes the completer. Used in tests.\n\
-\n\
-.. _readline: http://docs.python.org/library/readline.html\n\
 ");
 
 #if (PY_MAJOR_VERSION >= 3)
