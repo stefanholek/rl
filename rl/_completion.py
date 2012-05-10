@@ -58,7 +58,7 @@ class Completer(object):
 
     @apply
     def filename_quote_characters():
-        doc="""Characters that must be quoted when they appear in filenames."""
+        doc="""Characters that must be quoted when they occur in filenames."""
         def get(self):
             return readline.get_filename_quote_characters()
         def set(self, string):
@@ -160,7 +160,7 @@ class Completer(object):
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
         :meth:`~rl.Completion.display_match_list` to do the actual work. Note that
-        ``longest_match_length`` is not a character count but the printed length
+        ``longest_match_length`` is not a character count but the *printed length*
         of the longest string in ``matches``, ready to be used for column formatting."""
         def get(self):
             return readline.get_completion_display_matches_hook()
@@ -184,8 +184,8 @@ class Completer(object):
     def filename_quoting_function():
         doc="""The filename quoting function.
         The function is called as ``function(text, single_match, quote_char)``
-        and should return a string representing a quoted version
-        of ``text``, or None to indicate no change. The ``single_match``
+        and should return a quoted version of ``text``, or None to
+        indicate no change. The ``single_match``
         argument is True if the completion has generated only one match
         (may be used to close quotes)."""
         def get(self):
@@ -198,8 +198,8 @@ class Completer(object):
     def filename_dequoting_function():
         doc="""The filename dequoting function.
         The function is called as ``function(text, quote_char)``
-        and should return a string representing a dequoted version of
-        ``text``, or None to indicate no change."""
+        and should return a dequoted version of ``text``, or None to
+        indicate no change."""
         def get(self):
             return readline.get_filename_dequoting_function()
         def set(self, function):

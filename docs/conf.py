@@ -25,7 +25,7 @@ import sys, os, time, commands
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -92,8 +92,9 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #html_theme = 'default'
-#html_theme = 'nature'
-html_theme = 'sphinxdoc'
+#html_theme = 'sphinxdoc'
+html_theme = 'nature'
+html_style = 'nature-plus.css'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -220,4 +221,8 @@ man_pages = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {
+    'py': ('http://docs.python.org', 'http://docs.python.org/2.7/objects.inv'),
+    'py3k': ('http://docs.python.org/py3k', 'http://docs.python.org/3.2/objects.inv'),
+}
+

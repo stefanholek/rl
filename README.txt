@@ -57,7 +57,7 @@ readline
     *completion*, and *history* interfaces make use of this module, and you
     should rarely need to interact with it directly.
 
-For further details, please refer to the `API Documentation`_.
+For further details please refer to the `API Documentation`_.
 
 .. _`API Documentation`: http://packages.python.org/rl
 
@@ -96,19 +96,20 @@ front-end for GnuPG built entirely around tab completion.
 .. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples
 .. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
 
-Repository Access
------------------
+Development
+-----------
 
-rl development is hosted on GitHub_.
+rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 
 .. _GitHub: http://github.com/stefanholek/rl
+.. _`issue tracker`: https://github.com/stefanholek/rl/issues
 
 Installation
 ============
 
 rl requires Python 2.5 or higher and GNU Readline 5.0 or higher.
 
-On Linux, install libreadline5-dev (or equivalent) before attempting to build
+On Linux, install libreadline6-dev before attempting to build
 rl. On Mac OS X, make sure you have Xcode Tools installed. Then type::
 
     easy_install rl

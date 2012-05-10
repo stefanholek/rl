@@ -7,6 +7,9 @@ Changelog
 - Restore support for gcc < 4.2.
   [stefan]
 
+- Switch to a happier looking Sphinx theme.
+  [stefan]
+
 
 2.1 - 2012-04-27
 ----------------
