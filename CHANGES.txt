@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2 - Unreleased
+2.2 - 2012-05-10
 ----------------
 
 - Restore support for gcc < 4.2.
