@@ -207,7 +207,7 @@ class ReadlineExtensionBuilder(build_ext):
     def configure_static_readline(self):
         tarball = 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
         patches = 'http://ftp.gnu.org/gnu/readline/readline-6.2-patches'
-        have_patch = find_executable('patch') and 'true' or 'false'
+        have_patch = find_executable('patch') and 'True' or 'False'
         stdout = ''
 
         if not self.distribution.verbose:
@@ -222,7 +222,7 @@ class ReadlineExtensionBuilder(build_ext):
             curl --connect-timeout 30 -s %(tarball)s | tar zx
             mv readline-6.2 readline
             cd readline
-            if [ "%(have_patch)s" = "true" ]; then
+            if [ "%(have_patch)s" = "True" ]; then
                 curl --connect-timeout 30 -s %(patches)s/readline62-001 | patch -p0 %(stdout)s
                 curl --connect-timeout 30 -s %(patches)s/readline62-002 | patch -p0 %(stdout)s
             fi
