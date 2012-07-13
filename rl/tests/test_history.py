@@ -289,3 +289,23 @@ class HistoryStiflingTests(unittest.TestCase):
         history[0] = 'hopper'
         self.assertEqual([x for x in reversed(history)], ['dino', 'bammbamm', 'pebbles', 'betty', 'hopper'])
 
+
+class HistorySpeedTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+        for x in xrange(5000):
+            history.append('entry %d' % x)
+
+    def test_history_iterator(self):
+        for x in history:
+            pass
+
+    def test_history_reviterator(self):
+        for x in reversed(history):
+            pass
+
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
+

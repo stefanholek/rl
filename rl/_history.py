@@ -1,5 +1,7 @@
 """Readline history support."""
 
+import sys
+
 from rl import readline
 from rl.utils import apply
 
@@ -70,11 +72,13 @@ class History(object):
 
     def __iter__(self):
         """Iterate over history items."""
-        return iter(readline.get_history_list())
+        #return iter(readline.get_history_list())
+        return HistoryIterator(self)
 
     def __reversed__(self):
         """Reverse-iterate over history items."""
-        return reversed(readline.get_history_list())
+        #return reversed(readline.get_history_list())
+        return HistoryReverseIterator(self)
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file.
@@ -116,4 +120,50 @@ class History(object):
         return index
 
 history = History()
+
+
+class HistoryIterator(object):
+
+    def __init__(self, history):
+        self.history = history
+        self.index = 0
+
+    def __next__(self):
+        if self.index < len(self.history):
+            item = self.history[self.index]
+            self.index += 1
+            return item
+        raise StopIteration()
+
+    if sys.version_info[0] < 3:
+        next = __next__
+
+    def __iter__(self):
+        return self
+
+    def __length_hint__(self):
+        return len(self.history)
+
+
+class HistoryReverseIterator(object):
+
+    def __init__(self, history):
+        self.history = history
+        self.index = len(history) - 1
+
+    def __next__(self):
+        if 0 <= self.index < len(self.history):
+            item = self.history[self.index]
+            self.index -= 1
+            return item
+        raise StopIteration()
+
+    if sys.version_info[0] < 3:
+        next = __next__
+
+    def __iter__(self):
+        return self
+
+    def __length_hint__(self):
+        return len(self.history)
 
