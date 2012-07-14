@@ -27,7 +27,7 @@ class ReadlineExtension(Extension):
 
     def __init__(self, name):
         # Describe the extension
-        sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c']
+        sources = ['rl/readline.c', 'rl/stringarray.c', 'rl/unicode.c', 'rl/iterator.c']
         libraries = ['readline']
         Extension.__init__(self, name, sources, libraries=libraries)
 
