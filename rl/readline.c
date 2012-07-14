@@ -766,13 +766,13 @@ Return a forward iterator over the history (oldest to newest).");
 
 /* Exported function returning a reverse iterator over the history */
 
-static PyObject *hist_reversed(void);
+static PyObject *hist_reviter(void);
 
 
 static PyObject *
 get_history_reviter(PyObject *self, PyObject *noarg)
 {
-	return hist_reversed();
+	return hist_reviter();
 }
 
 PyDoc_STRVAR(doc_get_history_reviter,
@@ -3193,7 +3193,7 @@ typedef struct {
     HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
 } histreviterobject;
 
-static PyObject *hist_reversed(void);
+static PyObject *hist_reviter(void);
 static void histreviter_dealloc(histreviterobject *);
 static int histreviter_traverse(histreviterobject *, visitproc, void *);
 static PyObject *histreviter_next(histreviterobject *);
@@ -3239,7 +3239,7 @@ PyTypeObject PyHistRevIter_Type = {
 
 
 static PyObject *
-hist_reversed(void)
+hist_reviter(void)
 {
     histreviterobject *it;
 
