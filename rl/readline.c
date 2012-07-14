@@ -753,7 +753,7 @@ Element 0 of the list is the beginning of time.");
 static PyObject *
 get_history_iter(PyObject *self, PyObject *noarg)
 {
-	return hist_iter();
+	return HistoryIterator_New();
 }
 
 PyDoc_STRVAR(doc_get_history_iter,
@@ -766,7 +766,7 @@ Return a forward iterator over the history (oldest to newest).");
 static PyObject *
 get_history_reviter(PyObject *self, PyObject *noarg)
 {
-	return hist_reviter();
+	return HistoryReverseIterator_New();
 }
 
 PyDoc_STRVAR(doc_get_history_reviter,

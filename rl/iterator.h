@@ -3,7 +3,7 @@
 
 #include "Python.h"
 
-PyObject *hist_iter(void);
-PyObject *hist_reviter(void);
+PyObject *HistoryIterator_New(void);
+PyObject *HistoryReverseIterator_New(void);
 
 #endif /* __ITERATOR_H__ */

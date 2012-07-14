@@ -78,7 +78,7 @@ PyTypeObject PyHistIter_Type = {
 
 
 PyObject *
-hist_iter(void)
+HistoryIterator_New(void)
 {
     histiterobject *it;
 
@@ -196,7 +196,7 @@ PyTypeObject PyHistRevIter_Type = {
 
 
 PyObject *
-hist_reviter(void)
+HistoryReverseIterator_New(void)
 {
     histreviterobject *it;
 
