@@ -74,7 +74,7 @@ class History(object):
 
     def __reversed__(self):
         """Reverse-iterate over history items."""
-        return readline.get_history_reviter()
+        return readline.get_history_reverse_iter()
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file.

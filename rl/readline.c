@@ -764,13 +764,13 @@ Return a forward iterator over the history (oldest to newest).");
 /* Exported function returning a reverse iterator over the history */
 
 static PyObject *
-get_history_reviter(PyObject *self, PyObject *noarg)
+get_history_reverse_iter(PyObject *self, PyObject *noarg)
 {
 	return HistoryReverseIterator_New();
 }
 
-PyDoc_STRVAR(doc_get_history_reviter,
-"get_history_reviter() -> iterator\n\
+PyDoc_STRVAR(doc_get_history_reverse_iter,
+"get_history_reverse_iter() -> iterator\n\
 Return a reverse iterator over the history (newest to oldest).");
 
 
@@ -2570,8 +2570,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_history_list},
 	{"get_history_iter", get_history_iter,
 	 METH_NOARGS, doc_get_history_iter},
-	{"get_history_reviter", get_history_reviter,
-	 METH_NOARGS, doc_get_history_reviter},
+	{"get_history_reverse_iter", get_history_reverse_iter,
+	 METH_NOARGS, doc_get_history_reverse_iter},
 	/* </rl.readline> */
 
 	{0, 0}
