@@ -22,6 +22,8 @@
 #endif
 
 
+/* The following borrows heavily from list iterators */
+
 /*********************** History Iterator **************************/
 
 typedef struct {
