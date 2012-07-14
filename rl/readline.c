@@ -760,7 +760,7 @@ get_history_iter(PyObject *self, PyObject *noarg)
 }
 
 PyDoc_STRVAR(doc_get_history_iter,
-"get_history_iter() -> historyiterator\n\
+"get_history_iter() -> iterator\n\
 Return a forward iterator over the history (oldest to newest).");
 
 
@@ -776,7 +776,7 @@ get_history_reviter(PyObject *self, PyObject *noarg)
 }
 
 PyDoc_STRVAR(doc_get_history_reviter,
-"get_history_reviter() -> historyreverseiterator\n\
+"get_history_reviter() -> iterator\n\
 Return a reverse iterator over the history (newest to oldest).");
 
 
