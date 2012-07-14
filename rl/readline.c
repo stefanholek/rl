@@ -750,13 +750,13 @@ Element 0 of the list is the beginning of time.");
 
 /* Exported function returning an iterator over the history */
 
-static PyObject *hist_iter(PyObject *);
+static PyObject *hist_iter(void);
 
 
 static PyObject *
 get_history_iter(PyObject *self, PyObject *noarg)
 {
-	return hist_iter(NULL);
+	return hist_iter();
 }
 
 PyDoc_STRVAR(doc_get_history_iter,
@@ -766,13 +766,13 @@ Return a forward iterator over the history (oldest to newest).");
 
 /* Exported function returning a reverse iterator over the history */
 
-static PyObject *hist_reversed(PyObject *, PyObject *);
+static PyObject *hist_reversed(void);
 
 
 static PyObject *
 get_history_reviter(PyObject *self, PyObject *noarg)
 {
-	return hist_reversed(NULL, NULL);
+	return hist_reversed();
 }
 
 PyDoc_STRVAR(doc_get_history_reviter,
@@ -3072,7 +3072,7 @@ typedef struct {
     HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
 } histiterobject;
 
-static PyObject *hist_iter(PyObject *);
+static PyObject *hist_iter(void);
 static void histiter_dealloc(histiterobject *);
 static int histiter_traverse(histiterobject *, visitproc, void *);
 static PyObject *histiter_next(histiterobject *);
@@ -3120,7 +3120,7 @@ PyTypeObject PyHistIter_Type = {
 
 
 static PyObject *
-hist_iter(PyObject *seq)
+hist_iter(void)
 {
     histiterobject *it;
 
@@ -3193,7 +3193,7 @@ typedef struct {
     HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
 } histreviterobject;
 
-static PyObject *hist_reversed(PyObject *, PyObject *);
+static PyObject *hist_reversed(void);
 static void histreviter_dealloc(histreviterobject *);
 static int histreviter_traverse(histreviterobject *, visitproc, void *);
 static PyObject *histreviter_next(histreviterobject *);
@@ -3239,7 +3239,7 @@ PyTypeObject PyHistRevIter_Type = {
 
 
 static PyObject *
-hist_reversed(PyObject *seq, PyObject *unused)
+hist_reversed(void)
 {
     histreviterobject *it;
 
