@@ -32,7 +32,7 @@
 #  define RESTORE_LOCALE(sl)
 #endif
 
-/* GNU readline definitions */
+/* GNU Readline definitions */
 #undef HAVE_CONFIG_H  /* Else readline/chardefs.h includes strings.h */
 #define _FUNCTION_DEF /* Else readline/rltypedefs.h defines old-style types */
 #ifdef __STDC__
