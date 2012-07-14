@@ -30,7 +30,7 @@
 #undef HAVE_CONFIG_H  /* Else readline/chardefs.h includes strings.h */
 #define _FUNCTION_DEF /* Else readline/rltypedefs.h defines old-style types */
 #ifdef __STDC__
-#define PREFER_STDARG /* Use well-formed function prototypes */
+#define PREFER_STDARG /* Use ANSI C function prototypes */
 #define USE_VARARGS
 #endif
 #include <readline/readline.h>
