@@ -1,3 +1,9 @@
+/* Alternative Python bindings for GNU Readline
+ *
+ * Based on the readline.c source of Pyton 2.7.
+ * Author: Stefan H. Holek
+ */
+
 /* This module makes GNU readline available to Python.  It has ideas
  * contributed by Lee Busby, LLNL, and William Magro, Cornell Theory
  * Center.  The completer interface was inspired by Lele Gaifax.  More
