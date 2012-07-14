@@ -354,6 +354,16 @@ class HistoryIteratorTests(unittest.TestCase):
             if n == 3:
                 history.clear()
 
+    def test_length_hint(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = iter(history)
+        self.assertEqual(i.__length_hint__(), len(history))
+        for n, x in enumerate(i):
+            self.assertEqual(i.__length_hint__(), len(history)-n-1)
+
 
 class HistoryReverseIteratorTests(unittest.TestCase):
 
@@ -418,6 +428,16 @@ class HistoryReverseIteratorTests(unittest.TestCase):
         for n, x in enumerate(reversed(history)):
             if n == 3:
                 history.clear()
+
+    def test_length_hint(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = reversed(history)
+        self.assertEqual(i.__length_hint__(), len(history))
+        for n, x in enumerate(i):
+            self.assertEqual(i.__length_hint__(), len(history)-n-1)
 
 
 def test_suite():
