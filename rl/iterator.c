@@ -114,7 +114,6 @@ histiter_next(histiterobject *it)
 	HIST_ENTRY **seq;
 	PyObject *item;
 
-	assert(it != NULL);
 	if (it->it_seq == NULL)
 		return NULL;
 	index = it->it_index;
@@ -233,7 +232,6 @@ histreviter_next(histreviterobject *it)
 	HIST_ENTRY **seq;
 	PyObject *item;
 
-	assert(it != NULL);
 	if (it->it_seq == NULL)
 		return NULL;
 	index = it->it_index;
