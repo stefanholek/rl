@@ -91,6 +91,7 @@ HistoryIterator_New(void)
 	return (PyObject *)it;
 }
 
+
 static void
 histiter_dealloc(histiterobject *it)
 {
@@ -98,12 +99,13 @@ histiter_dealloc(histiterobject *it)
 	PyObject_GC_Del(it);
 }
 
+
 static int
 histiter_traverse(histiterobject *it, visitproc visit, void *arg)
 {
-	Py_VISIT(it->it_seq);
 	return 0;
 }
+
 
 static PyObject *
 histiter_next(histiterobject *it)
@@ -126,6 +128,7 @@ histiter_next(histiterobject *it)
 	it->it_seq = NULL;
 	return NULL;
 }
+
 
 static PyObject *
 histiter_len(histiterobject *it)
@@ -207,6 +210,7 @@ HistoryReverseIterator_New(void)
 	return (PyObject *)it;
 }
 
+
 static void
 histreviter_dealloc(histreviterobject *it)
 {
@@ -214,12 +218,13 @@ histreviter_dealloc(histreviterobject *it)
 	PyObject_GC_Del(it);
 }
 
+
 static int
 histreviter_traverse(histreviterobject *it, visitproc visit, void *arg)
 {
-	Py_VISIT(it->it_seq);
 	return 0;
 }
+
 
 static PyObject *
 histreviter_next(histreviterobject *it)
@@ -242,6 +247,7 @@ histreviter_next(histreviterobject *it)
 	it->it_seq = NULL;
 	return NULL;
 }
+
 
 static PyObject *
 histreviter_len(histreviterobject *it)
