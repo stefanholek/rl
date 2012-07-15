@@ -27,7 +27,7 @@
 
 typedef struct {
 	PyObject_HEAD
-	long it_index;
+	Py_ssize_t it_index;
 	HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
 } histiterobject;
 
