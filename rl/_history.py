@@ -20,10 +20,7 @@ class History(object):
 
     History entries can be accessed like elements in a Python list.
     The item at index 0 is the oldest, the item at -1 the most recent
-    history entry::
-
-        if current != history[-1]:
-            history.append(current)
+    history entry.
     """
 
     __slots__ = ()
