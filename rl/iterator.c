@@ -27,8 +27,8 @@
 
 typedef struct {
 	PyObject_HEAD
-	Py_ssize_t it_index;
-	HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
+	Py_ssize_t it_index;	/* Current iterator position */
+	int it_exhausted; 	/* True if the iterator is exhausted */
 } histiterobject;
 
 static void histiter_dealloc(histiterobject *);
@@ -86,8 +86,8 @@ HistoryIterator_New(void)
 	if (it == NULL)
 		return NULL;
 	it->it_index = 0;
-	it->it_seq = history_list();
-	_PyObject_GC_TRACK(it);
+	it->it_exhausted = 0;
+	PyObject_GC_Track(it);
 	return (PyObject *)it;
 }
 
@@ -95,7 +95,7 @@ HistoryIterator_New(void)
 static void
 histiter_dealloc(histiterobject *it)
 {
-	_PyObject_GC_UNTRACK(it);
+	PyObject_GC_UnTrack(it);
 	PyObject_GC_Del(it);
 }
 
@@ -111,20 +111,19 @@ static PyObject *
 histiter_next(histiterobject *it)
 {
 	Py_ssize_t index;
-	HIST_ENTRY **seq;
+	HIST_ENTRY **hist;
 	PyObject *item;
 
-	if (it->it_seq == NULL)
-		return NULL;
-	index = it->it_index;
-	seq = history_list();
-
-	if (index < history_length) {
-		item = PyString_FromString(seq[index]->line);
-		it->it_index++;
-		return item;
+	if (!it->it_exhausted) {
+		index = it->it_index;
+		if (index < history_length) {
+			hist = history_list();
+			item = PyString_FromString(hist[index]->line);
+			it->it_index++;
+			return item;
+		}
+		it->it_exhausted = 1;
 	}
-	it->it_seq = NULL;
 	return NULL;
 }
 
@@ -134,7 +133,7 @@ histiter_len(histiterobject *it)
 {
 	Py_ssize_t len;
 
-	if (it->it_seq != NULL) {
+	if (!it->it_exhausted) {
 		len = history_length - it->it_index;
 		if (len >= 0)
 			return PyInt_FromSsize_t(len);
@@ -147,8 +146,8 @@ histiter_len(histiterobject *it)
 
 typedef struct {
 	PyObject_HEAD
-	Py_ssize_t it_index;
-	HIST_ENTRY **it_seq; /* Set to NULL when iterator is exhausted */
+	Py_ssize_t it_index;	/* Current iterator position */
+	int it_exhausted;	/* True if the iterator is exhausted */
 } histreviterobject;
 
 static void histreviter_dealloc(histreviterobject *);
@@ -204,7 +203,7 @@ HistoryReverseIterator_New(void)
 	if (it == NULL)
 		return NULL;
 	it->it_index = history_length - 1;
-	it->it_seq = history_list();
+	it->it_exhausted = 0;
 	PyObject_GC_Track(it);
 	return (PyObject *)it;
 }
@@ -229,20 +228,19 @@ static PyObject *
 histreviter_next(histreviterobject *it)
 {
 	Py_ssize_t index;
-	HIST_ENTRY **seq;
+	HIST_ENTRY **hist;
 	PyObject *item;
 
-	if (it->it_seq == NULL)
-		return NULL;
-	index = it->it_index;
-	seq = history_list();
-
-	if (index >= 0 && index < history_length) {
-		item = PyString_FromString(seq[index]->line);
-		it->it_index--;
-		return item;
+	if (!it->it_exhausted) {
+		index = it->it_index;
+		if (index >= 0 && index < history_length) {
+			hist = history_list();
+			item = PyString_FromString(hist[index]->line);
+			it->it_index--;
+			return item;
+		}
+		it->it_exhausted = 1;
 	}
-	it->it_seq = NULL;
 	return NULL;
 }
 
@@ -252,7 +250,7 @@ histreviter_len(histreviterobject *it)
 {
 	Py_ssize_t len;
 
-	if (it->it_seq != NULL) {
+	if (!it->it_exhausted) {
 		len = it->it_index + 1;
 		if (len >= 0 && len <= history_length)
 			return PyInt_FromSsize_t(len);
