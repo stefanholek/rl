@@ -13,6 +13,11 @@
 #include "iterator.h"
 #include "unicode.h"
 
+/* Fake C++ bool type */
+#define bool int
+#define true 1
+#define false 0
+
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
@@ -28,7 +33,7 @@
 typedef struct {
 	PyObject_HEAD
 	Py_ssize_t it_index;	/* Current iterator position */
-	int it_exhausted; 	/* True if the iterator is exhausted */
+	bool it_exhausted;	/* True when the iterator is exhausted */
 } histiterobject;
 
 static void histiter_dealloc(histiterobject *);
@@ -86,7 +91,7 @@ HistoryIterator_New(void)
 	if (it == NULL)
 		return NULL;
 	it->it_index = 0;
-	it->it_exhausted = 0;
+	it->it_exhausted = false;
 	PyObject_GC_Track(it);
 	return (PyObject *)it;
 }
@@ -122,7 +127,7 @@ histiter_next(histiterobject *it)
 			it->it_index++;
 			return item;
 		}
-		it->it_exhausted = 1;
+		it->it_exhausted = true;
 	}
 	return NULL;
 }
@@ -147,7 +152,7 @@ histiter_len(histiterobject *it)
 typedef struct {
 	PyObject_HEAD
 	Py_ssize_t it_index;	/* Current iterator position */
-	int it_exhausted;	/* True if the iterator is exhausted */
+	bool it_exhausted;	/* True when the iterator is exhausted */
 } histreviterobject;
 
 static void histreviter_dealloc(histreviterobject *);
@@ -203,7 +208,7 @@ HistoryReverseIterator_New(void)
 	if (it == NULL)
 		return NULL;
 	it->it_index = history_length - 1;
-	it->it_exhausted = 0;
+	it->it_exhausted = false;
 	PyObject_GC_Track(it);
 	return (PyObject *)it;
 }
@@ -239,7 +244,7 @@ histreviter_next(histreviterobject *it)
 			it->it_index--;
 			return item;
 		}
-		it->it_exhausted = 1;
+		it->it_exhausted = true;
 	}
 	return NULL;
 }
