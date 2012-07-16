@@ -160,8 +160,8 @@ class Completer(object):
         The function is called as ``function(substitution, matches, longest_match_length)``
         once each time matches need to be displayed. It typically calls
         :meth:`~rl.Completion.display_match_list` to do the actual work. Note that
-        ``longest_match_length`` is not a character count but the *printed length*
-        of the longest string in ``matches``, ready to be used for column formatting."""
+        ``longest_match_length`` is not a character count but the "printed length"
+        of the longest string in ``matches``."""
         def get(self):
             return readline.get_completion_display_matches_hook()
         def set(self, function):
