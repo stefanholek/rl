@@ -45,10 +45,6 @@ class History(object):
         """Append a line to the history."""
         readline.add_history(line)
 
-    def __len__(self):
-        """The current history length."""
-        return readline.get_current_history_length()
-
     def __getitem__(self, index):
         """Return the history item at index."""
         return readline.get_history_item(self._norm_index(index))
@@ -60,6 +56,10 @@ class History(object):
     def __delitem__(self, index):
         """Remove the history item at index."""
         readline.remove_history_item(self._norm_index(index))
+
+    def __len__(self):
+        """The current history length."""
+        return readline.get_current_history_length()
 
     def __iter__(self):
         """Iterate over history items."""
