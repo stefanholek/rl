@@ -44,10 +44,6 @@ class History(object):
                 readline.stifle_history(int)
         return property(get, set, doc=doc)
 
-    def clear(self):
-        """Clear the history."""
-        readline.clear_history()
-
     def append(self, line):
         """Append a line to the history."""
         readline.add_history(line)
@@ -75,6 +71,10 @@ class History(object):
     def __reversed__(self):
         """Reverse-iterate over history items."""
         return readline.get_history_reverse_iter()
+
+    def clear(self):
+        """Clear the history."""
+        readline.clear_history()
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file.
