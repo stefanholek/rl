@@ -275,7 +275,6 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 
 static PyObject *startup_hook = NULL;
 static PyObject *pre_input_hook = NULL;
-static PyObject *completion_display_matches_hook = NULL;
 
 
 /* Startup hook */
@@ -341,12 +340,13 @@ Get the current pre_input_hook function.");
 
 /* Display matches hook */
 
+static PyObject *completion_display_matches_hook = NULL;
+
 static void
-on_completion_display_matches_hook(char **matches,
-				   int num_matches, int max_length);
+on_completion_display_matches_hook(char **matches, int num_matches, int max_length);
+
 static void
-default_display_matches_hook(char **matches,
-			     int num_matches, int max_length);
+default_display_matches_hook(char **matches, int num_matches, int max_length);
 
 
 static PyObject *
@@ -354,8 +354,7 @@ set_completion_display_matches_hook(PyObject *self, PyObject *args)
 {
 	PyObject *result = set_hook("completion_display_matches_hook",
 			&completion_display_matches_hook, args);
-	/* We cannot set this hook globally, since it replaces the
-	   default completion display. */
+
 	rl_completion_display_matches_hook =
 		completion_display_matches_hook ?
 		(rl_compdisp_func_t *)on_completion_display_matches_hook :
@@ -1243,10 +1242,11 @@ as any other character.");
 /* Filename quoting function */
 
 static PyObject *filename_quoting_function = NULL;
-static rl_quote_func_t *default_filename_quoting_function = NULL;
 
 static char *
 on_filename_quoting_function(const char *text, int match_type, char *quote_pointer);
+
+static rl_quote_func_t *default_filename_quoting_function = NULL;
 
 
 static PyObject *
@@ -2804,7 +2804,7 @@ setup_readline(void)
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
 		/* All nonalphanums except '.' */
-	/* Set default display matches hook */
+	/* Set the default display matches hook */
 	rl_completion_display_matches_hook = default_display_matches_hook;
 	/* Save a reference to the default filename quoting function */
 	default_filename_quoting_function = rl_filename_quoting_function;
