@@ -149,6 +149,27 @@ class HistoryTests(unittest.TestCase):
         history.max_entries = -3
         self.assertEqual(history.max_entries, -1)
 
+    def test_get_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__getitem__, slice(2, -1))
+
+    def test_set_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__setitem__, slice(2, -1), ['dino'])
+
+    def test_del_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__delitem__, slice(2, -1))
+
 
 class HistoryStiflingTests(unittest.TestCase):
 
@@ -288,4 +309,158 @@ class HistoryStiflingTests(unittest.TestCase):
         self.assertEqual([x for x in reversed(history)], ['dino', 'bammbamm', 'pebbles', 'betty', 'barney'])
         history[0] = 'hopper'
         self.assertEqual([x for x in reversed(history)], ['dino', 'bammbamm', 'pebbles', 'betty', 'hopper'])
+
+
+class HistoryIteratorTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_iter_class(self):
+        i = iter(history)
+        self.assertEqual(i.__class__.__name__, 'historyiterator')
+
+    def test_iterate(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual([x for x in history], ['fred', 'wilma', 'barney', 'betty'])
+
+    def test_iterate_empty(self):
+        self.assertEqual([x for x in history], [])
+
+    def test_iterate_exhausted(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = iter(history)
+        self.assertEqual([x for x in i], ['fred', 'wilma', 'barney', 'betty'])
+        self.assertRaises(StopIteration, i.next)
+
+    def test_shrinking_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(history):
+            if n % 2 == 0 and 0 < n < len(history):
+                del history[n]
+
+    def test_growing_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(history):
+            if n % 2 == 0 and 0 < n:
+                history.append('dino')
+
+    def test_cleared_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(history):
+            if n == 3:
+                history.clear()
+
+    def test_length_hint(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = iter(history)
+        self.assertEqual(i.__length_hint__(), len(history))
+        for n, x in enumerate(i):
+            self.assertEqual(i.__length_hint__(), len(history)-n-1)
+
+
+class HistoryReverseIteratorTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_iter_class(self):
+        i = reversed(history)
+        self.assertEqual(i.__class__.__name__, 'historyreverseiterator')
+
+    def test_iterate(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual([x for x in reversed(history)], ['betty', 'barney', 'wilma', 'fred'])
+
+    def test_iterate_empty(self):
+        self.assertEqual([x for x in reversed(history)], [])
+
+    def test_iterate_exhausted(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = reversed(history)
+        self.assertEqual([x for x in i], ['betty', 'barney', 'wilma', 'fred'])
+        self.assertRaises(StopIteration, i.next)
+
+    def test_shrinking_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(reversed(history)):
+            if n % 2 == 0 and 0 < n < len(history):
+                del history[n]
+
+    def test_growing_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(reversed(history)):
+            if n % 2 == 0 and 0 < n:
+                history.append('dino')
+
+    def test_cleared_seq(self):
+        # Don't crash if the history is modifed while iterating
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        history.append('pebbles')
+        history.append('bammbamm')
+        for n, x in enumerate(reversed(history)):
+            if n == 3:
+                history.clear()
+
+    def test_length_hint(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        i = reversed(history)
+        self.assertEqual(i.__length_hint__(), len(history))
+        for n, x in enumerate(i):
+            self.assertEqual(i.__length_hint__(), len(history)-n-1)
+
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 

@@ -1,3 +1,9 @@
+/* Alternative Python bindings for GNU Readline
+ *
+ * Based on the readline.c source of Pyton 2.7.
+ * Author: Stefan H. Holek
+ */
+
 /* This module makes GNU readline available to Python.  It has ideas
  * contributed by Lee Busby, LLNL, and William Magro, Cornell Theory
  * Center.  The completer interface was inspired by Lele Gaifax.  More
@@ -26,11 +32,11 @@
 #  define RESTORE_LOCALE(sl)
 #endif
 
-/* GNU readline definitions */
+/* GNU Readline definitions */
 #undef HAVE_CONFIG_H  /* Else readline/chardefs.h includes strings.h */
 #define _FUNCTION_DEF /* Else readline/rltypedefs.h defines old-style types */
 #ifdef __STDC__
-#define PREFER_STDARG /* Use well-formed function prototypes */
+#define PREFER_STDARG /* Use ANSI C function prototypes */
 #define USE_VARARGS
 #endif
 #include <readline/readline.h>
@@ -41,6 +47,7 @@
 
 /* Custom definitions */
 #include "stringarray.h"
+#include "iterator.h"
 #include "unicode.h"
 
 /* Python 3 compatibility */
@@ -745,6 +752,32 @@ PyDoc_STRVAR(doc_get_history_list,
 "get_history_list() -> list\n\
 Return the entire history as a Python list. \
 Element 0 of the list is the beginning of time.");
+
+
+/* Exported function returning an iterator over the history */
+
+static PyObject *
+get_history_iter(PyObject *self, PyObject *noarg)
+{
+	return HistoryIterator_New();
+}
+
+PyDoc_STRVAR(doc_get_history_iter,
+"get_history_iter() -> iterator\n\
+Return a forward iterator over the history (oldest to newest).");
+
+
+/* Exported function returning a reverse iterator over the history */
+
+static PyObject *
+get_history_reverse_iter(PyObject *self, PyObject *noarg)
+{
+	return HistoryReverseIterator_New();
+}
+
+PyDoc_STRVAR(doc_get_history_reverse_iter,
+"get_history_reverse_iter() -> iterator\n\
+Return a reverse iterator over the history (newest to oldest).");
 
 
 /* Exported function to get current length of history */
@@ -2541,6 +2574,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_history_is_stifled},
 	{"get_history_list", get_history_list,
 	 METH_NOARGS, doc_get_history_list},
+	{"get_history_iter", get_history_iter,
+	 METH_NOARGS, doc_get_history_iter},
+	{"get_history_reverse_iter", get_history_reverse_iter,
+	 METH_NOARGS, doc_get_history_reverse_iter},
 	/* </rl.readline> */
 
 	{0, 0}
@@ -3025,3 +3062,4 @@ initreadline(void)
 	setup_readline();
 }
 #endif
+

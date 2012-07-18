@@ -20,10 +20,7 @@ class History(object):
 
     History entries can be accessed like elements in a Python list.
     The item at index 0 is the oldest, the item at -1 the most recent
-    history entry::
-
-        if current != history[-1]:
-            history.append(current)
+    history entry.
     """
 
     __slots__ = ()
@@ -44,17 +41,9 @@ class History(object):
                 readline.stifle_history(int)
         return property(get, set, doc=doc)
 
-    def clear(self):
-        """Clear the history."""
-        readline.clear_history()
-
     def append(self, line):
         """Append a line to the history."""
         readline.add_history(line)
-
-    def __len__(self):
-        """The current history length."""
-        return readline.get_current_history_length()
 
     def __getitem__(self, index):
         """Return the history item at index."""
@@ -68,13 +57,21 @@ class History(object):
         """Remove the history item at index."""
         readline.remove_history_item(self._norm_index(index))
 
+    def __len__(self):
+        """The current history length."""
+        return readline.get_current_history_length()
+
     def __iter__(self):
         """Iterate over history items."""
-        return iter(readline.get_history_list())
+        return readline.get_history_iter()
 
     def __reversed__(self):
         """Reverse-iterate over history items."""
-        return reversed(readline.get_history_list())
+        return readline.get_history_reverse_iter()
+
+    def clear(self):
+        """Clear the history."""
+        readline.clear_history()
 
     def read_file(self, filename=None, raise_exc=False):
         """Load a readline history file.
@@ -107,6 +104,8 @@ class History(object):
 
     def _norm_index(self, index):
         """Support negative indexes."""
+        if isinstance(index, slice):
+            raise TypeError('history cannot be sliced')
         if not isinstance(index, (int, long)):
             raise TypeError('an integer is required')
         if index < 0:
