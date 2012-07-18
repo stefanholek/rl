@@ -104,6 +104,8 @@ class History(object):
 
     def _norm_index(self, index):
         """Support negative indexes."""
+        if isinstance(index, slice):
+            raise TypeError('history cannot be sliced')
         if not isinstance(index, (int, long)):
             raise TypeError('an integer is required')
         if index < 0:

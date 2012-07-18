@@ -8,6 +8,8 @@ Changelog
   intermediate lists.
   [stefan]
 
+- Raise a more informative error when history slicing is attempted.
+  [stefan]
 
 2.2 - 2012-05-10
 ----------------

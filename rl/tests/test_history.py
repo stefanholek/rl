@@ -149,6 +149,27 @@ class HistoryTests(unittest.TestCase):
         history.max_entries = -3
         self.assertEqual(history.max_entries, -1)
 
+    def test_get_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__getitem__, slice(2, -1))
+
+    def test_set_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__setitem__, slice(2, -1), ['dino'])
+
+    def test_del_slice(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, history.__delitem__, slice(2, -1))
+
 
 class HistoryStiflingTests(unittest.TestCase):
 
