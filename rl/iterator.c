@@ -49,7 +49,12 @@ static PyMethodDef histiter_methods[] = {
 };
 
 PyTypeObject PyHistIter_Type = {
+#if (PY_VERSION_HEX < 0x02060000)
+	PyObject_HEAD_INIT(&PyType_Type)
+	0,						/* ob_size */
+#else
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+#endif
 	"historyiterator",				/* tp_name */
 	sizeof(histiterobject),				/* tp_basicsize */
 	0,						/* tp_itemsize */
@@ -166,7 +171,12 @@ static PyMethodDef histreviter_methods[] = {
 };
 
 PyTypeObject PyHistRevIter_Type = {
+#if (PY_VERSION_HEX < 0x02060000)
+	PyObject_HEAD_INIT(&PyType_Type)
+	0,						/* ob_size */
+#else
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
+#endif
 	"historyreverseiterator",			/* tp_name */
 	sizeof(histreviterobject),			/* tp_basicsize */
 	0,						/* tp_itemsize */
