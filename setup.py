@@ -237,6 +237,7 @@ setup(name='rl',
                        open('CHANGES.txt').read(),
       classifiers=[
           'Development Status :: 5 - Production/Stable',
+          'Intended Audience :: Developers',
           'License :: OSI Approved :: GNU General Public License (GPL)',
           'License :: OSI Approved :: Python Software Foundation License',
           'Operating System :: MacOS :: MacOS X',
