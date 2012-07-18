@@ -339,6 +339,24 @@ class HistoryIteratorTests(unittest.TestCase):
         self.assertEqual([x for x in i], ['fred', 'wilma', 'barney', 'betty'])
         self.assertRaises(StopIteration, i.next)
 
+    def test_iterate_iterator(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual([x for x in iter(iter(history))], ['fred', 'wilma', 'barney', 'betty'])
+        list = ['a', 'b', 'c', 'd']
+        self.assertEqual([x for x in iter(iter(list))], ['a', 'b', 'c', 'd'])
+
+    def test_reversed_iterator(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, reversed, iter(history))
+        list = ['a', 'b', 'c', 'd']
+        self.assertRaises(TypeError, reversed, iter(list))
+
     def test_shrinking_seq(self):
         # Don't crash if the history is modifed while iterating
         history.append('fred')
@@ -413,6 +431,24 @@ class HistoryReverseIteratorTests(unittest.TestCase):
         i = reversed(history)
         self.assertEqual([x for x in i], ['betty', 'barney', 'wilma', 'fred'])
         self.assertRaises(StopIteration, i.next)
+
+    def test_iterate_iterator(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertEqual([x for x in iter(reversed(history))], ['betty', 'barney', 'wilma', 'fred'])
+        list = ['a', 'b', 'c', 'd']
+        self.assertEqual([x for x in iter(reversed(list))], ['d', 'c', 'b', 'a'])
+
+    def test_reversed_iterator(self):
+        history.append('fred')
+        history.append('wilma')
+        history.append('barney')
+        history.append('betty')
+        self.assertRaises(TypeError, reversed, reversed(history))
+        list = ['a', 'b', 'c', 'd']
+        self.assertRaises(TypeError, reversed, reversed(list))
 
     def test_shrinking_seq(self):
         # Don't crash if the history is modifed while iterating
