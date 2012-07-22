@@ -33,6 +33,11 @@ def complete_email(text):
 
 
 def main():
+    from rl.utils import DEFAULT_DELIMS
+
+    # Configure word break characters
+    completer.word_break_characters = DEFAULT_DELIMS.replace('-', '')
+
     # Configure special prefixes
     completer.special_prefixes = '@'
 
