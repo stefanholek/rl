@@ -524,7 +524,6 @@ set_endidx(PyObject *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-
 PyDoc_STRVAR(doc_set_endidx,
 "set_endidx(int) -> None\n\
 Set the ending index of the readline tab-completion scope.");
@@ -887,7 +886,6 @@ redisplays the prompt area as well as the line.");
 
 /* <rl.readline> */
 /* http://tiswww.case.edu/php/chet/readline/readline.html#SEC44 */
-
 
 /* Get/set completion append character */
 
