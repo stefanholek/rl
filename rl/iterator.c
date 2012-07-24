@@ -10,8 +10,8 @@
 #include <readline/history.h>
 
 /* Custom definitions */
-#include "iterator.h"
 #include "unicode.h"
+#include "iterator.h"
 
 /* Fake C++ bool type */
 #define bool int

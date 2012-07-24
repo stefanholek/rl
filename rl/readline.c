@@ -47,8 +47,8 @@
 
 /* Custom definitions */
 #include "stringarray.h"
-#include "iterator.h"
 #include "unicode.h"
+#include "iterator.h"
 
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
