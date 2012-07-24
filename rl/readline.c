@@ -3023,15 +3023,15 @@ Functions not exposed through a high-level interface:\n\
 
 #if (PY_MAJOR_VERSION >= 3)
 static struct PyModuleDef readlinemodule = {
-       PyModuleDef_HEAD_INIT,
-       "readline",
-       doc_module,
-       -1,
-       readline_methods,
-       NULL,
-       NULL,
-       NULL,
-       NULL
+	PyModuleDef_HEAD_INIT,
+	"readline",
+	doc_module,
+	-1,
+	readline_methods,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 PyMODINIT_FUNC
