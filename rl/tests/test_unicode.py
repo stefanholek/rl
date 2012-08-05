@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
-if sys.version_info[0] < 3:
-    import locale
-    locale.setlocale(locale.LC_ALL, '')
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 import unittest
 import unicodedata
+import sys
 
 from rl import completer
 from rl import completion
