@@ -1,5 +1,7 @@
 """Readline completion support."""
 
+import functools
+
 from rl import readline
 from rl.utils import DEFAULT_DELIMS
 from rl.utils import apply
@@ -457,25 +459,20 @@ def generator(func):
     The function is called as ``func(text)`` and should return an
     iterable of matches for ``text``.
     """
-    d = {}
+    cache = {}
 
     def generator_func(*args):
         # We are called as func(text, state) or func(self, text, state)
         # depending on whether we wrap a function or instance method.
         state, args = args[-1], args[:-1]
         if state == 0:
-            d['matches'] = iter(func(*args))
+            cache['matches'] = iter(func(*args))
         try:
-            return d['matches'].next()
+            return cache['matches'].next()
         except StopIteration:
             return None
 
-    # Allow to wrap callable non-functions which may not have a __name__
-    generator_func.__name__ = getattr(func, '__name__', func.__class__.__name__)
-    generator_func.__module__ = func.__module__
-    generator_func.__doc__ = func.__doc__
-    generator_func.__dict__.update(func.__dict__)
-    return generator_func
+    return functools.wraps(func)(generator_func)
 
 
 def print_exc(func):
@@ -484,16 +481,12 @@ def print_exc(func):
     Useful when debugging completions and hooks, as exceptions occurring
     there are usually swallowed by the in-between C code.
     """
-    def wrapped_func(*args, **kw):
+    def print_exc_func(*args, **kw):
         try:
             return func(*args, **kw)
         except:
             import traceback; traceback.print_exc()
             raise
 
-    wrapped_func.__name__ = func.__name__
-    wrapped_func.__module__ = func.__module__
-    wrapped_func.__doc__ = func.__doc__
-    wrapped_func.__dict__.update(func.__dict__)
-    return wrapped_func
+    return functools.wraps(func)(print_exc_func)
 
