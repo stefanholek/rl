@@ -466,9 +466,9 @@ def generator(func):
         # depending on whether we wrap a function or instance method.
         state, args = args[-1], args[:-1]
         if state == 0:
-            cache['matches'] = iter(func(*args))
+            cache[0] = iter(func(*args))
         try:
-            return cache['matches'].next()
+            return cache[0].next()
         except StopIteration:
             return None
 
