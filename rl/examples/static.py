@@ -24,7 +24,7 @@ def main():
     try:
         line = raw_input('string> ')
     except (EOFError, KeyboardInterrupt):
-        print # Emit newline
+        print # Newline
     else:
         print 'You typed:', line.strip()
 

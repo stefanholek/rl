@@ -50,7 +50,7 @@ def main():
     try:
         email = raw_input('email> ')
     except (EOFError, KeyboardInterrupt):
-        print # Emit newline
+        print # Newline
     else:
         print 'You typed:', email.strip()
 
