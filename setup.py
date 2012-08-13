@@ -9,7 +9,7 @@ import re
 
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
-from distutils.sysconfig import get_config_vars
+from distutils.sysconfig import get_config_var
 from distutils.spawn import find_executable
 from distutils import log
 from os.path import join, exists
@@ -71,20 +71,20 @@ class ReadlineExtension(Extension):
         return True
 
     def use_include_dirs(self):
-        cppflags, srcdir = get_config_vars('CPPFLAGS', 'srcdir')
+        cppflags = get_config_var('CPPFLAGS')
 
         for match in re.finditer(r'-I\s*(\S+)', cppflags):
-            if match.group(1) not in ['.', 'Include', '%s/Include' % srcdir]:
+            if match.group(1) not in ['.', 'Include', './Include']:
                 self.include_dirs.append(match.group(1))
 
     def use_library_dirs(self):
-        ldflags, = get_config_vars('LDFLAGS')
+        ldflags = get_config_var('LDFLAGS')
 
         for match in re.finditer(r'-L\s*(\S+)', ldflags):
             self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
-        cflags, = get_config_vars('CFLAGS')
+        cflags = get_config_var('CFLAGS')
         cflags = cflags.split()
 
         # -Wno-all is not supported by gcc < 4.2
