@@ -7,9 +7,6 @@ Changelog
 - Update to Python 3.3 Unicode C-API.
   [stefan]
 
-- Improve email completion example.
-  [stefan]
-
 
 2.3 - 2012-07-18
 ----------------
