@@ -858,6 +858,7 @@ Insert text into the command line.");
 
 extern int rl_display_fixed;
 
+
 static PyObject *
 redisplay(PyObject *self, PyObject *args)
 {
@@ -1798,7 +1799,8 @@ static PyObject *completion_word_break_hook = NULL;
 static char *
 on_completion_word_break_hook(void);
 
-extern char _rl_find_completion_word(int *fp, int *dp);
+extern char
+_rl_find_completion_word(int *fp, int *dp);
 
 
 static PyObject *
