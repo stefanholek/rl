@@ -472,7 +472,11 @@ def generator(func):
         except StopIteration:
             return None
 
-    return functools.wraps(func)(generator_func)
+    assignments = functools.WRAPPER_ASSIGNMENTS
+    if not hasattr(func, '__name__'):
+        assignments = [x for x in assignments if x != '__name__']
+
+    return functools.wraps(func, assignments)(generator_func)
 
 
 def print_exc(func):
