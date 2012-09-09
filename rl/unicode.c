@@ -49,15 +49,7 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 PyObject *
 PyUnicode_ENCODE(PyObject *text)
 {
-	PyObject *u;
-	PyObject *b;
-
-	u = PyUnicode_FromObject(text);
-	if (u == NULL)
-		return NULL;
-	b = PyUnicode_AsEncodedString(u, _ENCODING, _ERRORS);
-	Py_DECREF(u);
-	return b;
+	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
 }
 
 
