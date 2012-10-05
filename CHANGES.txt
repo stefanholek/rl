@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.4 - Unreleased
+2.4 - 2012-10-05
 ----------------
 
 - Update to Python 3.3 Unicode C-API.
