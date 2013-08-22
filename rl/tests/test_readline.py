@@ -87,3 +87,6 @@ class ReadlineTests(JailSetup):
     def test_write_history_file_empty_string(self):
         self.assertRaises(IOError, readline.write_history_file, '')
 
+    def test_redisplay_keyword_arg(self):
+        self.assertRaises(TypeError, readline.redisplay, force=True)
+
