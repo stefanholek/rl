@@ -3001,9 +3001,9 @@ PyDoc_STRVAR(doc_module,
 Readline Interface\n\
 ===================\n\
 \n\
-The :mod:`rl.readline` module contains everything known from the standard library's\n\
-:mod:`readline <py:readline>` module. The standard library documentation applies with the following\n\
-exceptions:\n\
+The :mod:`rl.readline` module is an API-compatible replacement for the standard\n\
+library's :mod:`readline <py:readline>` bindings.\n\
+The standard library documentation applies, with the following exceptions:\n\
 \n\
 #. :func:`get_completion_type` returns a string not an integer.\n\
 #. :func:`get_completion_append_character` defaults to the space character.\n\
@@ -3011,7 +3011,7 @@ exceptions:\n\
 #. :func:`redisplay` accepts an optional ``force`` argument.\n\
 \n\
 Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
-documented in the high-level interfaces :obj:`Completer <rl.Completer>`,\n\
+typically accessed through the high-level interfaces :obj:`Completer <rl.Completer>`,\n\
 :obj:`Completion <rl.Completion>`, and :obj:`History <rl.History>`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
@@ -3019,6 +3019,12 @@ Functions not exposed through a high-level interface:\n\
 - :func:`read_key` reads a character from the keyboard.\n\
 - :func:`stuff_char` stuffs a character into the input stream.\n\
 - :func:`complete_internal` executes the completer. Used in tests.\n\
+\n\
+.. note:: Applications must not use ``readline`` and ``rl.readline`` simultaneously.\n\
+   This is because only one module can own the ``ReadlineFunctionPointer``.\n\
+   To switch an existing application to ``rl.readline``, change occurrences of\n\
+   ``import readline`` to ``from rl import readline``.\n\
+\n\
 ");
 
 #if (PY_MAJOR_VERSION >= 3)
