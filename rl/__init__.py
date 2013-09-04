@@ -42,8 +42,8 @@ match display.
 
 For each phase, readline provides configuration settings and hooks that
 allow applications to control the way the library behaves. See the
-:class:`~rl.Completer` and :class:`~rl.Completion`
-classes for detailed descriptions of available properties.
+:class:`completer <rl.Completer>` and :class:`completion <rl.Completion>`
+objects for detailed descriptions of available properties.
 
 Call Graph
 ----------

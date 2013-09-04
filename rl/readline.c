@@ -3005,14 +3005,14 @@ The :mod:`rl.readline` module is an API-compatible replacement for the standard\
 library's :mod:`readline <py:readline>` bindings.\n\
 The standard library documentation applies, with the following exceptions:\n\
 \n\
-#. :func:`get_completion_type` returns a string not an integer.\n\
+#. :func:`get_completion_type` returns a string.\n\
 #. :func:`get_completion_append_character` defaults to the space character.\n\
 #. :func:`get_history_item` is zero-based.\n\
 #. :func:`redisplay` accepts an optional ``force`` argument.\n\
 \n\
 Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
-typically accessed through the high-level interfaces :obj:`Completer <rl.Completer>`,\n\
-:obj:`Completion <rl.Completion>`, and :obj:`History <rl.History>`.\n\
+typically accessed through the high-level interfaces :obj:`rl.completer <rl.Completer>`,\n\
+:obj:`rl.completion <rl.Completion>`, and :obj:`rl.history <rl.History>`.\n\
 Functions not exposed through a high-level interface:\n\
 \n\
 - :func:`readline_version` returns the readline library version as an integer.\n\

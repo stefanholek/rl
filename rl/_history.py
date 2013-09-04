@@ -6,6 +6,7 @@ from rl.utils import apply
 
 class History(object):
     """Interface to the readline history.
+    Used to read and write history files and to manipulate history entries.
 
     This class is not intended for instantiation beyond
     the one :obj:`history <rl.History>` object in this module.

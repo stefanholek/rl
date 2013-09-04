@@ -9,6 +9,7 @@ from rl.utils import apply
 
 class Completer(object):
     """Interface to the readline completer.
+    Used to configure the completion aspects of readline.
 
     This class is not intended for instantiation beyond
     the one :obj:`completer <rl.Completer>` object in this module.
@@ -257,6 +258,7 @@ completer = Completer()
 
 class Completion(object):
     """Interface to the active readline completion.
+    Used to interact with readline when a completion is in progress.
 
     This class is not intended for instantiation beyond
     the one :obj:`completion <rl.Completion>` object in this module.
