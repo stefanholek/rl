@@ -10,6 +10,7 @@ import re
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 from distutils.sysconfig import get_config_var
+from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from distutils import log
 from os.path import join, exists
@@ -71,9 +72,9 @@ class ReadlineExtension(Extension):
         return True
 
     def use_include_dirs(self):
-        cppflags = get_config_var('CPPFLAGS')
+        cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
 
-        for match in re.finditer(r'-I\s*(\S+)', cppflags):
+        for match in re.finditer(r'-I\s*(\S+)', cflags):
             if match.group(1) not in ['.', 'Include', './Include']:
                 self.include_dirs.append(match.group(1))
 
