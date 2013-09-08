@@ -4,6 +4,9 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Add readline 6.2 patches 003 and 004 to static builds.
+  [stefan]
+
 
 2.4 - 2012-10-05
 ----------------
