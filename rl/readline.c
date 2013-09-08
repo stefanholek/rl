@@ -3020,10 +3020,13 @@ Functions not exposed through a high-level interface:\n\
 - :func:`stuff_char` stuffs a character into the input stream.\n\
 - :func:`complete_internal` executes the completer. Used in tests.\n\
 \n\
-.. note:: Applications must not use ``readline`` and ``rl.readline`` simultaneously.\n\
-   This is because only one module can own the ``ReadlineFunctionPointer``.\n\
+.. note:: You can use ``rl.readline`` without the high-level APIs, it will just\n\
+   be more inconvenient.\n\
    To switch an existing application to ``rl.readline``, change occurrences of\n\
    ``import readline`` to ``from rl import readline``.\n\
+\n\
+.. note:: Applications must not use ``readline`` and ``rl`` simultaneously.\n\
+   This is because only one module can own the ``ReadlineFunctionPointer``.\n\
 \n\
 ");
 
