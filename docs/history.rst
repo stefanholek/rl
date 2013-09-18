@@ -21,5 +21,4 @@ History Interface
 .. automethod:: rl.History.clear
 .. automethod:: rl.History.read_file
 .. automethod:: rl.History.write_file
-.. automethod:: rl.History.reset
 

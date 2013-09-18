@@ -29,7 +29,6 @@ Completer Interface
 
 .. automethod:: rl.Completer.read_init_file
 .. automethod:: rl.Completer.parse_and_bind
-.. automethod:: rl.Completer.reset
 
 Completion Interface
 ====================
@@ -55,7 +54,6 @@ Completion Interface
 .. automethod:: rl.Completion.expand_tilde
 .. automethod:: rl.Completion.display_match_list
 .. automethod:: rl.Completion.redisplay
-.. automethod:: rl.Completion.reset
 
 Helper Functions
 ================

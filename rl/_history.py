@@ -99,7 +99,8 @@ class History(object):
     # Helpers
 
     def reset(self):
-        """Clear the history and reset all variables to their default values."""
+        """Clear the history and reset all variables to their built-in
+        defaults. Used in tests."""
         self.clear()
         self.max_entries = -1
 

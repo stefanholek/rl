@@ -235,7 +235,8 @@ class Completer(object):
     # Helpers
 
     def reset(self):
-        """Reset all completer variables to their default values."""
+        """Reset all completer variables to their built-in defaults.
+        Used in tests."""
         self.quote_characters = ''
         self.word_break_characters = DEFAULT_DELIMS
         self.special_prefixes = ''
@@ -425,7 +426,8 @@ class Completion(object):
     # Helpers
 
     def reset(self):
-        """Reset all completion variables to their default values."""
+        """Reset all completion variables to their built-in defaults.
+        Used in tests."""
         self.begidx = 0
         self.endidx = 0
         self.line_buffer = ''
