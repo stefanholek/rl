@@ -220,7 +220,7 @@ man_pages = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'py': ('http://docs.python.org', 'http://docs.python.org/2.7/objects.inv'),
-    'py3k': ('http://docs.python.org/py3k', 'http://docs.python.org/3.3/objects.inv'),
+    'py': ('http://docs.python.org/2', 'http://docs.python.org/2.7/objects.inv'),
+    'py3k': ('http://docs.python.org/3', 'http://docs.python.org/3.3/objects.inv'),
 }
 
