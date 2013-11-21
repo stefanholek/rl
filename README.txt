@@ -93,15 +93,15 @@ The code below implements system command completion similar to Bash::
 More examples_ are included in the package source. Also see gpgkeys_, a
 front-end for GnuPG built entirely around tab completion.
 
-.. _examples: http://github.com/stefanholek/rl/tree/master/rl/examples
-.. _gpgkeys: http://pypi.python.org/pypi/gpgkeys
+.. _examples: https://github.com/stefanholek/rl/tree/master/rl/examples
+.. _gpgkeys: https://pypi.python.org/pypi/gpgkeys
 
 Development
 -----------
 
 rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 
-.. _GitHub: http://github.com/stefanholek/rl
+.. _GitHub: https://github.com/stefanholek/rl
 .. _`issue tracker`: https://github.com/stefanholek/rl/issues
 
 Installation
@@ -135,6 +135,6 @@ Related
 
 `kmd.Kmd`_ is an rl-aware replacement for `cmd.Cmd`_.
 
-.. _`kmd.Kmd`: http://pypi.python.org/pypi/kmd
+.. _`kmd.Kmd`: https://pypi.python.org/pypi/kmd
 .. _`cmd.Cmd`: http://docs.python.org/library/cmd.html
 
