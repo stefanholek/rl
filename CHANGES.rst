@@ -4,7 +4,7 @@ Changelog
 2.5 - Unreleased
 ----------------
 
-- Add readline 6.2 patches 003 and 004 to static builds.
+- Add readline 6.2 patches 003 - 005 to static builds.
   [stefan]
 
 - Remove ``reset`` APIs from the documentation. They override
