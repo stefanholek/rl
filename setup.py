@@ -43,7 +43,9 @@ class ReadlineExtension(Extension):
         # Force static build if environment variable is set
         if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
             self.use_static_readline()
-
+        elif sys.platform.startswith('freebsd'):
+            self.include_dirs.append('/usr/src/contrib/libreadline')
+            self.include_dirs.append('/usr/local/include')
         # Mac OS X ships with libedit which we cannot use
         elif sys.platform == 'darwin':
             # System Python
