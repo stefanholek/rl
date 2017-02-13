@@ -2,6 +2,8 @@
 
 import functools
 
+from six import next
+
 from rl import readline
 from rl.utils import DEFAULT_DELIMS
 from rl.utils import apply
@@ -472,7 +474,7 @@ def generator(func):
         if state == 0:
             cache[0] = iter(func(*args))
         try:
-            return cache[0].next()
+            return next(cache[0])
         except StopIteration:
             return None
 

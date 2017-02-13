@@ -1,5 +1,7 @@
 """Readline history support."""
 
+from six import integer_types
+
 from rl import readline
 from rl.utils import apply
 
@@ -108,7 +110,7 @@ class History(object):
         """Support negative indexes."""
         if isinstance(index, slice):
             raise TypeError('history cannot be sliced')
-        if not isinstance(index, (int, long)):
+        if not isinstance(index, integer_types):
             raise TypeError('an integer is required')
         if index < 0:
             index = len(self) + index
