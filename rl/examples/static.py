@@ -22,11 +22,11 @@ def main():
     completer.parse_and_bind('TAB: complete')
 
     try:
-        line = raw_input('string> ')
+        line = input('string> ')
     except (EOFError, KeyboardInterrupt):
-        print # Newline
+        print() # Newline
     else:
-        print 'You typed:', line.strip()
+        print('You typed:', line.strip())
 
 
 if __name__ == '__main__':

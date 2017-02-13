@@ -35,8 +35,8 @@ def main():
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
 
-    command = raw_input('command> ')
-    print 'You typed:', command
+    command = input('command> ')
+    print('You typed:', command)
 
 
 if __name__ == '__main__':
