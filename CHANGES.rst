@@ -11,6 +11,14 @@ Changelog
   ``~/.inputrc`` and should only be used in tests.
   [stefan]
 
+- Stop using 2to3 in favor of six.
+  [stefan]
+
+- Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
+  [stefan]
+
+.. _`PYTHONMALLOC`: https://docs.python.org/3/whatsnew/3.6.html
+
 
 2.4 - 2012-10-05
 ----------------
