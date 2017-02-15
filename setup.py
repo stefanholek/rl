@@ -211,8 +211,8 @@ class ReadlineExtensionBuilder(build_ext):
         return ''
 
     def configure_static_readline(self):
-        tarball = 'http://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
-        patches = 'http://ftp.gnu.org/gnu/readline/readline-6.2-patches'
+        tarball = 'https://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
+        patches = 'https://ftp.gnu.org/gnu/readline/readline-6.2-patches'
         have_patch = find_executable('patch') and 'True' or 'False'
         stdout = ''
 
