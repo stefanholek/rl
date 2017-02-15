@@ -87,8 +87,8 @@ The code below implements system command completion similar to Bash::
         # Enable TAB completion
         completer.parse_and_bind('TAB: complete')
 
-        command = raw_input('command> ')
-        print 'You typed:', command
+        command = input('command> ')
+        print('You typed:', command)
 
 More examples_ are included in the package source. Also see gpgkeys_, a
 front-end for GnuPG built entirely around tab completion.
