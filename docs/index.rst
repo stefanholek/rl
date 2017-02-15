@@ -20,8 +20,8 @@ Upstream Documentation
 
 The `GNU Readline Library`_ and the `GNU History Library`_.
 
-.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-.. _`GNU History Library`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
+.. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
+.. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 Indices and Tables
 ==================

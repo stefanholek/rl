@@ -574,8 +574,8 @@ Set the readline word delimiters for tab-completion.");
 
 
 /* Free memory allocated for a history entry */
-/* http://bugs.python.org/issue9450 */
-/* http://bugs.python.org/issue12186 */
+/* https://bugs.python.org/issue9450 */
+/* https://bugs.python.org/issue12186 */
 
 static void
 _py_free_history_entry(HIST_ENTRY *entry)
@@ -891,7 +891,7 @@ redisplays the prompt area as well as the line.");
 
 
 /* <rl.readline> */
-/* http://tiswww.case.edu/php/chet/readline/readline.html#SEC44 */
+/* https://tiswww.case.edu/php/chet/readline/readline.html#SEC45 */
 
 /* Get/set completion append character */
 

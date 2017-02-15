@@ -21,9 +21,9 @@ The **rl** package aims to provide full implementations of GNU Readline's
 It also contains high-level APIs to better organize the namespace and
 shield applications from low-level verbosity.
 
-.. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/rltop.html
-.. _`Custom Completer`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-.. _`History`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
+.. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/rltop.html
+.. _`Custom Completer`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
+.. _`History`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 Package Contents
 ----------------
@@ -59,7 +59,7 @@ readline
 
 For further details please refer to the `API Documentation`_.
 
-.. _`API Documentation`: http://pythonhosted.org/rl
+.. _`API Documentation`: https://pythonhosted.org/rl
 
 Example Code
 ------------
@@ -136,5 +136,5 @@ Related
 `kmd.Kmd`_ is an rl-aware replacement for `cmd.Cmd`_.
 
 .. _`kmd.Kmd`: https://pypi.python.org/pypi/kmd
-.. _`cmd.Cmd`: http://docs.python.org/library/cmd.html
+.. _`cmd.Cmd`: https://docs.python.org/3/library/cmd.html
 

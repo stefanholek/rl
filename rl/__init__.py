@@ -93,8 +93,8 @@ history buffer as well as functions to persist the history between sessions.
 #
 # The `GNU Readline Library`_ and the `GNU History Library`_.
 #
-# .. _`GNU Readline Library`: http://tiswww.case.edu/php/chet/readline/readline.html#SEC44
-# .. _`GNU History Library`: http://tiswww.case.edu/php/chet/readline/history.html#SEC6
+# .. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
+# .. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 from __future__ import absolute_import
 

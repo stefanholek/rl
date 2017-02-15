@@ -121,7 +121,7 @@ Changelog
 - Add ``reset`` functions to completer, completion, and history.
   [stefan]
 
-.. _`issue 12186`: http://bugs.python.org/issue12186
+.. _`issue 12186`: https://bugs.python.org/issue12186
 
 
 1.14 - 2011-05-05
@@ -151,7 +151,7 @@ Changelog
   See Python `issue 9450`_.
   [stefan]
 
-.. _`issue 9450`: http://bugs.python.org/issue9450
+.. _`issue 9450`: https://bugs.python.org/issue9450
 
 
 1.11 - 2010-05-21
@@ -213,7 +213,7 @@ Changelog
   `issue 8065`_.
   [stefan]
 
-.. _`issue 8065`: http://bugs.python.org/issue8065
+.. _`issue 8065`: https://bugs.python.org/issue8065
 
 
 1.5.4 - 2010-03-01
@@ -240,7 +240,7 @@ Changelog
   Also see rl `issue/5`_.
   [stefan]
 
-.. _`issue/5`: http://github.com/stefanholek/rl/issues#issue/5
+.. _`issue/5`: https://github.com/stefanholek/rl/issues#issue/5
 
 
 1.5.1 - 2010-02-25
@@ -257,7 +257,7 @@ Changelog
   and "surrogateescape" error handler. See `PEP 383`_ for the low-down.
   [stefan]
 
-.. _`PEP 383`: http://www.python.org/dev/peps/pep-0383/
+.. _`PEP 383`: https://www.python.org/dev/peps/pep-0383/
 
 
 1.4.1 - 2010-02-13
@@ -309,7 +309,7 @@ Changelog
   Applications should call ``redisplay(force=True)`` to restore the prompt.
   [stefan]
 
-.. _`issue/1`: http://github.com/stefanholek/rl/issues#issue/1
+.. _`issue/1`: https://github.com/stefanholek/rl/issues#issue/1
 
 
 1.0 - 2009-11-08
