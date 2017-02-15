@@ -48,11 +48,11 @@ def main():
     completer.parse_and_bind('TAB: complete')
 
     try:
-        email = raw_input('email> ')
+        email = input('email> ')
     except (EOFError, KeyboardInterrupt):
-        print # Newline
+        print() # Newline
     else:
-        print 'You typed:', email.strip()
+        print('You typed:', email.strip())
 
 
 if __name__ == '__main__':

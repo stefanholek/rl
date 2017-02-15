@@ -1,5 +1,7 @@
 import unittest
 
+from six import next
+
 from rl import history
 from rl.testing import reset
 
@@ -95,14 +97,14 @@ class HistoryTests(unittest.TestCase):
     def test_list_long_pos(self):
         list = ['fred']
         self.assertEqual(len(list), 1)
-        self.assertEqual(list[0L], 'fred')
-        self.assertEqual(list[-1L], 'fred')
+        self.assertEqual(list[0], 'fred')
+        self.assertEqual(list[-1], 'fred')
 
     def test_history_long_pos(self):
         history.append('fred')
         self.assertEqual(len(history), 1)
-        self.assertEqual(history[0L], 'fred')
-        self.assertEqual(history[-1L], 'fred')
+        self.assertEqual(history[0], 'fred')
+        self.assertEqual(history[-1], 'fred')
 
     def test_out_of_range_pos(self):
         history.append('fred')
@@ -337,7 +339,7 @@ class HistoryIteratorTests(unittest.TestCase):
         history.append('betty')
         i = iter(history)
         self.assertEqual([x for x in i], ['fred', 'wilma', 'barney', 'betty'])
-        self.assertRaises(StopIteration, i.next)
+        self.assertRaises(StopIteration, next, i)
 
     def test_iterate_iterator(self):
         history.append('fred')
@@ -430,7 +432,7 @@ class HistoryReverseIteratorTests(unittest.TestCase):
         history.append('betty')
         i = reversed(history)
         self.assertEqual([x for x in i], ['betty', 'barney', 'wilma', 'fred'])
-        self.assertRaises(StopIteration, i.next)
+        self.assertRaises(StopIteration, next, i)
 
     def test_iterate_iterator(self):
         history.append('fred')

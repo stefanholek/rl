@@ -14,13 +14,13 @@ class Questionnaire(object):
         completer.pre_input_hook = self.pre_input_hook
 
     def interact(self):
-        print 'Please finish the following statements'
-        print '--------------------------------------'
+        print('Please finish the following statements')
+        print('--------------------------------------')
         # The prompt area is used for text the user
         # must not overwrite or change
         for self.index in range(len(self.questions)):
-            raw_input(self.questions[self.index]+': ')
-        print 'Thank you!'
+            input(self.questions[self.index]+': ')
+        print('Thank you!')
 
     @print_exc
     def pre_input_hook(self):
