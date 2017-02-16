@@ -3029,7 +3029,7 @@ Functions not exposed through a high-level interface:\n\
    To switch an existing application to ``rl.readline``, change occurrences of\n\
    ``import readline`` to ``from rl import readline``.\n\
 \n\
-.. note:: Applications must not use ``readline`` and ``rl`` simultaneously.\n\
+.. note:: Applications must not use ``readline`` and ``rl.readline`` simultaneously.\n\
    This is because only one module can own the ``ReadlineFunctionPointer``.\n\
 \n\
 ");
