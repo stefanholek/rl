@@ -3007,7 +3007,7 @@ Readline Interface\n\
 ===================\n\
 \n\
 The :mod:`rl.readline` module is an API-compatible replacement for the standard\n\
-library's :mod:`readline <py:readline>` bindings.\n\
+library's :mod:`readline <py3k:readline>` bindings.\n\
 The standard library documentation applies, with the following exceptions:\n\
 \n\
 #. :func:`get_completion_type` returns a string.\n\
