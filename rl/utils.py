@@ -1,5 +1,8 @@
 """Global constants."""
 
+from __future__ import absolute_import
+
+
 # Python uses these word break characters by default
 DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
