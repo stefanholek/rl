@@ -4,6 +4,13 @@
 DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
 
 
+# Python 2 needs help importing global modules
+try:
+    import readline
+except ImportError:
+    pass
+
+
 # Python 3 has no apply
 def apply(object, args=None, kwargs=None):
     if args is None:

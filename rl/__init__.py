@@ -96,10 +96,8 @@ history buffer as well as functions to persist the history between sessions.
 # .. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
 # .. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
-from __future__ import absolute_import
-
 # Grab the ReadlineFunctionPointer
-import readline
+import rl.utils
 import rl.readline
 
 # For subclassing
