@@ -18,12 +18,6 @@ from os.path import join, exists
 version = '2.5'
 
 
-def sys_path_contains(string):
-    for dir in sys.path:
-        if dir.startswith(string):
-            return True
-
-
 class ReadlineExtension(Extension):
 
     static_readline = False
@@ -56,10 +50,10 @@ class ReadlineExtension(Extension):
         # Mac OS X ships with libedit which we cannot use
         elif sys.platform == 'darwin':
             # System Python
-            if sys_path_contains('/System/Library/Frameworks/Python.framework'):
+            if self.sys_path_contains('/System/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
             # Mac Python
-            elif sys_path_contains('/Library/Frameworks/Python.framework'):
+            elif self.sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
@@ -80,6 +74,11 @@ class ReadlineExtension(Extension):
             log.warn('WARNING: Cannot build statically. Command not found: curl')
             return False
         return True
+
+    def sys_path_contains(self, string):
+        for dir in sys.path:
+            if dir.startswith(string):
+                return True
 
     def use_include_dirs(self):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
@@ -321,7 +320,7 @@ setup(name='rl',
       zip_safe=False,
       test_suite='rl.tests',
       ext_modules=[
-          ReadlineExtension(name='rl.readline'),
+          ReadlineExtension('rl.readline'),
       ],
       cmdclass={
           'build_ext': ReadlineExtensionBuilder,
