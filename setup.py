@@ -182,12 +182,7 @@ class ReadlineExtensionBuilder(build_ext):
         lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
         lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
 
-        try:
-            exec_prefix = sys.base_exec_prefix
-        except AttributeError:
-            exec_prefix = sys.exec_prefix
-
-        lib_dynload = join(exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
+        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
         ext_suffix = get_config_var('EXT_SUFFIX') or '.so'
 
         termcap = ''
