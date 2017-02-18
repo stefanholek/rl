@@ -146,35 +146,8 @@ class ReadlineExtension(Extension):
 class ReadlineExtensionBuilder(build_ext):
 
     def build_extension(self, ext):
-        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
-        lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
-        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
-
         # Find a termcap library
-        termcap = ''
-
-        if self.can_inspect_libraries():
-
-            if 'readline' in ext.libraries:
-                readline = self.compiler.find_library_file(lib_dirs, 'readline')
-                termcap = self.get_termcap_from(readline)
-
-            if not termcap:
-                pyreadline = join(lib_dynload, 'readline.so')
-                termcap = self.get_termcap_from(pyreadline)
-
-            if not termcap:
-                pycurses = join(lib_dynload, '_curses.so')
-                termcap = self.get_termcap_from(pycurses)
-
-            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
-                termcap = ''
-
-        if not termcap:
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                if self.compiler.find_library_file(lib_dirs, name):
-                    termcap = name
-                    break
+        termcap = self.find_termcap(ext)
 
         if termcap:
             ext.libraries.append(termcap)
@@ -186,6 +159,41 @@ class ReadlineExtensionBuilder(build_ext):
             self.configure_static_readline()
 
         return build_ext.build_extension(self, ext)
+
+    def find_termcap(self, ext):
+        lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
+        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
+
+        try:
+            exec_prefix = sys.base_exec_prefix
+        except AttributeError:
+            exec_prefix = sys.exec_prefix
+
+        lib_dynload = join(exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
+        ext_suffix = get_config_var('EXT_SUFFIX') or '.so'
+
+        termcap = ''
+
+        if self.can_inspect_libraries():
+            if 'readline' in ext.libraries:
+                readline = self.compiler.find_library_file(lib_dirs, 'readline')
+                termcap = self.get_termcap_from(readline)
+            if not termcap:
+                pyreadline = join(lib_dynload, 'readline' + ext_suffix)
+                termcap = self.get_termcap_from(pyreadline)
+            if not termcap:
+                pycurses = join(lib_dynload, '_curses' + ext_suffix)
+                termcap = self.get_termcap_from(pycurses)
+            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
+                termcap = ''
+
+        if not termcap:
+            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+                if self.compiler.find_library_file(lib_dirs, name):
+                    termcap = name
+                    break
+
+        return termcap
 
     def can_inspect_libraries(self):
         if sys.platform == 'darwin':
