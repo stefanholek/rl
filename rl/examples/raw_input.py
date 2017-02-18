@@ -1,5 +1,8 @@
 # Complete system commands
 
+from __future__ import print_function
+from six.moves import input
+
 import os
 
 from rl import completer

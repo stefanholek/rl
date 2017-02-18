@@ -3,6 +3,9 @@
 # The completion function oftentimes is a dispatcher,
 # forwarding calls to more specific completion functions.
 
+from __future__ import print_function
+from six.moves import input
+
 from rl import completer
 from rl import completion
 from rl import generator

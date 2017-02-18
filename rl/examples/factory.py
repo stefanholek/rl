@@ -4,6 +4,9 @@
 # we can provide a matcher function and use the 'generator'
 # factory on it.
 
+from __future__ import print_function
+from six.moves import input
+
 import os
 
 from rl import completer
