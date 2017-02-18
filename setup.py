@@ -26,6 +26,9 @@ def sys_path_contains(string):
 
 class ReadlineExtension(Extension):
 
+    static_readline = False
+    static_termcap = False
+
     def __init__(self, name):
         # Describe the extension
         sources = [
@@ -41,8 +44,13 @@ class ReadlineExtension(Extension):
         self.use_include_dirs()
         self.use_library_dirs()
 
+        # Build statically on readthedocs.io
+        if os.environ.get('READTHEDOCS') == 'True' and self.have_curl():
+            self.use_static_readline()
+            self.use_static_termcap()
+
         # Force static build if environment variable is set
-        if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
+        elif os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
             self.use_static_readline()
 
         # Mac OS X ships with libedit which we cannot use
@@ -98,6 +106,8 @@ class ReadlineExtension(Extension):
             self.extra_compile_args.append('-Wno-sign-compare')
 
     def use_static_readline(self):
+        self.static_readline = True
+
         self.sources.extend([
             'build/readline/bind.c',
             'build/readline/callback.c',
@@ -142,6 +152,9 @@ class ReadlineExtension(Extension):
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
         self.libraries.remove('readline')
 
+    def use_static_termcap(self):
+        self.static_termcap = True
+
 
 class ReadlineExtensionBuilder(build_ext):
 
@@ -154,8 +167,14 @@ class ReadlineExtensionBuilder(build_ext):
         else:
             log.warn('WARNING: Failed to find a termcap library')
 
+        # Build a static termcap library as last resort
+        if not termcap and ext.static_termcap:
+            self._build_static_tinfo()
+            ext.library_dirs = ['build/ncurses/lib'] + ext.library_dirs
+            ext.libraries.append('tinfo')
+
         # Prepare the source tree
-        if 'readline' not in ext.libraries:
+        if ext.static_readline:
             self.configure_static_readline()
 
         return build_ext.build_extension(self, ext)
@@ -175,7 +194,7 @@ class ReadlineExtensionBuilder(build_ext):
         termcap = ''
 
         if self.can_inspect_libraries():
-            if 'readline' in ext.libraries:
+            if not ext.static_readline:
                 readline = self.compiler.find_library_file(lib_dirs, 'readline')
                 termcap = self.get_termcap_from(readline)
             if not termcap:
@@ -244,6 +263,27 @@ class ReadlineExtensionBuilder(build_ext):
                 curl --connect-timeout 30 -s %(patches)s/readline62-005 | patch -p0 %(stdout)s
             fi
             ./configure %(stdout)s
+            """ % locals())
+
+    def _build_static_tinfo(self):
+        tarball = 'https://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz'
+        stdout = ''
+
+        if not self.distribution.verbose:
+            stdout = '>%s' % os.devnull
+
+        if not exists(join('build', 'ncurses', 'lib', 'libtinfo.a')):
+            os.system("""\
+            mkdir -p build
+            cd build
+            rm -rf ncurses-5.9 ncurses
+            echo downloading %(tarball)s %(stdout)s
+            curl --connect-timeout 30 -s %(tarball)s | tar zx
+            mv ncurses-5.9 ncurses
+            cd ncurses
+            ./configure --with-termlib --without-debug %(stdout)s
+            cd ncurses
+            make libs %(stdout)s
             """ % locals())
 
 
