@@ -201,7 +201,7 @@ class ReadlineExtensionBuilder(build_ext):
                 termcap = ''
 
         if not termcap:
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+            for name in ['tinfo', 'ncurses', 'ncursesw', 'curses', 'cursesw', 'termcap']:
                 if self.compiler.find_library_file(lib_dirs, name):
                     termcap = name
                     break
@@ -226,7 +226,7 @@ class ReadlineExtensionBuilder(build_ext):
                 cmd = 'ldd "%s"' % module
             with os.popen(cmd) as fp:
                 libraries = fp.read()
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+            for name in ['tinfo', 'ncurses', 'ncursesw', 'curses', 'cursesw', 'termcap']:
                  if 'lib%s.' % name in libraries:
                     return name
         return ''
