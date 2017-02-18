@@ -65,6 +65,8 @@ class ReadlineExtension(Extension):
             else:
                 self.use_static_readline()
 
+        self.suppress_warnings()
+
     def have_curl(self):
         if not find_executable('curl'):
             log.warn('WARNING: Cannot build statically. Command not found: curl')
@@ -85,15 +87,15 @@ class ReadlineExtension(Extension):
             self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
-        cflags = get_config_var('CFLAGS')
+        cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
         cflags = cflags.split()
 
-        # -Wno-all is not supported by gcc < 4.2
-        if sys.platform == 'darwin':
+        if '-Wall' in cflags:
             self.extra_compile_args.append('-Wno-all')
-
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
+        if '-Wsign-compare' in cflags:
+            self.extra_compile_args.append('-Wno-sign-compare')
 
     def use_static_readline(self):
         self.sources.extend([
@@ -139,8 +141,6 @@ class ReadlineExtension(Extension):
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
         self.libraries.remove('readline')
-
-        self.suppress_warnings()
 
 
 class ReadlineExtensionBuilder(build_ext):
