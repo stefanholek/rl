@@ -2837,7 +2837,7 @@ rlhandler(char *text)
 extern PyThreadState* _PyOS_ReadlineTState;
 
 static char *
-readline_until_enter_or_signal(char *prompt, int *signal)
+readline_until_enter_or_signal(const char *prompt, int *signal)
 {
 	char * not_done_reading = "";
 	fd_set selectset;
@@ -2909,7 +2909,7 @@ onintr(int sig)
 
 
 static char *
-readline_until_enter_or_signal(char *prompt, int *signal)
+readline_until_enter_or_signal(const char *prompt, int *signal)
 {
 	PyOS_sighandler_t old_inthandler;
 	char *p;
@@ -2935,8 +2935,13 @@ readline_until_enter_or_signal(char *prompt, int *signal)
 #endif /* defined(HAVE_SELECT) */
 
 
+#if (PY_MAJOR_VERSION < 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 4))
 static char *
 call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
+#else
+static char *
+call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
+#endif
 {
 	size_t n;
 	char *p, *q;

@@ -18,13 +18,10 @@ from os.path import join, exists
 version = '2.5'
 
 
-def sys_path_contains(string):
-    for dir in sys.path:
-        if dir.startswith(string):
-            return True
-
-
 class ReadlineExtension(Extension):
+
+    static_readline = False
+    static_termcap = False
 
     def __init__(self, name):
         # Describe the extension
@@ -41,17 +38,22 @@ class ReadlineExtension(Extension):
         self.use_include_dirs()
         self.use_library_dirs()
 
+        # Build statically on readthedocs.io
+        if os.environ.get('READTHEDOCS') == 'True' and self.have_curl():
+            self.use_static_readline()
+            self.use_static_termcap()
+
         # Force static build if environment variable is set
-        if os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
+        elif os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
             self.use_static_readline()
 
         # Mac OS X ships with libedit which we cannot use
         elif sys.platform == 'darwin':
             # System Python
-            if sys_path_contains('/System/Library/Frameworks/Python.framework'):
+            if self.sys_path_contains('/System/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
             # Mac Python
-            elif sys_path_contains('/Library/Frameworks/Python.framework'):
+            elif self.sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
@@ -65,11 +67,18 @@ class ReadlineExtension(Extension):
             else:
                 self.use_static_readline()
 
+        self.suppress_warnings()
+
     def have_curl(self):
         if not find_executable('curl'):
             log.warn('WARNING: Cannot build statically. Command not found: curl')
             return False
         return True
+
+    def sys_path_contains(self, string):
+        for dir in sys.path:
+            if dir.startswith(string):
+                return True
 
     def use_include_dirs(self):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
@@ -85,17 +94,19 @@ class ReadlineExtension(Extension):
             self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
-        cflags = get_config_var('CFLAGS')
+        cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
         cflags = cflags.split()
 
-        # -Wno-all is not supported by gcc < 4.2
-        if sys.platform == 'darwin':
+        if '-Wall' in cflags:
             self.extra_compile_args.append('-Wno-all')
-
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
+        if '-Wsign-compare' in cflags:
+            self.extra_compile_args.append('-Wno-sign-compare')
 
     def use_static_readline(self):
+        self.static_readline = True
+
         self.sources.extend([
             'build/readline/bind.c',
             'build/readline/callback.c',
@@ -140,52 +151,62 @@ class ReadlineExtension(Extension):
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
         self.libraries.remove('readline')
 
-        self.suppress_warnings()
+    def use_static_termcap(self):
+        self.static_termcap = True
 
 
 class ReadlineExtensionBuilder(build_ext):
 
     def build_extension(self, ext):
-        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
-        lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
-        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
-
         # Find a termcap library
-        termcap = ''
-
-        if self.can_inspect_libraries():
-
-            if 'readline' in ext.libraries:
-                readline = self.compiler.find_library_file(lib_dirs, 'readline')
-                termcap = self.get_termcap_from(readline)
-
-            if not termcap:
-                pyreadline = join(lib_dynload, 'readline.so')
-                termcap = self.get_termcap_from(pyreadline)
-
-            if not termcap:
-                pycurses = join(lib_dynload, '_curses.so')
-                termcap = self.get_termcap_from(pycurses)
-
-            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
-                termcap = ''
-
-        if not termcap:
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                if self.compiler.find_library_file(lib_dirs, name):
-                    termcap = name
-                    break
+        termcap = self.find_termcap(ext)
 
         if termcap:
             ext.libraries.append(termcap)
         else:
             log.warn('WARNING: Failed to find a termcap library')
 
+        # Build a static termcap library as last resort
+        if not termcap and ext.static_termcap:
+            self._build_static_tinfo()
+            ext.library_dirs = ['build/ncurses/lib'] + ext.library_dirs
+            ext.libraries.append('tinfo')
+
         # Prepare the source tree
-        if 'readline' not in ext.libraries:
+        if ext.static_readline:
             self.configure_static_readline()
 
         return build_ext.build_extension(self, ext)
+
+    def find_termcap(self, ext):
+        lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
+        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
+
+        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
+        ext_suffix = get_config_var('EXT_SUFFIX') or '.so'
+
+        termcap = ''
+
+        if self.can_inspect_libraries():
+            if not ext.static_readline:
+                readline = self.compiler.find_library_file(lib_dirs, 'readline')
+                termcap = self.get_termcap_from(readline)
+            if not termcap:
+                pyreadline = join(lib_dynload, 'readline' + ext_suffix)
+                termcap = self.get_termcap_from(pyreadline)
+            if not termcap:
+                pycurses = join(lib_dynload, '_curses' + ext_suffix)
+                termcap = self.get_termcap_from(pycurses)
+            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
+                termcap = ''
+
+        if not termcap:
+            for name in ['tinfo', 'ncurses', 'ncursesw', 'curses', 'cursesw', 'termcap']:
+                if self.compiler.find_library_file(lib_dirs, name):
+                    termcap = name
+                    break
+
+        return termcap
 
     def can_inspect_libraries(self):
         if sys.platform == 'darwin':
@@ -205,7 +226,7 @@ class ReadlineExtensionBuilder(build_ext):
                 cmd = 'ldd "%s"' % module
             with os.popen(cmd) as fp:
                 libraries = fp.read()
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+            for name in ['tinfo', 'ncurses', 'ncursesw', 'curses', 'cursesw', 'termcap']:
                  if 'lib%s.' % name in libraries:
                     return name
         return ''
@@ -236,6 +257,27 @@ class ReadlineExtensionBuilder(build_ext):
                 curl --connect-timeout 30 -s %(patches)s/readline62-005 | patch -p0 %(stdout)s
             fi
             ./configure %(stdout)s
+            """ % locals())
+
+    def _build_static_tinfo(self):
+        tarball = 'https://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz'
+        stdout = ''
+
+        if not self.distribution.verbose:
+            stdout = '>%s' % os.devnull
+
+        if not exists(join('build', 'ncurses', 'lib', 'libtinfo.a')):
+            os.system("""\
+            mkdir -p build
+            cd build
+            rm -rf ncurses-5.9 ncurses
+            echo downloading %(tarball)s %(stdout)s
+            curl --connect-timeout 30 -s %(tarball)s | tar zx
+            mv ncurses-5.9 ncurses
+            cd ncurses
+            ./configure --with-termlib --without-debug %(stdout)s
+            cd ncurses
+            make libs %(stdout)s
             """ % locals())
 
 
@@ -273,7 +315,7 @@ setup(name='rl',
       zip_safe=False,
       test_suite='rl.tests',
       ext_modules=[
-          ReadlineExtension(name='rl.readline'),
+          ReadlineExtension('rl.readline'),
       ],
       cmdclass={
           'build_ext': ReadlineExtensionBuilder,
