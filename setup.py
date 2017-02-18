@@ -145,7 +145,7 @@ class ReadlineExtension(Extension):
 
         self.define_macros.extend([
             ('HAVE_CONFIG_H', None),
-            ('RL_LIBRARY_VERSION', '"6.2"'),
+            ('RL_LIBRARY_VERSION', '"6.3"'),
         ])
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
@@ -232,8 +232,8 @@ class ReadlineExtensionBuilder(build_ext):
         return ''
 
     def configure_static_readline(self):
-        tarball = 'https://ftp.gnu.org/gnu/readline/readline-6.2.tar.gz'
-        patches = 'https://ftp.gnu.org/gnu/readline/readline-6.2-patches'
+        tarball = 'https://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz'
+        patches = 'https://ftp.gnu.org/gnu/readline/readline-6.3-patches'
         have_patch = find_executable('patch') and 'True' or 'False'
         stdout = ''
 
@@ -244,17 +244,20 @@ class ReadlineExtensionBuilder(build_ext):
             os.system("""\
             mkdir -p build
             cd build
-            rm -rf readline-6.2 readline
+            rm -rf readline-6.3 readline
             echo downloading %(tarball)s %(stdout)s
             curl --connect-timeout 30 -s %(tarball)s | tar zx
-            mv readline-6.2 readline
+            mv readline-6.3 readline
             cd readline
             if [ "%(have_patch)s" = "True" ]; then
-                curl --connect-timeout 30 -s %(patches)s/readline62-001 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline62-002 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline62-003 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline62-004 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline62-005 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-001 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-002 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-003 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-004 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-005 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-006 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-007 | patch -p0 %(stdout)s
+                curl --connect-timeout 30 -s %(patches)s/readline63-008 | patch -p0 %(stdout)s
             fi
             ./configure %(stdout)s
             """ % locals())
