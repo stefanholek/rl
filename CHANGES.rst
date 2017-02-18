@@ -4,7 +4,7 @@ Changelog
 2.5 - Unreleased
 ----------------
 
-- Add readline 6.2 patches 003 - 005 to static builds.
+- Update static builds to GNU Readline 6.3.
   [stefan]
 
 - Remove ``reset`` APIs from the documentation. They override
