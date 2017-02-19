@@ -7,12 +7,16 @@ import sys
 import os
 import re
 
-from setuptools import setup, find_packages, Extension
+from setuptools import setup
+from setuptools import find_packages
+from setuptools import Extension
 from setuptools.command.build_ext import build_ext
+
 from distutils.sysconfig import get_config_var
 from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from distutils import log
+
 from os.path import join, exists
 
 version = '2.5'
@@ -155,7 +159,7 @@ class ReadlineExtension(Extension):
         self.static_termcap = True
 
 
-class ReadlineExtensionBuilder(build_ext):
+class build_rl_ext(build_ext):
 
     def build_extension(self, ext):
         # Find a termcap library
@@ -321,7 +325,7 @@ setup(name='rl',
           ReadlineExtension('rl.readline'),
       ],
       cmdclass={
-          'build_ext': ReadlineExtensionBuilder,
+          'build_ext': build_rl_ext,
       },
       install_requires=[
           'setuptools',
