@@ -77,16 +77,16 @@ class ReadlineExtension(Extension):
 
         self.suppress_warnings()
 
+    def sys_path_contains(self, string):
+        for dir in sys.path:
+            if dir.startswith(string):
+                return True
+
     def have_curl(self):
         if not find_executable('curl'):
             log.warn('WARNING: Cannot build statically. Command not found: curl')
             return False
         return True
-
-    def sys_path_contains(self, string):
-        for dir in sys.path:
-            if dir.startswith(string):
-                return True
 
     def use_include_dirs(self):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
