@@ -42,6 +42,12 @@ class ReadlineExtension(Extension):
         self.use_include_dirs()
         self.use_library_dirs()
 
+        # Use Mac Python library dir
+        if sys.platform == 'darwin':
+            if self.sys_path_contains('/Library/Frameworks/Python.framework'):
+                self.library_dirs.append(
+                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
+
         # Build statically on readthedocs.io
         if os.environ.get('READTHEDOCS') == 'True' and self.have_curl():
             self.use_static_readline()
@@ -59,8 +65,6 @@ class ReadlineExtension(Extension):
             # Mac Python
             elif self.sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.use_static_readline()
-                self.library_dirs.append(
-                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
             # MacPorts Python
             elif '/opt/local/include' in self.include_dirs:
                 pass
