@@ -4,17 +4,17 @@ Changelog
 2.5 - Unreleased
 ----------------
 
-- Update static builds to GNU Readline 6.3.
-  [stefan]
-
-- Remove ``reset`` APIs from the documentation. They override
-  ``~/.inputrc`` and should only be used in tests.
+- Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
   [stefan]
 
 - Stop using 2to3 in favor of six.
   [stefan]
 
-- Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
+- Update static builds to GNU Readline 6.3.
+  [stefan]
+
+- Remove ``reset`` APIs from the documentation. They override
+  ``~/.inputrc`` and should only be used in tests.
   [stefan]
 
 .. _`PYTHONMALLOC`: https://docs.python.org/3/whatsnew/3.6.html
