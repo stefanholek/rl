@@ -5,7 +5,7 @@ rl
 Alternative Python bindings for GNU Readline
 --------------------------------------------
 
-Introduction
+Overview
 ============
 
 The `GNU Readline Library`_ is the canonical implementation of command line
@@ -38,15 +38,6 @@ completion
     Interface to the active readline completion. Used to interact
     with readline when a completion is in progress.
 
-generator
-    A factory turning any callable into a *completion entry function* that
-    can be handed to readline.
-
-print_exc
-    A decorator printing exceptions to stderr. Useful when writing Python
-    completions and hooks, as exceptions occurring there are usually
-    swallowed by the in-between C code.
-
 history
     Interface to the readline history. Used to read and write history files
     and to manipulate history entries.
@@ -57,9 +48,18 @@ readline
     *completion*, and *history* interfaces make use of this module, and you
     should rarely need to interact with it directly.
 
+generator
+    A factory turning any callable into a *completion entry function* that
+    can be handed to readline.
+
+print_exc
+    A decorator printing exceptions to stderr. Useful when writing Python
+    completions and hooks, as exceptions occurring there are usually
+    swallowed by the in-between C code.
+
 For further details please refer to the `API Documentation`_.
 
-.. _`API Documentation`: https://pythonhosted.org/rl
+.. _`API Documentation`: https://rl.readthedocs.io/en/latest/
 
 Example Code
 ------------
@@ -81,7 +81,7 @@ The code below implements system command completion similar to Bash::
                             yield name
 
     def main():
-        # Set the completion function
+        # Set the completion entry function
         completer.completer = generator(complete_command)
 
         # Enable TAB completion
@@ -90,11 +90,9 @@ The code below implements system command completion similar to Bash::
         command = input('command> ')
         print('You typed:', command)
 
-More examples_ are included in the package source. Also see gpgkeys_, a
-front-end for GnuPG built entirely around tab completion.
+More examples_ are included in the package source.
 
 .. _examples: https://github.com/stefanholek/rl/tree/master/rl/examples
-.. _gpgkeys: https://pypi.python.org/pypi/gpgkeys
 
 Development
 -----------
@@ -107,34 +105,20 @@ rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 Installation
 ============
 
-rl requires Python 2.5 or higher and GNU Readline 5.0 or higher.
+rl requires Python 2.6 or higher and GNU Readline 5.0 or higher.
 
 On Linux, install libreadline6-dev before attempting to build
 rl. On Mac OS X, make sure you have Xcode Tools installed. Then type::
 
-    easy_install rl
-
-and watch the console. When it reads::
-
-    Finished processing dependencies for rl
-
-you are done and rl is ready to use.
+    pip install rl
 
 Static Builds
 -------------
 
 Normally, rl.readline will attempt to link against your system's libreadline.
 If this is not possible, notably on Mac OS X which ships with libedit, a
-static version of GNU Readline 6.2 is built.
+static version of GNU Readline 6.3 is built.
 
 To force a static build, set the RL_BUILD_STATIC_READLINE environment
 variable.
-
-Related
-=======
-
-`kmd.Kmd`_ is an rl-aware replacement for `cmd.Cmd`_.
-
-.. _`kmd.Kmd`: https://pypi.python.org/pypi/kmd
-.. _`cmd.Cmd`: https://docs.python.org/3/library/cmd.html
 
