@@ -4,8 +4,8 @@ Example Code
 
 Introductory code examples.
 
-Completion Function
-===================
+Completion Entry Function
+=========================
 
 The completion entry function is called as ``function(text, state)`` for
 state in 0, 1, 2, ... until it returns None. It should return the next
@@ -37,4 +37,12 @@ The :attr:`~rl.Completer.pre_input_hook` may be used to pre-populate
 the line buffer:
 
 .. literalinclude:: ../rl/examples/pre_input_hook.py
+
+Display-Matches Hook
+====================
+
+The :attr:`~rl.Completer.display_matches_hook` is called whenever matches need
+to be displayed:
+
+.. literalinclude:: ../rl/examples/display_matches_hook.py
 
