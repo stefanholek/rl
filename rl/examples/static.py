@@ -18,7 +18,7 @@ def complete_string(text):
 
 
 def main():
-    # Set the completion function
+    # Set the completion entry function
     completer.completer = generator(complete_string)
 
     # Enable TAB completion

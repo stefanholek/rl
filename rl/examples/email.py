@@ -1,8 +1,5 @@
 # Complete email addresses
 
-# The completion function oftentimes is a dispatcher,
-# forwarding calls to more specific completion functions.
-
 from __future__ import print_function
 from six.moves import input
 
@@ -10,6 +7,18 @@ from rl import completer
 from rl import completion
 from rl import generator
 from rl import print_exc
+
+from rl.utils import DEFAULT_DELIMS
+
+
+@print_exc
+def complete_email(text):
+    # Dispatch to username or hostname completion
+    if text.startswith('@'):
+        return complete_hostname(text)
+    else:
+        completion.append_character = '@'
+        return completion.complete_username(text)
 
 
 def complete_hostname(text):
@@ -25,26 +34,14 @@ def complete_hostname(text):
                     yield '@' + hostname
 
 
-@print_exc
-def complete_email(text):
-    # Dispatch to username or hostname completion
-    if text.startswith('@'):
-        return complete_hostname(text)
-    else:
-        completion.append_character = '@'
-        return completion.complete_username(text)
-
-
 def main():
-    from rl.utils import DEFAULT_DELIMS
-
     # Configure word break characters
     completer.word_break_characters = DEFAULT_DELIMS.replace('-', '')
 
     # Configure special prefixes
     completer.special_prefixes = '@'
 
-    # Set the completion function
+    # Set the completion entry function
     completer.completer = generator(complete_email)
 
     # Enable TAB completion

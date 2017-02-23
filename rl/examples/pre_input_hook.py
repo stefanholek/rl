@@ -1,4 +1,4 @@
-# Demonstrate prompt and pre-input hook
+# Example pre-input hook
 
 from __future__ import print_function
 from six.moves import input
@@ -17,10 +17,10 @@ class Questionnaire(object):
         completer.pre_input_hook = self.pre_input_hook
 
     def interact(self):
-        print('Please finish the following statements')
-        print('--------------------------------------')
         # The prompt area is used for text the user
         # must not overwrite or change
+        print('Please finish the following statements')
+        print('--------------------------------------')
         for self.index in range(len(self.questions)):
             input(self.questions[self.index]+': ')
         print('Thank you!')

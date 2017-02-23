@@ -27,7 +27,7 @@ def complete_command(text):
 
 
 def main():
-    # Set the completion function
+    # Set the completion entry function
     completer.completer = generator(complete_command)
 
     # Enable TAB completion

@@ -10,7 +10,7 @@ from rl import print_exc
 
 
 class CommandCompleter(object):
-    # A completion "function" implementing readline's
+    # A completion entry function implementing readline's
     # generator protocol
 
     @print_exc
@@ -32,7 +32,7 @@ class CommandCompleter(object):
 
 
 def main():
-    # Set the completion function
+    # Set the completion entry function
     completer.completer = CommandCompleter()
 
     # Enable TAB completion
