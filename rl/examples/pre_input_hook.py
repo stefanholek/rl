@@ -34,7 +34,10 @@ class Questionnaire(object):
 
 
 def main():
-    Questionnaire().interact()
+    try:
+        Questionnaire().interact()
+    except (EOFError, KeyboardInterrupt):
+        print() # Newline
 
 
 if __name__ == '__main__':
