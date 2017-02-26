@@ -561,11 +561,17 @@ set_completer_delims(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_completer_delims", &break_chars))
 		return NULL;
 #endif
-	if (rl_completer_word_break_characters)
-		free((void*)rl_completer_word_break_characters);
-	rl_completer_word_break_characters = strdup(break_chars);
+	break_chars = strdup(break_chars);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (break_chars) {
+		if (rl_completer_word_break_characters)
+			free((void*)rl_completer_word_break_characters);
+		rl_completer_word_break_characters = break_chars;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_completer_delims,
@@ -997,11 +1003,17 @@ set_completer_quote_characters(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &s))
 		return NULL;
 #endif
-	if (rl_completer_quote_characters)
-		free((void*)rl_completer_quote_characters);
-	rl_completer_quote_characters = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_completer_quote_characters)
+			free((void*)rl_completer_quote_characters);
+		rl_completer_quote_characters = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_completer_quote_characters,
@@ -1038,11 +1050,17 @@ set_filename_quote_characters(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &s))
 		return NULL;
 #endif
-	if (rl_filename_quote_characters)
-		free((void*)rl_filename_quote_characters);
-	rl_filename_quote_characters = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_filename_quote_characters)
+			free((void*)rl_filename_quote_characters);
+		rl_filename_quote_characters = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_filename_quote_characters,
@@ -1690,11 +1708,17 @@ set_special_prefixes(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &s))
 		return NULL;
 #endif
-	if (rl_special_prefixes)
-		free((void*)rl_special_prefixes);
-	rl_special_prefixes = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_special_prefixes)
+			free((void*)rl_special_prefixes);
+		rl_special_prefixes = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_special_prefixes,
