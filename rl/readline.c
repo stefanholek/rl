@@ -166,13 +166,14 @@ The default filename is ~/.history.");
 
 static int history_file_length = -1; /* do not truncate history by default */
 
+
 static int
 _py_write_history(const char *s)
 {
-	errno = write_history(s);
-	if (!errno && history_file_length >= 0)
+	int saved_errno = errno = write_history(s);
+	if (!saved_errno && history_file_length >= 0)
 		history_truncate_file(s, history_file_length);
-	return errno;
+	return saved_errno;
 }
 
 
@@ -2850,7 +2851,7 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 	completed_input_string = not_done_reading;
 
 	while (completed_input_string == not_done_reading) {
-		int has_input = 0;
+		int has_input = 0, saved_errno = 0;
 
 		while (!has_input) {
 			struct timeval timeout = {0, 100000}; /* 0.1 seconds */
@@ -2864,13 +2865,15 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 			/* select resets selectset if no input was available */
 			has_input = select(fileno(rl_instream) + 1, &selectset,
 					   NULL, NULL, timeoutp);
-			if(PyOS_InputHook) PyOS_InputHook();
+			saved_errno = errno;
+			if (PyOS_InputHook)
+				PyOS_InputHook();
 		}
 
-		if(has_input > 0) {
+		if (has_input > 0) {
 			rl_callback_read_char();
 		}
-		else if (errno == EINTR) {
+		else if (saved_errno == EINTR) {
 			int s;
 #ifdef WITH_THREAD
 			PyEval_RestoreThread(_PyOS_ReadlineTState);
