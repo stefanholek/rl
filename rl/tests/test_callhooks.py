@@ -30,6 +30,20 @@ def is_quoted(text, index):
     return index > 0 and text[index-1] == '\\'
 
 
+class BadHookTests(unittest.TestCase):
+
+    def setUp(self):
+        reset()
+
+    def test_not_callable(self):
+        try:
+            completer.completer = 'foo'
+        except TypeError:
+            pass # success
+        else:
+            self.fail('TypeError not raised')
+
+
 class WordBreakTests(unittest.TestCase):
 
     def setUp(self):

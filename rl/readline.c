@@ -266,10 +266,9 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 		Py_XDECREF(tmp);
 	}
 	else {
-		PyOS_snprintf(buf, sizeof(buf),
-			      "set_%.50s(func): argument not callable",
-			      funcname);
-		PyErr_SetString(PyExc_TypeError, buf);
+		PyErr_Format(PyExc_TypeError,
+			     "set_%.50s(func): argument not callable",
+			     funcname);
 		return NULL;
 	}
 	Py_RETURN_NONE;
