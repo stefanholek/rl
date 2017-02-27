@@ -257,8 +257,7 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 	if (!PyArg_ParseTuple(args, buf, &function))
 		return NULL;
 	if (function == Py_None) {
-		Py_XDECREF(*hook_var);
-		*hook_var = NULL;
+		Py_CLEAR(*hook_var);
 	}
 	else if (PyCallable_Check(function)) {
 		PyObject *tmp = *hook_var;
@@ -2685,14 +2684,14 @@ on_completion_display_matches_hook(char **matches,
 	r = PyObject_CallFunction(completion_display_matches_hook,
 				  "sOi", matches[0], m, max_length);
 #endif
-	Py_DECREF(m); m=NULL;
+	Py_CLEAR(m);
 	Py_XDECREF(u_subst);
 
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
 		goto error;
 	}
-	Py_XDECREF(r); r=NULL;
+	Py_CLEAR(r);
 
 	if (0) {
 	error:
