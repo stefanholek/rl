@@ -2838,6 +2838,17 @@ setup_readline(void)
 	default_filename_quoting_function = rl_filename_quoting_function;
 	/* Reset completion variables */
 	_py_set_completion_defaults();
+
+	if (!isatty(STDOUT_FILENO)) {
+		/* Issue #19884: stdout is no a terminal. Disable meta modifier
+		   keys to not write the ANSI sequence "\033[1034h" into stdout. On
+		   terminals supporting 8 bit characters like TERM=xterm-256color
+		   (which is now the default Fedora since Fedora 18), the meta key is
+		   used to enable support of 8 bit characters (ANSI sequence
+		   "\033[1034h"). */
+		rl_variable_bind("enable-meta-key", "off");
+	}
+
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
