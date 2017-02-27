@@ -38,7 +38,7 @@ the line buffer:
 
 .. literalinclude:: ../rl/examples/pre_input_hook.py
 
-Display-Matches Hook
+Display Matches Hook
 ====================
 
 The :attr:`~rl.Completer.display_matches_hook` is called whenever matches need

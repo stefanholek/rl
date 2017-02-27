@@ -54,7 +54,7 @@ class Completer(object):
     @apply
     def special_prefixes():
         doc="""Characters that are word break characters but should
-        be left in the word passed to the completer."""
+        be left in the word passed to the completion function."""
         def get(self):
             return readline.get_special_prefixes()
         def set(self, string):
