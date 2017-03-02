@@ -58,7 +58,7 @@
 #endif
 
 /* PyMem_RawMalloc appeared in Python 3.4 */
-#if (PY_MAJOR_VERSION < 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 4))
+#if (PY_VERSION_HEX < 0x03040000)
 #define PyMem_RawMalloc PyMem_Malloc
 #endif
 
@@ -2935,7 +2935,7 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 #endif /* defined(HAVE_SELECT) */
 
 
-#if (PY_MAJOR_VERSION < 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 4))
+#if (PY_VERSION_HEX < 0x03040000)
 static char *
 call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
 #else
