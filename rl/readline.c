@@ -49,6 +49,7 @@
 #include "stringarray.h"
 #include "unicode.h"
 #include "iterator.h"
+#include "modulestate.h"
 
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
@@ -3187,7 +3188,7 @@ readline_sigwinch_handler(int signum)
 /* Helper to initialize GNU readline properly. */
 
 static void
-setup_readline(void)
+setup_readline(PyObject *module)
 {
 #ifdef SAVE_LOCALE
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
@@ -3225,6 +3226,8 @@ setup_readline(void)
 	rl_completion_display_matches_hook = default_display_matches_hook;
 	/* Save a reference to the default filename quoting function */
 	default_filename_quoting_function = rl_filename_quoting_function;
+	/* Initialize module state */
+	readline_init_state(module);
 	/* Reset completion variables */
 	_py_set_completion_defaults();
 
@@ -3475,16 +3478,16 @@ Functions not exposed through a high-level interface:\n\
 ");
 
 #if (PY_MAJOR_VERSION >= 3)
-static struct PyModuleDef readlinemodule = {
+struct PyModuleDef readlinemodule = {
 	PyModuleDef_HEAD_INIT,
 	"readline",
 	doc_module,
-	-1,
+	sizeof(readlinestate),
 	readline_methods,
 	NULL,
-	NULL,
-	NULL,
-	NULL
+	readline_traverse,
+	readline_clear,
+	readline_free
 };
 
 PyMODINIT_FUNC
@@ -3497,7 +3500,7 @@ PyInit_readline(void)
 		return NULL;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline();
+	setup_readline(m);
 	return m;
 }
 #else
@@ -3512,7 +3515,7 @@ initreadline(void)
 		return;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline();
+	setup_readline(m);
 }
 #endif
 
