@@ -573,9 +573,9 @@ PyDoc_STRVAR(doc_set_completer_delims,
 Set the readline word delimiters for tab-completion.");
 
 
-/* Free memory allocated for a history entry */
-/* https://bugs.python.org/issue9450 */
-/* https://bugs.python.org/issue12186 */
+/* Free memory allocated for a history entry
+   https://bugs.python.org/issue9450
+   https://bugs.python.org/issue12186 */
 
 static void
 _py_free_history_entry(HIST_ENTRY *entry)
@@ -890,8 +890,8 @@ contents of the line buffer. If ``force`` is True, readline\n\
 redisplays the prompt area as well as the line.");
 
 
-/* <rl.readline> */
-/* https://tiswww.case.edu/php/chet/readline/readline.html#SEC45 */
+/* <rl.readline>
+   https://tiswww.case.edu/php/chet/readline/readline.html#SEC45 */
 
 /* Get/set completion append character */
 
