@@ -57,6 +57,10 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(history[1], 'wilma')
         self.assertEqual(history[2], 'barney')
         self.assertEqual(history[3], 'betty')
+        self.assertEqual(history[-4], 'fred')
+        self.assertEqual(history[-3], 'wilma')
+        self.assertEqual(history[-2], 'barney')
+        self.assertEqual(history[-1], 'betty')
 
     def test__delitem__(self):
         history.append('fred')
@@ -69,6 +73,10 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(history[0], 'fred')
         self.assertEqual(history[1], 'barney')
         self.assertEqual(history[2], 'betty')
+        del history[-2]
+        self.assertEqual(len(history), 2)
+        self.assertEqual(history[0], 'fred')
+        self.assertEqual(history[1], 'betty')
 
     def test__setitem__(self):
         history.append('fred')
@@ -82,29 +90,24 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(history[1], 'pebbles')
         self.assertEqual(history[2], 'barney')
         self.assertEqual(history[3], 'betty')
-
-    def test_negative_pos(self):
-        history.append('fred')
-        history.append('wilma')
-        history.append('barney')
-        history.append('betty')
+        history[-2] = 'bammbamm'
         self.assertEqual(len(history), 4)
-        self.assertEqual(history[-4], 'fred')
-        self.assertEqual(history[-3], 'wilma')
-        self.assertEqual(history[-2], 'barney')
-        self.assertEqual(history[-1], 'betty')
-
-    def test_list_long_pos(self):
-        list = ['fred']
-        self.assertEqual(len(list), 1)
-        self.assertEqual(list[0], 'fred')
-        self.assertEqual(list[-1], 'fred')
-
-    def test_history_long_pos(self):
-        history.append('fred')
-        self.assertEqual(len(history), 1)
         self.assertEqual(history[0], 'fred')
-        self.assertEqual(history[-1], 'fred')
+        self.assertEqual(history[1], 'pebbles')
+        self.assertEqual(history[2], 'bammbamm')
+        self.assertEqual(history[3], 'betty')
+
+    #def test_list_long_pos(self):
+    #    list = ['fred']
+    #    self.assertEqual(len(list), 1)
+    #    self.assertEqual(list[0L], 'fred')
+    #    self.assertEqual(list[-1L], 'fred')
+
+    #def test_history_long_pos(self):
+    #    history.append('fred')
+    #    self.assertEqual(len(history), 1)
+    #    self.assertEqual(history[0L], 'fred')
+    #    self.assertEqual(history[-1L], 'fred')
 
     def test_out_of_range_pos(self):
         history.append('fred')
