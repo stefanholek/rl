@@ -154,6 +154,13 @@ class HistoryTests(unittest.TestCase):
         history.max_entries = -3
         self.assertEqual(history.max_entries, -1)
 
+    def test_zero_disables_history(self):
+        self.assertEqual(len(history), 0)
+        history.max_entries = 0
+        history.append('fred')
+        history.append('barney')
+        self.assertEqual(len(history), 0)
+
     def test_get_slice(self):
         history.append('fred')
         history.append('wilma')

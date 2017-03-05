@@ -32,7 +32,8 @@ class History(object):
     def max_entries():
         doc="""The maximum number of history entries kept. Beyond this
         point the history list is truncated by removing the oldest entry.
-        A negative value means no limit. Defaults to -1."""
+        A negative value means no limit. A value of 0 effectively disables
+        history collection. Defaults to -1."""
         def get(self):
             if readline.history_is_stifled():
                 return readline.get_history_max_entries()
