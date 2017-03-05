@@ -162,7 +162,7 @@ Load a readline history file.\n\
 The default filename is ~/.history.");
 
 
-/* Save and truncate a readline history file */
+/* Exported function to save a readline history file */
 
 static int history_file_length = -1; /* do not truncate history by default */
 
@@ -176,8 +176,6 @@ _py_write_history(const char *s)
 	return saved_errno;
 }
 
-
-/* Exported function to save a readline history file */
 
 static PyObject *
 write_history_file(PyObject *self, PyObject *args)
@@ -210,6 +208,53 @@ write_history_file(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_write_history_file,
 "write_history_file([filename]) -> None\n\
 Save a readline history file.\n\
+The default filename is ~/.history.");
+
+
+/* Exported function to append to a readline history file */
+
+static int
+_py_append_history(int n, const char *s)
+{
+	int saved_errno = errno = append_history(n, s);
+	if (!saved_errno && history_file_length >= 0)
+		history_truncate_file(s, history_file_length);
+	return saved_errno;
+}
+
+
+static PyObject *
+append_history_file(PyObject *self, PyObject *args)
+{
+	int n;
+	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "i|O&:append_history_file", &n, PyUnicode_FSOrNoneConverter, &b))
+		return NULL;
+	if (b != NULL)
+		s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "i|z:append_history_file", &n, &s))
+		return NULL;
+#endif
+	if (s != NULL && strchr(s, '~')) {
+		s = tilde_expand(s);
+		errno = _py_append_history(n, s);
+		free(s);
+	}
+	else
+		errno = _py_append_history(n, s);
+	Py_XDECREF(b);
+	if (errno)
+		return PyErr_SetFromErrno(PyExc_IOError);
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_append_history_file,
+"append_history_file(nelements[, filename]) -> None\n\
+Append the last ``nelements`` of the history to a readline history file.\n\
 The default filename is ~/.history.");
 
 
@@ -2462,6 +2507,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_read_history_file},
 	{"write_history_file", write_history_file,
 	 METH_VARARGS, doc_write_history_file},
+	{"append_history_file", append_history_file,
+	 METH_VARARGS, doc_append_history_file},
 	{"get_history_item", get_history_item,
 	 METH_VARARGS, doc_get_history_item},
 	{"get_current_history_length", (PyCFunction)get_current_history_length,

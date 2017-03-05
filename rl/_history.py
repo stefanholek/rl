@@ -105,6 +105,7 @@ class History(object):
         defaults. Used in tests."""
         self.clear()
         self.max_entries = -1
+        readline.set_history_length(-1)
 
     def _norm_index(self, index):
         """Support negative indexes."""
