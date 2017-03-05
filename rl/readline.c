@@ -53,7 +53,7 @@
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong PyLong_AsLong
+#define PyInt_AsLong _PyLong_AsInt
 #define PyString_FromString PyUnicode_DECODE
 #endif
 
@@ -162,21 +162,20 @@ Load a readline history file.\n\
 The default filename is ~/.history.");
 
 
-/* Save and truncate a readline history file */
+/* Exported function to save a readline history file */
 
 static int history_file_length = -1; /* do not truncate history by default */
+
 
 static int
 _py_write_history(const char *s)
 {
-	errno = write_history(s);
-	if (!errno && history_file_length >= 0)
+	int saved_errno = errno = write_history(s);
+	if (!saved_errno && history_file_length >= 0)
 		history_truncate_file(s, history_file_length);
-	return errno;
+	return saved_errno;
 }
 
-
-/* Exported function to save a readline history file */
 
 static PyObject *
 write_history_file(PyObject *self, PyObject *args)
@@ -209,6 +208,53 @@ write_history_file(PyObject *self, PyObject *args)
 PyDoc_STRVAR(doc_write_history_file,
 "write_history_file([filename]) -> None\n\
 Save a readline history file.\n\
+The default filename is ~/.history.");
+
+
+/* Exported function to append to a readline history file */
+
+static int
+_py_append_history(int n, const char *s)
+{
+	int saved_errno = errno = append_history(n, s);
+	if (!saved_errno && history_file_length >= 0)
+		history_truncate_file(s, history_file_length);
+	return saved_errno;
+}
+
+
+static PyObject *
+append_history_file(PyObject *self, PyObject *args)
+{
+	int n;
+	char *s = NULL;
+	PyObject *b = NULL;
+
+#if (PY_MAJOR_VERSION >= 3)
+	if (!PyArg_ParseTuple(args, "i|O&:append_history_file", &n, PyUnicode_FSOrNoneConverter, &b))
+		return NULL;
+	if (b != NULL)
+		s = PyBytes_AsString(b);
+#else
+	if (!PyArg_ParseTuple(args, "i|z:append_history_file", &n, &s))
+		return NULL;
+#endif
+	if (s != NULL && strchr(s, '~')) {
+		s = tilde_expand(s);
+		errno = _py_append_history(n, s);
+		free(s);
+	}
+	else
+		errno = _py_append_history(n, s);
+	Py_XDECREF(b);
+	if (errno)
+		return PyErr_SetFromErrno(PyExc_IOError);
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_append_history_file,
+"append_history_file(nelements[, filename]) -> None\n\
+Append the last ``nelements`` of the history to a readline history file.\n\
 The default filename is ~/.history.");
 
 
@@ -256,8 +302,7 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 	if (!PyArg_ParseTuple(args, buf, &function))
 		return NULL;
 	if (function == Py_None) {
-		Py_XDECREF(*hook_var);
-		*hook_var = NULL;
+		Py_CLEAR(*hook_var);
 	}
 	else if (PyCallable_Check(function)) {
 		PyObject *tmp = *hook_var;
@@ -266,10 +311,9 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 		Py_XDECREF(tmp);
 	}
 	else {
-		PyOS_snprintf(buf, sizeof(buf),
-			      "set_%.50s(func): argument not callable",
-			      funcname);
-		PyErr_SetString(PyExc_TypeError, buf);
+		PyErr_Format(PyExc_TypeError,
+			     "set_%.50s(func): argument not callable",
+			     funcname);
 		return NULL;
 	}
 	Py_RETURN_NONE;
@@ -561,11 +605,17 @@ set_completer_delims(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_completer_delims", &break_chars))
 		return NULL;
 #endif
-	if (rl_completer_word_break_characters)
-		free((void*)rl_completer_word_break_characters);
-	rl_completer_word_break_characters = strdup(break_chars);
+	break_chars = strdup(break_chars);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (break_chars) {
+		if (rl_completer_word_break_characters)
+			free((void*)rl_completer_word_break_characters);
+		rl_completer_word_break_characters = break_chars;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_completer_delims,
@@ -997,11 +1047,17 @@ set_completer_quote_characters(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &s))
 		return NULL;
 #endif
-	if (rl_completer_quote_characters)
-		free((void*)rl_completer_quote_characters);
-	rl_completer_quote_characters = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_completer_quote_characters)
+			free((void*)rl_completer_quote_characters);
+		rl_completer_quote_characters = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_completer_quote_characters,
@@ -1038,11 +1094,17 @@ set_filename_quote_characters(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &s))
 		return NULL;
 #endif
-	if (rl_filename_quote_characters)
-		free((void*)rl_filename_quote_characters);
-	rl_filename_quote_characters = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_filename_quote_characters)
+			free((void*)rl_filename_quote_characters);
+		rl_filename_quote_characters = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_filename_quote_characters,
@@ -1690,11 +1752,17 @@ set_special_prefixes(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &s))
 		return NULL;
 #endif
-	if (rl_special_prefixes)
-		free((void*)rl_special_prefixes);
-	rl_special_prefixes = strdup(s);
+	s = strdup(s);
 	Py_XDECREF(b);
-	Py_RETURN_NONE;
+
+	if (s) {
+		if (rl_special_prefixes)
+			free((void*)rl_special_prefixes);
+		rl_special_prefixes = s;
+		Py_RETURN_NONE;
+	}
+	else
+		return PyErr_NoMemory();
 }
 
 PyDoc_STRVAR(doc_set_special_prefixes,
@@ -2439,6 +2507,8 @@ static struct PyMethodDef readline_methods[] =
 	 METH_VARARGS, doc_read_history_file},
 	{"write_history_file", write_history_file,
 	 METH_VARARGS, doc_write_history_file},
+	{"append_history_file", append_history_file,
+	 METH_VARARGS, doc_append_history_file},
 	{"get_history_item", get_history_item,
 	 METH_VARARGS, doc_get_history_item},
 	{"get_current_history_length", (PyCFunction)get_current_history_length,
@@ -2661,14 +2731,14 @@ on_completion_display_matches_hook(char **matches,
 	r = PyObject_CallFunction(completion_display_matches_hook,
 				  "sOi", matches[0], m, max_length);
 #endif
-	Py_DECREF(m); m=NULL;
+	Py_CLEAR(m);
 	Py_XDECREF(u_subst);
 
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
 		goto error;
 	}
-	Py_XDECREF(r); r=NULL;
+	Py_CLEAR(r);
 
 	if (0) {
 	error:
@@ -2777,6 +2847,28 @@ _py_set_completion_defaults(void)
 }
 
 
+/* SIGWINCH handler */
+
+static volatile sig_atomic_t sigwinch_received = 0;
+static PyOS_sighandler_t sigwinch_ohandler = NULL;
+
+
+static void
+readline_sigwinch_handler(int signum)
+{
+	sigwinch_received = 1;
+
+	if (sigwinch_ohandler && sigwinch_ohandler != SIG_IGN && sigwinch_ohandler != SIG_DFL)
+		sigwinch_ohandler(signum);
+
+#ifndef HAVE_SIGACTION
+	/* If the handler was installed with signal() rather than sigaction(),
+	   we need to reinstall it. */
+	sigwinch_ohandler = PyOS_setsig(SIGWINCH, readline_sigwinch_handler);
+#endif
+}
+
+
 /* Helper to initialize GNU readline properly. */
 
 static void
@@ -2800,6 +2892,8 @@ setup_readline(void)
 	/* Bind both ESC-TAB and ESC-ESC to the completion function */
 	rl_bind_key_in_map ('\t', rl_complete, emacs_meta_keymap);
 	rl_bind_key_in_map ('\033', rl_complete, emacs_meta_keymap);
+	/* Set up signal handler for window resize */
+	sigwinch_ohandler = PyOS_setsig(SIGWINCH, readline_sigwinch_handler);
 	/* Set our hook functions */
 	rl_startup_hook = (rl_hook_func_t *)on_startup_hook;
 	rl_pre_input_hook = (rl_hook_func_t *)on_pre_input_hook;
@@ -2815,6 +2909,17 @@ setup_readline(void)
 	default_filename_quoting_function = rl_filename_quoting_function;
 	/* Reset completion variables */
 	_py_set_completion_defaults();
+
+	if (!isatty(STDOUT_FILENO)) {
+		/* Issue #19884: stdout is no a terminal. Disable meta modifier
+		   keys to not write the ANSI sequence "\033[1034h" into stdout. On
+		   terminals supporting 8 bit characters like TERM=xterm-256color
+		   (which is now the default Fedora since Fedora 18), the meta key is
+		   used to enable support of 8 bit characters (ANSI sequence
+		   "\033[1034h"). */
+		rl_variable_bind("enable-meta-key", "off");
+	}
+
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
@@ -2834,7 +2939,6 @@ rlhandler(char *text)
 	rl_callback_handler_remove();
 }
 
-extern PyThreadState* _PyOS_ReadlineTState;
 
 static char *
 readline_until_enter_or_signal(const char *prompt, int *signal)
@@ -2851,7 +2955,7 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 	completed_input_string = not_done_reading;
 
 	while (completed_input_string == not_done_reading) {
-		int has_input = 0;
+		int has_input = 0, saved_errno = 0;
 
 		while (!has_input) {
 			struct timeval timeout = {0, 100000}; /* 0.1 seconds */
@@ -2861,17 +2965,24 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 			struct timeval *timeoutp = NULL;
 			if (PyOS_InputHook)
 				timeoutp = &timeout;
+			/* Update readline's view of the window size after SIGWINCH */
+			if (sigwinch_received) {
+				sigwinch_received = 0;
+				rl_resize_terminal();
+			}
 			FD_SET(fileno(rl_instream), &selectset);
 			/* select resets selectset if no input was available */
 			has_input = select(fileno(rl_instream) + 1, &selectset,
 					   NULL, NULL, timeoutp);
-			if(PyOS_InputHook) PyOS_InputHook();
+			saved_errno = errno;
+			if (PyOS_InputHook)
+				PyOS_InputHook();
 		}
 
-		if(has_input > 0) {
+		if (has_input > 0) {
 			rl_callback_read_char();
 		}
-		else if (errno == EINTR) {
+		else if (saved_errno == EINTR) {
 			int s;
 #ifdef WITH_THREAD
 			PyEval_RestoreThread(_PyOS_ReadlineTState);
@@ -2882,6 +2993,9 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 #endif
 			if (s < 0) {
 				rl_free_line_state();
+#if (RL_READLINE_VERSION >= 0x0700)
+				rl_callback_sigcleanup();
+#endif
 				rl_cleanup_after_signal();
 				rl_callback_handler_remove();
 				*signal = 1;
