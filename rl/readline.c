@@ -1363,8 +1363,6 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	char quote_char_string[2] = "\0";
 	PyObject *single_match = NULL;
 	PyObject *r = NULL;
-	PyObject *u_text = NULL;
-	PyObject *u_quote_char = NULL;
 	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
@@ -1376,10 +1374,9 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 		quote_char_string[0] = *quote_pointer;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	u_text = PyUnicode_DECODE(text);
-	u_quote_char = PyUnicode_DECODE(quote_char_string);
-	r = PyObject_CallFunction(filename_quoting_function, "OOO",
-				  u_text, single_match, u_quote_char);
+	r = PyObject_CallFunction(filename_quoting_function, "NON",
+				  PyUnicode_DECODE(text), single_match,
+				  PyUnicode_DECODE(quote_char_string));
 #else
 	r = PyObject_CallFunction(filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
@@ -1411,8 +1408,6 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	Py_XDECREF(single_match);
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(u_text);
-	Py_XDECREF(u_quote_char);
 	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -1474,8 +1469,6 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	char *s = NULL;
 	char quote_char_string[2] = "\0";
 	PyObject *r = NULL;
-	PyObject *u_text = NULL;
-	PyObject *u_quote_char = NULL;
 	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
@@ -1485,10 +1478,9 @@ on_filename_dequoting_function(const char *text, char quote_char)
 		quote_char_string[0] = quote_char;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	u_text = PyUnicode_DECODE(text);
-	u_quote_char = PyUnicode_DECODE(quote_char_string);
-	r = PyObject_CallFunction(filename_dequoting_function, "OO",
-				  u_text, u_quote_char);
+	r = PyObject_CallFunction(filename_dequoting_function, "NN",
+				  PyUnicode_DECODE(text),
+				  PyUnicode_DECODE(quote_char_string));
 #else
 	r = PyObject_CallFunction(filename_dequoting_function, "ss",
 				  text, quote_char_string);
@@ -1520,8 +1512,6 @@ on_filename_dequoting_function(const char *text, char quote_char)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(u_text);
-	Py_XDECREF(u_quote_char);
 	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -1587,7 +1577,6 @@ on_char_is_quoted_function(const char *text, int index)
 	int result = 0;
 	int i = 0;
 	PyObject *r = NULL;
-	PyObject *u_text = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -1595,11 +1584,12 @@ on_char_is_quoted_function(const char *text, int index)
 	_py_set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
-	u_text = PyUnicode_DECODE(text);
-	r = PyObject_CallFunction(char_is_quoted_function, "Oi", u_text,
+	r = PyObject_CallFunction(char_is_quoted_function, "Ni",
+				  PyUnicode_DECODE(text),
 				  PyUnicode_INDEX(text, index));
 #else
-	r = PyObject_CallFunction(char_is_quoted_function, "si", text, index);
+	r = PyObject_CallFunction(char_is_quoted_function, "si",
+	                          text, index);
 #endif
 	if (r == NULL)
 		goto error;
@@ -1618,7 +1608,6 @@ on_char_is_quoted_function(const char *text, int index)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(u_text);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -2033,7 +2022,6 @@ on_directory_completion_hook(char **directory)
 	int result = 0;
 	char *s = NULL;
 	PyObject *r = NULL;
-	PyObject *u_directory = NULL;
 	PyObject *b = NULL;
 
 #ifdef WITH_THREAD
@@ -2041,10 +2029,11 @@ on_directory_completion_hook(char **directory)
 #endif
 
 #if (PY_MAJOR_VERSION >= 3)
-	u_directory = PyUnicode_DECODE(*directory);
-	r = PyObject_CallFunction(directory_completion_hook, "O", u_directory);
+	r = PyObject_CallFunction(directory_completion_hook, "N",
+				  PyUnicode_DECODE(*directory));
 #else
-	r = PyObject_CallFunction(directory_completion_hook, "s", *directory);
+	r = PyObject_CallFunction(directory_completion_hook, "s",
+				  *directory);
 #endif
 	if (r == NULL)
 		goto error;
@@ -2074,7 +2063,6 @@ on_directory_completion_hook(char **directory)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-	Py_XDECREF(u_directory);
 	Py_XDECREF(b);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -2295,7 +2283,6 @@ on_ignore_some_completions_function(char **matches)
 	Py_ssize_t old_size, new_size;
 	PyObject *m = NULL;
 	PyObject *r = NULL;
-	PyObject *u_subst = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -2305,9 +2292,8 @@ on_ignore_some_completions_function(char **matches)
 		goto error;
 
 #if (PY_MAJOR_VERSION >= 3)
-	u_subst = PyUnicode_DECODE(matches[0]);
-	r = PyObject_CallFunction(ignore_some_completions_function, "OO",
-				  u_subst, m);
+	r = PyObject_CallFunction(ignore_some_completions_function, "NO",
+				  PyUnicode_DECODE(matches[0]), m);
 #else
 	r = PyObject_CallFunction(ignore_some_completions_function, "sO",
 				  matches[0], m);
@@ -2348,7 +2334,6 @@ on_ignore_some_completions_function(char **matches)
 	Py_XDECREF(m);
 	Py_XDECREF(r);
   done:
-  	Py_XDECREF(u_subst);
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
 #endif
@@ -2714,7 +2699,6 @@ on_completion_display_matches_hook(char **matches,
 				   int num_matches, int max_length)
 {
 	PyObject *m=NULL, *r=NULL;
-	PyObject *u_subst = NULL;
 
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -2724,15 +2708,13 @@ on_completion_display_matches_hook(char **matches,
 		goto error;
 
 #if (PY_MAJOR_VERSION >= 3)
-	u_subst = PyUnicode_DECODE(matches[0]);
-	r = PyObject_CallFunction(completion_display_matches_hook,
-				  "OOi", u_subst, m, max_length);
+	r = PyObject_CallFunction(completion_display_matches_hook, "NOi",
+				  PyUnicode_DECODE(matches[0]), m, max_length);
 #else
-	r = PyObject_CallFunction(completion_display_matches_hook,
-				  "sOi", matches[0], m, max_length);
+	r = PyObject_CallFunction(completion_display_matches_hook, "sOi",
+				  matches[0], m, max_length);
 #endif
 	Py_CLEAR(m);
-	Py_XDECREF(u_subst);
 
 	if (r == NULL ||
 	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
@@ -2759,7 +2741,6 @@ on_completion(const char *text, int state)
 {
 	char *result = NULL;
 	char *s = NULL;
-	PyObject *u_text = NULL;
 	PyObject *b = NULL;
 
 	if (completer != NULL) {
@@ -2769,8 +2750,7 @@ on_completion(const char *text, int state)
 #endif
 		rl_attempted_completion_over = 1;
 #if (PY_MAJOR_VERSION >= 3)
-		u_text = PyUnicode_DECODE(text);
-		r = PyObject_CallFunction(completer, "Oi", u_text, state);
+		r = PyObject_CallFunction(completer, "Ni", PyUnicode_DECODE(text), state);
 #else
 		r = PyObject_CallFunction(completer, "si", text, state);
 #endif
@@ -2797,7 +2777,6 @@ on_completion(const char *text, int state)
 		PyErr_Clear();
 		Py_XDECREF(r);
 	  done:
-	  	Py_XDECREF(u_text);
 	  	Py_XDECREF(b);
 #ifdef WITH_THREAD
 		PyGILState_Release(gilstate);
