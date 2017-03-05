@@ -53,7 +53,7 @@
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong PyLong_AsLong
+#define PyInt_AsLong _PyLong_AsInt
 #define PyString_FromString PyUnicode_DECODE
 #endif
 
