@@ -143,7 +143,7 @@ read_history_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
 		return NULL;
 #endif
-	if (s != NULL && strchr(s, '~')) {
+	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = read_history(s);
 		free(s);
@@ -192,7 +192,7 @@ write_history_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
 		return NULL;
 #endif
-	if (s != NULL && strchr(s, '~')) {
+	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = _py_write_history(s);
 		free(s);
@@ -239,7 +239,7 @@ append_history_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "i|z:append_history_file", &n, &s))
 		return NULL;
 #endif
-	if (s != NULL && strchr(s, '~')) {
+	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = _py_append_history(n, s);
 		free(s);
@@ -1694,7 +1694,7 @@ py_tilde_expand(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "s:tilde_expand", &s))
 		return NULL;
 #endif
-	if (strchr(s, '~')) {
+	if (*s == '~') {
 		/* tilde_expand aborts when out of memory */
 		s = tilde_expand(s);
 		r = PyString_FromString(s);
