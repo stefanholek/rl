@@ -149,8 +149,7 @@ StringArray_FromPyList(PyObject *list)
 		}
 		*p++ = s;
 #if (PY_MAJOR_VERSION >= 3)
-		Py_DECREF(b);
-		b = NULL;
+		Py_CLEAR(b);
 		s = NULL;
 #endif
 	}
