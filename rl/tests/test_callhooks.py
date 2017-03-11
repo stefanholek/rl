@@ -598,3 +598,61 @@ class FilenameQuotingFunctionTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, '')
 
+
+class FilenameRewriteHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkfile('fred.txt')
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_none_hook(self):
+        def func(filename):
+            return None
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_bad_hook(self):
+        def func(filename):
+            return 23
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_filename_rewrite_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename + '_'
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['.', '..', 'fred.txt'])
+        self.assertEqual(completion.line_buffer, "fred.txt_ ")
+
+    def test_empty_string(self):
+        def func(filename):
+            called.append(filename)
+            return ''
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fr")
+

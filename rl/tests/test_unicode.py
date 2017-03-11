@@ -37,6 +37,16 @@ def is_quoted(text, index):
     return index > 0 and text[index-1] == '\\'
 
 
+def compose(text):
+    # HFS Plus uses decomposed UTF-8
+    if sys.platform != 'darwin':
+        return text
+    if sys.version_info[0] >= 3:
+        return unicodedata.normalize('NFC', text)
+    else:
+        return unicodedata.normalize('NFC', text.decode('utf-8')).encode('utf-8')
+
+
 def decompose(text):
     # HFS Plus uses decomposed UTF-8
     if sys.platform != 'darwin':
@@ -264,4 +274,35 @@ class FilenameQuotingFunctionTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(called, [(decompose('Mä dchen.txt'), True, '')])
         self.assertEqual(completion.line_buffer, decompose("Mä\\ dchen.txt "))
+
+
+class FilenameRewriteHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.completer = filecomplete
+
+    def test_filename_rewrite_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkfile('Mädchen.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'M'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
+        self.assertEqual(completion.line_buffer, decompose("Mädchen.txt "))
+
+    def test_compose_in_filename_rewrite_hook(self):
+        def func(filename):
+            called.append(filename)
+            return compose(filename)
+        self.mkfile('Mädchen.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'M'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
+        self.assertEqual(completion.line_buffer, "Mädchen.txt ")
 
