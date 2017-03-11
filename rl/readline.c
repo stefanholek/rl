@@ -2071,6 +2071,103 @@ on_directory_completion_hook(char **directory)
 }
 
 
+/* Filename rewrite hook */
+
+static PyObject *filename_rewrite_hook = NULL;
+
+static char *
+on_filename_rewrite_hook(const char *text, int num_bytes);
+
+
+static PyObject *
+set_filename_rewrite_hook(PyObject *self, PyObject *args)
+{
+	PyObject *result = set_hook("filename_rewrite_hook",
+			&filename_rewrite_hook, args);
+
+	rl_filename_rewrite_hook =
+		filename_rewrite_hook ?
+		(rl_dequote_func_t *)on_filename_rewrite_hook : NULL;
+
+	return result;
+}
+
+PyDoc_STRVAR(doc_set_filename_rewrite_hook,
+"set_filename_rewrite_hook([function]) -> None\n\
+This function is called for every filename before it is compared against the completion word. \
+The function is called as ``function(filename)`` and should return a new filename or \
+None to indicate no change.");
+
+
+static PyObject *
+get_filename_rewrite_hook(PyObject *self, PyObject *noargs)
+{
+	if (filename_rewrite_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(filename_rewrite_hook);
+	return filename_rewrite_hook;
+}
+
+PyDoc_STRVAR(doc_get_filename_rewrite_hook,
+"get_filename_rewrite_hook() -> function\n\
+Get the current filename rewrite function.");
+
+
+static char *
+on_filename_rewrite_hook(const char *text, int num_bytes)
+/* This function must return new memory on success and the
+   passed-in 'text' pointer to indicate no change. */
+{
+	char *result = (char*)text;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(filename_rewrite_hook, "N",
+				  PyUnicode_DECODE(text));
+#else
+	r = PyObject_CallFunction(filename_rewrite_hook, "s",
+				  text);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = (char *)text;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL)
+			result = s;
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
 /* Replace line buffer contents */
 
 static PyObject *
@@ -2608,6 +2705,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_directory_completion_hook},
 	{"set_directory_completion_hook", set_directory_completion_hook,
 	 METH_VARARGS, doc_set_directory_completion_hook},
+	{"get_filename_rewrite_hook", get_filename_rewrite_hook,
+	 METH_NOARGS, doc_get_filename_rewrite_hook},
+	{"set_filename_rewrite_hook", set_filename_rewrite_hook,
+	 METH_VARARGS, doc_set_filename_rewrite_hook},
 	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
