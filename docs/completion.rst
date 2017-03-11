@@ -21,6 +21,7 @@ Completer Interface
 .. autoattribute:: rl.Completer.pre_input_hook
 .. autoattribute:: rl.Completer.word_break_hook
 .. autoattribute:: rl.Completer.directory_completion_hook
+.. autoattribute:: rl.Completer.filename_rewrite_hook
 .. autoattribute:: rl.Completer.display_matches_hook
 .. autoattribute:: rl.Completer.char_is_quoted_function
 .. autoattribute:: rl.Completer.filename_quoting_function

@@ -160,6 +160,19 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def filename_rewrite_hook():
+        doc="""The filename rewrite hook function.
+        This hook is called for every filename before it is compared
+        against the completion word. The function is called as
+        ``function(filename)`` and should return a new filename
+        or None to indicate no change."""
+        def get(self):
+            return readline.get_filename_rewrite_hook()
+        def set(self, function):
+            return readline.set_filename_rewrite_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
     def display_matches_hook():
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
@@ -250,6 +263,7 @@ class Completer(object):
         self.pre_input_hook = None
         self.word_break_hook = None
         self.directory_completion_hook = None
+        self.filename_rewrite_hook = None
         self.display_matches_hook = None
         self.char_is_quoted_function = None
         self.filename_quoting_function = None
