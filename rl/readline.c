@@ -1972,6 +1972,105 @@ on_completion_word_break_hook(void)
 }
 
 
+/* Directory rewrite hook */
+
+static PyObject *directory_rewrite_hook = NULL;
+
+static int
+on_directory_rewrite_hook(char **directory);
+
+
+static PyObject *
+set_directory_rewrite_hook(PyObject *self, PyObject *args)
+{
+	PyObject *result = set_hook("directory_rewrite_hook",
+			&directory_rewrite_hook, args);
+
+	rl_directory_rewrite_hook =
+		directory_rewrite_hook ?
+		(rl_icppfunc_t *)on_directory_rewrite_hook : NULL;
+
+	return result;
+}
+
+PyDoc_STRVAR(doc_set_directory_rewrite_hook,
+"set_directory_rewrite_hook([function]) -> None\n\
+This function is allowed to modify the directory portion of filenames readline completes. \
+The function is called as ``function(dirname)`` and should return a new directory name or \
+None to indicate no change. At the least, the function must perform all necessary \
+dequoting.");
+
+
+static PyObject *
+get_directory_rewrite_hook(PyObject *self, PyObject *noargs)
+{
+	if (directory_rewrite_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(directory_rewrite_hook);
+	return directory_rewrite_hook;
+}
+
+PyDoc_STRVAR(doc_get_directory_rewrite_hook,
+"get_directory_rewrite_hook() -> function\n\
+Get the current directory rewrite hook function.");
+
+
+static int
+on_directory_rewrite_hook(char **directory)
+{
+	int result = 0;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(directory_rewrite_hook, "N",
+				  PyUnicode_DECODE(*directory));
+#else
+	r = PyObject_CallFunction(directory_rewrite_hook, "s",
+				  *directory);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = 0;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL) {
+			free(*directory);
+			*directory = s;
+			result = 1;
+		}
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
 /* Directory completion hook */
 
 static PyObject *directory_completion_hook = NULL;
@@ -2701,6 +2800,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_completion_word_break_hook},
 	{"set_completion_word_break_hook", set_completion_word_break_hook,
 	 METH_VARARGS, doc_set_completion_word_break_hook},
+	{"get_directory_rewrite_hook", get_directory_rewrite_hook,
+	 METH_NOARGS, doc_get_directory_rewrite_hook},
+	{"set_directory_rewrite_hook", set_directory_rewrite_hook,
+	 METH_VARARGS, doc_set_directory_rewrite_hook},
 	{"get_directory_completion_hook", get_directory_completion_hook,
 	 METH_NOARGS, doc_get_directory_completion_hook},
 	{"set_directory_completion_hook", set_directory_completion_hook,

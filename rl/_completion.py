@@ -145,6 +145,21 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def directory_rewrite_hook():
+        doc="""The directory rewrite hook function.
+        This hook is used to prepare the directory name passed
+        to ``opendir`` during filename completion.
+        The function is called as ``function(dirname)`` and should
+        return a new directory name or None to indicate no change.
+        At the least, the function must perform all necessary
+        dequoting."""
+        def get(self):
+            return readline.get_directory_rewrite_hook()
+        def set(self, function):
+            readline.set_directory_rewrite_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
     def directory_completion_hook():
         doc="""The directory completion hook function.
         This hook is used to prepare the directory name passed
@@ -262,6 +277,7 @@ class Completer(object):
         self.startup_hook = None
         self.pre_input_hook = None
         self.word_break_hook = None
+        self.directory_rewrite_hook = None
         self.directory_completion_hook = None
         self.filename_rewrite_hook = None
         self.display_matches_hook = None

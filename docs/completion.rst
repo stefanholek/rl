@@ -20,6 +20,7 @@ Completer Interface
 .. autoattribute:: rl.Completer.startup_hook
 .. autoattribute:: rl.Completer.pre_input_hook
 .. autoattribute:: rl.Completer.word_break_hook
+.. autoattribute:: rl.Completer.directory_rewrite_hook
 .. autoattribute:: rl.Completer.directory_completion_hook
 .. autoattribute:: rl.Completer.filename_rewrite_hook
 .. autoattribute:: rl.Completer.display_matches_hook
