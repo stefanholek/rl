@@ -306,3 +306,28 @@ class FilenameRewriteHookTests(JailSetup):
         self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
         self.assertEqual(completion.line_buffer, "Mädchen.txt ")
 
+
+class DirectoryRewriteHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_directory_rewrite_hook(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname.replace('\\', '')
+        self.mkdir('Mä dchen')
+        self.mkfile('Mä dchen/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'Mä\\ dchen/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['Mä\\ dchen/'])
+        self.assertEqual(completion.line_buffer, "'Mä\\ dchen/fred.txt' ")
+
