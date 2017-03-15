@@ -162,8 +162,8 @@ class Completer(object):
     @apply
     def directory_completion_hook():
         doc="""The directory completion hook function.
-        This hook is used to prepare the directory name passed
-        to ``opendir`` during filename completion.
+        This function is allowed to modify the directory portion of
+        filenames readline completes.
         The function is called as ``function(dirname)`` and should
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary

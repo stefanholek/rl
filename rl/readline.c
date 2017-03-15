@@ -1995,7 +1995,7 @@ set_directory_rewrite_hook(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_directory_rewrite_hook,
 "set_directory_rewrite_hook([function]) -> None\n\
-This function is allowed to modify the directory portion of filenames readline completes. \
+This function is used to prepare the director name passed to ``opendir`` during filename completion. \
 The function is called as ``function(dirname)`` and should return a new directory name or \
 None to indicate no change. At the least, the function must perform all necessary \
 dequoting.");
@@ -2112,7 +2112,7 @@ get_directory_completion_hook(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_get_directory_completion_hook,
 "get_directory_completion_hook() -> function\n\
-This function is allowed to modify the directory portion of filenames readline completes.");
+Get the current directory completion hook function.");
 
 
 static int
@@ -2210,7 +2210,7 @@ get_filename_rewrite_hook(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_get_filename_rewrite_hook,
 "get_filename_rewrite_hook() -> function\n\
-Get the current filename rewrite function.");
+Get the current filename rewrite hook function.");
 
 
 static char *
