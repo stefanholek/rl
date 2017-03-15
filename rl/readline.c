@@ -1427,6 +1427,7 @@ on_filename_dequoting_function(const char *text, char quote_char);
 static PyObject *
 set_filename_dequoting_function(PyObject *self, PyObject *args)
 {
+#if (RL_READLINE_VERSION >= 0x0502)
 	PyObject *result = set_hook("filename_dequoting_function",
 			&filename_dequoting_function, args);
 
@@ -1435,6 +1436,9 @@ set_filename_dequoting_function(PyObject *self, PyObject *args)
 		(rl_dequote_func_t *)on_filename_dequoting_function : NULL;
 
 	return result;
+#else
+	Py_RETURN_NONE;
+#endif
 }
 
 PyDoc_STRVAR(doc_set_filename_dequoting_function,
