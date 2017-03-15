@@ -167,7 +167,10 @@ class Completer(object):
         The function is called as ``function(dirname)`` and should
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary
-        dequoting."""
+        dequoting.
+
+        .. note:: This hook has been deprecated in favor of :attr:`~rl.Completer.directory_rewrite_hook`.
+        """
         def get(self):
             return readline.get_directory_completion_hook()
         def set(self, function):
