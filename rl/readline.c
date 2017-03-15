@@ -2181,6 +2181,7 @@ on_filename_rewrite_hook(const char *text, int num_bytes);
 static PyObject *
 set_filename_rewrite_hook(PyObject *self, PyObject *args)
 {
+#if (RL_READLINE_VERSION >= 0x0601)
 	PyObject *result = set_hook("filename_rewrite_hook",
 			&filename_rewrite_hook, args);
 
@@ -2189,6 +2190,9 @@ set_filename_rewrite_hook(PyObject *self, PyObject *args)
 		(rl_dequote_func_t *)on_filename_rewrite_hook : NULL;
 
 	return result;
+#else
+	Py_RETURN_NONE;
+#endif
 }
 
 PyDoc_STRVAR(doc_set_filename_rewrite_hook,
