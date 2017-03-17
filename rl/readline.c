@@ -2046,7 +2046,7 @@ on_directory_rewrite_hook(char **directory)
 	}
 	else {
 #if (PY_MAJOR_VERSION >= 3)
-		b = PyUnicode_ENCODE(r);
+		b = PyUnicode_FS_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
 #else
@@ -2237,7 +2237,7 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 
 #if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(filename_rewrite_hook, "N",
-				  PyUnicode_DECODE(text));
+				  PyUnicode_FS_DECODE(text));
 #else
 	r = PyObject_CallFunction(filename_rewrite_hook, "s",
 				  text);

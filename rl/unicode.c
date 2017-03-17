@@ -5,7 +5,19 @@
 
 /* See PEP 383 */
 #define _ENCODING Py_FileSystemDefaultEncoding
+
+/* Py_FileSystemDefaultEncodeErrors appeared in Python 3.6 */
+#if (PY_VERSION_HEX >= 0x03060000)
+#define _ERRORS Py_FileSystemDefaultEncodeErrors
+#else
 #define _ERRORS "surrogateescape"
+#endif
+
+/* PyMem_RawMalloc appeared in Python 3.4 */
+#if (PY_VERSION_HEX < 0x03040000)
+#define PyMem_RawMalloc PyMem_Malloc
+#define PyMem_RawFree PyMem_Free
+#endif
 
 
 /* Unicode support */
@@ -13,7 +25,11 @@
 PyObject *
 PyUnicode_DECODE(const char *text)
 {
+#if (PY_VERSION_HEX >= 0x03030000)
+	return PyUnicode_DecodeLocale(text, _ERRORS);
+#else
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+#endif
 }
 
 
@@ -23,7 +39,11 @@ PyUnicode_DECODE_CHAR(char character)
 	char text[2] = "\0";
 
 	text[0] = character;
+#if (PY_VERSION_HEX >= 0x03030000)
+	return PyUnicode_DecodeLocale(text, _ERRORS);
+#else
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+#endif
 }
 
 
@@ -32,8 +52,28 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 {
 	PyObject *u;
 	Py_ssize_t i;
+	char *s;
+	size_t l;
 
+	/* Short-circuit */
+	if (index == 0)
+		return 0;
+
+#if (PY_VERSION_HEX >= 0x03030000)
+	/* LAME!!1!1 */
+	l = strlen(text);
+	if (index > l)
+		index = l;
+	s = PyMem_RawMalloc(index+1);
+	if (s == NULL)
+		return -1;
+	strncpy(s, text, index);
+	s[index] = '\0';
+	u = PyUnicode_DecodeLocale(s, _ERRORS);
+	PyMem_RawFree(s);
+#else
 	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
+#endif
 	if (u == NULL)
 		return -1;
 #if (PY_VERSION_HEX >= 0x03030000)
@@ -49,7 +89,33 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 PyObject *
 PyUnicode_ENCODE(PyObject *text)
 {
+#if (PY_VERSION_HEX >= 0x03030000)
+	return PyUnicode_EncodeLocale(text, _ERRORS);
+#else
 	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
+#endif
+}
+
+
+PyObject *
+PyUnicode_FS_DECODE(const char *text)
+{
+#if (PY_VERSION_HEX >= 0x03030000)
+	return PyUnicode_DecodeFSDefault(text);
+#else
+	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+#endif
+}
+
+
+PyObject *
+PyUnicode_FS_ENCODE(PyObject *text)
+{
+#if (PY_VERSION_HEX >= 0x03030000)
+	return PyUnicode_EncodeFSDefault(text);
+#else
+	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
+#endif
 }
 
 
@@ -97,7 +163,7 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 		Py_INCREF(b);
 	}
 	else {
-		b = PyUnicode_ENCODE(text);
+		b = PyUnicode_FS_ENCODE(text);
 		if (b == NULL)
 			return 0;
 	}
@@ -111,4 +177,68 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 }
 
 #endif /* Python 3 */
+
+
+PyObject *
+PyUnicode_GetPreferredEncoding()
+{
+	PyObject *locale = NULL;
+	PyObject *getpreferredencoding = NULL;
+	PyObject *r = NULL;
+
+	locale = PyImport_ImportModule("locale");
+	if (locale == NULL)
+		goto error;
+
+	getpreferredencoding = PyObject_GetAttrString(locale, "getpreferredencoding");
+	if (getpreferredencoding == NULL)
+		goto error;
+
+	r = PyObject_CallFunction(getpreferredencoding, "i", 0);
+	if (r == NULL)
+		goto error;
+
+	Py_DECREF(locale);
+	Py_DECREF(getpreferredencoding);
+	return r;
+  error:
+	Py_XDECREF(locale);
+	Py_XDECREF(getpreferredencoding);
+	return NULL;
+}
+
+
+int
+PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes)
+{
+	PyObject *u = NULL;
+	PyObject *b = NULL;
+	Py_ssize_t len;
+
+#if (PY_MAJOR_VERSION >= 3)
+	u = PyUnicode_GetPreferredEncoding();
+	if (u == NULL)
+		goto error;
+	b = PyUnicode_AsASCIIString(u);
+#else
+	b = PyUnicode_GetPreferredEncoding();
+#endif
+	if (b == NULL)
+		goto error;
+
+	len = PyBytes_GET_SIZE(b);
+	if (len >= max_bytes)
+		len = max_bytes - 1;
+
+	strncpy(buffer, PyBytes_AS_STRING(b), len);
+	buffer[len] = '\0';
+
+	Py_XDECREF(u);
+	Py_DECREF(b);
+	return 1;
+  error:
+	Py_XDECREF(u);
+	Py_XDECREF(b);
+	return 0;
+}
 
