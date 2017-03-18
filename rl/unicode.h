@@ -5,6 +5,7 @@
 
 PyObject *PyUnicode_GetPreferredEncoding();
 int PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes);
+void PyUnicode_PrintEncodings();
 
 #if (PY_MAJOR_VERSION >= 3)
 PyObject *PyUnicode_DECODE(const char *text);

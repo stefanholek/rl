@@ -243,3 +243,12 @@ PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes)
 	return 0;
 }
 
+
+void
+PyUnicode_PrintEncodings()
+{
+	char buffer[32];
+	PyUnicode_CopyPreferredEncoding(buffer, 32);
+	printf("%s %s\n", buffer, Py_FileSystemDefaultEncoding);
+}
+
