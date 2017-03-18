@@ -2348,7 +2348,7 @@ on_filename_stat_hook(char **directory)
 	}
 	else {
 #if (PY_MAJOR_VERSION >= 3)
-		b = PyUnicode_ENCODE(r);
+		b = PyUnicode_FS_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
 #else
