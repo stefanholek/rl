@@ -2275,6 +2275,108 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 }
 
 
+/* Filename stat hook */
+
+static PyObject *filename_stat_hook = NULL;
+
+static int
+on_filename_stat_hook(char **directory);
+
+
+static PyObject *
+set_filename_stat_hook(PyObject *self, PyObject *args)
+{
+#if (RL_READLINE_VERSION >= 0x0603)
+	PyObject *result = set_hook("filename_stat_hook",
+			&filename_stat_hook, args);
+
+	rl_filename_stat_hook =
+		filename_stat_hook ?
+		(rl_icppfunc_t *)on_filename_stat_hook : NULL;
+
+	return result;
+#else
+	Py_RETURN_NONE;
+#endif
+}
+
+PyDoc_STRVAR(doc_set_filename_stat_hook,
+"set_filename_stat_hook([function]) -> None\n\
+This function is used to prepare the filename passed to ``stat`` during match display. \
+The function is called as ``function(filename)`` and should return a new filename name or \
+None to indicate no change.");
+
+
+static PyObject *
+get_filename_stat_hook(PyObject *self, PyObject *noargs)
+{
+	if (filename_stat_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(filename_stat_hook);
+	return filename_stat_hook;
+}
+
+PyDoc_STRVAR(doc_get_filename_stat_hook,
+"get_filename_stat_hook() -> function\n\
+Get the current filename stat hook function.");
+
+
+static int
+on_filename_stat_hook(char **directory)
+{
+	int result = 0;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(filename_stat_hook, "N",
+				  PyUnicode_DECODE(*directory));
+#else
+	r = PyObject_CallFunction(filename_stat_hook, "s",
+				  *directory);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = 0;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL) {
+			free(*directory);
+			*directory = s;
+			result = 1;
+		}
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
 /* Replace line buffer contents */
 
 static PyObject *
@@ -2820,6 +2922,10 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_filename_rewrite_hook},
 	{"set_filename_rewrite_hook", set_filename_rewrite_hook,
 	 METH_VARARGS, doc_set_filename_rewrite_hook},
+	{"get_filename_stat_hook", get_filename_stat_hook,
+	 METH_NOARGS, doc_get_filename_stat_hook},
+	{"set_filename_stat_hook", set_filename_stat_hook,
+	 METH_VARARGS, doc_set_filename_stat_hook},
 	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
