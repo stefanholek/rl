@@ -107,6 +107,13 @@ class CompleterTests(unittest.TestCase):
         completer.filename_rewrite_hook = None
         self.assertEqual(completer.filename_rewrite_hook, None)
 
+    def test_filename_stat_hook(self):
+        self.assertEqual(completer.filename_stat_hook, None)
+        completer.filename_stat_hook = hook
+        self.assertEqual(completer.filename_stat_hook, hook)
+        completer.filename_stat_hook = None
+        self.assertEqual(completer.filename_stat_hook, None)
+
     def test_display_matches_hook(self):
         self.assertEqual(completer.display_matches_hook, None)
         completer.display_matches_hook = hook

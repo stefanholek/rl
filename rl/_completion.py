@@ -191,6 +191,19 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def filename_stat_hook():
+        doc="""The filename stat hook function.
+        This hook is used to prepare the filename passed
+        to ``stat`` during match display.
+        The function is called as ``function(filename)`` and should
+        return a new filename or None to indicate no change."""
+        def get(self):
+            return readline.get_filename_stat_hook()
+        def set(self, function):
+            readline.set_filename_stat_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
     def display_matches_hook():
         doc="""The display matches hook function.
         The function is called as ``function(substitution, matches, longest_match_length)``
@@ -283,6 +296,7 @@ class Completer(object):
         self.directory_rewrite_hook = None
         self.directory_completion_hook = None
         self.filename_rewrite_hook = None
+        self.filename_stat_hook = None
         self.display_matches_hook = None
         self.char_is_quoted_function = None
         self.filename_quoting_function = None
