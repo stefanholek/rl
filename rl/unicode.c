@@ -5,12 +5,13 @@
 
 /* See PEP 383 */
 #define _ENCODING Py_FileSystemDefaultEncoding
+#define _ERRORS "strict"
 
 /* Py_FileSystemDefaultEncodeErrors appeared in Python 3.6 */
 #if (PY_VERSION_HEX >= 0x03060000)
-#define _ERRORS Py_FileSystemDefaultEncodeErrors
+#define _FS_ERRORS Py_FileSystemDefaultEncodeErrors
 #else
-#define _ERRORS "surrogateescape"
+#define _FS_ERRORS "surrogateescape"
 #endif
 
 /* PyMem_RawMalloc appeared in Python 3.4 */
@@ -103,7 +104,7 @@ PyUnicode_FS_DECODE(const char *text)
 #if (PY_VERSION_HEX >= 0x03030000)
 	return PyUnicode_DecodeFSDefault(text);
 #else
-	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+	return PyUnicode_Decode(text, strlen(text), _ENCODING, _FS_ERRORS);
 #endif
 }
 
@@ -114,7 +115,7 @@ PyUnicode_FS_ENCODE(PyObject *text)
 #if (PY_VERSION_HEX >= 0x03030000)
 	return PyUnicode_EncodeFSDefault(text);
 #else
-	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
+	return PyUnicode_AsEncodedString(text, _ENCODING, _FS_ERRORS);
 #endif
 }
 
