@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import locale
-locale.setlocale(locale.LC_ALL, '')
+
+if sys.version_info[0] < 3:
+    try:
+        locale.setlocale(locale.LC_ALL, '')
+    except locale.Error:
+        pass
 
 import unittest
 import unicodedata
-import sys
+import functools
 
 from rl import completer
 from rl import completion
@@ -57,11 +63,23 @@ def decompose(text):
         return unicodedata.normalize('NFD', text.decode('utf-8')).encode('utf-8')
 
 
+def utf8_only(func):
+    # Skip tests unless UTF-8 locale
+    def guard(*args, **kw):
+        if locale.getpreferredencoding(False).upper() == 'UTF-8':
+            return func(*args, **kw)
+        else:
+            sys.stderr.write('!')
+            sys.stderr.flush()
+    return functools.wraps(func)(guard)
+
+
 class CompleterTests(unittest.TestCase):
 
     def setUp(self):
         reset()
 
+    @utf8_only
     def test_complete_utf8(self):
         @generator
         def func(text):
@@ -78,6 +96,7 @@ class DisplayMatchesHookTests(unittest.TestCase):
         reset()
         called[:] = []
 
+    @utf8_only
     def test_display_matches_hook_utf8(self):
         @generator
         def func(text):
@@ -104,6 +123,7 @@ class WordBreakHookTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 3)
         self.assertEqual(completion.endidx, 5)
 
+    @utf8_only
     def test_word_break_hook_utf8(self):
         completer.word_break_hook = hook
         completer.word_break_characters = ' '
@@ -139,6 +159,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         self.assertEqual(completion.begidx, 0)
         self.assertEqual(completion.endidx, 6)
 
+    @utf8_only
     def test_char_is_quoted_utf8(self):
         def func(text, index):
             called.append((text, index))
@@ -159,6 +180,7 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
             self.assertEqual(completion.begidx, 0)
             self.assertEqual(completion.endidx, 10)
 
+    @utf8_only
     def test_char_is_quoted_multi_utf8(self):
         def func(text, index):
             called.append((text, index))
@@ -194,6 +216,7 @@ class DirectoryCompletionHookTests(JailSetup):
         completer.char_is_quoted_function = is_quoted
         completer.completer = filecomplete
 
+    @utf8_only
     def test_directory_completion_hook(self):
         def func(dirname):
             called.append(dirname)
@@ -219,6 +242,7 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.char_is_quoted_function = is_quoted
         completer.completer = filecomplete
 
+    @utf8_only
     def test_filename_dequoting_function(self):
         def func(text, quote_char):
             called.append((text, quote_char))
@@ -239,6 +263,7 @@ class IgnoreSomeCompletionsFunctionTests(JailSetup):
         called[:] = []
         completer.completer = filecomplete
 
+    @utf8_only
     def test_ignore_some_completions_function(self):
         def func(substitution, matches):
             called.append((substitution, matches))
@@ -264,6 +289,7 @@ class FilenameQuotingFunctionTests(JailSetup):
         completer.char_is_quoted_function = is_quoted
         completer.completer = filecomplete
 
+    @utf8_only
     def test_filename_quoting_function(self):
         def func(text, single_match, quote_char):
             called.append((text, single_match, quote_char))
@@ -284,6 +310,7 @@ class FilenameRewriteHookTests(JailSetup):
         called[:] = []
         completer.completer = filecomplete
 
+    @utf8_only
     def test_filename_rewrite_hook(self):
         def func(filename):
             called.append(filename)
@@ -295,6 +322,7 @@ class FilenameRewriteHookTests(JailSetup):
         self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
         self.assertEqual(completion.line_buffer, decompose("Mädchen.txt "))
 
+    @utf8_only
     def test_compose_in_filename_rewrite_hook(self):
         def func(filename):
             called.append(filename)
@@ -319,6 +347,7 @@ class DirectoryRewriteHookTests(JailSetup):
         completer.char_is_quoted_function = is_quoted
         completer.completer = filecomplete
 
+    @utf8_only
     def test_directory_rewrite_hook(self):
         def func(dirname):
             called.append(dirname)
