@@ -4,21 +4,20 @@
 #if (PY_MAJOR_VERSION >= 3)
 
 /* See PEP 383 */
-#define _ENCODING Py_FileSystemDefaultEncoding
-#define _ERRORS "strict"
+#define _FS_ENCODING Py_FileSystemDefaultEncoding
 
-/* Py_FileSystemDefaultEncodeErrors appeared in Python 3.6 */
 #if (PY_VERSION_HEX >= 0x03060000)
 #define _FS_ERRORS Py_FileSystemDefaultEncodeErrors
 #else
 #define _FS_ERRORS "surrogateescape"
 #endif
 
-/* PyMem_RawMalloc appeared in Python 3.4 */
-#if (PY_VERSION_HEX < 0x03040000)
-#define PyMem_RawMalloc PyMem_Malloc
-#define PyMem_RawFree PyMem_Free
-#endif
+/* Make preferred encoding available in scope */
+#define USE_ENCODING \
+	char _ENCODING[32]; \
+	PyUnicode_CopyPreferredEncoding(_ENCODING, 32);
+
+#define _ERRORS "surrogateescape"
 
 
 /* Unicode support */
@@ -26,11 +25,9 @@
 PyObject *
 PyUnicode_DECODE(const char *text)
 {
-#if (PY_VERSION_HEX >= 0x03030000)
-	return PyUnicode_DecodeLocale(text, _ERRORS);
-#else
+	USE_ENCODING
+
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
-#endif
 }
 
 
@@ -39,12 +36,10 @@ PyUnicode_DECODE_CHAR(char character)
 {
 	char text[2] = "\0";
 
+	USE_ENCODING
+
 	text[0] = character;
-#if (PY_VERSION_HEX >= 0x03030000)
-	return PyUnicode_DecodeLocale(text, _ERRORS);
-#else
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
-#endif
 }
 
 
@@ -53,35 +48,14 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 {
 	PyObject *u;
 	Py_ssize_t i;
-	char *s;
-	size_t l;
 
-	/* Short-circuit */
-	if (index == 0)
-		return 0;
+	USE_ENCODING
 
-#if (PY_VERSION_HEX >= 0x03030000)
-	/* LAME!!1!1 */
-	l = strlen(text);
-	if (index > l)
-		index = l;
-	s = PyMem_RawMalloc(index+1);
-	if (s == NULL)
-		return -1;
-	strncpy(s, text, index);
-	s[index] = '\0';
-	u = PyUnicode_DecodeLocale(s, _ERRORS);
-	PyMem_RawFree(s);
-#else
 	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
-#endif
 	if (u == NULL)
 		return -1;
-#if (PY_VERSION_HEX >= 0x03030000)
+
 	i = PyUnicode_GET_LENGTH(u);
-#else
-	i = PyUnicode_GET_SIZE(u);
-#endif
 	Py_DECREF(u);
 	return i;
 }
@@ -90,33 +64,23 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 PyObject *
 PyUnicode_ENCODE(PyObject *text)
 {
-#if (PY_VERSION_HEX >= 0x03030000)
-	return PyUnicode_EncodeLocale(text, _ERRORS);
-#else
+	USE_ENCODING
+
 	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
-#endif
 }
 
 
 PyObject *
 PyUnicode_FS_DECODE(const char *text)
 {
-#if (PY_VERSION_HEX >= 0x03030000)
-	return PyUnicode_DecodeFSDefault(text);
-#else
-	return PyUnicode_Decode(text, strlen(text), _ENCODING, _FS_ERRORS);
-#endif
+	return PyUnicode_Decode(text, strlen(text), _FS_ENCODING, _FS_ERRORS);
 }
 
 
 PyObject *
 PyUnicode_FS_ENCODE(PyObject *text)
 {
-#if (PY_VERSION_HEX >= 0x03030000)
-	return PyUnicode_EncodeFSDefault(text);
-#else
-	return PyUnicode_AsEncodedString(text, _ENCODING, _FS_ERRORS);
-#endif
+	return PyUnicode_AsEncodedString(text, _FS_ENCODING, _FS_ERRORS);
 }
 
 
