@@ -44,7 +44,7 @@ class Completer(object):
 
     @apply
     def word_break_characters():
-        doc="""Characters that define word boundaries (aka delimiters)."""
+        doc="""Characters that define word boundaries (a.k.a. delimiters)."""
         def get(self):
             return readline.get_completer_delims()
         def set(self, string):
@@ -183,7 +183,9 @@ class Completer(object):
         This hook is called for every filename before it is compared
         against the completion word. The function is called as
         ``function(filename)`` and should return a new filename
-        or None to indicate no change."""
+        or None to indicate no change.
+
+        *New in readline 6.1.*"""
         def get(self):
             return readline.get_filename_rewrite_hook()
         def set(self, function):
@@ -196,7 +198,9 @@ class Completer(object):
         This hook is used to prepare the filename passed
         to ``stat`` during match display.
         The function is called as ``function(filename)`` and should
-        return a new filename or None to indicate no change."""
+        return a new filename or None to indicate no change.
+
+        *New in readline 6.3.*"""
         def get(self):
             return readline.get_filename_stat_hook()
         def set(self, function):
