@@ -1999,7 +1999,7 @@ set_directory_rewrite_hook(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_directory_rewrite_hook,
 "set_directory_rewrite_hook([function]) -> None\n\
-This function is used to prepare the director name passed to ``opendir`` during filename completion. \
+This function is used to prepare the director name passed to ``opendir()`` during filename completion. \
 The function is called as ``function(dirname)`` and should return a new directory name or \
 None to indicate no change. At the least, the function must perform all necessary \
 dequoting.");
@@ -2302,7 +2302,7 @@ set_filename_stat_hook(PyObject *self, PyObject *args)
 
 PyDoc_STRVAR(doc_set_filename_stat_hook,
 "set_filename_stat_hook([function]) -> None\n\
-This function is used to prepare the filename passed to ``stat`` during match display. \
+This function is used to prepare the filename passed to ``stat()`` during match display. \
 The function is called as ``function(filename)`` and should return a new filename name or \
 None to indicate no change.");
 

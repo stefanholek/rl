@@ -3,9 +3,11 @@
 from rl import completer
 from rl import completion
 from rl import readline
+from rl import print_exc
 
 
-def display_matches_hook(substitution, matches, max_length):
+@print_exc
+def display_matches_hook(substitution, matches, longest_match_length):
     # Python implementation of the default display_matches_hook
     num_matches = len(matches)
     if num_matches >= completer.query_items > 0:
@@ -19,6 +21,6 @@ def display_matches_hook(substitution, matches, max_length):
                 sys.stdout.write('\n')
                 completion.redisplay(force=True)
                 return
-    completion.display_match_list(substitution, matches, max_length)
+    completion.display_match_list(substitution, matches, longest_match_length)
     completion.redisplay(force=True)
 

@@ -20,15 +20,15 @@ Completer Interface
 .. autoattribute:: rl.Completer.startup_hook
 .. autoattribute:: rl.Completer.pre_input_hook
 .. autoattribute:: rl.Completer.word_break_hook
-.. autoattribute:: rl.Completer.directory_rewrite_hook
-.. autoattribute:: rl.Completer.directory_completion_hook
-.. autoattribute:: rl.Completer.filename_rewrite_hook
-.. autoattribute:: rl.Completer.filename_stat_hook
-.. autoattribute:: rl.Completer.display_matches_hook
 .. autoattribute:: rl.Completer.char_is_quoted_function
 .. autoattribute:: rl.Completer.filename_quoting_function
 .. autoattribute:: rl.Completer.filename_dequoting_function
 .. autoattribute:: rl.Completer.ignore_some_completions_function
+.. autoattribute:: rl.Completer.display_matches_hook
+.. autoattribute:: rl.Completer.directory_rewrite_hook
+.. autoattribute:: rl.Completer.directory_completion_hook
+.. autoattribute:: rl.Completer.filename_rewrite_hook
+.. autoattribute:: rl.Completer.filename_stat_hook
 
 .. automethod:: rl.Completer.read_init_file
 .. automethod:: rl.Completer.parse_and_bind
