@@ -737,3 +737,69 @@ class DirectoryRewriteHookTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
 
+
+class FilenameStatHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_none_hook(self):
+        def func(filename):
+            return None
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_bad_hook(self):
+        def func(filename):
+            return 23
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_filename_stat_hook(self):
+        @print_exc
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flintstone/fred.txt'])
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_empty_string(self):
+        @print_exc
+        def func(filename):
+            called.append(filename)
+            return ''
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flintstone/fred.txt'])
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
