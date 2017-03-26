@@ -3176,10 +3176,13 @@ setup_readline(void)
 	if (!saved_locale)
 		Py_FatalError("not enough memory to save locale");
 #endif
-
+	/* Initialize history variables */
 	using_history();
 
-	rl_readline_name = "python";
+	/* Support $if <readline_name> sections in .inputrc */
+	rl_readline_name = getenv("RL_READLINE_NAME");
+	if (rl_readline_name == NULL)
+		rl_readline_name = "python";
 #if defined(PYOS_OS2) && defined(PYCC_GCC)
 	/* Allow $if term= in .inputrc to work */
 	rl_terminal_name = getenv("TERM");
