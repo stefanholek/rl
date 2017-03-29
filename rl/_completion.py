@@ -521,7 +521,7 @@ def generator(func):
 
     Takes a function returning a list of matches and returns an
     object implementing the generator protocol readline requires.
-    The function is called as ``func(text)`` and should return an
+    The function is called as ``function(text)`` and should return an
     iterable of matches for ``text``.
     """
     cache = {}
