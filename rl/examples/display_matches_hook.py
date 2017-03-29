@@ -1,5 +1,7 @@
 # Example display matches hook
 
+import sys
+
 from rl import completer
 from rl import completion
 from rl import readline
