@@ -3,6 +3,12 @@
 
 #if (PY_MAJOR_VERSION >= 3)
 
+/* PyMem_RawMalloc appeared in Python 3.4 */
+#if (PY_VERSION_HEX < 0x03040000)
+#define PyMem_RawMalloc PyMem_Malloc
+#define PyMem_RawFree PyMem_Free
+#endif
+
 /* See PEP 383 */
 #define _FS_ENCODING Py_FileSystemDefaultEncoding
 
@@ -19,15 +25,22 @@
 
 #define _ERRORS "surrogateescape"
 
+/* Set to 1 for explicit codecs, 0 for default conversions */
+#define USE_CODECS 1
+
 
 /* Unicode support */
 
 PyObject *
 PyUnicode_DECODE(const char *text)
 {
+#if USE_CODECS
 	USE_ENCODING
 
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+#else
+	return PyUnicode_DecodeLocale(text, _ERRORS);
+#endif
 }
 
 
@@ -36,10 +49,8 @@ PyUnicode_DECODE_CHAR(char character)
 {
 	char text[2] = "\0";
 
-	USE_ENCODING
-
 	text[0] = character;
-	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
+	return PyUnicode_DECODE(text);
 }
 
 
@@ -49,9 +60,30 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	PyObject *u;
 	Py_ssize_t i;
 
+#if USE_CODECS
 	USE_ENCODING
 
 	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
+#else
+	char *s;
+	size_t l;
+
+	/* Short-circuit */
+	if (index == 0)
+		return 0;
+
+	/* LAME!!1!1 */
+	l = strlen(text);
+	if (index > l)
+		index = l;
+	s = PyMem_RawMalloc(index+1);
+	if (s == NULL)
+		return -1;
+	strncpy(s, text, index);
+	s[index] = '\0';
+	u = PyUnicode_DecodeLocale(s, _ERRORS);
+	PyMem_RawFree(s);
+#endif
 	if (u == NULL)
 		return -1;
 
@@ -64,23 +96,35 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 PyObject *
 PyUnicode_ENCODE(PyObject *text)
 {
+#if USE_CODECS
 	USE_ENCODING
 
 	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
+#else
+	return PyUnicode_EncodeLocale(text, _ERRORS);
+#endif
 }
 
 
 PyObject *
 PyUnicode_FS_DECODE(const char *text)
 {
+#if USE_CODECS
 	return PyUnicode_Decode(text, strlen(text), _FS_ENCODING, _FS_ERRORS);
+#else
+	return PyUnicode_DecodeFSDefault(text);
+#endif
 }
 
 
 PyObject *
 PyUnicode_FS_ENCODE(PyObject *text)
 {
+#if USE_CODECS
 	return PyUnicode_AsEncodedString(text, _FS_ENCODING, _FS_ERRORS);
+#else
+	return PyUnicode_EncodeFSDefault(text);
+#endif
 }
 
 
