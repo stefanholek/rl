@@ -136,8 +136,7 @@ class Completer(object):
         once per completion and should return a string of word
         break characters for the current completion, or None
         to indicate no change. The passed-in ``begidx`` and ``endidx``
-        are what readline would use if the hook did not exist (and
-        will use if the hook returns None)."""
+        are what readline would use if the hook did not exist."""
         def get(self):
             return readline.get_completion_word_break_hook()
         def set(self, function):
@@ -456,9 +455,10 @@ class Completion(object):
         """Built-in filename completion.
         May be called from a completion entry function to initiate readline's
         filename completion. Returns a list of matches.
-        Filename completion is a complex process, and a majority of completer
-        hooks exist solely to support its various steps. Please see the
-        :ref:`call-graph` for how they all fit together."""
+
+        Filename completion is a complex process, and many completer hooks
+        exist solely to support its various steps.
+        Please see the :ref:`call-graph` for how it all fits together."""
         return self._generate(readline.filename_completion_function, text)
 
     def complete_username(self, text):

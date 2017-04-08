@@ -19,12 +19,15 @@ Completer Interface
 .. autoattribute:: rl.Completer.completer
 .. autoattribute:: rl.Completer.startup_hook
 .. autoattribute:: rl.Completer.pre_input_hook
+.. autoattribute:: rl.Completer.display_matches_hook
+
 .. autoattribute:: rl.Completer.word_break_hook
 .. autoattribute:: rl.Completer.char_is_quoted_function
+
 .. autoattribute:: rl.Completer.filename_quoting_function
 .. autoattribute:: rl.Completer.filename_dequoting_function
 .. autoattribute:: rl.Completer.ignore_some_completions_function
-.. autoattribute:: rl.Completer.display_matches_hook
+
 .. autoattribute:: rl.Completer.directory_rewrite_hook
 .. autoattribute:: rl.Completer.directory_completion_hook
 .. autoattribute:: rl.Completer.filename_rewrite_hook
@@ -39,6 +42,7 @@ Completion Interface
 .. autoclass:: rl.Completion
 
 .. autoattribute:: rl.Completion.line_buffer
+
 .. autoattribute:: rl.Completion.completion_type
 .. autoattribute:: rl.Completion.begidx
 .. autoattribute:: rl.Completion.endidx
@@ -49,12 +53,11 @@ Completion Interface
 .. autoattribute:: rl.Completion.suppress_append
 .. autoattribute:: rl.Completion.filename_completion_desired
 .. autoattribute:: rl.Completion.filename_quoting_desired
-.. autoattribute:: rl.Completion.rl_point
-.. autoattribute:: rl.Completion.rl_end
 
 .. automethod:: rl.Completion.complete_filename
 .. automethod:: rl.Completion.complete_username
 .. automethod:: rl.Completion.expand_tilde
+
 .. automethod:: rl.Completion.display_match_list
 .. automethod:: rl.Completion.redisplay
 
