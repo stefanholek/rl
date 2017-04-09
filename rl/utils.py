@@ -1,17 +1,7 @@
 """Global constants."""
 
-from __future__ import absolute_import
-
-
 # Python uses these word break characters by default
 DEFAULT_DELIMS = ' \t\n`~!@#$%^&*()-=+[{]}\\|;:\'",<>/?'
-
-
-# Python 2 needs help importing global modules
-try:
-    import readline
-except ImportError:
-    pass
 
 
 # Python 3 has no apply

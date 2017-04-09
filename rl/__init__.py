@@ -107,7 +107,7 @@ history buffer as well as functions to persist the history between sessions.
 # .. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 # Grab the PyOS_ReadlineFunctionPointer
-import rl.utils
+import rl._init
 import rl.readline
 
 # For subclassing and Sphinx
