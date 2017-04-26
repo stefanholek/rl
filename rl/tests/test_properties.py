@@ -86,12 +86,33 @@ class CompleterTests(unittest.TestCase):
         completer.word_break_hook = None
         self.assertEqual(completer.word_break_hook, None)
 
+    def test_directory_rewrite_hook(self):
+        self.assertEqual(completer.directory_rewrite_hook, None)
+        completer.directory_rewrite_hook = hook
+        self.assertEqual(completer.directory_rewrite_hook, hook)
+        completer.directory_rewrite_hook = None
+        self.assertEqual(completer.directory_rewrite_hook, None)
+
     def test_directory_completion_hook(self):
         self.assertEqual(completer.directory_completion_hook, None)
         completer.directory_completion_hook = hook
         self.assertEqual(completer.directory_completion_hook, hook)
         completer.directory_completion_hook = None
         self.assertEqual(completer.directory_completion_hook, None)
+
+    def test_filename_rewrite_hook(self):
+        self.assertEqual(completer.filename_rewrite_hook, None)
+        completer.filename_rewrite_hook = hook
+        self.assertEqual(completer.filename_rewrite_hook, hook)
+        completer.filename_rewrite_hook = None
+        self.assertEqual(completer.filename_rewrite_hook, None)
+
+    def test_filename_stat_hook(self):
+        self.assertEqual(completer.filename_stat_hook, None)
+        completer.filename_stat_hook = hook
+        self.assertEqual(completer.filename_stat_hook, hook)
+        completer.filename_stat_hook = None
+        self.assertEqual(completer.filename_stat_hook, None)
 
     def test_display_matches_hook(self):
         self.assertEqual(completer.display_matches_hook, None)

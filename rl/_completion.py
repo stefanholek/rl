@@ -44,7 +44,7 @@ class Completer(object):
 
     @apply
     def word_break_characters():
-        doc="""Characters that define word boundaries (aka delimiters)."""
+        doc="""Characters that define word boundaries (a.k.a. delimiters)."""
         def get(self):
             return readline.get_completer_delims()
         def set(self, string):
@@ -136,8 +136,7 @@ class Completer(object):
         once per completion and should return a string of word
         break characters for the current completion, or None
         to indicate no change. The passed-in ``begidx`` and ``endidx``
-        are what readline would use if the hook did not exist (and
-        will use if the hook returns None)."""
+        are what readline would use if the hook did not exist."""
         def get(self):
             return readline.get_completion_word_break_hook()
         def set(self, function):
@@ -145,10 +144,25 @@ class Completer(object):
         return property(get, set, doc=doc)
 
     @apply
+    def directory_rewrite_hook():
+        doc="""The directory rewrite hook function.
+        This hook is used to prepare the directory name passed
+        to ``opendir()`` during filename completion.
+        The function is called as ``function(dirname)`` and should
+        return a new directory name or None to indicate no change.
+        At the least, the function must perform all necessary
+        dequoting."""
+        def get(self):
+            return readline.get_directory_rewrite_hook()
+        def set(self, function):
+            readline.set_directory_rewrite_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
     def directory_completion_hook():
         doc="""The directory completion hook function.
-        This hook is used to prepare the directory name passed
-        to ``opendir`` during filename completion.
+        This function is allowed to modify the directory portion of
+        filenames readline completes.
         The function is called as ``function(dirname)`` and should
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary
@@ -157,6 +171,36 @@ class Completer(object):
             return readline.get_directory_completion_hook()
         def set(self, function):
             readline.set_directory_completion_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
+    def filename_rewrite_hook():
+        doc="""The filename rewrite hook function.
+        This hook is called for every filename before it is compared
+        against the completion word. The function is called as
+        ``function(filename)`` and should return a new filename
+        or None to indicate no change.
+
+        *New in readline 6.1.*"""
+        def get(self):
+            return readline.get_filename_rewrite_hook()
+        def set(self, function):
+            return readline.set_filename_rewrite_hook(function)
+        return property(get, set, doc=doc)
+
+    @apply
+    def filename_stat_hook():
+        doc="""The filename stat hook function.
+        This hook is used to prepare the filename passed
+        to ``stat()`` during match display.
+        The function is called as ``function(filename)`` and should
+        return a new filename or None to indicate no change.
+
+        *New in readline 6.3.*"""
+        def get(self):
+            return readline.get_filename_stat_hook()
+        def set(self, function):
+            readline.set_filename_stat_hook(function)
         return property(get, set, doc=doc)
 
     @apply
@@ -249,7 +293,10 @@ class Completer(object):
         self.startup_hook = None
         self.pre_input_hook = None
         self.word_break_hook = None
+        self.directory_rewrite_hook = None
         self.directory_completion_hook = None
+        self.filename_rewrite_hook = None
+        self.filename_stat_hook = None
         self.display_matches_hook = None
         self.char_is_quoted_function = None
         self.filename_quoting_function = None
@@ -371,9 +418,10 @@ class Completion(object):
 
     @apply
     def filename_completion_desired():
-        doc="""Treat the results of matches as filenames.
+        doc="""Treat matches as filenames.
         Directory names will have a slash appended, for example.
-        Defaults to False."""
+        Defaults to False.
+        Set to True by :meth:`~rl.Completion.complete_filename`."""
         def get(self):
             return readline.get_filename_completion_desired()
         def set(self, bool):
@@ -382,7 +430,7 @@ class Completion(object):
 
     @apply
     def filename_quoting_desired():
-        doc="""If results are filenames, quote them. Defaults to True.
+        doc="""If matches are filenames, quote them. Defaults to True.
         Has no effect if :attr:`~rl.Completion.filename_completion_desired` is False."""
         def get(self):
             return readline.get_filename_quoting_desired()
@@ -404,19 +452,30 @@ class Completion(object):
     # Built-in functions
 
     def complete_filename(self, text):
-        """Built-in filename completion."""
+        """Built-in filename completion.
+        May be called from a completion entry function to initiate readline's
+        filename completion. Returns a list of matches.
+
+        Filename completion is a complex process, and many completer hooks
+        exist solely to support its various steps.
+        Please see the :ref:`call-graph` for how it all fits together."""
         return self._generate(readline.filename_completion_function, text)
 
     def complete_username(self, text):
-        """Built-in username completion."""
+        """Built-in username completion.
+        May be called from a completion entry function to initiate readline's
+        username completion. Returns a list of matches."""
         return self._generate(readline.username_completion_function, text)
 
     def expand_tilde(self, text):
-        """Built-in tilde expansion."""
+        """Built-in tilde expansion.
+        May be called from anywhere to tilde-expand a filename."""
         return readline.tilde_expand(text)
 
     def display_match_list(self, substitution, matches, longest_match_length):
-        """Built-in matches display."""
+        """Built-in matches display.
+        May be called from a custom :attr:`~rl.Completer.display_matches_hook`
+        to perform the default action, columnar display of matches."""
         readline.display_match_list(substitution, matches, longest_match_length)
 
     def redisplay(self, force=False):
@@ -462,7 +521,7 @@ def generator(func):
 
     Takes a function returning a list of matches and returns an
     object implementing the generator protocol readline requires.
-    The function is called as ``func(text)`` and should return an
+    The function is called as ``function(text)`` and should return an
     iterable of matches for ``text``.
     """
     cache = {}

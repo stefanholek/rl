@@ -180,11 +180,18 @@ class DisplayMatchesHookTests(JailSetup):
         called[:] = []
 
     def test_display_matches_hook(self):
+        self.mkfile('fred.txt', 'fred.gif')
         completer.completer = filecomplete
         completer.display_matches_hook = hook
-        self.mkfile('fred.txt', 'fred.gif')
         readline.complete_internal('?')
         self.assertEqual(called, [('fred.', ['fred.gif', 'fred.txt'], 8)])
+
+    # FIXME: Prints to rl_outstream
+    def test_default_display_matches_hook(self):
+        self.mkfile('fred.txt', 'fred.gif')
+        completer.completer = filecomplete
+        readline.complete_internal('?')
+        self.assertEqual(called, [])
 
 
 class WordBreakHookTests(unittest.TestCase):
@@ -597,4 +604,202 @@ class FilenameQuotingFunctionTests(JailSetup):
         completion.line_buffer = 'fr'
         readline.complete_internal(TAB)
         self.assertEqual(completion.line_buffer, '')
+
+
+class FilenameRewriteHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkfile('fred.txt')
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_none_hook(self):
+        def func(filename):
+            return None
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_bad_hook(self):
+        def func(filename):
+            return 23
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fred.txt ")
+
+    def test_filename_rewrite_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename + '_'
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['.', '..', 'fred.txt'])
+        self.assertEqual(completion.line_buffer, "fred.txt_ ")
+
+    def test_empty_string(self):
+        def func(filename):
+            called.append(filename)
+            return ''
+        self.mkfile('fred.txt')
+        completer.filename_rewrite_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "fr")
+
+
+class DirectoryRewriteHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_none_hook(self):
+        def func(dirname):
+            return None
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_bad_hook(self):
+        def func(dirname):
+            return 23
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_directory_rewrite_hook(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname.replace('\\', '')
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flint\\ stone/'])
+        self.assertEqual(completion.line_buffer, "'flint\\ stone/fred.txt' ")
+
+    def test_no_dequoting(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flint\\ stone/'])
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_empty_string(self):
+        def func(dirname):
+            return ''
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+
+class FilenameStatHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.quote_characters = '\'"'
+        completer.word_break_characters = ' \t\n"\''
+        completer.filename_quote_characters = ' \t\n"\''
+        completer.char_is_quoted_function = is_quoted
+        completer.completer = filecomplete
+
+    def test_no_hook(self):
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_none_hook(self):
+        def func(filename):
+            return None
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_bad_hook(self):
+        def func(filename):
+            return 23
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_filename_stat_hook(self):
+        @print_exc
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flintstone/fred.txt'])
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    def test_empty_string(self):
+        @print_exc
+        def func(filename):
+            called.append(filename)
+            return ''
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['flintstone/fred.txt'])
+        self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
 

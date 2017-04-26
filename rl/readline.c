@@ -1427,6 +1427,7 @@ on_filename_dequoting_function(const char *text, char quote_char);
 static PyObject *
 set_filename_dequoting_function(PyObject *self, PyObject *args)
 {
+#if (RL_READLINE_VERSION >= 0x0502)
 	PyObject *result = set_hook("filename_dequoting_function",
 			&filename_dequoting_function, args);
 
@@ -1435,6 +1436,9 @@ set_filename_dequoting_function(PyObject *self, PyObject *args)
 		(rl_dequote_func_t *)on_filename_dequoting_function : NULL;
 
 	return result;
+#else
+	Py_RETURN_NONE;
+#endif
 }
 
 PyDoc_STRVAR(doc_set_filename_dequoting_function,
@@ -1972,6 +1976,105 @@ on_completion_word_break_hook(void)
 }
 
 
+/* Directory rewrite hook */
+
+static PyObject *directory_rewrite_hook = NULL;
+
+static int
+on_directory_rewrite_hook(char **directory);
+
+
+static PyObject *
+set_directory_rewrite_hook(PyObject *self, PyObject *args)
+{
+	PyObject *result = set_hook("directory_rewrite_hook",
+			&directory_rewrite_hook, args);
+
+	rl_directory_rewrite_hook =
+		directory_rewrite_hook ?
+		(rl_icppfunc_t *)on_directory_rewrite_hook : NULL;
+
+	return result;
+}
+
+PyDoc_STRVAR(doc_set_directory_rewrite_hook,
+"set_directory_rewrite_hook([function]) -> None\n\
+This function is used to prepare the director name passed to ``opendir()`` during filename completion. \
+The function is called as ``function(dirname)`` and should return a new directory name or \
+None to indicate no change. At the least, the function must perform all necessary \
+dequoting.");
+
+
+static PyObject *
+get_directory_rewrite_hook(PyObject *self, PyObject *noargs)
+{
+	if (directory_rewrite_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(directory_rewrite_hook);
+	return directory_rewrite_hook;
+}
+
+PyDoc_STRVAR(doc_get_directory_rewrite_hook,
+"get_directory_rewrite_hook() -> function\n\
+Get the current directory rewrite hook function.");
+
+
+static int
+on_directory_rewrite_hook(char **directory)
+{
+	int result = 0;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(directory_rewrite_hook, "N",
+				  PyUnicode_DECODE(*directory));
+#else
+	r = PyObject_CallFunction(directory_rewrite_hook, "s",
+				  *directory);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = 0;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_FS_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL) {
+			free(*directory);
+			*directory = s;
+			result = 1;
+		}
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
 /* Directory completion hook */
 
 static PyObject *directory_completion_hook = NULL;
@@ -2013,7 +2116,7 @@ get_directory_completion_hook(PyObject *self, PyObject *noargs)
 
 PyDoc_STRVAR(doc_get_directory_completion_hook,
 "get_directory_completion_hook() -> function\n\
-This function is allowed to modify the directory portion of filenames readline completes.");
+Get the current directory completion hook function.");
 
 
 static int
@@ -2043,6 +2146,209 @@ on_directory_completion_hook(char **directory)
 	else {
 #if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL) {
+			free(*directory);
+			*directory = s;
+			result = 1;
+		}
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
+/* Filename rewrite hook */
+
+static PyObject *filename_rewrite_hook = NULL;
+
+static char *
+on_filename_rewrite_hook(const char *text, int num_bytes);
+
+
+static PyObject *
+set_filename_rewrite_hook(PyObject *self, PyObject *args)
+{
+#if (RL_READLINE_VERSION >= 0x0601)
+	PyObject *result = set_hook("filename_rewrite_hook",
+			&filename_rewrite_hook, args);
+
+	rl_filename_rewrite_hook =
+		filename_rewrite_hook ?
+		(rl_dequote_func_t *)on_filename_rewrite_hook : NULL;
+
+	return result;
+#else
+	Py_RETURN_NONE;
+#endif
+}
+
+PyDoc_STRVAR(doc_set_filename_rewrite_hook,
+"set_filename_rewrite_hook([function]) -> None\n\
+This function is called for every filename before it is compared against the completion word. \
+The function is called as ``function(filename)`` and should return a new filename or \
+None to indicate no change.");
+
+
+static PyObject *
+get_filename_rewrite_hook(PyObject *self, PyObject *noargs)
+{
+	if (filename_rewrite_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(filename_rewrite_hook);
+	return filename_rewrite_hook;
+}
+
+PyDoc_STRVAR(doc_get_filename_rewrite_hook,
+"get_filename_rewrite_hook() -> function\n\
+Get the current filename rewrite hook function.");
+
+
+static char *
+on_filename_rewrite_hook(const char *text, int num_bytes)
+/* This function must return new memory on success and the
+   passed-in 'text' pointer to indicate no change. */
+{
+	char *result = (char*)text;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(filename_rewrite_hook, "N",
+				  PyUnicode_FS_DECODE(text));
+#else
+	r = PyObject_CallFunction(filename_rewrite_hook, "s",
+				  text);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = (char *)text;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_ENCODE(r);
+		if (b != NULL)
+			s = PyBytes_AsString(b);
+#else
+		s = PyString_AsString(r);
+#endif
+		if (s == NULL)
+			goto error;
+		s = strdup(s);
+		if (s != NULL)
+			result = s;
+	}
+	Py_DECREF(r);
+	goto done;
+  error:
+	PyErr_Clear();
+	Py_XDECREF(r);
+  done:
+	Py_XDECREF(b);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
+}
+
+
+/* Filename stat hook */
+
+static PyObject *filename_stat_hook = NULL;
+
+static int
+on_filename_stat_hook(char **directory);
+
+
+static PyObject *
+set_filename_stat_hook(PyObject *self, PyObject *args)
+{
+#if (RL_READLINE_VERSION >= 0x0603)
+	PyObject *result = set_hook("filename_stat_hook",
+			&filename_stat_hook, args);
+
+	rl_filename_stat_hook =
+		filename_stat_hook ?
+		(rl_icppfunc_t *)on_filename_stat_hook : NULL;
+
+	return result;
+#else
+	Py_RETURN_NONE;
+#endif
+}
+
+PyDoc_STRVAR(doc_set_filename_stat_hook,
+"set_filename_stat_hook([function]) -> None\n\
+This function is used to prepare the filename passed to ``stat()`` during match display. \
+The function is called as ``function(filename)`` and should return a new filename name or \
+None to indicate no change.");
+
+
+static PyObject *
+get_filename_stat_hook(PyObject *self, PyObject *noargs)
+{
+	if (filename_stat_hook == NULL) {
+		Py_RETURN_NONE;
+	}
+	Py_INCREF(filename_stat_hook);
+	return filename_stat_hook;
+}
+
+PyDoc_STRVAR(doc_get_filename_stat_hook,
+"get_filename_stat_hook() -> function\n\
+Get the current filename stat hook function.");
+
+
+static int
+on_filename_stat_hook(char **directory)
+{
+	int result = 0;
+	char *s = NULL;
+	PyObject *r = NULL;
+	PyObject *b = NULL;
+
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+
+#if (PY_MAJOR_VERSION >= 3)
+	r = PyObject_CallFunction(filename_stat_hook, "N",
+				  PyUnicode_DECODE(*directory));
+#else
+	r = PyObject_CallFunction(filename_stat_hook, "s",
+				  *directory);
+#endif
+	if (r == NULL)
+		goto error;
+	if (r == Py_None) {
+		result = 0;
+	}
+	else {
+#if (PY_MAJOR_VERSION >= 3)
+		b = PyUnicode_FS_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
 #else
@@ -2436,14 +2742,14 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 		else
 			completion_y_or_n = get_y_or_n();
 #ifdef WITH_THREAD
-		PyEval_RestoreThread(_PyOS_ReadlineTState);
+		PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
 		/* Clear KeyboardInterrupt */
 		if (PyErr_CheckSignals() == -1 &&
 		    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 			PyErr_Clear();
 #ifdef WITH_THREAD
-		PyEval_SaveThread();
+		PyGILState_Release(gilstate);
 #endif
 		if (completion_y_or_n == 0) {
 			rl_crlf();
@@ -2463,14 +2769,14 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 		rl_display_match_list(matches, num_matches, max_length);
 
 #ifdef WITH_THREAD
-	PyEval_RestoreThread(_PyOS_ReadlineTState);
+	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
 	/* Clear KeyboardInterrupt */
 	if (PyErr_CheckSignals() == -1 &&
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
 #ifdef WITH_THREAD
-	PyEval_SaveThread();
+	PyGILState_Release(gilstate);
 #endif
 	rl_forced_update_display();
 	rl_display_fixed = 1;
@@ -2604,10 +2910,22 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_completion_word_break_hook},
 	{"set_completion_word_break_hook", set_completion_word_break_hook,
 	 METH_VARARGS, doc_set_completion_word_break_hook},
+	{"get_directory_rewrite_hook", get_directory_rewrite_hook,
+	 METH_NOARGS, doc_get_directory_rewrite_hook},
+	{"set_directory_rewrite_hook", set_directory_rewrite_hook,
+	 METH_VARARGS, doc_set_directory_rewrite_hook},
 	{"get_directory_completion_hook", get_directory_completion_hook,
 	 METH_NOARGS, doc_get_directory_completion_hook},
 	{"set_directory_completion_hook", set_directory_completion_hook,
 	 METH_VARARGS, doc_set_directory_completion_hook},
+	{"get_filename_rewrite_hook", get_filename_rewrite_hook,
+	 METH_NOARGS, doc_get_filename_rewrite_hook},
+	{"set_filename_rewrite_hook", set_filename_rewrite_hook,
+	 METH_VARARGS, doc_set_filename_rewrite_hook},
+	{"get_filename_stat_hook", get_filename_stat_hook,
+	 METH_NOARGS, doc_get_filename_stat_hook},
+	{"set_filename_stat_hook", set_filename_stat_hook,
+	 METH_VARARGS, doc_set_filename_stat_hook},
 	{"get_ignore_some_completions_function", get_ignore_some_completions_function,
 	 METH_NOARGS, doc_get_ignore_some_completions_function},
 	{"set_ignore_some_completions_function", set_ignore_some_completions_function,
@@ -2858,10 +3176,13 @@ setup_readline(void)
 	if (!saved_locale)
 		Py_FatalError("not enough memory to save locale");
 #endif
-
+	/* Initialize history variables */
 	using_history();
 
-	rl_readline_name = "python";
+	/* Support $if <readline_name> sections in .inputrc */
+	rl_readline_name = getenv("RL_READLINE_NAME");
+	if (rl_readline_name == NULL)
+		rl_readline_name = "python";
 #if defined(PYOS_OS2) && defined(PYCC_GCC)
 	/* Allow $if term= in .inputrc to work */
 	rl_terminal_name = getenv("TERM");
