@@ -91,8 +91,11 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'nature'
-html_style = 'nature-plus.css'
+#html_theme = 'nature'
+#html_style = 'nature-plus.css'
+html_theme = 'classic'
+html_style = 'classic-plus.css'
+html_theme_options = {'sidebarwidth': 250}
 
 #try:
 #    import sphinx_rtd_theme
