@@ -4,6 +4,13 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Add ``directory_rewrite_hook``, ``filename_rewrite_hook``, and
+  ``filename_stat_hook``.
+  [stefan]
+
+- Catch up with bug fixes applied to the standard library readline module.
+  [stefan]
+
 - Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
   [stefan]
 
