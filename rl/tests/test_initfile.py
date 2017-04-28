@@ -25,6 +25,10 @@ class ReadInitFileTests(JailSetup):
         if isfile(self.initfile):
             os.remove(self.initfile)
 
+    def test_AAA_setup_init_file(self):
+        self.mkfile(self.initfile)
+        completer.read_init_file(self.initfile)
+
     def test_no_initfile(self):
         self.assertEqual(isfile(self.initfile), False)
 
@@ -39,7 +43,7 @@ class ReadInitFileTests(JailSetup):
     def test_read_empty_string(self):
         self.mkfile('my_init')
         self.mkfile(self.initfile)
-        completer.read_init_file('')
+        self.assertRaises(IOError, completer.read_init_file, '')
 
     def test_read_relative(self):
         self.mkfile('my_init')
@@ -58,4 +62,8 @@ class ReadInitFileTests(JailSetup):
         def test_read_bytes_name(self):
             self.mkfile(bytes('my_init', sys.getfilesystemencoding()))
             completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()))
+
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 

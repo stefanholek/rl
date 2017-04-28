@@ -29,6 +29,10 @@ class ReadlineTests(JailSetup):
         if isfile(self.initfile):
             os.remove(self.initfile)
 
+    def test_AAA_setup_init_file(self):
+        self.mkfile(self.initfile)
+        readline.read_init_file(self.initfile)
+
     def test_readline_version(self):
         self.assertNotEqual(readline.readline_version(), 0)
 
@@ -62,7 +66,7 @@ class ReadlineTests(JailSetup):
     def test_read_initfile_empty_string(self):
         self.mkfile('my_init')
         self.mkfile(self.initfile)
-        self.assertEqual(readline.read_init_file(''), None)
+        self.assertRaises(IOError, readline.read_init_file, '')
 
     def test_read_history_file_noarg(self):
         self.mkfile(self.histfile)
@@ -89,4 +93,8 @@ class ReadlineTests(JailSetup):
 
     def test_redisplay_keyword_arg(self):
         self.assertRaises(TypeError, readline.redisplay, force=True)
+
+
+def test_suite():
+    return unittest.defaultTestLoader.loadTestsFromName(__name__)
 
