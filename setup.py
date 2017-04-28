@@ -197,7 +197,7 @@ class build_rl_ext(build_ext):
 
         if self.can_inspect_libraries():
             if not ext.static_readline:
-                readline = self.compiler.find_library_file(lib_dirs, 'readline')
+                readline = self.find_library_file(lib_dirs, 'readline')
                 termcap = self.get_termcap_from(readline)
             if not termcap:
                 pyreadline = join(lib_dynload, 'readline' + ext_suffix)
@@ -205,16 +205,31 @@ class build_rl_ext(build_ext):
             if not termcap:
                 pycurses = join(lib_dynload, '_curses' + ext_suffix)
                 termcap = self.get_termcap_from(pycurses)
-            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
+            if termcap and not self.find_library_file(lib_dirs, termcap):
                 termcap = ''
 
         if not termcap:
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                if self.compiler.find_library_file(lib_dirs, name):
+                if self.find_library_file(lib_dirs, name):
                     termcap = name
                     break
 
         return termcap
+
+    def find_library_file(self, lib_dirs, name):
+        # e.g. Fedora has only libtinfo.so.6 and no libtinfo.so
+        if sys.platform.startswith('linux'):
+            lib_name = self.compiler.library_filename(name, 'shared')
+            libs = []
+            for dir in lib_dirs:
+                for entry in os.listdir(dir):
+                    if entry.startswith(lib_name):
+                        libs.append(os.path.join(dir, entry))
+                if libs:
+                    libs.sort(key=lambda x: len(x))
+                    return libs[0]
+
+        return self.compiler.find_library_file(lib_dirs, name)
 
     def can_inspect_libraries(self):
         if sys.platform == 'darwin':
@@ -235,8 +250,8 @@ class build_rl_ext(build_ext):
             with os.popen(cmd) as fp:
                 libraries = fp.read()
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                 if 'lib%s.' % name in libraries:
-                    return name
+                 if self.compiler.library_filename(name, 'shared') in libraries:
+                     return name
         return ''
 
     def configure_static_readline(self):
