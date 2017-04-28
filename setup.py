@@ -190,7 +190,7 @@ class build_rl_ext(build_ext):
         lib_dirs = ['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib']
         lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
 
-        lib_dynload = join(sys.exec_prefix, 'lib', 'python%s' % sys.version[:3], 'lib-dynload')
+        lib_dynload = join(sys.exec_prefix, 'lib', 'python%d.%d' % sys.version_info[:2], 'lib-dynload')
         ext_suffix = get_config_var('EXT_SUFFIX') or '.so'
 
         termcap = ''
