@@ -92,7 +92,7 @@ class ReadlineExtension(Extension):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
 
         for match in re.finditer(r'-I\s*(\S+)', cflags):
-            if match.group(1) not in ['.', 'Include', './Include']:
+            if '/include' in match.group(1):
                 self.include_dirs.append(match.group(1))
 
     def use_library_dirs(self):
