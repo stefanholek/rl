@@ -112,8 +112,12 @@ read_init_file(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
 		return NULL;
 #endif
-	/* rl_read_init_file calls tilde_expand internally */
-	errno = rl_read_init_file(s);
+	/* Treat empty string like an error here */
+	if (s != NULL && *s == '\0')
+		errno = 2;
+	else
+		/* rl_read_init_file calls tilde_expand internally */
+		errno = rl_read_init_file(s);
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
