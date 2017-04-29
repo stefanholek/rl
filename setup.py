@@ -149,6 +149,8 @@ class ReadlineExtension(Extension):
             'build/readline/vi_mode.c',
             'build/readline/xmalloc.c',
             'build/readline/xfree.c',
+            'build/readline/colors.c',
+            'build/readline/parse-colors.c',
         ])
 
         self.define_macros.extend([
