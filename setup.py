@@ -46,7 +46,7 @@ class ReadlineExtension(Extension):
         if sys.platform == 'darwin':
             if self.sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.library_dirs.append(
-                    '/Library/Frameworks/Python.framework/Versions/%s/lib' % sys.version[:3])
+                    '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
         # Build statically on readthedocs.io
         if os.environ.get('READTHEDOCS') == 'True' and self.have_curl():
