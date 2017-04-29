@@ -224,12 +224,13 @@ class build_rl_ext(build_ext):
             lib_name = self.compiler.library_filename(name, 'shared')
             libs = []
             for dir in lib_dirs:
-                for entry in os.listdir(dir):
-                    if entry.startswith(lib_name):
-                        libs.append(os.path.join(dir, entry))
-                if libs:
-                    libs.sort(key=lambda x: len(x))
-                    return libs[0]
+                if os.path.isdir(dir):
+                    for entry in os.listdir(dir):
+                        if entry.startswith(lib_name):
+                            libs.append(os.path.join(dir, entry))
+                    if libs:
+                        libs.sort(key=lambda x: len(x))
+                        return libs[0]
 
         return self.compiler.find_library_file(lib_dirs, name)
 
