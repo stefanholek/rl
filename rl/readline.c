@@ -57,6 +57,11 @@
 #define PyString_FromString PyUnicode_DECODE
 #endif
 
+/* _PyLong_AsInt appeared in Python 3.3.2 */
+#if (PY_VERSION_HEX < 0x03030200)
+#define _PyLong_AsInt PyLong_AsLong
+#endif
+
 /* PyMem_RawMalloc appeared in Python 3.4 */
 #if (PY_VERSION_HEX < 0x03040000)
 #define PyMem_RawMalloc PyMem_Malloc
