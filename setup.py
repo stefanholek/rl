@@ -168,6 +168,12 @@ class ReadlineExtension(Extension):
 class build_rl_ext(build_ext):
 
     def build_extension(self, ext):
+        # Add FreeBSD include dir
+        if '/usr/local/lib' in self.compiler.library_dirs:
+            if '/usr/local/include' not in self.compiler.include_dirs:
+                if '/usr/local/include' not in ext.include_dirs:
+                    ext.include_dirs.append('/usr/local/include')
+
         # Find a termcap library
         termcap = self.find_termcap(ext)
 
