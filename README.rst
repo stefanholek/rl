@@ -59,7 +59,7 @@ print_exc
 
 For further details please refer to the `API Documentation`_.
 
-.. _`API Documentation`: https://rl.readthedocs.io/en/latest/
+.. _`API Documentation`: https://rl.readthedocs.io/en/stable/
 
 Example Code
 ------------
@@ -112,7 +112,8 @@ rl. On Mac OS X, make sure you have Xcode Tools installed.
 
 Ubuntu::
 
-    sudo apt-get install libreadline6-dev
+    sudo apt install python-dev
+    sudo apt install libreadline-dev
 
 Fedora::
 
