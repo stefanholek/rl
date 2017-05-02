@@ -289,7 +289,8 @@ class build_rl_ext(build_ext):
             cd build
             rm -rf readline-6.3 readline
             echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 -s %(tarball)s | tar zx
+            curl --connect-timeout 30 -s %(tarball)s > readline-6.3.tar.gz
+            tar zxf readline-6.3.tar.gz
             mv readline-6.3 readline
             cd readline
             if [ "%(have_patch)s" = "True" ]; then
@@ -318,7 +319,8 @@ class build_rl_ext(build_ext):
             cd build
             rm -rf ncurses-5.9 ncurses
             echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 -s %(tarball)s | tar zx
+            curl --connect-timeout 30 -s %(tarball)s > ncurses-5.9.tar.gz
+            tar zxf ncurses-5.9.tar.gz
             mv ncurses-5.9 ncurses
             cd ncurses
             ./configure --with-termlib --without-debug %(stdout)s
