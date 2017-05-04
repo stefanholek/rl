@@ -272,8 +272,8 @@ class build_rl_ext(build_ext):
             with os.popen(cmd) as fp:
                 libraries = fp.read()
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                 if 'lib%s.' % name in libraries:
-                     return name
+                if 'lib%s.' % name in libraries:
+                    return name
         return ''
 
     def configure_static_readline(self):
