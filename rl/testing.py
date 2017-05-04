@@ -49,6 +49,6 @@ class JailSetup(unittest.TestCase):
     def mkfile(self, *names):
         for name in names:
             f = open(name, 'wt')
-            f.write('23\n')
+            f.write('\n')
             f.close()
 
