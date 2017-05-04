@@ -17,15 +17,13 @@ from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from distutils import log
 
-from os.path import join, exists
+from os.path import join, exists, isdir
 
 version = '2.5'
+readline_version = '7.0'
 
 
 class ReadlineExtension(Extension):
-
-    static_readline = False
-    static_termcap = False
 
     def __init__(self, name):
         # Describe the extension
@@ -35,8 +33,8 @@ class ReadlineExtension(Extension):
             'rl/unicode.c',
             'rl/iterator.c',
         ]
-        libraries = ['readline']
-        Extension.__init__(self, name, sources, libraries=libraries)
+        libraries = []
+        Extension.__init__(self, name, sources)
 
         # Use include and library dirs from Python build
         self.use_include_dirs()
@@ -48,49 +46,13 @@ class ReadlineExtension(Extension):
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
-        # Build statically on readthedocs.io
-        if os.environ.get('READTHEDOCS') == 'True' and self.have_curl():
-            self.use_static_readline()
-            self.use_static_termcap()
-
-        # Force static build if environment variable is set
-        elif os.environ.get('RL_BUILD_STATIC_READLINE') and self.have_curl():
-            self.use_static_readline()
-
-        # OpenBSD has libreadline-4.0
-        elif sys.platform.startswith(('openbsd', 'netbsd')):
-            self.use_static_readline()
-
-        # Mac OS X ships with libedit which we cannot use
-        elif sys.platform == 'darwin':
-            # System Python
-            if self.sys_path_contains('/System/Library/Frameworks/Python.framework'):
-                self.use_static_readline()
-            # Mac Python
-            elif self.sys_path_contains('/Library/Frameworks/Python.framework'):
-                self.use_static_readline()
-            # MacPorts Python
-            elif '/opt/local/include' in self.include_dirs:
-                pass
-            # Fink Python
-            elif '/sw/include' in self.include_dirs:
-                pass
-            # Other Python
-            else:
-                self.use_static_readline()
-
+        self.use_static_readline()
         self.suppress_warnings()
 
     def sys_path_contains(self, string):
         for dir in sys.path:
             if dir.startswith(string):
                 return True
-
-    def have_curl(self):
-        if not find_executable('curl'):
-            log.warn('WARNING: Cannot build statically. Command not found: curl')
-            return False
-        return True
 
     def use_include_dirs(self):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
@@ -109,7 +71,7 @@ class ReadlineExtension(Extension):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
         cflags = cflags.split()
 
-        if self.static_readline and '-Wall' in cflags:
+        if '-Wall' in cflags:
             self.extra_compile_args.append('-Wno-all')
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
@@ -119,8 +81,6 @@ class ReadlineExtension(Extension):
             self.extra_compile_args.append('-Wno-unreachable-code')
 
     def use_static_readline(self):
-        self.static_readline = True
-
         self.sources.extend([
             'build/readline/bind.c',
             'build/readline/callback.c',
@@ -161,25 +121,15 @@ class ReadlineExtension(Extension):
 
         self.define_macros.extend([
             ('HAVE_CONFIG_H', None),
-            ('RL_LIBRARY_VERSION', '"6.3"'),
+            ('RL_LIBRARY_VERSION', '"%s"' % readline_version),
         ])
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
-        self.libraries.remove('readline')
-
-    def use_static_termcap(self):
-        self.static_termcap = True
 
 
 class build_rl_ext(build_ext):
 
     def build_extension(self, ext):
-        # Add FreeBSD include dir
-        if '/usr/local/lib' in self.compiler.library_dirs:
-            if '/usr/local/include' not in self.compiler.include_dirs:
-                if '/usr/local/include' not in ext.include_dirs:
-                    ext.include_dirs.append('/usr/local/include')
-
         # Find a termcap library
         termcap = self.find_termcap(ext)
 
@@ -188,15 +138,8 @@ class build_rl_ext(build_ext):
         else:
             log.warn('WARNING: Failed to find a termcap library')
 
-        # Build a static termcap library as last resort
-        if not termcap and ext.static_termcap:
-            self._build_static_tinfo()
-            ext.library_dirs = ['build/ncurses/lib'] + ext.library_dirs
-            ext.libraries.append('tinfo')
-
         # Prepare the source tree
-        if ext.static_readline:
-            self.configure_static_readline()
+        self.configure_static_readline()
 
         return build_ext.build_extension(self, ext)
 
@@ -217,9 +160,6 @@ class build_rl_ext(build_ext):
         termcap = ''
 
         if self.can_inspect_libraries():
-            if not ext.static_readline:
-                readline = self.find_library_file(lib_dirs, 'readline')
-                termcap = self.get_termcap_from(readline)
             if not termcap:
                 pyreadline = join(lib_dynload, 'readline' + ext_suffix)
                 termcap = self.get_termcap_from(pyreadline)
@@ -243,10 +183,10 @@ class build_rl_ext(build_ext):
             lib_name = self.compiler.library_filename(name, 'shared')
             libs = []
             for dir in lib_dirs:
-                if os.path.isdir(dir):
+                if isdir(dir):
                     for entry in os.listdir(dir):
                         if entry.startswith(lib_name):
-                            libs.append(os.path.join(dir, entry))
+                            libs.append(join(dir, entry))
                     if libs:
                         libs.sort(key=lambda x: len(x))
                         return libs[0]
@@ -277,9 +217,8 @@ class build_rl_ext(build_ext):
         return ''
 
     def configure_static_readline(self):
-        tarball = 'https://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz'
-        patches = 'https://ftp.gnu.org/gnu/readline/readline-6.3-patches'
-        have_patch = find_executable('patch') and 'True' or 'False'
+        srcdir = os.getcwd()
+        version = readline_version
         stdout = ''
 
         if not self.distribution.verbose:
@@ -289,51 +228,11 @@ class build_rl_ext(build_ext):
             os.system("""\
             mkdir -p build
             cd build
-            rm -rf readline-6.3 readline
-            echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 %(tarball)s > readline-6.3.tar.gz
-            if [ $? -eq 0 ]; then
-                tar zxf readline-6.3.tar.gz
-                mv readline-6.3 readline
-                cd readline
-                if [ "%(have_patch)s" = "True" ]; then
-                    curl --connect-timeout 30 -s %(patches)s/readline63-001 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-002 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-003 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-004 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-005 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-006 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-007 | patch -p0 %(stdout)s
-                    curl --connect-timeout 30 -s %(patches)s/readline63-008 | patch -p0 %(stdout)s
-                fi
-                ./configure %(stdout)s
-            else
-                echo "WARNING: Cannot build statically. Download failed: readline-6.3.tar.gz"
-            fi
-            """ % locals())
-
-    def _build_static_tinfo(self):
-        tarball = 'https://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz'
-        stdout = ''
-
-        if not self.distribution.verbose:
-            stdout = '>%s' % os.devnull
-
-        if not exists(join('build', 'ncurses', 'lib', 'libtinfo.a')):
-            os.system("""\
-            mkdir -p build
-            cd build
-            rm -rf ncurses-5.9 ncurses
-            echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 %(tarball)s > ncurses-5.9.tar.gz
-            if [ $? -eq 0 ]; then
-                tar zxf ncurses-5.9.tar.gz
-                mv ncurses-5.9 ncurses
-                cd ncurses
-                ./configure --with-termlib --without-debug %(stdout)s
-                cd ncurses
-                make libs %(stdout)s
-            fi
+            rm -rf readline-%(version)s readline
+            tar zxf %(srcdir)s/readline-%(version)s.tar.gz
+            mv readline-%(version)s readline
+            cd readline
+            ./configure %(stdout)s
             """ % locals())
 
 
