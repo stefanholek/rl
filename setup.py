@@ -115,6 +115,8 @@ class ReadlineExtension(Extension):
             self.extra_compile_args.append('-Wno-strict-prototypes')
         if '-Wsign-compare' in cflags:
             self.extra_compile_args.append('-Wno-sign-compare')
+        if '-Wunreachable-code' in cflags:
+            self.extra_compile_args.append('-Wno-unreachable-code')
 
     def use_static_readline(self):
         self.static_readline = True
