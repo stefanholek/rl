@@ -58,7 +58,7 @@ class ReadlineExtension(Extension):
             self.use_static_readline()
 
         # OpenBSD has libreadline-4.0
-        elif sys.platform.startswith('openbsd'):
+        elif sys.platform.startswith(('openbsd', 'netbsd')):
             self.use_static_readline()
 
         # Mac OS X ships with libedit which we cannot use
@@ -289,21 +289,25 @@ class build_rl_ext(build_ext):
             cd build
             rm -rf readline-6.3 readline
             echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 -s %(tarball)s > readline-6.3.tar.gz
-            tar zxf readline-6.3.tar.gz
-            mv readline-6.3 readline
-            cd readline
-            if [ "%(have_patch)s" = "True" ]; then
-                curl --connect-timeout 30 -s %(patches)s/readline63-001 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-002 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-003 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-004 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-005 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-006 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-007 | patch -p0 %(stdout)s
-                curl --connect-timeout 30 -s %(patches)s/readline63-008 | patch -p0 %(stdout)s
+            curl --connect-timeout 30 %(tarball)s > readline-6.3.tar.gz
+            if [ $? -eq 0 ]; then
+                tar zxf readline-6.3.tar.gz
+                mv readline-6.3 readline
+                cd readline
+                if [ "%(have_patch)s" = "True" ]; then
+                    curl --connect-timeout 30 -s %(patches)s/readline63-001 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-002 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-003 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-004 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-005 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-006 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-007 | patch -p0 %(stdout)s
+                    curl --connect-timeout 30 -s %(patches)s/readline63-008 | patch -p0 %(stdout)s
+                fi
+                ./configure %(stdout)s
+            else
+                echo "WARNING: Cannot build statically. Download failed: readline-6.3.tar.gz"
             fi
-            ./configure %(stdout)s
             """ % locals())
 
     def _build_static_tinfo(self):
@@ -319,13 +323,15 @@ class build_rl_ext(build_ext):
             cd build
             rm -rf ncurses-5.9 ncurses
             echo downloading %(tarball)s %(stdout)s
-            curl --connect-timeout 30 -s %(tarball)s > ncurses-5.9.tar.gz
-            tar zxf ncurses-5.9.tar.gz
-            mv ncurses-5.9 ncurses
-            cd ncurses
-            ./configure --with-termlib --without-debug %(stdout)s
-            cd ncurses
-            make libs %(stdout)s
+            curl --connect-timeout 30 %(tarball)s > ncurses-5.9.tar.gz
+            if [ $? -eq 0 ]; then
+                tar zxf ncurses-5.9.tar.gz
+                mv ncurses-5.9 ncurses
+                cd ncurses
+                ./configure --with-termlib --without-debug %(stdout)s
+                cd ncurses
+                make libs %(stdout)s
+            fi
             """ % locals())
 
 
