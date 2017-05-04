@@ -58,7 +58,7 @@ class ReadlineExtension(Extension):
             self.use_static_readline()
 
         # OpenBSD has libreadline-4.0
-        elif sys.platform.startswith('openbsd'):
+        elif sys.platform.startswith(('openbsd', 'netbsd')):
             self.use_static_readline()
 
         # Mac OS X ships with libedit which we cannot use
