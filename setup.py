@@ -272,7 +272,7 @@ class build_rl_ext(build_ext):
             with os.popen(cmd) as fp:
                 libraries = fp.read()
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                 if self.compiler.library_filename(name, 'shared') in libraries:
+                 if 'lib%s.' % name in libraries:
                      return name
         return ''
 
