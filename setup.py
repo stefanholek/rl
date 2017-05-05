@@ -46,6 +46,10 @@ class ReadlineExtension(Extension):
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
+        # Strip debug symbols on Linux
+        if sys.platform.startswith('linux'):
+            self.extra_link_args.extend(['-Xlinker', '--strip-debug'])
+
         self.use_static_readline()
         self.suppress_warnings()
 
