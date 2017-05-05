@@ -319,7 +319,7 @@ class FilenameRewriteHookTests(JailSetup):
         completer.filename_rewrite_hook = func
         completion.line_buffer = 'M'
         readline.complete_internal(TAB)
-        self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
+        self.assertEqual(sorted(called), ['.', '..', decompose('Mädchen.txt')])
         self.assertEqual(completion.line_buffer, decompose("Mädchen.txt "))
 
     @utf8_only
@@ -331,7 +331,7 @@ class FilenameRewriteHookTests(JailSetup):
         completer.filename_rewrite_hook = func
         completion.line_buffer = 'M'
         readline.complete_internal(TAB)
-        self.assertEqual(called, ['.', '..', decompose('Mädchen.txt')])
+        self.assertEqual(sorted(called), ['.', '..', decompose('Mädchen.txt')])
         self.assertEqual(completion.line_buffer, "Mädchen.txt ")
 
 

@@ -650,7 +650,7 @@ class FilenameRewriteHookTests(JailSetup):
         completer.filename_rewrite_hook = func
         completion.line_buffer = 'fr'
         readline.complete_internal(TAB)
-        self.assertEqual(called, ['.', '..', 'fred.txt'])
+        self.assertEqual(sorted(called), ['.', '..', 'fred.txt'])
         self.assertEqual(completion.line_buffer, "fred.txt_ ")
 
     def test_empty_string(self):
