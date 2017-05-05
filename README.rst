@@ -59,7 +59,7 @@ print_exc
 
 For further details please refer to the `API Documentation`_.
 
-.. _`API Documentation`: https://rl.readthedocs.io/en/stable/
+.. _`API Documentation`: https://rl.readthedocs.io/en/latest/
 
 Example Code
 ------------
