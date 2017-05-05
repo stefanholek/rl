@@ -179,9 +179,7 @@ class Completer(object):
         This hook is called for every filename before it is compared
         against the completion word. The function is called as
         ``function(filename)`` and should return a new filename
-        or None to indicate no change.
-
-        *New in readline 6.1.*"""
+        or None to indicate no change."""
         def get(self):
             return readline.get_filename_rewrite_hook()
         def set(self, function):
@@ -194,9 +192,7 @@ class Completer(object):
         This hook is used to prepare the filename passed
         to ``stat()`` during match display.
         The function is called as ``function(filename)`` and should
-        return a new filename or None to indicate no change.
-
-        *New in readline 6.3.*"""
+        return a new filename or None to indicate no change."""
         def get(self):
             return readline.get_filename_stat_hook()
         def set(self, function):
