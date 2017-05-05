@@ -75,10 +75,8 @@ class ReadlineExtension(Extension):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
         cflags = cflags.split()
 
-        if '-Wall' in cflags:
+        if '-Wall' in cflags or sys.platform.startswith('freebsd'):
             self.extra_compile_args.append('-Wno-all')
-        if '-Wstrict-prototypes' in cflags:
-            self.extra_compile_args.append('-Wno-strict-prototypes')
         if '-Wsign-compare' in cflags:
             self.extra_compile_args.append('-Wno-sign-compare')
         if '-Wunreachable-code' in cflags:
