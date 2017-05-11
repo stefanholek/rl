@@ -228,6 +228,8 @@ class build_rl_ext(build_ext):
         version = readline_version
         stdout = ''
 
+        cc = get_config_var('CC') or 'cc'
+
         if not self.distribution.verbose:
             stdout = '>%s' % os.devnull
 
@@ -239,7 +241,7 @@ class build_rl_ext(build_ext):
             tar zxf %(srcdir)s/readline-%(version)s.tar.gz
             mv readline-%(version)s readline
             cd readline
-            ./configure %(stdout)s
+            ./configure CC="%(cc)s" %(stdout)s
             """ % locals())
 
 
