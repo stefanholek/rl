@@ -46,8 +46,11 @@ class ReadlineExtension(Extension):
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
-        # Strip symbols
-        stripflag = get_config_var('STRIPFLAG') or '-s'
+        # Strip debug symbols
+        if sys.platform == 'darwin':
+            stripflag = '-S'
+        else:
+            stripflag = get_config_var('STRIPFLAG') or '-s'
         self.extra_link_args.extend(['-Xlinker', stripflag])
 
         self.use_static_readline()
