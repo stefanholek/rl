@@ -230,7 +230,7 @@ class build_rl_ext(build_ext):
         version = readline_version
         stdout = ''
 
-        cc = get_config_var('CC') or 'cc'
+        cc = os.environ.get('CC') or get_config_var('CC') or 'cc'
 
         if not self.distribution.verbose:
             stdout = '>%s' % os.devnull
