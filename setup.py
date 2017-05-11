@@ -86,6 +86,8 @@ class ReadlineExtension(Extension):
             self.extra_compile_args.append('-Wno-sign-compare')
         if '-Wunreachable-code' in cflags:
             self.extra_compile_args.append('-Wno-unreachable-code')
+        if '-Wshorten-64-to-32' in cflags:
+            self.extra_compile_args.append('-Wno-shorten-64-to-32')
 
     def use_static_readline(self):
         self.sources.extend([
