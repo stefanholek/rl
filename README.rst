@@ -105,36 +105,24 @@ rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 Installation
 ============
 
-rl requires Python 2.6 or higher and GNU Readline 5.0 or higher.
+rl requires Python 2.6 or higher. The installer builds GNU Readline 7.0.3
+and a Python extension module.
 
-On Linux, install libreadline-dev before attempting to build
-rl. On Mac OS X, make sure you have Xcode Tools installed.
+On Mac OS X make sure you have Xcode Tools installed.
+On Linux and BSD systems you should already have a C compiler but may need to
+verify the development environment is complete.
+For example, Ubuntu lacks the Python headers by default and base Fedora is
+missing some compiler configuration.
 
 Ubuntu::
 
-    sudo apt install python-dev
-    sudo apt install libreadline-dev
+    sudo apt install python-dev python3-dev
 
 Fedora::
 
     sudo dnf install redhat-rpm-config
-    sudo dnf install readline-devel
-
-FreeBSD::
-
-    sudo pkg install readline
 
 Then type::
 
     pip install rl
-
-Static Builds
--------------
-
-Normally, rl.readline will attempt to link against your system's libreadline.
-If this is not possible, notably on Mac OS X which ships with libedit, a
-static version of GNU Readline 6.3 is built.
-
-To force a static build, set the RL_BUILD_STATIC_READLINE environment
-variable.
 

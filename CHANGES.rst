@@ -4,6 +4,9 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Include GNU Readline 7.0.3.
+  [stefan]
+
 - Add ``directory_rewrite_hook``, ``filename_rewrite_hook``, and
   ``filename_stat_hook``.
   [stefan]
@@ -15,9 +18,6 @@ Changelog
   [stefan]
 
 - Stop using 2to3 in favor of six.
-  [stefan]
-
-- Update static builds to GNU Readline 6.3.
   [stefan]
 
 - Remove ``reset`` APIs from the documentation. They override
