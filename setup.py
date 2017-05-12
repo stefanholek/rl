@@ -1,6 +1,3 @@
-# On Linux, install libreadline-dev before attempting to build rl.
-# On Mac OS X, make sure you have Xcode Tools installed.
-
 from __future__ import with_statement
 
 import sys
@@ -256,9 +253,11 @@ setup(name='rl',
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: GNU General Public License (GPL)',
-          'License :: OSI Approved :: Python Software Foundation License',
+          'Operating System :: MacOS',
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: POSIX',
+          'Operating System :: POSIX :: Linux',
+          'Operating System :: POSIX :: BSD',
           'Programming Language :: C',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.6',
@@ -273,7 +272,7 @@ setup(name='rl',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
       url='https://github.com/stefanholek/rl',
-      license='GPL or PSF',
+      license='GPL',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
