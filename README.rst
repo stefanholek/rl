@@ -109,7 +109,7 @@ rl requires Python 2.6 or higher. The installer builds GNU Readline 7.0.3
 and a Python extension module.
 
 On Mac OS X make sure you have Xcode Tools installed.
-On Linux and BSD systems you should already have a C compiler but may need to
+On Linux and BSD systems you should already have a C compiler, but may need to
 verify the development environment is complete.
 For example, Ubuntu lacks the Python headers by default and base Fedora is
 missing some compiler configuration.

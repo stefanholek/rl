@@ -1,5 +1,5 @@
 ==================
-Example Code
+Examples
 ==================
 
 Introductory code examples.
