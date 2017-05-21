@@ -137,7 +137,10 @@ class build_rl_ext(build_ext):
 
     def build_extension(self, ext):
         # Find a termcap library
-        termcap = self.find_termcap(ext)
+        if os.environ.get('RL_TERMCAP'):
+            termcap = os.environ.get('RL_TERMCAP')
+        else:
+            termcap = self.find_termcap(ext)
 
         if termcap:
             ext.libraries.append(termcap)
