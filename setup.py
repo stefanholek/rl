@@ -20,6 +20,12 @@ version = '2.5'
 readline_version = '7.0'
 
 
+def sys_path_contains(string):
+    for dir in sys.path:
+        if dir.startswith(string):
+            return True
+
+
 class ReadlineExtension(Extension):
 
     def __init__(self, name):
@@ -39,7 +45,7 @@ class ReadlineExtension(Extension):
 
         # Use Mac Python library dir
         if sys.platform == 'darwin':
-            if self.sys_path_contains('/Library/Frameworks/Python.framework'):
+            if sys_path_contains('/Library/Frameworks/Python.framework'):
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
@@ -52,11 +58,6 @@ class ReadlineExtension(Extension):
 
         self.use_static_readline()
         self.suppress_warnings()
-
-    def sys_path_contains(self, string):
-        for dir in sys.path:
-            if dir.startswith(string):
-                return True
 
     def use_include_dirs(self):
         cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
@@ -240,7 +241,7 @@ class build_rl_ext(build_ext):
             mkdir -p build
             cd build
             rm -rf readline-%(version)s readline
-            tar zxf %(srcdir)s/readline-%(version)s.tar.gz
+            tar zxf '%(srcdir)s/readline-%(version)s.tar.gz'
             mv readline-%(version)s readline
             cd readline
             ./configure CC="%(cc)s" %(stdout)s
