@@ -114,13 +114,15 @@ verify the development environment is complete.
 For example, Ubuntu lacks the Python headers by default and base Fedora is
 missing some compiler configuration.
 
-Ubuntu::
+Ubuntu/Debian::
 
     sudo apt install python-dev python3-dev
+    sudo apt install libtinfo-dev
 
-Fedora::
+Redhat/Fedora::
 
     sudo dnf install redhat-rpm-config
+    sudo dnf install ncurses-devel
 
 Then type::
 
