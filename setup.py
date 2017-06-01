@@ -14,7 +14,7 @@ from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from distutils import log
 
-from os.path import join, exists, isdir
+from os.path import join, exists
 
 version = '2.5'
 readline_version = '7.0'
@@ -36,7 +36,6 @@ class ReadlineExtension(Extension):
             'rl/unicode.c',
             'rl/iterator.c',
         ]
-        libraries = []
         Extension.__init__(self, name, sources)
 
         # Use include and library dirs from Python build
