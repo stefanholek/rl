@@ -3403,9 +3403,12 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 	/* we have a valid line */
 	n = strlen(p);
 	if (n > 0) {
+		HIST_ENTRY *hist_ent;
 		char *line;
-		if (history_length > 0)
-			line = history_get(history_base + history_length - 1)->line;
+		if (history_length > 0) {
+			hist_ent = history_get(history_base + history_length - 1);
+			line = hist_ent ? hist_ent->line : "";
+		}
 		else
 			line = "";
 		if (strcmp(p, line) != 0)
