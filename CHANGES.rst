@@ -4,7 +4,7 @@ Changelog
 2.5 - Unreleased
 ----------------
 
-- Include GNU Readline 7.0.3.
+- Include GNU Readline 7.0.5.
   [stefan]
 
 - Add ``directory_rewrite_hook``, ``filename_rewrite_hook``, and

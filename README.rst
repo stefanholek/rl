@@ -105,22 +105,26 @@ rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 Installation
 ============
 
-rl requires Python 2.6 or higher. The installer builds GNU Readline 7.0.3
+rl requires Python 2.6 or higher. The installer builds GNU Readline 7.0.5
 and a Python extension module.
 
 On Mac OS X make sure you have Xcode Tools installed.
-On Linux and BSD systems you should already have a C compiler, but may need to
-verify the development environment is complete.
+
+On Linux and BSD systems you probably already have a C compiler, but you may
+need to verify the development environment is complete.
 For example, Ubuntu lacks the Python headers by default and base Fedora is
-missing some compiler configuration.
+missing some compiler configuration. Lastly, readline needs a termcap library
+to link to.
 
 Ubuntu/Debian::
 
+    sudo apt install build-essential
     sudo apt install python-dev python3-dev
     sudo apt install libtinfo-dev
 
 Redhat/Fedora::
 
+    sudo dnf install gcc
     sudo dnf install redhat-rpm-config
     sudo dnf install ncurses-devel
 
