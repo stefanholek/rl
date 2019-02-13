@@ -17,7 +17,7 @@ from distutils import log
 from os.path import join, exists
 
 version = '2.5'
-readline_version = '7.0'
+readline_version = '8.0'
 
 
 def sys_path_contains(string):
