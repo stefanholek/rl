@@ -20,8 +20,8 @@
 
 /* Make preferred encoding available in scope */
 #define USE_ENCODING \
-	char _ENCODING[32]; \
-	PyUnicode_CopyPreferredEncoding(_ENCODING, 32);
+	char _ENCODING[128] = ""; \
+	PyUnicode_CopyPreferredEncoding(_ENCODING, 128);
 
 #define _ERRORS "surrogateescape"
 
@@ -40,6 +40,41 @@ PyUnicode_DECODE(const char *text)
 	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
 #else
 	return PyUnicode_DecodeLocale(text, _ERRORS);
+#endif
+}
+
+
+PyObject *
+PyUnicode_ENCODE(PyObject *text)
+{
+#if USE_CODECS
+	USE_ENCODING
+
+	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
+#else
+	return PyUnicode_EncodeLocale(text, _ERRORS);
+#endif
+}
+
+
+PyObject *
+PyUnicode_FS_DECODE(const char *text)
+{
+#if USE_CODECS
+	return PyUnicode_Decode(text, strlen(text), _FS_ENCODING, _FS_ERRORS);
+#else
+	return PyUnicode_DecodeFSDefault(text);
+#endif
+}
+
+
+PyObject *
+PyUnicode_FS_ENCODE(PyObject *text)
+{
+#if USE_CODECS
+	return PyUnicode_AsEncodedString(text, _FS_ENCODING, _FS_ERRORS);
+#else
+	return PyUnicode_EncodeFSDefault(text);
 #endif
 }
 
@@ -96,41 +131,6 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	i = PyUnicode_GET_LENGTH(u);
 	Py_DECREF(u);
 	return i;
-}
-
-
-PyObject *
-PyUnicode_ENCODE(PyObject *text)
-{
-#if USE_CODECS
-	USE_ENCODING
-
-	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
-#else
-	return PyUnicode_EncodeLocale(text, _ERRORS);
-#endif
-}
-
-
-PyObject *
-PyUnicode_FS_DECODE(const char *text)
-{
-#if USE_CODECS
-	return PyUnicode_Decode(text, strlen(text), _FS_ENCODING, _FS_ERRORS);
-#else
-	return PyUnicode_DecodeFSDefault(text);
-#endif
-}
-
-
-PyObject *
-PyUnicode_FS_ENCODE(PyObject *text)
-{
-#if USE_CODECS
-	return PyUnicode_AsEncodedString(text, _FS_ENCODING, _FS_ERRORS);
-#else
-	return PyUnicode_EncodeFSDefault(text);
-#endif
 }
 
 
@@ -240,7 +240,7 @@ PyUnicode_GetPreferredEncoding()
 
 
 int
-PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes)
+PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t buffer_size)
 {
 	PyObject *u = NULL;
 	PyObject *b = NULL;
@@ -258,8 +258,8 @@ PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes)
 		goto error;
 
 	len = PyBytes_GET_SIZE(b);
-	if (len >= max_bytes)
-		len = max_bytes - 1;
+	if (len >= buffer_size)
+		len = buffer_size - 1;
 
 	strncpy(buffer, PyBytes_AS_STRING(b), len);
 	buffer[len] = '\0';
@@ -277,8 +277,9 @@ PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t max_bytes)
 void
 PyUnicode_PrintEncodings()
 {
-	char buffer[32];
-	PyUnicode_CopyPreferredEncoding(buffer, 32);
+	char buffer[128] = "";
+	PyUnicode_CopyPreferredEncoding(buffer, 128);
+
 	printf("%s %s\n", buffer, Py_FileSystemDefaultEncoding);
 }
 
