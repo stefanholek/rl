@@ -65,24 +65,30 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 
 	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
 #else
-	char *s;
+	/* Prevent excessive micro allocations */
+	char buffer[256];
+	size_t buffer_size = Py_ARRAY_LENGTH(buffer);
+
+	char *s = buffer;
 	size_t l;
 
 	/* Short-circuit */
 	if (index == 0)
 		return 0;
 
-	/* LAME!!1!1 */
 	l = strlen(text);
 	if (index > l)
 		index = l;
-	s = PyMem_RawMalloc(index+1);
-	if (s == NULL)
-		return -1;
+	if (index >= buffer_size) {
+		s = PyMem_RawMalloc(index+1);
+		if (s == NULL)
+			return -1;
+	}
 	strncpy(s, text, index);
 	s[index] = '\0';
 	u = PyUnicode_DecodeLocale(s, _ERRORS);
-	PyMem_RawFree(s);
+	if (s != buffer)
+		PyMem_RawFree(s);
 #endif
 	if (u == NULL)
 		return -1;
