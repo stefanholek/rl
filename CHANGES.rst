@@ -4,6 +4,9 @@ Changelog
 2.5 - Unreleased
 ----------------
 
+- Support Python 3.6 os.PathLike objects for filenames.
+  [stefan]
+
 - Include GNU Readline 8.0.
   [stefan]
 

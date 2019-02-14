@@ -167,6 +167,21 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 		*(PyObject**)addr = NULL;
 		return 1;
 	}
+#if (PY_VERSION_HEX >= 0x03060000)
+	{
+		PyObject *path = PyOS_FSPath(text);
+		if (path == NULL)
+			return 0;
+		if (PyBytes_Check(path))
+			b = path;
+		else {
+			b = PyUnicode_FS_ENCODE(path);
+			Py_DECREF(path);
+			if (b == NULL)
+				return 0;
+		}
+	}
+#else
 	if (PyBytes_Check(text)) {
 		b = text;
 		Py_INCREF(b);
@@ -176,6 +191,7 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 		if (b == NULL)
 			return 0;
 	}
+#endif
 	if (PyBytes_GET_SIZE(b) != strlen(PyBytes_AS_STRING(b))) {
 		PyErr_SetString(PyExc_TypeError, "embedded NUL character");
 		Py_DECREF(b);
