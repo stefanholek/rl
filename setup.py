@@ -1,5 +1,3 @@
-from __future__ import with_statement
-
 import sys
 import os
 import re
@@ -252,6 +250,7 @@ setup(name='rl',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
       ],
       keywords='gnu readline bindings gnureadline',
       author='Stefan H. Holek',
