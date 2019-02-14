@@ -105,7 +105,7 @@ rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 Installation
 ============
 
-rl requires Python 2.6 or higher. The installer builds GNU Readline 7.0.5
+rl requires Python 2.6 or higher. The installer builds GNU Readline 8.0
 and a Python extension module.
 
 On Mac OS X make sure you have Xcode Tools installed.
