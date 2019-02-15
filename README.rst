@@ -119,7 +119,7 @@ to link to.
 Ubuntu/Debian::
 
     sudo apt install build-essential
-    sudo apt install python-dev python3-dev
+    sudo apt install python3-dev
     sudo apt install libtinfo-dev
 
 Redhat/Fedora::
