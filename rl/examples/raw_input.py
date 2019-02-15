@@ -9,8 +9,8 @@ from rl import completer
 from rl import print_exc
 
 
-class CommandCompleter(object):
-    # A completion entry function implementing readline's
+class CompleteCommand(object):
+    # A completion entry "function" implementing readline's
     # generator protocol
 
     @print_exc
@@ -33,7 +33,7 @@ class CommandCompleter(object):
 
 def main():
     # Set the completion entry function
-    completer.completer = CommandCompleter()
+    completer.completer = CompleteCommand()
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')

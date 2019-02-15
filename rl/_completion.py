@@ -54,7 +54,7 @@ class Completer(object):
     @apply
     def special_prefixes():
         doc="""Characters that are word break characters but should
-        be left in the word passed to the completion function."""
+        be left in the word passed to the completion entry function."""
         def get(self):
             return readline.get_special_prefixes()
         def set(self, string):
@@ -82,8 +82,8 @@ class Completer(object):
 
     @apply
     def query_items():
-        doc="""Threshold above which the user is prompted if he
-        really wants to see all matches. Defaults to 100. A negative value
+        doc="""Threshold above which the user is prompted if they
+        really want to see all matches. Defaults to 100. A negative value
         means never prompt. The prompt is bypassed if a custom
         :attr:`~rl.Completer.display_matches_hook` is installed."""
         def get(self):
@@ -151,7 +151,13 @@ class Completer(object):
         The function is called as ``function(dirname)`` and should
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary
-        dequoting."""
+        dequoting.
+
+        New in readline 4.2.
+        Overrides :attr:`~rl.Completer.directory_completion_hook` since
+        readline 6.2.
+
+        Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
             return readline.get_directory_rewrite_hook()
         def set(self, function):
@@ -179,7 +185,11 @@ class Completer(object):
         This hook is called for every filename before it is compared
         against the completion word. The function is called as
         ``function(filename)`` and should return a new filename
-        or None to indicate no change."""
+        or None to indicate no change.
+
+        New in readline 6.1.
+
+        Under Python 3 this hook returns preferred encoding to readline."""
         def get(self):
             return readline.get_filename_rewrite_hook()
         def set(self, function):
@@ -192,7 +202,11 @@ class Completer(object):
         This hook is used to prepare the filename passed
         to ``stat()`` during match display.
         The function is called as ``function(filename)`` and should
-        return a new filename or None to indicate no change."""
+        return a new filename or None to indicate no change.
+
+        New in readline 6.3.
+
+        Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
             return readline.get_filename_stat_hook()
         def set(self, function):
@@ -450,11 +464,7 @@ class Completion(object):
     def complete_filename(self, text):
         """Built-in filename completion.
         May be called from a completion entry function to initiate readline's
-        filename completion. Returns a list of matches.
-
-        Filename completion is a complex process, and many completer hooks
-        exist solely to support its various steps.
-        Please see the :ref:`call-graph` for how it all fits together."""
+        filename completion. Returns a list of matches."""
         return self._generate(readline.filename_completion_function, text)
 
     def complete_username(self, text):
@@ -471,7 +481,7 @@ class Completion(object):
     def display_match_list(self, substitution, matches, longest_match_length):
         """Built-in matches display.
         May be called from a custom :attr:`~rl.Completer.display_matches_hook`
-        to perform the default action, columnar display of matches."""
+        to perform the default action: columnar display of matches."""
         readline.display_match_list(substitution, matches, longest_match_length)
 
     def redisplay(self, force=False):
