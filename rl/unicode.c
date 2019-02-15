@@ -9,24 +9,8 @@
 #define PyMem_RawFree PyMem_Free
 #endif
 
-/* See PEP 383 */
-#define _FS_ENCODING Py_FileSystemDefaultEncoding
-
-#if (PY_VERSION_HEX >= 0x03060000)
-#define _FS_ERRORS Py_FileSystemDefaultEncodeErrors
-#else
-#define _FS_ERRORS "surrogateescape"
-#endif
-
-/* Make preferred encoding available in scope */
-#define USE_ENCODING \
-	char _ENCODING[128] = ""; \
-	PyUnicode_CopyPreferredEncoding(_ENCODING, 128);
-
+/* Always use surrogateescape error handler */
 #define _ERRORS "surrogateescape"
-
-/* Set to 1 for explicit codecs, 0 for default conversions */
-#define USE_CODECS 1
 
 
 /* Unicode support */
@@ -34,48 +18,28 @@
 PyObject *
 PyUnicode_DECODE(const char *text)
 {
-#if USE_CODECS
-	USE_ENCODING
-
-	return PyUnicode_Decode(text, strlen(text), _ENCODING, _ERRORS);
-#else
 	return PyUnicode_DecodeLocale(text, _ERRORS);
-#endif
 }
 
 
 PyObject *
 PyUnicode_ENCODE(PyObject *text)
 {
-#if USE_CODECS
-	USE_ENCODING
-
-	return PyUnicode_AsEncodedString(text, _ENCODING, _ERRORS);
-#else
 	return PyUnicode_EncodeLocale(text, _ERRORS);
-#endif
 }
 
 
 PyObject *
 PyUnicode_FS_DECODE(const char *text)
 {
-#if USE_CODECS
-	return PyUnicode_Decode(text, strlen(text), _FS_ENCODING, _FS_ERRORS);
-#else
 	return PyUnicode_DecodeFSDefault(text);
-#endif
 }
 
 
 PyObject *
 PyUnicode_FS_ENCODE(PyObject *text)
 {
-#if USE_CODECS
-	return PyUnicode_AsEncodedString(text, _FS_ENCODING, _FS_ERRORS);
-#else
 	return PyUnicode_EncodeFSDefault(text);
-#endif
 }
 
 
@@ -95,11 +59,6 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	PyObject *u;
 	Py_ssize_t i;
 
-#if USE_CODECS
-	USE_ENCODING
-
-	u = PyUnicode_Decode(text, index, _ENCODING, _ERRORS);
-#else
 	/* Prevent excessive micro allocations */
 	char buffer[256];
 	size_t buffer_size = Py_ARRAY_LENGTH(buffer);
@@ -121,13 +80,11 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	}
 	strncpy(s, text, index);
 	s[index] = '\0';
-	u = PyUnicode_DecodeLocale(s, _ERRORS);
+	u = PyUnicode_DECODE(s);
 	if (s != buffer)
 		PyMem_RawFree(s);
-#endif
 	if (u == NULL)
 		return -1;
-
 	i = PyUnicode_GET_LENGTH(u);
 	Py_DECREF(u);
 	return i;
