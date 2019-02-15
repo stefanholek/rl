@@ -63,6 +63,13 @@ class ReadInitFileTests(JailSetup):
             self.mkfile(bytes('my_init', sys.getfilesystemencoding()))
             completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()))
 
+    if sys.version_info[:2] >= (3, 6):
+
+        def test_read_pathlike_name(self):
+            from pathlib import Path
+            self.mkfile(Path('my_init'))
+            completer.read_init_file(Path('my_init'))
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
