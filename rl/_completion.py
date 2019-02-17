@@ -1,5 +1,6 @@
 """Readline completion support."""
 
+import threading
 import functools
 
 from six import next
@@ -530,19 +531,20 @@ def generator(func):
     The function is called as ``function(text)`` and should return an
     iterable of matches for ``text``.
     """
-    cache = {}
+    cached = threading.local()
 
     def generator_func(*args):
         # We are called as func(text, state) or func(self, text, state)
         # depending on whether we wrap a function or instance method.
-        state, args = args[-1], args[:-1]
+        args, state = args[:-1], args[-1]
         if state == 0:
-            cache[0] = iter(func(*args))
+            cached.it = iter(func(*args))
         try:
-            return next(cache[0])
+            return next(cached.it)
         except StopIteration:
             return None
 
+    # Objects don't have __name__ attributes
     assignments = functools.WRAPPER_ASSIGNMENTS
     if not hasattr(func, '__name__'):
         assignments = [x for x in assignments if x != '__name__']

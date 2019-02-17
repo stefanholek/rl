@@ -76,11 +76,11 @@ class GeneratorTests(unittest.TestCase):
             return ['foo', 'bar', 'baz']
 
         self.assertRaises(IndexError, complete)
-        self.assertRaises(KeyError, complete, 'test')
-        self.assertRaises(KeyError, complete, 'test', 'foo')
-        self.assertRaises(KeyError, complete, 1)
-        self.assertRaises(KeyError, complete, 0, 1)
-        self.assertRaises(KeyError, complete, 0, 1, 2)
+        self.assertRaises(AttributeError, complete, 'test')
+        self.assertRaises(AttributeError, complete, 'test', 'foo')
+        self.assertRaises(AttributeError, complete, 1)
+        self.assertRaises(AttributeError, complete, 0, 1)
+        self.assertRaises(AttributeError, complete, 0, 1, 2)
 
     def test_bad_completer(self):
 
