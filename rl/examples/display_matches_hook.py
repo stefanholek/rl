@@ -1,4 +1,4 @@
-# Example display matches hook
+# Python implementation of the default display_matches_hook
 
 import sys
 
@@ -10,7 +10,6 @@ from rl import print_exc
 
 @print_exc
 def display_matches_hook(substitution, matches, longest_match_length):
-    # Python implementation of the default display_matches_hook
     num_matches = len(matches)
     if num_matches >= completer.query_items > 0:
         sys.stdout.write('\nDisplay all %d possibilities? (y or n)' % num_matches)

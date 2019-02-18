@@ -2,7 +2,7 @@
 Examples
 ==================
 
-Introductory code examples.
+Example code.
 
 1. Completion Entry Function
 ============================
@@ -24,7 +24,7 @@ protocol:
 3. Multiple Completions
 =======================
 
-Most of the time the completion entry function is itself a dispatcher,
+The completion entry function itself is often a dispatcher,
 forwarding calls to more specific completion functions depending on
 position and format of the completion word:
 

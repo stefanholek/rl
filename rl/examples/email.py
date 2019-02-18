@@ -23,9 +23,8 @@ def complete_email(text):
 
 def complete_hostname(text):
     # Search /etc/hosts for matching hostnames
-    f = open('/etc/hosts', 'rt')
-    lines = f.readlines()
-    f.close()
+    with open('/etc/hosts', 'rt') as f:
+        lines = f.readlines()
     for line in lines:
         line = line.split()
         if line and not line[0].startswith('#'):
