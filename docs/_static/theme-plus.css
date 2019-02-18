@@ -1,0 +1,21 @@
+@import url('css/theme.css');
+
+/* Use link color for xrefs */
+.rst-content a code.xref {
+    color: #2980B9;
+}
+
+.rst-content a code.xref:hover {
+    color: #3091d1;
+}
+
+/* Use text color for non-xref literals */
+.rst-content code.literal {
+    color: #404040;
+}
+
+/* Call graph */
+.rst-content div#call-graph ul ul {
+    border-left: 1px dotted #ddd;
+    padding-left: 1em;
+}
