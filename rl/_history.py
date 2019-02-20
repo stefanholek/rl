@@ -99,6 +99,17 @@ class History(object):
             if raise_exc:
                 raise
 
+    def append_file(self, numitems, filename=None, raise_exc=False):
+        """Append the last ``numitems`` history entries to a readline history file.
+        The default filename is ~/.history. If ``raise_exc`` is True,
+        IOErrors will be allowed to propagate.
+        """
+        try:
+            readline.append_history_file(numitems, filename)
+        except IOError:
+            if raise_exc:
+                raise
+
     # Helpers
 
     def reset(self):
