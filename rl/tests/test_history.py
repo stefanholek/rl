@@ -1,7 +1,5 @@
 import unittest
 
-from six import next
-
 from rl import history
 from rl.testing import reset
 

@@ -3,8 +3,6 @@
 import threading
 import functools
 
-from six import next
-
 from rl import readline
 from rl.utils import DEFAULT_DELIMS
 from rl.utils import apply
