@@ -261,7 +261,7 @@ class HistoryFileTests(JailSetup):
         history.append('fred')
         history.append('wilma')
         history.append('pebbles')
-        readline.set_history_length(2)
+        history.max_file = 2
         history.write_file('my_history', raise_exc=True)
         history.clear()
         history.read_file('my_history', raise_exc=True)
@@ -297,7 +297,7 @@ class HistoryFileTests(JailSetup):
         history.append('barney')
         history.append('betty')
         history.append('bammbamm')
-        readline.set_history_length(3)
+        history.max_file = 3
         history.append_file(2, 'my_history')
         history.clear()
         history.read_file('my_history', raise_exc=True)

@@ -45,6 +45,17 @@ class History(object):
                 readline.stifle_history(int)
         return property(get, set, doc=doc)
 
+    @apply
+    def max_file():
+        doc="""The maximum size of a readline history file, in entries.
+        Beyond this point the history file is truncated by removing the
+        oldest entries. A negative value means no limit. Defaults to -1."""
+        def get(self):
+            return readline.get_history_length()
+        def set(self, int):
+            readline.set_history_length(max(int, -1))
+        return property(get, set, doc=doc)
+
     def append(self, line):
         """Append a line to the history."""
         readline.add_history(line)
@@ -117,7 +128,7 @@ class History(object):
         defaults. Used in tests."""
         self.clear()
         self.max_entries = -1
-        readline.set_history_length(-1)
+        self.max_file = -1
 
     def _norm_index(self, index):
         """Support negative indexes."""

@@ -180,6 +180,21 @@ class HistoryTests(unittest.TestCase):
         history.append('betty')
         self.assertRaises(TypeError, history.__delitem__, slice(2, -1))
 
+    def test_max_file(self):
+        self.assertEqual(history.max_file, -1)
+        history.max_file = 300
+        self.assertEqual(history.max_file, 300)
+        history.max_file = 1
+        self.assertEqual(history.max_file, 1)
+        history.max_file = 0
+        self.assertEqual(history.max_file, 0)
+        history.max_file = -1
+        self.assertEqual(history.max_file, -1)
+        history.max_file = -2
+        self.assertEqual(history.max_file, -1)
+        history.max_file = -3
+        self.assertEqual(history.max_file, -1)
+
 
 class HistoryStiflingTests(unittest.TestCase):
 

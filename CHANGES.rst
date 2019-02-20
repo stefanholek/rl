@@ -4,7 +4,7 @@ Changelog
 2.5 - Unreleased
 ----------------
 
-- Add ``history.append_file``.
+- Add ``history.max_file`` and ``history.append_file``.
   [stefan]
 
 - Support Python 3.6 os.PathLike objects for filenames.

@@ -10,6 +10,7 @@ History Interface
 .. autoclass:: rl.History
 
 .. autoattribute:: rl.History.max_entries
+.. autoattribute:: rl.History.max_file
 
 .. automethod:: rl.History.append
 .. automethod:: rl.History.__getitem__
