@@ -778,7 +778,6 @@ class FilenameStatHookTests(JailSetup):
         self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
 
     def test_filename_stat_hook(self):
-        @print_exc
         def func(filename):
             called.append(filename)
             return filename
@@ -791,7 +790,6 @@ class FilenameStatHookTests(JailSetup):
         self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
 
     def test_empty_string(self):
-        @print_exc
         def func(filename):
             called.append(filename)
             return ''

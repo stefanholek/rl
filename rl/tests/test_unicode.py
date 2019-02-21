@@ -360,3 +360,35 @@ class DirectoryRewriteHookTests(JailSetup):
         self.assertEqual(called, ['Mä\\ dchen/'])
         self.assertEqual(completion.line_buffer, "'Mä\\ dchen/fred.txt' ")
 
+
+class FilenameStatHookTests(JailSetup):
+
+    def setUp(self):
+        JailSetup.setUp(self)
+        reset()
+        called[:] = []
+        completer.completer = filecomplete
+
+    def test_filename_stat_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('fred')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['fred'])
+        self.assertEqual(completion.line_buffer, 'fred/')
+
+    @utf8_only
+    def test_filename_stat_hook_utf8(self):
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('Mädchen')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'M'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, [decompose('Mädchen')])
+        self.assertEqual(completion.line_buffer, decompose('Mädchen/'))
+
