@@ -4,6 +4,9 @@ Changelog
 3.0 - Unreleased
 ----------------
 
+- rl is now GPLv3 because it statically links to GNU Readline.
+  [stefan]
+
 - Add ``history.max_file`` and ``history.append_file``.
   [stefan]
 
