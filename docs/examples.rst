@@ -1,10 +1,10 @@
-==================
+===================
 Examples
-==================
+===================
 
 Example code.
 
-1. Completion Entry Function
+Completion Entry Function
 ============================
 
 The completion entry function is called as ``function(text, state)`` for
@@ -13,7 +13,7 @@ possible completion for ``text``:
 
 .. literalinclude:: ../rl/examples/raw_input.py
 
-2. Generator Factory
+Generator Factory
 ====================
 
 The :func:`~rl.generator` factory provides a simpler way to support this
@@ -21,24 +21,24 @@ protocol:
 
 .. literalinclude:: ../rl/examples/factory.py
 
-3. Multiple Completions
+Multiple Completions
 =======================
 
-The completion entry function itself is often a dispatcher,
+The completion entry function is often a dispatcher,
 forwarding calls to more specific completion functions depending on
 position and format of the completion word:
 
 .. literalinclude:: ../rl/examples/email.py
 
-4. Pre-Input Hook
-=================
+Filename Completion
+======================
 
-The :attr:`~rl.Completer.pre_input_hook` may be used to pre-populate
-the line buffer:
+Filename completion is readline's party trick. It is also the most complex
+feature, requiring various parts of readline to be set up:
 
-.. literalinclude:: ../rl/examples/pre_input_hook.py
+.. literalinclude:: ../rl/examples/filename.py
 
-5. Display Matches Hook
+Display Matches Hook
 =======================
 
 The :attr:`~rl.Completer.display_matches_hook` is called whenever matches need

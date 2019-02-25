@@ -24,12 +24,8 @@ def main():
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
 
-    try:
-        line = input('string> ')
-    except (EOFError, KeyboardInterrupt):
-        print() # Newline
-    else:
-        print('You typed:', line.strip())
+    string = input('string> ')
+    print('You typed:', string)
 
 
 if __name__ == '__main__':

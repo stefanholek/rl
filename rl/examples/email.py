@@ -46,12 +46,8 @@ def main():
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
 
-    try:
-        email = input('email> ')
-    except (EOFError, KeyboardInterrupt):
-        print() # Newline
-    else:
-        print('You typed:', email.strip())
+    email = input('email> ')
+    print('You typed:', email)
 
 
 if __name__ == '__main__':

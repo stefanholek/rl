@@ -21,7 +21,7 @@ rl exports the following components:
     The readline bindings module. Contains everything known from the standard
     library plus extensions specific to the rl package.  The :obj:`completer <rl.Completer>`,
     :obj:`completion <rl.Completion>`, and :obj:`history <rl.History>`
-    objects make use of this module, and you should rarely need to interact
+    interfaces make use of this module, and you should rarely need to interact
     with it directly.
 
 :func:`rl.generator`
@@ -96,15 +96,15 @@ Readline History
 History allows readline to save and later recall lines the user has entered.
 The :obj:`history <rl.History>` object provides a list-like interface to the
 history buffer as well as functions to persist the history between sessions.
-"""
 
-# Upstream Documentation
-# ======================
-#
-# The `GNU Readline Library`_ and the `GNU History Library`_.
-#
-# .. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
-# .. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
+Upstream Documentation
+======================
+
+The `GNU Readline Library`_ and the `GNU History Library`_.
+
+.. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
+.. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
+"""
 
 # Grab the PyOS_ReadlineFunctionPointer
 from rl import _init

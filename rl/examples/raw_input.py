@@ -16,7 +16,7 @@ class CompleteCommand(object):
     @print_exc
     def __call__(self, text, state):
         if state == 0:
-            self.matches = [x for x in self.complete_command(text)]
+            self.matches = list(self.complete_command(text))
         try:
             return self.matches[state]
         except IndexError:

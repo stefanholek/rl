@@ -77,11 +77,11 @@ class History(object):
         return readline.get_current_history_length()
 
     def __iter__(self):
-        """Iterate over history items."""
+        """Iterate over history items (old to new)."""
         return readline.get_history_iter()
 
     def __reversed__(self):
-        """Reverse-iterate over history items."""
+        """Reverse-iterate over history items (new to old)."""
         return readline.get_history_reverse_iter()
 
     def clear(self):

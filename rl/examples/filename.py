@@ -1,0 +1,100 @@
+# Complete filenames
+
+from __future__ import print_function
+from six.moves import input
+
+import sys
+import unicodedata
+
+from rl import completer
+from rl import completion
+from rl import generator
+from rl import print_exc
+
+
+@print_exc
+def char_is_quoted(text, index):
+    # Return true if the character at index is quoted
+    return index > 0 and text[index-1] == '\\'
+
+
+@print_exc
+def quote_filename(text, single_match, quote_char):
+    # Backslash-quote characters in text
+    if quote_char == "'":
+        pass
+    elif quote_char == '"':
+        for c in '\\"$`':
+            text = text.replace(c, '\\'+c)
+    else:
+        for c in completer.filename_quote_characters:
+            text = text.replace(c, '\\'+c)
+    return text
+
+
+def dequote_filename(text, quote_char):
+    # Backslash-dequote characters in text
+    if quote_char == "'":
+        pass
+    elif quote_char == '"':
+        for c in '\\"$`':
+            text = text.replace('\\'+c, c)
+    else:
+        for c in completer.filename_quote_characters:
+            text = text.replace('\\'+c, c)
+    return text
+
+
+@print_exc
+def rewrite_filename(text):
+    # Normalize decomposed UTF-8 received from HFS Plus
+    if sys.version_info >= (3,):
+        text = unicodedata.normalize('NFC', text)
+    else:
+        text = text.decode('utf-8')
+        text = unicodedata.normalize('NFC', text)
+        text = text.encode('utf-8')
+    return text
+
+
+@print_exc
+def complete_filename(text):
+    matches = []
+    # Dequote immediately to avoid a tilde-expansion bug
+    if completion.found_quote:
+        text = dequote_filename(text, completion.quote_character)
+    # Complete usernames
+    if text.startswith('~') and '/' not in text:
+        matches = completion.complete_username(text)
+    # Complete filenames
+    if not matches:
+        matches = completion.complete_filename(text)
+    return matches
+
+
+def main():
+    # Configure quote characters
+    completer.quote_characters = '\'"'
+    completer.word_break_characters = ' \t\n"\'><;|&='
+    completer.filename_quote_characters = '\\ \t\n"\'@><;|&=()#$`?*[!:{'
+
+    # Configure quoting functions
+    completer.char_is_quoted_function = char_is_quoted
+    completer.filename_quoting_function = quote_filename
+
+    # Configure Unicode converter on Mac OS X
+    if sys.platform == "darwin":
+        completer.filename_rewrite_hook = rewrite_filename
+
+    # Set the completion entry function
+    completer.completer = generator(complete_filename)
+
+    # Enable TAB completion
+    completer.parse_and_bind('TAB: complete')
+
+    filename = input('file> ')
+    print('You typed:', filename)
+
+
+if __name__ == '__main__':
+    main()

@@ -83,8 +83,8 @@ class Completer(object):
     def query_items():
         doc="""Threshold above which the user is prompted if they
         really want to see all matches. Defaults to 100. A negative value
-        means never prompt. The prompt is bypassed if a custom
-        :attr:`~rl.Completer.display_matches_hook` is installed."""
+        means never prompt.""" #The prompt is bypassed if a custom
+        #:attr:`~rl.Completer.display_matches_hook` is installed."""
         def get(self):
             return readline.get_completion_query_items()
         def set(self, int):
