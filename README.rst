@@ -59,30 +59,27 @@ print_exc
 
 For further details please refer to the `API Documentation`_.
 
-.. _`API Documentation`: https://rl.readthedocs.io/en/latest/
+.. _`API Documentation`: https://rl.readthedocs.io/en/stable/
 
 Example Code
 ------------
 
-The code below implements system command completion similar to Bash::
+Complete the names of four predefined commands:
 
-    import os
+.. code:: python
+
     from rl import completer
     from rl import generator
 
+    commands = ['create', 'read', 'update', 'delete']
+
+    @generator
     def complete_command(text):
-        # Return executables matching 'text'
-        for dir in os.environ.get('PATH').split(':'):
-            dir = os.path.expanduser(dir)
-            if os.path.isdir(dir):
-                for name in os.listdir(dir):
-                    if name.startswith(text):
-                        if os.access(os.path.join(dir, name), os.R_OK|os.X_OK):
-                            yield name
+        return [x for x in commands if x.startswith(text)]
 
     def main():
         # Set the completion entry function
-        completer.completer = generator(complete_command)
+        completer.completer = complete_command
 
         # Enable TAB completion
         completer.parse_and_bind('TAB: complete')
