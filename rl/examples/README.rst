@@ -18,3 +18,6 @@ pre_input_hook.py
 
 display_matches_hook.py
     Shows how to write a custom display_matches_hook.
+
+filename.py
+    Full, bash-like filename completion.
