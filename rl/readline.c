@@ -67,6 +67,15 @@
 #define PyMem_RawMalloc PyMem_Malloc
 #endif
 
+/* _Py_SetLocaleFromEnv appeared in Python 3.7 */
+#if (PY_VERSION_HEX < 0x03070000)
+#if __ANDROID__
+#define _Py_SetLocaleFromEnv(c) setlocale((c), "C.UTF-8")
+#else
+#define _Py_SetLocaleFromEnv(c) setlocale((c), "")
+#endif
+#endif
+
 
 /* Exported function to send one line to readline's init file parser */
 
@@ -3374,7 +3383,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
 	if (!saved_locale)
 		Py_FatalError("not enough memory to save locale");
-	setlocale(LC_CTYPE, "");
+	_Py_SetLocaleFromEnv(LC_CTYPE);
 #endif
 
 	if (sys_stdin != rl_instream || sys_stdout != rl_outstream) {
