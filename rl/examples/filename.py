@@ -81,6 +81,7 @@ def main():
     # Configure quoting functions
     completer.char_is_quoted_function = char_is_quoted
     completer.filename_quoting_function = quote_filename
+    completer.filename_dequoting_function = None
 
     # Configure Unicode converter on Mac OS X
     if sys.platform == "darwin":

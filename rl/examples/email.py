@@ -11,16 +11,6 @@ from rl import print_exc
 from rl.utils import DEFAULT_DELIMS
 
 
-@print_exc
-def complete_email(text):
-    # Dispatch to username or hostname completion
-    if text.startswith('@'):
-        return complete_hostname(text)
-    else:
-        completion.append_character = '@'
-        return completion.complete_username(text)
-
-
 def complete_hostname(text):
     # Search /etc/hosts for matching hostnames
     with open('/etc/hosts', 'rt') as f:
@@ -31,6 +21,16 @@ def complete_hostname(text):
             for hostname in line[1:]:
                 if hostname.startswith(text[1:]):
                     yield '@' + hostname
+
+
+@print_exc
+def complete_email(text):
+    # Dispatch to username or hostname completion
+    if text.startswith('@'):
+        return complete_hostname(text)
+    else:
+        completion.append_character = '@'
+        return completion.complete_username(text)
 
 
 def main():
