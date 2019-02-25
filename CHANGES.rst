@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.5 - Unreleased
+3.0 - Unreleased
 ----------------
 
 - Add ``history.max_file`` and ``history.append_file``.

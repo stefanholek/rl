@@ -14,7 +14,7 @@ from distutils import log
 
 from os.path import join, exists
 
-version = '2.5'
+version = '3.0'
 readline_version = '8.0'
 
 
