@@ -3428,7 +3428,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 	q = p;
 	p = PyMem_RawMalloc(n+2);
 	if (p != NULL) {
-		strncpy(p, q, n);
+		memcpy(p, q, n);
 		p[n] = '\n';
 		p[n+1] = '\0';
 	}
