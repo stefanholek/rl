@@ -9,6 +9,7 @@ if sys.version_info[0] < 3:
     except locale.Error:
         pass
 
+import os
 import unittest
 import unicodedata
 import functools
@@ -395,4 +396,36 @@ class FilenameStatHookTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(called, ['Mädchen'])
         self.assertEqual(completion.line_buffer, 'Mädchen/')
+
+    @utf8_only
+    def test_decompose_in_filename_stat_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename # XXX
+        self.mkdir(decompose('Mädchen'))
+        completer.filename_stat_hook = func
+        completer.filename_rewrite_hook = compose
+        completion.line_buffer = 'M'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, ['Mädchen'])
+        self.assertEqual(completion.line_buffer, 'Mädchen/')
+
+
+class APFSComplianceTests(JailSetup):
+
+    @utf8_only
+    def test_list_decomposed_file(self):
+        self.mkfile(decompose('Mädchen.txt'))
+        self.assertEqual(os.listdir(os.curdir), [decompose('Mädchen.txt')])
+
+    @utf8_only
+    def test_locate_decomposed_file(self):
+        self.mkfile(decompose('Mädchen.txt'))
+        self.assertTrue(os.path.exists('Mädchen.txt'))
+
+    @utf8_only
+    def test_open_decomposed_file(self):
+        self.mkfile(decompose('Mädchen.txt'))
+        with open('Mädchen.txt', 'rt') as f:
+            self.assertNotEqual(f, None)
 
