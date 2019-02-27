@@ -249,10 +249,11 @@ class FilenameDequotingFunctionTests(JailSetup):
             return text.replace('\\', '')
         self.mkfile('Mä dchen.txt')
         completer.filename_dequoting_function = func
-        completion.line_buffer = decompose('Mä\\ ')
+        completer.filename_rewrite_hook = compose
+        completion.line_buffer = 'Mä\\ '
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', ''), (decompose('Mä\\ '), '')])
-        self.assertEqual(completion.line_buffer, decompose("'Mä dchen.txt' "))
+        self.assertEqual(called, [('.', ''), ('Mä\\ ', '')])
+        self.assertEqual(completion.line_buffer, "'Mä dchen.txt' ")
 
 
 class IgnoreSomeCompletionsFunctionTests(JailSetup):
@@ -271,10 +272,11 @@ class IgnoreSomeCompletionsFunctionTests(JailSetup):
         self.mkfile('Mädchen.txt')
         self.mkfile('Mädchen.gif')
         completer.ignore_some_completions_function = func
+        completer.filename_rewrite_hook = compose
         readline.complete_internal(TAB)
         self.assertEqual(called,
-            [(decompose('Mädchen.'), [decompose('Mädchen.gif'), decompose('Mädchen.txt')])])
-        self.assertEqual(completion.line_buffer, decompose("Mädchen.txt "))
+            [('Mädchen.', ['Mädchen.gif', 'Mädchen.txt'])])
+        self.assertEqual(completion.line_buffer, "Mädchen.txt ")
 
 
 class FilenameQuotingFunctionTests(JailSetup):
@@ -296,10 +298,11 @@ class FilenameQuotingFunctionTests(JailSetup):
             return text.replace(' ', '\\ ')
         self.mkfile('Mä dchen.txt')
         completer.filename_quoting_function = func
-        completion.line_buffer = decompose('Mä')
+        completer.filename_rewrite_hook = compose
+        completion.line_buffer = 'Mä'
         readline.complete_internal(TAB)
-        self.assertEqual(called, [(decompose('Mä dchen.txt'), True, '')])
-        self.assertEqual(completion.line_buffer, decompose("Mä\\ dchen.txt "))
+        self.assertEqual(called, [('Mä dchen.txt', True, '')])
+        self.assertEqual(completion.line_buffer, "Mä\\ dchen.txt ")
 
 
 class FilenameRewriteHookTests(JailSetup):
@@ -315,7 +318,7 @@ class FilenameRewriteHookTests(JailSetup):
         def func(filename):
             called.append(filename)
             return filename
-        self.mkfile('Mädchen.txt')
+        self.mkfile(decompose('Mädchen.txt'))
         completer.filename_rewrite_hook = func
         completion.line_buffer = 'M'
         readline.complete_internal(TAB)
@@ -327,7 +330,7 @@ class FilenameRewriteHookTests(JailSetup):
         def func(filename):
             called.append(filename)
             return compose(filename)
-        self.mkfile('Mädchen.txt')
+        self.mkfile(decompose('Mädchen.txt'))
         completer.filename_rewrite_hook = func
         completion.line_buffer = 'M'
         readline.complete_internal(TAB)
@@ -387,8 +390,9 @@ class FilenameStatHookTests(JailSetup):
             return filename
         self.mkdir('Mädchen')
         completer.filename_stat_hook = func
+        completer.filename_rewrite_hook = compose
         completion.line_buffer = 'M'
         readline.complete_internal(TAB)
-        self.assertEqual(called, [decompose('Mädchen')])
-        self.assertEqual(completion.line_buffer, decompose('Mädchen/'))
+        self.assertEqual(called, ['Mädchen'])
+        self.assertEqual(completion.line_buffer, 'Mädchen/')
 
