@@ -244,8 +244,8 @@ class Completer(object):
         The function is called as ``function(text, single_match, quote_char)``
         and should return a quoted version of ``text``, or None to
         indicate no change. The ``single_match``
-        argument is True if the completion has generated only one match
-        (may be used to close quotes)."""
+        argument is True if the completion has generated only one match."""
+        #(may be used to close quotes)."""
         def get(self):
             return readline.get_filename_quoting_function()
         def set(self, function):

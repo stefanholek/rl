@@ -38,7 +38,7 @@ Readline Completion
 
 Completion is the process initiated when the user presses the TAB key.
 It has three phases: Word breaking, match generation, and
-match display.
+match insertion/display.
 
 For each phase, readline provides configuration settings and hooks that
 allow applications to control the way the library behaves. See the
