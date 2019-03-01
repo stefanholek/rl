@@ -49,15 +49,9 @@ class ReadlineExtension(Extension):
                 self.library_dirs.append(
                     '/Library/Frameworks/Python.framework/Versions/%d.%d/lib' % sys.version_info[:2])
 
-        # Strip debug symbols
-        if sys.platform == 'darwin':
-            stripflag = '-S'
-        else:
-            stripflag = get_config_var('STRIPFLAG') or '-s'
-        self.extra_link_args.extend(['-Xlinker', stripflag])
-
         self.use_static_readline()
         self.suppress_warnings()
+        self.strip_debug_symbols()
 
     def use_include_dirs(self):
         cflags = get_config_var('CPPFLAGS') + ' ' + get_config_var('CFLAGS')
@@ -85,6 +79,13 @@ class ReadlineExtension(Extension):
             self.extra_compile_args.append('-Wno-unreachable-code')
         if '-Wshorten-64-to-32' in cflags:
             self.extra_compile_args.append('-Wno-shorten-64-to-32')
+
+    def strip_debug_symbols(self):
+        if sys.platform == 'darwin':
+            stripflag = '-S'
+        else:
+            stripflag = get_config_var('STRIPFLAG', '-s')
+        self.extra_link_args.extend(['-Xlinker', stripflag])
 
     def use_static_readline(self):
         self.sources.extend([
