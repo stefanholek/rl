@@ -7,7 +7,6 @@ from setuptools import find_packages
 from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
-from distutils.sysconfig import get_config_var
 from distutils.sysconfig import get_config_vars
 from distutils.spawn import find_executable
 from distutils import log
@@ -16,6 +15,10 @@ from os.path import join, exists
 
 version = '3.0'
 readline_version = '8.0'
+
+
+def get_config_var(name, default=''):
+    return get_config_vars().get(name) or default
 
 
 def sys_path_contains(string):
@@ -57,7 +60,7 @@ class ReadlineExtension(Extension):
         self.suppress_warnings()
 
     def use_include_dirs(self):
-        cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
+        cflags = get_config_var('CPPFLAGS') + ' ' + get_config_var('CFLAGS')
 
         for match in re.finditer(r'-I\s*(\S+)', cflags):
             if '/include' in match.group(1):
@@ -70,8 +73,7 @@ class ReadlineExtension(Extension):
             self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
-        cflags = ' '.join(get_config_vars('CPPFLAGS', 'CFLAGS'))
-        cflags = cflags.split()
+        cflags = get_config_var('CPPFLAGS').split() + get_config_var('CFLAGS').split()
 
         if '-Wall' in cflags or sys.platform.startswith('freebsd'):
             self.extra_compile_args.append('-Wno-all')
@@ -162,7 +164,7 @@ class build_rl_ext(build_ext):
         lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
 
         lib_dynload = join(sys.exec_prefix, 'lib', 'python%d.%d' % sys.version_info[:2], 'lib-dynload')
-        ext_suffix = get_config_var('EXT_SUFFIX') or '.so'
+        ext_suffix = get_config_var('EXT_SUFFIX', '.so')
 
         termcap = ''
 
@@ -212,7 +214,7 @@ class build_rl_ext(build_ext):
         version = readline_version
         stdout = ''
 
-        cc = os.environ.get('CC') or get_config_var('CC') or 'cc'
+        cc = os.environ.get('CC') or get_config_var('CC', 'cc')
 
         if not self.distribution.verbose:
             stdout = '>%s' % os.devnull
