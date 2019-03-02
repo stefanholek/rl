@@ -27,7 +27,7 @@ def sys_path_contains(string):
             return True
 
 
-class ReadlineExtension(Extension):
+class readline_ext(Extension):
 
     def __init__(self, name):
         # Describe the extension
@@ -134,7 +134,7 @@ class ReadlineExtension(Extension):
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
 
 
-class build_rl_ext(build_ext):
+class build_readline_ext(build_ext):
 
     def build_extension(self, ext):
         # Find a termcap library
@@ -263,10 +263,10 @@ setup(name='rl',
       zip_safe=False,
       test_suite='rl.tests',
       ext_modules=[
-          ReadlineExtension('rl.readline'),
+          readline_ext('rl.readline'),
       ],
       cmdclass={
-          'build_ext': build_rl_ext,
+          'build_ext': build_readline_ext,
       },
       install_requires=[
           'setuptools',
