@@ -61,7 +61,7 @@ For further details please refer to the `API Documentation`_.
 
 .. _`API Documentation`: https://rl.readthedocs.io/en/stable/
 
-Example Code
+Example
 ------------
 
 Complete the names of four predefined commands:
@@ -105,13 +105,22 @@ Installation
 rl requires Python 2.7 or higher. The installer builds GNU Readline 8.0
 and a Python extension module.
 
-On Mac OS X make sure you have Xcode Tools installed.
+On Mac OS X make sure you have Xcode Tools installed. Open a Terminal
+window and type::
+
+    gcc --version
+
+You either see some output (good) or an installer window will pop up. Click
+the "Install" button to install the command line developer tools.
+A more detailed tutorial is avaiable from `RailsApps`_.
 
 On Linux and BSD systems you probably already have a C compiler, but you may
 need to verify the development environment is complete.
 For example, Ubuntu lacks the Python headers by default and base Fedora is
 missing some compiler configuration. Lastly, readline needs a termcap library
 to link to.
+
+.. _`RailsApps`: https://railsapps.github.io/xcode-command-line-tools.html
 
 Ubuntu/Debian::
 
@@ -127,5 +136,5 @@ Redhat/Fedora::
 
 Then type::
 
-    pip install rl
+    pip install rl -v
 
