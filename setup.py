@@ -67,18 +67,27 @@ class readline_ext(Extension):
             self.library_dirs.append(match.group(1))
 
     def suppress_warnings(self):
-        cflags = get_config_var('CPPFLAGS').split() + get_config_var('CFLAGS').split()
+        cflags = get_config_var('CFLAGS').split()
 
-        if '-Wall' in cflags or sys.platform.startswith('freebsd'):
-            self.extra_compile_args.append('-Wno-all')
+        if '-Wall' in cflags or '-Wsign-compare' in cflags or '-Wunreachable-code' in cflags:
+            self.extra_compile_args.extend([
+                '-Wno-sign-compare',
+                '-Wno-unreachable-code',
+                '-Wno-uninitialized',
+                '-Wno-unused-function',
+                '-Wno-unused-label',
+                '-Wno-unused-result',
+                '-Wno-unused-variable',
+                '-Wno-parentheses',
+                '-Wno-missing-braces',
+            ])
+
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
-        if '-Wsign-compare' in cflags:
-            self.extra_compile_args.append('-Wno-sign-compare')
-        if '-Wunreachable-code' in cflags:
-            self.extra_compile_args.append('-Wno-unreachable-code')
         if '-Wshorten-64-to-32' in cflags:
             self.extra_compile_args.append('-Wno-shorten-64-to-32')
+        if '-Werror=format-security' in cflags:
+            self.extra_compile_args.append('-Wno-unused-but-set-variable')
 
     def strip_debug_symbols(self):
         if sys.platform == 'darwin':
