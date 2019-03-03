@@ -112,7 +112,7 @@ window and type::
 
 You either see some output (good) or an installer window will pop up. Click
 the "Install" button to install the command line developer tools.
-A more detailed tutorial is avaiable from `RailsApps`_.
+A more detailed tutorial is available from `RailsApps`_.
 
 On Linux and BSD systems you probably already have a C compiler, but you may
 need to verify the development environment is complete.
@@ -136,5 +136,5 @@ Redhat/Fedora::
 
 Then type::
 
-    pip install rl -v
+    pip install rl
 
