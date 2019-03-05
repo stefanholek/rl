@@ -133,7 +133,7 @@ class Completer(object):
         doc="""The word break hook function.
         The function is called as ``function(begidx, endidx)``
         once per completion and should return a string of word
-        break characters for the current completion, or None
+        break characters for the current completion or None
         to indicate no change. The passed-in ``begidx`` and ``endidx``
         are what readline would use if the hook did not exist."""
         def get(self):
@@ -242,7 +242,7 @@ class Completer(object):
     def filename_quoting_function():
         doc="""The filename quoting function.
         The function is called as ``function(text, single_match, quote_char)``
-        and should return a quoted version of ``text``, or None to
+        and should return a quoted version of ``text`` or None to
         indicate no change. The ``single_match``
         argument is True if the completion has generated only one match."""
         #(may be used to close quotes)."""
@@ -256,7 +256,7 @@ class Completer(object):
     def filename_dequoting_function():
         doc="""The filename dequoting function.
         The function is called as ``function(text, quote_char)``
-        and should return a dequoted version of ``text``, or None to
+        and should return a dequoted version of ``text`` or None to
         indicate no change."""
         def get(self):
             return readline.get_filename_dequoting_function()
@@ -269,7 +269,7 @@ class Completer(object):
         doc="""The filename filter function.
         The function is called as ``function(substitution, matches)``
         after all filenames have been generated and should return a
-        filtered subset of ``matches``, or None to indicate no change."""
+        filtered subset of ``matches`` or None to indicate no change."""
         def get(self):
             return readline.get_ignore_some_completions_function()
         def set(self, function):
