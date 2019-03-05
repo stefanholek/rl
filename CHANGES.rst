@@ -26,7 +26,7 @@ Changelog
 - Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
   [stefan]
 
-- Stop using 2to3 in favor of six.
+- Stop using 2to3.
   [stefan]
 
 - Remove ``reset`` APIs from the documentation. They override
