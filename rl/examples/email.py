@@ -1,8 +1,5 @@
 # Complete email addresses
 
-from __future__ import print_function
-from six.moves import input
-
 from rl import completer
 from rl import completion
 from rl import generator

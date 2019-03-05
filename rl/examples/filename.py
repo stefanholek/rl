@@ -1,8 +1,5 @@
 # Complete filenames
 
-from __future__ import print_function
-from six.moves import input
-
 import sys
 import unicodedata
 
@@ -50,13 +47,7 @@ def dequote_filename(text, quote_char):
 @print_exc
 def rewrite_filename(text):
     # Normalize decomposed UTF-8 received from HFS Plus
-    if sys.version_info >= (3,):
-        text = unicodedata.normalize('NFC', text)
-    else:
-        text = text.decode('utf-8')
-        text = unicodedata.normalize('NFC', text)
-        text = text.encode('utf-8')
-    return text
+    return unicodedata.normalize('NFC', text)
 
 
 @print_exc
