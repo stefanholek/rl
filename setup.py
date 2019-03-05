@@ -76,12 +76,10 @@ class readline_ext(Extension):
                 '-Wno-uninitialized',
                 '-Wno-unused-function',
                 '-Wno-unused-label',
-                '-Wno-unused-result',
                 '-Wno-unused-variable',
                 '-Wno-parentheses',
                 '-Wno-missing-braces',
             ])
-
         if '-Wstrict-prototypes' in cflags:
             self.extra_compile_args.append('-Wno-strict-prototypes')
         if '-Wshorten-64-to-32' in cflags:
