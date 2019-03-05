@@ -74,9 +74,7 @@ class readline_ext(Extension):
                 '-Wno-sign-compare',
                 '-Wno-unreachable-code',
                 '-Wno-uninitialized',
-                '-Wno-unused-function',
-                '-Wno-unused-label',
-                '-Wno-unused-variable',
+                '-Wno-unused',
                 '-Wno-parentheses',
                 '-Wno-missing-braces',
             ])
@@ -84,8 +82,6 @@ class readline_ext(Extension):
             self.extra_compile_args.append('-Wno-strict-prototypes')
         if '-Wshorten-64-to-32' in cflags:
             self.extra_compile_args.append('-Wno-shorten-64-to-32')
-        if '-Werror=format-security' in cflags:
-            self.extra_compile_args.append('-Wno-unused-but-set-variable')
 
     def strip_debug_symbols(self):
         if sys.platform == 'darwin':
