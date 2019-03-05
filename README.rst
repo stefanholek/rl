@@ -26,7 +26,7 @@ shield applications from low-level verbosity.
 .. _`History`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
 
 Package Contents
-----------------
+================
 
 rl exports these components:
 
@@ -57,42 +57,15 @@ print_exc
     completions and hooks, as exceptions occurring there are usually
     swallowed by the in-between C code.
 
+Documentation
+=============
+
 For further details please refer to the `API Documentation`_.
 
 .. _`API Documentation`: https://rl.readthedocs.io/en/stable/
 
-Example
-------------
-
-Complete the names of four predefined commands:
-
-.. code:: python
-
-    from rl import completer
-    from rl import generator
-
-    commands = ['create', 'read', 'update', 'delete']
-
-    @generator
-    def complete_command(text):
-        return [x for x in commands if x.startswith(text)]
-
-    def main():
-        # Set the completion entry function
-        completer.completer = complete_command
-
-        # Enable TAB completion
-        completer.parse_and_bind('TAB: complete')
-
-        command = input('command> ')
-        print('You typed:', command)
-
-More examples_ are included in the package source.
-
-.. _examples: https://github.com/stefanholek/rl/tree/master/rl/examples
-
 Development
------------
+===========
 
 rl development is hosted on GitHub_ where it also has an `issue tracker`_.
 
@@ -110,7 +83,7 @@ window and type::
 
     gcc --version
 
-You either see some output (good) or an installer window will pop up. Click
+You either see some output (good) or an installer window pops up. Click
 the "Install" button to install the command line developer tools.
 A more detailed tutorial is available from `RailsApps`_.
 
