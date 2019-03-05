@@ -1,9 +1,12 @@
 """Readline history support."""
 
-from six import integer_types
-
 from rl import readline
 from rl.utils import apply
+
+try:
+    integer_types = (int, long)
+except NameError:
+    integer_types = (int,)
 
 
 class History(object):

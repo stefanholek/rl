@@ -277,7 +277,6 @@ setup(name='rl',
       },
       install_requires=[
           'setuptools',
-          'six',
       ],
 )
 
