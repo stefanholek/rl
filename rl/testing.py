@@ -11,9 +11,6 @@ from rl import completer
 from rl import completion
 from rl import history
 
-# BBB
-from rl.utils import DEFAULT_DELIMS
-
 
 def reset():
     completer.reset()
