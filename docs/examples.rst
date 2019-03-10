@@ -2,6 +2,8 @@
 Examples
 ===================
 
+.. module:: rl.examples
+
 Example code.
 
 Completion Entry Function
