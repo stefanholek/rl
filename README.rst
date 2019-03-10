@@ -111,3 +111,11 @@ Then type::
 
     pip install rl
 
+Related
+=======
+
+`kmd.Kmd`_ is an rl-enabled version of `cmd.Cmd`_.
+
+.. _`kmd.Kmd`: https://github.com/stefanholek/kmd
+.. _`cmd.Cmd`: https://docs.python.org/3/library/cmd.html
+

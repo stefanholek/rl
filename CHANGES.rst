@@ -98,8 +98,6 @@ Changelog
 - Switch to pretty Sphinx-based docs.
   [stefan]
 
-.. _`kmd.Kmd`: https://pypi.python.org/pypi/kmd
-
 
 1.16 - 2011-07-28
 -----------------
