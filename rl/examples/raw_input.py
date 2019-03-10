@@ -6,7 +6,7 @@ from rl import completer
 from rl import print_exc
 
 
-class CompleteCommand(object):
+class CompleteCommand:
     # A completion entry function implementing readline's
     # generator protocol
 

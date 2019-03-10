@@ -2,7 +2,7 @@ Example Code
 ------------
 
 raw_input.py
-    Shows how to create a completion entry function and use it with raw_input.
+    Shows how to create a completion entry function and use it with input().
 
 factory.py
     The same as before, but the completion entry function is created by factory.
