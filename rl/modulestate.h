@@ -10,25 +10,31 @@ typedef struct {
 	PyObject *startup_hook;
 	PyObject *pre_input_hook;
 	PyObject *completion_word_break_hook;
-	PyObject *directory_completion_hook;
-	PyObject *completion_display_matches_hook;
 	PyObject *char_is_quoted_function;
 	PyObject *filename_quoting_function;
 	PyObject *filename_dequoting_function;
+	PyObject *directory_completion_hook;
 	PyObject *ignore_some_completions_function;
+	PyObject *completion_display_matches_hook;
+	PyObject *directory_rewrite_hook;
+	PyObject *filename_rewrite_hook;
+	PyObject *filename_stat_hook;
 } readlinestate;
 
 void readline_init_state(PyObject *module);
 
 #if (PY_MAJOR_VERSION >= 3)
-	struct PyModuleDef readlinemodule;
+	extern struct PyModuleDef readlinemodule;
+
 	#define readline_module() (PyState_FindModule(&readlinemodule))
 	#define readline_state(m) ((readlinestate *) PyModule_GetState(m))
+
 	int readline_traverse(PyObject *module, visitproc visit, void *arg);
 	int readline_clear(PyObject *module);
 	void readline_free(void *module);
 #else
 	extern readlinestate _py2_readlinestate;
+
 	#define readline_module() ((PyObject *) NULL)
 	#define readline_state(m) (&_py2_readlinestate)
 #endif
