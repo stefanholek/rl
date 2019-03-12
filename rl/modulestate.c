@@ -30,6 +30,9 @@ void readline_init_state(PyObject *module)
 int readline_traverse(PyObject *module, visitproc visit, void *arg)
 {
 	readlinestate *global = PyModule_GetState(module);
+	if (global == NULL)
+		return 0;
+
 	Py_VISIT(global->completer);
 	Py_VISIT(global->startup_hook);
 	Py_VISIT(global->pre_input_hook);
@@ -50,6 +53,9 @@ int readline_traverse(PyObject *module, visitproc visit, void *arg)
 int readline_clear(PyObject *module)
 {
 	readlinestate *global = PyModule_GetState(module);
+	if (global == NULL)
+		return 0;
+
 	Py_CLEAR(global->completer);
 	Py_CLEAR(global->startup_hook);
 	Py_CLEAR(global->pre_input_hook);
