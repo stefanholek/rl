@@ -36,6 +36,7 @@ class readline_ext(Extension):
             'rl/stringarray.c',
             'rl/unicode.c',
             'rl/iterator.c',
+            'rl/modulestate.c',
         ]
         Extension.__init__(self, name, sources)
 
