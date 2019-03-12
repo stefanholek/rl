@@ -341,16 +341,14 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 
 /* Exported functions to specify hook functions in Python */
 
-static PyObject *startup_hook = NULL;
-static PyObject *pre_input_hook = NULL;
-
-
 /* Startup hook */
 
 static PyObject *
 set_startup_hook(PyObject *self, PyObject *args)
 {
-	return set_hook("startup_hook", &startup_hook, args);
+	modulestate *global = PyModule_GetState(self);
+
+	return set_hook("startup_hook", &global->startup_hook, args);
 }
 
 PyDoc_STRVAR(doc_set_startup_hook,
@@ -363,11 +361,13 @@ before readline prints the first prompt.");
 static PyObject *
 get_startup_hook(PyObject *self, PyObject *noargs)
 {
-	if (startup_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->startup_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(startup_hook);
-	return startup_hook;
+	Py_INCREF(global->startup_hook);
+	return global->startup_hook;
 }
 
 PyDoc_STRVAR(doc_get_startup_hook,
@@ -380,7 +380,9 @@ Get the current startup_hook function.");
 static PyObject *
 set_pre_input_hook(PyObject *self, PyObject *args)
 {
-	return set_hook("pre_input_hook", &pre_input_hook, args);
+	modulestate *global = PyModule_GetState(self);
+
+	return set_hook("pre_input_hook", &global->pre_input_hook, args);
 }
 
 PyDoc_STRVAR(doc_set_pre_input_hook,
@@ -394,11 +396,13 @@ characters.");
 static PyObject *
 get_pre_input_hook(PyObject *self, PyObject *noargs)
 {
-	if (pre_input_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->pre_input_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(pre_input_hook);
-	return pre_input_hook;
+	Py_INCREF(global->pre_input_hook);
+	return global->pre_input_hook;
 }
 
 PyDoc_STRVAR(doc_get_pre_input_hook,
@@ -407,8 +411,6 @@ Get the current pre_input_hook function.");
 
 
 /* Display matches hook */
-
-static PyObject *completion_display_matches_hook = NULL;
 
 static void
 on_completion_display_matches_hook(char **matches, int num_matches, int max_length);
@@ -420,11 +422,13 @@ default_display_matches_hook(char **matches, int num_matches, int max_length);
 static PyObject *
 set_completion_display_matches_hook(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("completion_display_matches_hook",
-			&completion_display_matches_hook, args);
+			&global->completion_display_matches_hook, args);
 
 	rl_completion_display_matches_hook =
-		completion_display_matches_hook ?
+		global->completion_display_matches_hook ?
 		(rl_compdisp_func_t *)on_completion_display_matches_hook :
 		(rl_compdisp_func_t *)default_display_matches_hook;
 	return result;
@@ -442,11 +446,13 @@ once each time matches need to be displayed.");
 static PyObject *
 get_completion_display_matches_hook(PyObject *self, PyObject *noargs)
 {
-	if (completion_display_matches_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->completion_display_matches_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(completion_display_matches_hook);
-	return completion_display_matches_hook;
+	Py_INCREF(global->completion_display_matches_hook);
+	return global->completion_display_matches_hook;
 }
 
 PyDoc_STRVAR(doc_get_completion_display_matches_hook,
@@ -455,8 +461,6 @@ Get the current completion display function.");
 
 
 /* Exported functions to specify a word completer in Python */
-
-static PyObject *completer = NULL;
 
 static Py_ssize_t begidx = 0;
 static Py_ssize_t endidx = 0;
@@ -467,7 +471,9 @@ static void _py_set_completion_defaults(void);
 static PyObject *
 set_completer(PyObject *self, PyObject *args)
 {
-	return set_hook("completer", &completer, args);
+	modulestate *global = PyModule_GetState(self);
+
+	return set_hook("completer", &global->completer, args);
 }
 
 PyDoc_STRVAR(doc_set_completer,
@@ -481,11 +487,13 @@ It should return the next possible completion starting with ``text``.");
 static PyObject *
 get_completer(PyObject *self, PyObject *noargs)
 {
-	if (completer == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->completer == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(completer);
-	return completer;
+	Py_INCREF(global->completer);
+	return global->completer;
 }
 
 PyDoc_STRVAR(doc_get_completer,
@@ -1326,8 +1334,6 @@ as any other character.");
 
 /* Filename quoting function */
 
-static PyObject *filename_quoting_function = NULL;
-
 static char *
 on_filename_quoting_function(const char *text, int match_type, char *quote_pointer);
 
@@ -1337,11 +1343,13 @@ static rl_quote_func_t *default_filename_quoting_function = NULL;
 static PyObject *
 set_filename_quoting_function(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("filename_quoting_function",
-			&filename_quoting_function, args);
+			&global->filename_quoting_function, args);
 
 	rl_filename_quoting_function =
-		filename_quoting_function ?
+		global->filename_quoting_function ?
 		(rl_quote_func_t *)on_filename_quoting_function :
 		(rl_quote_func_t *)default_filename_quoting_function;
 
@@ -1360,11 +1368,13 @@ if the completion has generated only one match.");
 static PyObject *
 get_filename_quoting_function(PyObject *self, PyObject *noargs)
 {
-	if (filename_quoting_function == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->filename_quoting_function == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(filename_quoting_function);
-	return filename_quoting_function;
+	Py_INCREF(global->filename_quoting_function);
+	return global->filename_quoting_function;
 }
 
 PyDoc_STRVAR(doc_get_filename_quoting_function,
@@ -1387,17 +1397,19 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	single_match = PyBool_FromLong(match_type == SINGLE_MATCH);
 
 	if (quote_pointer && *quote_pointer) {
 		quote_char_string[0] = *quote_pointer;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(filename_quoting_function, "NON",
+	r = PyObject_CallFunction(global->filename_quoting_function, "NON",
 				  PyUnicode_DECODE(text), single_match,
 				  PyUnicode_DECODE(quote_char_string));
 #else
-	r = PyObject_CallFunction(filename_quoting_function, "sOs",
+	r = PyObject_CallFunction(global->filename_quoting_function, "sOs",
 				  text, single_match, quote_char_string);
 #endif
 	if (r == NULL)
@@ -1437,8 +1449,6 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 
 /* Filename dequoting function */
 
-static PyObject *filename_dequoting_function = NULL;
-
 static char *
 on_filename_dequoting_function(const char *text, char quote_char);
 
@@ -1447,11 +1457,13 @@ static PyObject *
 set_filename_dequoting_function(PyObject *self, PyObject *args)
 {
 #if (RL_READLINE_VERSION >= 0x0502)
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("filename_dequoting_function",
-			&filename_dequoting_function, args);
+			&global->filename_dequoting_function, args);
 
 	rl_filename_dequoting_function =
-		filename_dequoting_function ?
+		global->filename_dequoting_function ?
 		(rl_dequote_func_t *)on_filename_dequoting_function : NULL;
 
 	return result;
@@ -1471,11 +1483,13 @@ of ``text``, or None to indicate no change.");
 static PyObject *
 get_filename_dequoting_function(PyObject *self, PyObject *noargs)
 {
-	if (filename_dequoting_function == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->filename_dequoting_function == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(filename_dequoting_function);
-	return filename_dequoting_function;
+	Py_INCREF(global->filename_dequoting_function);
+	return global->filename_dequoting_function;
 }
 
 PyDoc_STRVAR(doc_get_filename_dequoting_function,
@@ -1497,15 +1511,17 @@ on_filename_dequoting_function(const char *text, char quote_char)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	if (quote_char) {
 		quote_char_string[0] = quote_char;
 	}
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(filename_dequoting_function, "NN",
+	r = PyObject_CallFunction(global->filename_dequoting_function, "NN",
 				  PyUnicode_DECODE(text),
 				  PyUnicode_DECODE(quote_char_string));
 #else
-	r = PyObject_CallFunction(filename_dequoting_function, "ss",
+	r = PyObject_CallFunction(global->filename_dequoting_function, "ss",
 				  text, quote_char_string);
 #endif
 	if (r == NULL) {
@@ -1551,8 +1567,6 @@ on_filename_dequoting_function(const char *text, char quote_char)
 
 /* Char-is-quoted function */
 
-static PyObject *char_is_quoted_function = NULL;
-
 static int
 on_char_is_quoted_function(const char *text, int index);
 
@@ -1560,11 +1574,13 @@ on_char_is_quoted_function(const char *text, int index);
 static PyObject *
 set_char_is_quoted_function(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("char_is_quoted_function",
-			&char_is_quoted_function, args);
+			&global->char_is_quoted_function, args);
 
 	rl_char_is_quoted_p =
-		char_is_quoted_function ?
+		global->char_is_quoted_function ?
 		(rl_linebuf_func_t *)on_char_is_quoted_function : NULL;
 
 	return result;
@@ -1581,11 +1597,13 @@ True if the character at ``index`` is quoted, and False otherwise.");
 static PyObject *
 get_char_is_quoted_function(PyObject *self, PyObject *noargs)
 {
-	if (char_is_quoted_function == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->char_is_quoted_function == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(char_is_quoted_function);
-	return char_is_quoted_function;
+	Py_INCREF(global->char_is_quoted_function);
+	return global->char_is_quoted_function;
 }
 
 PyDoc_STRVAR(doc_get_char_is_quoted_function,
@@ -1604,14 +1622,16 @@ on_char_is_quoted_function(const char *text, int index)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	_py_set_completion_defaults();
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(char_is_quoted_function, "Ni",
+	r = PyObject_CallFunction(global->char_is_quoted_function, "Ni",
 				  PyUnicode_DECODE(text),
 				  PyUnicode_INDEX(text, index));
 #else
-	r = PyObject_CallFunction(char_is_quoted_function, "si",
+	r = PyObject_CallFunction(global->char_is_quoted_function, "si",
 	                          text, index);
 #endif
 	if (r == NULL)
@@ -1879,8 +1899,6 @@ Complete the word at or before the cursor position.");
 
 /* Word-break hook */
 
-static PyObject *completion_word_break_hook = NULL;
-
 static char *
 on_completion_word_break_hook(void);
 
@@ -1891,11 +1909,13 @@ _rl_find_completion_word(int *fp, int *dp);
 static PyObject *
 set_completion_word_break_hook(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("completion_word_break_hook",
-			&completion_word_break_hook, args);
+			&global->completion_word_break_hook, args);
 
 	rl_completion_word_break_hook =
-		completion_word_break_hook ?
+		global->completion_word_break_hook ?
 		(rl_cpvfunc_t *)on_completion_word_break_hook : NULL;
 
 	return result;
@@ -1912,11 +1932,13 @@ to indicate no change.");
 static PyObject *
 get_completion_word_break_hook(PyObject *self, PyObject *noargs)
 {
-	if (completion_word_break_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->completion_word_break_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(completion_word_break_hook);
-	return completion_word_break_hook;
+	Py_INCREF(global->completion_word_break_hook);
+	return global->completion_word_break_hook;
 }
 
 PyDoc_STRVAR(doc_get_completion_word_break_hook,
@@ -1939,6 +1961,8 @@ on_completion_word_break_hook(void)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	_py_set_completion_defaults();
 
 	/* Determine word boundaries */
@@ -1954,11 +1978,11 @@ on_completion_word_break_hook(void)
 	rl_point = end;
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(completion_word_break_hook, "ii",
+	r = PyObject_CallFunction(global->completion_word_break_hook, "ii",
 				  PyUnicode_INDEX(rl_line_buffer, start),
 				  PyUnicode_INDEX(rl_line_buffer, end));
 #else
-	r = PyObject_CallFunction(completion_word_break_hook, "ii",
+	r = PyObject_CallFunction(global->completion_word_break_hook, "ii",
 	                          start, end);
 #endif
 	if (r == NULL)
@@ -1997,8 +2021,6 @@ on_completion_word_break_hook(void)
 
 /* Directory rewrite hook */
 
-static PyObject *directory_rewrite_hook = NULL;
-
 static int
 on_directory_rewrite_hook(char **directory);
 
@@ -2006,11 +2028,13 @@ on_directory_rewrite_hook(char **directory);
 static PyObject *
 set_directory_rewrite_hook(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("directory_rewrite_hook",
-			&directory_rewrite_hook, args);
+			&global->directory_rewrite_hook, args);
 
 	rl_directory_rewrite_hook =
-		directory_rewrite_hook ?
+		global->directory_rewrite_hook ?
 		(rl_icppfunc_t *)on_directory_rewrite_hook : NULL;
 
 	return result;
@@ -2027,11 +2051,13 @@ dequoting.");
 static PyObject *
 get_directory_rewrite_hook(PyObject *self, PyObject *noargs)
 {
-	if (directory_rewrite_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->directory_rewrite_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(directory_rewrite_hook);
-	return directory_rewrite_hook;
+	Py_INCREF(global->directory_rewrite_hook);
+	return global->directory_rewrite_hook;
 }
 
 PyDoc_STRVAR(doc_get_directory_rewrite_hook,
@@ -2050,12 +2076,13 @@ on_directory_rewrite_hook(char **directory)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(directory_rewrite_hook, "N",
+	r = PyObject_CallFunction(global->directory_rewrite_hook, "N",
 				  PyUnicode_DECODE(*directory));
 #else
-	r = PyObject_CallFunction(directory_rewrite_hook, "s",
+	r = PyObject_CallFunction(global->directory_rewrite_hook, "s",
 				  *directory);
 #endif
 	if (r == NULL)
@@ -2096,8 +2123,6 @@ on_directory_rewrite_hook(char **directory)
 
 /* Directory completion hook */
 
-static PyObject *directory_completion_hook = NULL;
-
 static int
 on_directory_completion_hook(char **directory);
 
@@ -2105,11 +2130,13 @@ on_directory_completion_hook(char **directory);
 static PyObject *
 set_directory_completion_hook(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("directory_completion_hook",
-			&directory_completion_hook, args);
+			&global->directory_completion_hook, args);
 
 	rl_directory_completion_hook =
-		directory_completion_hook ?
+		global->directory_completion_hook ?
 		(rl_icppfunc_t *)on_directory_completion_hook : NULL;
 
 	return result;
@@ -2126,11 +2153,13 @@ dequoting.");
 static PyObject *
 get_directory_completion_hook(PyObject *self, PyObject *noargs)
 {
-	if (directory_completion_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->directory_completion_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(directory_completion_hook);
-	return directory_completion_hook;
+	Py_INCREF(global->directory_completion_hook);
+	return global->directory_completion_hook;
 }
 
 PyDoc_STRVAR(doc_get_directory_completion_hook,
@@ -2149,12 +2178,13 @@ on_directory_completion_hook(char **directory)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(directory_completion_hook, "N",
+	r = PyObject_CallFunction(global->directory_completion_hook, "N",
 				  PyUnicode_DECODE(*directory));
 #else
-	r = PyObject_CallFunction(directory_completion_hook, "s",
+	r = PyObject_CallFunction(global->directory_completion_hook, "s",
 				  *directory);
 #endif
 	if (r == NULL)
@@ -2195,8 +2225,6 @@ on_directory_completion_hook(char **directory)
 
 /* Filename rewrite hook */
 
-static PyObject *filename_rewrite_hook = NULL;
-
 static char *
 on_filename_rewrite_hook(const char *text, int num_bytes);
 
@@ -2205,11 +2233,13 @@ static PyObject *
 set_filename_rewrite_hook(PyObject *self, PyObject *args)
 {
 #if (RL_READLINE_VERSION >= 0x0601)
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("filename_rewrite_hook",
-			&filename_rewrite_hook, args);
+			&global->filename_rewrite_hook, args);
 
 	rl_filename_rewrite_hook =
-		filename_rewrite_hook ?
+		global->filename_rewrite_hook ?
 		(rl_dequote_func_t *)on_filename_rewrite_hook : NULL;
 
 	return result;
@@ -2228,11 +2258,13 @@ None to indicate no change.");
 static PyObject *
 get_filename_rewrite_hook(PyObject *self, PyObject *noargs)
 {
-	if (filename_rewrite_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->filename_rewrite_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(filename_rewrite_hook);
-	return filename_rewrite_hook;
+	Py_INCREF(global->filename_rewrite_hook);
+	return global->filename_rewrite_hook;
 }
 
 PyDoc_STRVAR(doc_get_filename_rewrite_hook,
@@ -2253,12 +2285,13 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(filename_rewrite_hook, "N",
+	r = PyObject_CallFunction(global->filename_rewrite_hook, "N",
 				  PyUnicode_FS_DECODE(text));
 #else
-	r = PyObject_CallFunction(filename_rewrite_hook, "s",
+	r = PyObject_CallFunction(global->filename_rewrite_hook, "s",
 				  text);
 #endif
 	if (r == NULL)
@@ -2296,8 +2329,6 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 
 /* Filename stat hook */
 
-static PyObject *filename_stat_hook = NULL;
-
 static int
 on_filename_stat_hook(char **directory);
 
@@ -2306,11 +2337,13 @@ static PyObject *
 set_filename_stat_hook(PyObject *self, PyObject *args)
 {
 #if (RL_READLINE_VERSION >= 0x0603)
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("filename_stat_hook",
-			&filename_stat_hook, args);
+			&global->filename_stat_hook, args);
 
 	rl_filename_stat_hook =
-		filename_stat_hook ?
+		global->filename_stat_hook ?
 		(rl_icppfunc_t *)on_filename_stat_hook : NULL;
 
 	return result;
@@ -2329,11 +2362,13 @@ None to indicate no change.");
 static PyObject *
 get_filename_stat_hook(PyObject *self, PyObject *noargs)
 {
-	if (filename_stat_hook == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->filename_stat_hook == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(filename_stat_hook);
-	return filename_stat_hook;
+	Py_INCREF(global->filename_stat_hook);
+	return global->filename_stat_hook;
 }
 
 PyDoc_STRVAR(doc_get_filename_stat_hook,
@@ -2352,12 +2387,13 @@ on_filename_stat_hook(char **directory)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(filename_stat_hook, "N",
+	r = PyObject_CallFunction(global->filename_stat_hook, "N",
 				  PyUnicode_DECODE(*directory));
 #else
-	r = PyObject_CallFunction(filename_stat_hook, "s",
+	r = PyObject_CallFunction(global->filename_stat_hook, "s",
 				  *directory);
 #endif
 	if (r == NULL)
@@ -2557,8 +2593,6 @@ Display a list of matches in columnar format on readline's output stream.");
 
 /* Ignore some completions function */
 
-static PyObject *ignore_some_completions_function = NULL;
-
 static int
 on_ignore_some_completions_function(char **directory);
 
@@ -2566,11 +2600,13 @@ on_ignore_some_completions_function(char **directory);
 static PyObject *
 set_ignore_some_completions_function(PyObject *self, PyObject *args)
 {
+	modulestate *global = PyModule_GetState(self);
+
 	PyObject *result = set_hook("ignore_some_completions_function",
-			&ignore_some_completions_function, args);
+			&global->ignore_some_completions_function, args);
 
 	rl_ignore_some_completions_function =
-		ignore_some_completions_function ?
+		global->ignore_some_completions_function ?
 		(rl_compignore_func_t *)on_ignore_some_completions_function : NULL;
 
 	return result;
@@ -2587,11 +2623,13 @@ change.");
 static PyObject *
 get_ignore_some_completions_function(PyObject *self, PyObject *noargs)
 {
-	if (ignore_some_completions_function == NULL) {
+	modulestate *global = PyModule_GetState(self);
+
+	if (global->ignore_some_completions_function == NULL) {
 		Py_RETURN_NONE;
 	}
-	Py_INCREF(ignore_some_completions_function);
-	return ignore_some_completions_function;
+	Py_INCREF(global->ignore_some_completions_function);
+	return global->ignore_some_completions_function;
 }
 
 PyDoc_STRVAR(doc_get_ignore_some_completions_function,
@@ -2612,15 +2650,17 @@ on_ignore_some_completions_function(char **matches)
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	m = PyList_FromStringArray(matches+1);
 	if (m == NULL)
 		goto error;
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(ignore_some_completions_function, "NO",
+	r = PyObject_CallFunction(global->ignore_some_completions_function, "NO",
 				  PyUnicode_DECODE(matches[0]), m);
 #else
-	r = PyObject_CallFunction(ignore_some_completions_function, "sO",
+	r = PyObject_CallFunction(global->ignore_some_completions_function, "sO",
 				  matches[0], m);
 #endif
 	if (r == NULL)
@@ -2989,9 +3029,6 @@ on_hook(PyObject *func)
 	int result = 0;
 	if (func != NULL) {
 		PyObject *r;
-#ifdef WITH_THREAD
-		PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 		r = PyObject_CallFunction(func, NULL);
 		if (r == NULL)
 			goto error;
@@ -3008,9 +3045,6 @@ on_hook(PyObject *func)
 		PyErr_Clear();
 		Py_XDECREF(r);
 	  done:
-#ifdef WITH_THREAD
-		PyGILState_Release(gilstate);
-#endif
 		return result;
 	}
 	return result;
@@ -3019,13 +3053,31 @@ on_hook(PyObject *func)
 static int
 on_startup_hook(void)
 {
-	return on_hook(startup_hook);
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+	modulestate *global = PyModule_GetState(readline_module());
+
+	int result = on_hook(global->startup_hook);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
 }
 
 static int
 on_pre_input_hook(void)
 {
-	return on_hook(pre_input_hook);
+#ifdef WITH_THREAD
+	PyGILState_STATE gilstate = PyGILState_Ensure();
+#endif
+	modulestate *global = PyModule_GetState(readline_module());
+
+	int result = on_hook(global->pre_input_hook);
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
+	return result;
 }
 
 
@@ -3040,15 +3092,17 @@ on_completion_display_matches_hook(char **matches,
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
 	m = PyList_FromStringArray(matches+1);
 	if (m == NULL)
 		goto error;
 
 #if (PY_MAJOR_VERSION >= 3)
-	r = PyObject_CallFunction(completion_display_matches_hook, "NOi",
+	r = PyObject_CallFunction(global->completion_display_matches_hook, "NOi",
 				  PyUnicode_DECODE(matches[0]), m, max_length);
 #else
-	r = PyObject_CallFunction(completion_display_matches_hook, "sOi",
+	r = PyObject_CallFunction(global->completion_display_matches_hook, "sOi",
 				  matches[0], m, max_length);
 #endif
 	Py_CLEAR(m);
@@ -3080,16 +3134,18 @@ on_completion(const char *text, int state)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-	if (completer != NULL) {
-		PyObject *r;
 #ifdef WITH_THREAD
-		PyGILState_STATE gilstate = PyGILState_Ensure();
+	PyGILState_STATE gilstate = PyGILState_Ensure();
 #endif
+	modulestate *global = PyModule_GetState(readline_module());
+
+	if (global->completer != NULL) {
+		PyObject *r;
 		rl_attempted_completion_over = 1;
 #if (PY_MAJOR_VERSION >= 3)
-		r = PyObject_CallFunction(completer, "Ni", PyUnicode_DECODE(text), state);
+		r = PyObject_CallFunction(global->completer, "Ni", PyUnicode_DECODE(text), state);
 #else
-		r = PyObject_CallFunction(completer, "si", text, state);
+		r = PyObject_CallFunction(global->completer, "si", text, state);
 #endif
 		if (r == NULL)
 			goto error;
@@ -3115,11 +3171,10 @@ on_completion(const char *text, int state)
 		Py_XDECREF(r);
 	  done:
 	  	Py_XDECREF(b);
-#ifdef WITH_THREAD
-		PyGILState_Release(gilstate);
-#endif
-		return result;
 	}
+#ifdef WITH_THREAD
+	PyGILState_Release(gilstate);
+#endif
 	return result;
 }
 
@@ -3482,7 +3537,7 @@ struct PyModuleDef readlinemodule = {
 	PyModuleDef_HEAD_INIT,
 	"readline",
 	doc_module,
-	sizeof(readlinestate),
+	sizeof(modulestate),
 	readline_methods,
 	NULL,
 	readline_traverse,
