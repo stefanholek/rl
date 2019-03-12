@@ -343,12 +343,21 @@ set_hook(const char *funcname, PyObject **hook_var, PyObject *args)
 
 /* Startup hook */
 
+static int
+on_startup_hook(void);
+
+
 static PyObject *
 set_startup_hook(PyObject *self, PyObject *args)
 {
 	modulestate *global = PyModule_GetState(self);
 
-	return set_hook("startup_hook", &global->startup_hook, args);
+	PyObject *result = set_hook("startup_hook", &global->startup_hook, args);
+
+	rl_startup_hook =
+		global->startup_hook ?
+		(rl_hook_func_t *)on_startup_hook : NULL;
+	return result;
 }
 
 PyDoc_STRVAR(doc_set_startup_hook,
@@ -377,12 +386,21 @@ Get the current startup_hook function.");
 
 /* Pre-input hook */
 
+static int
+on_pre_input_hook(void);
+
+
 static PyObject *
 set_pre_input_hook(PyObject *self, PyObject *args)
 {
 	modulestate *global = PyModule_GetState(self);
 
-	return set_hook("pre_input_hook", &global->pre_input_hook, args);
+	PyObject *result = set_hook("pre_input_hook", &global->pre_input_hook, args);
+
+	rl_pre_input_hook =
+		global->pre_input_hook ?
+		(rl_hook_func_t *)on_pre_input_hook : NULL;
+	return result;
 }
 
 PyDoc_STRVAR(doc_set_pre_input_hook,
@@ -3269,8 +3287,8 @@ setup_readline(PyObject *module)
 	/* Set up signal handler for window resize */
 	sigwinch_ohandler = PyOS_setsig(SIGWINCH, readline_sigwinch_handler);
 	/* Set our hook functions */
-	rl_startup_hook = (rl_hook_func_t *)on_startup_hook;
-	rl_pre_input_hook = (rl_hook_func_t *)on_pre_input_hook;
+	rl_startup_hook = NULL;
+	rl_pre_input_hook = NULL;
 	/* Set our completion function */
 	rl_attempted_completion_function = (rl_completion_func_t *)flex_completer;
 	/* Set Python word break characters */
