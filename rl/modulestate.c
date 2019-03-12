@@ -8,20 +8,20 @@ readlinestate _py2_readlinestate;
 
 void readline_init_state(PyObject *module)
 {
-	readlinestate *modstate = readline_state(module);
-	modstate->completer = NULL;
-	modstate->startup_hook = NULL;
-	modstate->pre_input_hook = NULL;
-	modstate->completion_word_break_hook = NULL;
-	modstate->char_is_quoted_function = NULL;
-	modstate->filename_quoting_function = NULL;
-	modstate->filename_dequoting_function = NULL;
-	modstate->directory_completion_hook = NULL;
-	modstate->ignore_some_completions_function = NULL;
-	modstate->completion_display_matches_hook = NULL;
-	modstate->directory_rewrite_hook = NULL;
-	modstate->filename_rewrite_hook = NULL;
-	modstate->filename_stat_hook = NULL;
+	readlinestate *global = PyModule_GetState(module);
+	global->completer = NULL;
+	global->startup_hook = NULL;
+	global->pre_input_hook = NULL;
+	global->completion_word_break_hook = NULL;
+	global->char_is_quoted_function = NULL;
+	global->filename_quoting_function = NULL;
+	global->filename_dequoting_function = NULL;
+	global->directory_completion_hook = NULL;
+	global->ignore_some_completions_function = NULL;
+	global->completion_display_matches_hook = NULL;
+	global->directory_rewrite_hook = NULL;
+	global->filename_rewrite_hook = NULL;
+	global->filename_stat_hook = NULL;
 }
 
 
@@ -29,40 +29,40 @@ void readline_init_state(PyObject *module)
 
 int readline_traverse(PyObject *module, visitproc visit, void *arg)
 {
-	readlinestate *modstate = readline_state(module);
-	Py_VISIT(modstate->completer);
-	Py_VISIT(modstate->startup_hook);
-	Py_VISIT(modstate->pre_input_hook);
-	Py_VISIT(modstate->completion_word_break_hook);
-	Py_VISIT(modstate->char_is_quoted_function);
-	Py_VISIT(modstate->filename_quoting_function);
-	Py_VISIT(modstate->filename_dequoting_function);
-	Py_VISIT(modstate->directory_completion_hook);
-	Py_VISIT(modstate->ignore_some_completions_function);
-	Py_VISIT(modstate->completion_display_matches_hook);
-	Py_VISIT(modstate->directory_rewrite_hook);
-	Py_VISIT(modstate->filename_rewrite_hook);
-	Py_VISIT(modstate->filename_stat_hook);
+	readlinestate *global = PyModule_GetState(module);
+	Py_VISIT(global->completer);
+	Py_VISIT(global->startup_hook);
+	Py_VISIT(global->pre_input_hook);
+	Py_VISIT(global->completion_word_break_hook);
+	Py_VISIT(global->char_is_quoted_function);
+	Py_VISIT(global->filename_quoting_function);
+	Py_VISIT(global->filename_dequoting_function);
+	Py_VISIT(global->directory_completion_hook);
+	Py_VISIT(global->ignore_some_completions_function);
+	Py_VISIT(global->completion_display_matches_hook);
+	Py_VISIT(global->directory_rewrite_hook);
+	Py_VISIT(global->filename_rewrite_hook);
+	Py_VISIT(global->filename_stat_hook);
 	return 0;
 }
 
 
 int readline_clear(PyObject *module)
 {
-	readlinestate *modstate = readline_state(module);
-	Py_CLEAR(modstate->completer);
-	Py_CLEAR(modstate->startup_hook);
-	Py_CLEAR(modstate->pre_input_hook);
-	Py_CLEAR(modstate->completion_word_break_hook);
-	Py_CLEAR(modstate->char_is_quoted_function);
-	Py_CLEAR(modstate->filename_quoting_function);
-	Py_CLEAR(modstate->filename_dequoting_function);
-	Py_CLEAR(modstate->directory_completion_hook);
-	Py_CLEAR(modstate->ignore_some_completions_function);
-	Py_CLEAR(modstate->completion_display_matches_hook);
-	Py_CLEAR(modstate->directory_rewrite_hook);
-	Py_CLEAR(modstate->filename_rewrite_hook);
-	Py_CLEAR(modstate->filename_stat_hook);
+	readlinestate *global = PyModule_GetState(module);
+	Py_CLEAR(global->completer);
+	Py_CLEAR(global->startup_hook);
+	Py_CLEAR(global->pre_input_hook);
+	Py_CLEAR(global->completion_word_break_hook);
+	Py_CLEAR(global->char_is_quoted_function);
+	Py_CLEAR(global->filename_quoting_function);
+	Py_CLEAR(global->filename_dequoting_function);
+	Py_CLEAR(global->directory_completion_hook);
+	Py_CLEAR(global->ignore_some_completions_function);
+	Py_CLEAR(global->completion_display_matches_hook);
+	Py_CLEAR(global->directory_rewrite_hook);
+	Py_CLEAR(global->filename_rewrite_hook);
+	Py_CLEAR(global->filename_stat_hook);
 	return 0;
 }
 
