@@ -21,22 +21,27 @@ typedef struct {
 	PyObject *filename_stat_hook;
 } readlinestate;
 
+typedef readlinestate modulestate;
+
 void readline_init_state(PyObject *module);
 
 #if (PY_MAJOR_VERSION >= 3)
 	extern struct PyModuleDef readlinemodule;
 
-	#define readline_module() (PyState_FindModule(&readlinemodule))
-	#define readline_state(m) ((readlinestate *) PyModule_GetState(m))
-
 	int readline_traverse(PyObject *module, visitproc visit, void *arg);
 	int readline_clear(PyObject *module);
 	void readline_free(void *module);
+
+	#define readline_module() (PyState_FindModule(&readlinemodule))
+	#define readline_state(m) ((readlinestate *) PyModule_GetState(m))
+	#define readlinestate_global (readline_state(readline_module()))
 #else
 	extern readlinestate _py2_readlinestate;
 
 	#define readline_module() ((PyObject *) NULL)
 	#define readline_state(m) (&_py2_readlinestate)
+	#define readlinestate_global (&_py2_readlinestate)
+	#define PyModule_GetState(m) (&_py2_readlinestate)
 #endif
 
 #endif /* __MODULESTATE_H__ */
