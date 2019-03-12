@@ -7,13 +7,16 @@ Changelog
 - rl is now GPLv3 because it statically links to GNU Readline.
   [stefan]
 
-- Add ``history.max_file`` and ``history.append_file``.
+- Include GNU Readline 8.0.
   [stefan]
 
 - Support Python 3.6 os.PathLike objects for filenames.
   [stefan]
 
-- Include GNU Readline 8.0.
+- Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
+  [stefan]
+
+- Add ``history.max_file`` and ``history.append_file``.
   [stefan]
 
 - Add ``directory_rewrite_hook``, ``filename_rewrite_hook``, and
@@ -21,9 +24,6 @@ Changelog
   [stefan]
 
 - Catch up with bug fixes applied to the standard library readline module.
-  [stefan]
-
-- Handle new GIL checks in Python 3.6. See `PYTHONMALLOC`_.
   [stefan]
 
 - Stop using 2to3.
