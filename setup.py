@@ -13,7 +13,7 @@ from distutils import log
 
 from os.path import join, exists
 
-version = '3.0'
+version = '3.1'
 readline_version = '8.0'
 
 
