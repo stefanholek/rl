@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.0 - Unreleased
+3.0 - 2019-03-20
 ----------------
 
 - rl is now GPLv3 because it statically links to GNU Readline.
