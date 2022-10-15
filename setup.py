@@ -265,7 +265,6 @@ setup(name='rl',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='rl.tests',
       ext_modules=[
           readline_ext('rl.readline'),
       ],
