@@ -1,3 +1,5 @@
 include LICENSE tox.ini *.rst
 include readline-8.0.tar.gz
 recursive-include rl *.c *.h *.rst
+recursive-include rl/tests *.py
+recursive-include rl/examples *.py *.rst

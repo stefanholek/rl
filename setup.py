@@ -262,8 +262,13 @@ setup(name='rl',
       author_email='stefan@epy.co.at',
       url='https://github.com/stefanholek/rl',
       license='GPLv3',
-      packages=find_packages(),
-      include_package_data=True,
+      packages=find_packages(
+          exclude=[
+              'rl.tests',
+              'rl.examples',
+          ],
+      ),
+      include_package_data=False,
       zip_safe=False,
       ext_modules=[
           readline_ext('rl.readline'),
