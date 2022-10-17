@@ -30,6 +30,7 @@ def quote_filename(text, single_match, quote_char):
     return text
 
 
+@print_exc
 def dequote_filename(text, quote_char):
     # Backslash-dequote characters in text. Honor quote-characters
     # if the user has typed them.
@@ -51,6 +52,7 @@ def rewrite_filename(text):
 
 
 @print_exc
+@generator
 def complete_filename(text):
     matches = []
     # Dequote immediately to avoid a tilde-expansion bug. This
@@ -82,7 +84,7 @@ def main():
         completer.filename_rewrite_hook = rewrite_filename
 
     # Set the completion entry function
-    completer.completer = generator(complete_filename)
+    completer.completer = complete_filename
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')

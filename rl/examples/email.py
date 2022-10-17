@@ -21,6 +21,7 @@ def complete_hostname(text):
 
 
 @print_exc
+@generator
 def complete_email(text):
     # Dispatch to username or hostname completion
     if text.startswith('@'):
@@ -38,7 +39,7 @@ def main():
     completer.special_prefixes = '@'
 
     # Set the completion entry function
-    completer.completer = generator(complete_email)
+    completer.completer = complete_email
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')

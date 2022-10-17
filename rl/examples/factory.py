@@ -8,6 +8,7 @@ from rl import print_exc
 
 
 @print_exc
+@generator
 def complete_command(text):
     # Return executables matching 'text'
     for dir in os.environ.get('PATH').split(':'):
@@ -21,7 +22,7 @@ def complete_command(text):
 
 def main():
     # Set the completion entry function
-    completer.completer = generator(complete_command)
+    completer.completer = complete_command
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
