@@ -2,8 +2,6 @@
 rl |version| -- GNU Readline Bindings
 ===================================================================
 
-.. module:: rl
-
 Alternative Python bindings for GNU Readline.
 
 .. toctree::
