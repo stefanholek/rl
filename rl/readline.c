@@ -915,6 +915,39 @@ PyDoc_STRVAR(doc_clear_history,
 Clear the current readline history.");
 
 
+/* Enable or disable automatic history */
+
+static int should_auto_add_history = 1;
+
+
+static PyObject *
+get_auto_history(PyObject *self, PyObject *noarg)
+{
+	return PyBool_FromLong(should_auto_add_history);
+}
+
+PyDoc_STRVAR(doc_get_auto_history,
+"get_auto_history() -> bool\n\
+True if automatic history is enabled.");
+
+
+static PyObject *
+set_auto_history(PyObject *self, PyObject *args)
+{
+	int value;
+
+	if (!PyArg_ParseTuple(args, "i:set_auto_history", &value)) {
+		return NULL;
+	}
+	should_auto_add_history = value ? 1 : 0;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_auto_history,
+"set_auto_history(bool) -> None\n\
+Enable or disable automatic history.");
+
+
 /* Exported function to read the current line buffer */
 
 static PyObject *
@@ -2907,6 +2940,7 @@ static struct PyMethodDef readline_methods[] =
 	{"set_pre_input_hook", set_pre_input_hook,
 	 METH_VARARGS, doc_set_pre_input_hook},
 	{"clear_history", py_clear_history, METH_NOARGS, doc_clear_history},
+	{"set_auto_history", set_auto_history, METH_VARARGS, doc_set_auto_history},
 
 	/* <rl.readline> */
 	{"get_completion_append_character", get_completion_append_character,
@@ -3033,6 +3067,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_history_iter},
 	{"get_history_reverse_iter", get_history_reverse_iter,
 	 METH_NOARGS, doc_get_history_reverse_iter},
+	{"get_auto_history", get_auto_history, METH_NOARGS, doc_get_auto_history},
 	/* </rl.readline> */
 
 	{0, 0}
@@ -3487,7 +3522,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 
 	/* we have a valid line */
 	n = strlen(p);
-	if (n > 0) {
+	if (should_auto_add_history && n > 0) {
 		HIST_ENTRY *hist_ent;
 		char *line;
 		if (history_length > 0) {
