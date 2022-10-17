@@ -4,6 +4,9 @@ Changelog
 3.1 - Unreleased
 ----------------
 
+- Implement Python 3.6 ``readline.set_auto_history``.
+  [stefan]
+
 - Replace deprecated ``python setup.py test`` in tox.ini.
   [stefan]
 
