@@ -4,6 +4,15 @@ Changelog
 3.1 - Unreleased
 ----------------
 
+- Replace deprecated ``python setup.py test`` in tox.ini.
+  [stefan]
+
+- Remove deprecated ``test_suite`` from setup.py.
+  [stefan]
+
+- Include tests in sdist but not in wheel.
+  [stefan]
+
 
 3.0 - 2019-03-20
 ----------------
