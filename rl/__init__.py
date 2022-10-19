@@ -66,9 +66,9 @@ A calling sequence for filename completion may look like this:
 
             * :meth:`~rl.Completion.complete_filename`
 
-                * :attr:`~rl.Completer.directory_completion_hook` or
+                * :attr:`~rl.Completer.directory_rewrite_hook` or
 
-                * :attr:`~rl.Completer.directory_rewrite_hook`
+                * :attr:`~rl.Completer.directory_completion_hook`
 
                 * :attr:`~rl.Completer.filename_dequoting_function`
 
@@ -87,6 +87,8 @@ A calling sequence for filename completion may look like this:
         * :attr:`~rl.Completer.display_matches_hook`
 
             * :meth:`~rl.Completion.display_match_list`
+
+                * :attr:`~rl.Completer.directory_completion_hook` or
 
                 * :attr:`~rl.Completer.filename_stat_hook`
 

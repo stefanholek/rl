@@ -144,6 +144,8 @@ class Completer(object):
 
     @apply
     def directory_rewrite_hook():
+        # New in readline 4.2
+        # Pre-empts directory_completion_hook since readline 6.2
         doc="""The directory rewrite hook function.
         This hook is used to prepare the directory name passed
         to ``opendir()`` during filename completion.
@@ -151,10 +153,6 @@ class Completer(object):
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary
         dequoting.
-
-        New in readline 4.2.
-        Overrides :attr:`~rl.Completer.directory_completion_hook` since
-        readline 6.2.
 
         Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
@@ -180,13 +178,12 @@ class Completer(object):
 
     @apply
     def filename_rewrite_hook():
+        # New in readline 6.1
         doc="""The filename rewrite hook function.
         This hook is called for every filename before it is compared
         against the completion word. The function is called as
         ``function(filename)`` and should return a new filename
         or None to indicate no change.
-
-        New in readline 6.1.
 
         Under Python 3 this hook returns preferred encoding to readline."""
         def get(self):
@@ -197,13 +194,12 @@ class Completer(object):
 
     @apply
     def filename_stat_hook():
+        # New in readline 6.3
         doc="""The filename stat hook function.
         This hook is used to prepare the filename passed
         to ``stat()`` during match display.
         The function is called as ``function(filename)`` and should
         return a new filename or None to indicate no change.
-
-        New in readline 6.3.
 
         Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
