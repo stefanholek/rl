@@ -9,6 +9,7 @@ History Interface
 
 .. autoclass:: rl.History
 
+.. autoattribute:: rl.History.auto
 .. autoattribute:: rl.History.max_entries
 .. autoattribute:: rl.History.max_file
 

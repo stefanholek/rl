@@ -195,6 +195,13 @@ class HistoryTests(unittest.TestCase):
         history.max_file = -3
         self.assertEqual(history.max_file, -1)
 
+    def test_auto_history(self):
+        self.assertEqual(history.auto, True)
+        history.auto = False
+        self.assertEqual(history.auto, False)
+        history.auto = True
+        self.assertEqual(history.auto, True)
+
 
 class HistoryStiflingTests(unittest.TestCase):
 
