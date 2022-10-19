@@ -275,5 +275,6 @@ setup(name='rl',
       install_requires=[
           'setuptools',
       ],
+      python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
 )
 
