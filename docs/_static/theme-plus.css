@@ -15,7 +15,10 @@
 }
 
 /* Call graph */
-.rst-content div#call-graph ul ul {
+/*
+.rst-content div#call-graph ul ul,
+.rst-content section#call-graph ul ul {
     border-left: 1px dotted #ddd;
     padding-left: 1em;
 }
+*/
