@@ -152,7 +152,7 @@ class Completer(object):
         The function is called as ``function(dirname)`` and should
         return a new directory name or None to indicate no change.
         At the least, the function must perform all necessary
-        dequoting.
+        dequoting. New in readline 6.2.
 
         Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
@@ -183,7 +183,7 @@ class Completer(object):
         This hook is called for every filename before it is compared
         against the completion word. The function is called as
         ``function(filename)`` and should return a new filename
-        or None to indicate no change.
+        or None to indicate no change. New in readline 6.1.
 
         Under Python 3 this hook returns preferred encoding to readline."""
         def get(self):
@@ -200,6 +200,7 @@ class Completer(object):
         to ``stat()`` during match display.
         The function is called as ``function(filename)`` and should
         return a new filename or None to indicate no change.
+        New in readline 6.3.
 
         Under Python 3 this hook returns filesystem encoding to readline."""
         def get(self):
