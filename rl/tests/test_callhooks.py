@@ -443,7 +443,10 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.filename_dequoting_function = func
         completion.line_buffer = 'fr\\ '
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
+        if readline.readline_version() >= 0x0801:
+            self.assertEqual(called, [('.', ''), ('fr\\ ', ''), ('fr\\ ', '')])
+        else:
+            self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
         self.assertEqual(completion.line_buffer, "'fr ed.txt' ")
 
     def test_no_dequoting(self):
@@ -465,7 +468,10 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.filename_dequoting_function = func
         completion.line_buffer = "'fr "
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', "'"), ('fr ', "'")])
+        if readline.readline_version() >= 0x0801:
+            self.assertEqual(called, [('.', "'"), ('fr ', "'"), ('fr ', "'")])
+        else:
+            self.assertEqual(called, [('.', "'"), ('fr ', "'")])
         self.assertEqual(completion.line_buffer, "'fr ed.txt' ")
 
     def test_empty_string(self):
