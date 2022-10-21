@@ -22,8 +22,8 @@ It also contains high-level APIs to better organize the namespace and
 shield applications from low-level verbosity.
 
 .. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/rltop.html
-.. _`Custom Completer`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
-.. _`History`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
+.. _`Custom Completer`: https://tiswww.case.edu/php/chet/readline/readline.html#Custom-Completers
+.. _`History`: https://tiswww.case.edu/php/chet/readline/history.html#History-Functions
 
 Package Contents
 ================
