@@ -59,11 +59,9 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	PyObject *u;
 	Py_ssize_t i;
 
-	/* Prevent excessive micro allocations */
-	char buffer[256];
-	size_t buffer_size = Py_ARRAY_LENGTH(buffer);
-
-	char *s = buffer;
+	/* Cast away const */
+	char *s = (char*)text;
+	char saved;
 	size_t l;
 
 	/* Short-circuit */
@@ -73,16 +71,10 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	l = strlen(text);
 	if (index > l)
 		index = l;
-	if (index >= buffer_size) {
-		s = PyMem_RawMalloc(index+1);
-		if (s == NULL)
-			return -1;
-	}
-	strncpy(s, text, index);
+	saved = s[index];
 	s[index] = '\0';
 	u = PyUnicode_DECODE(s);
-	if (s != buffer)
-		PyMem_RawFree(s);
+	s[index] = saved;
 	if (u == NULL)
 		return -1;
 	i = PyUnicode_GET_LENGTH(u);
