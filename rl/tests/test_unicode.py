@@ -253,7 +253,10 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.filename_rewrite_hook = compose
         completion.line_buffer = 'Mä\\ '
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', ''), ('Mä\\ ', '')])
+        if readline.readline_version() >= 0x0801:
+            self.assertEqual(called, [('.', ''), ('Mä\\ ', ''), ('Mä\\ ', '')])
+        else:
+            self.assertEqual(called, [('.', ''), ('Mä\\ ', '')])
         self.assertEqual(completion.line_buffer, "'Mä dchen.txt' ")
 
 

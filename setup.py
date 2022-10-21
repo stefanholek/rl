@@ -14,7 +14,7 @@ from distutils import log
 from os.path import join, exists
 
 version = '3.1'
-readline_version = '8.0'
+readline_version = '8.2'
 
 
 def get_config_var(name, default=''):

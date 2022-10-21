@@ -4,6 +4,9 @@ Changelog
 3.1 - Unreleased
 ----------------
 
+- Include GNU Readline 8.2.
+  [stefan]
+
 - Document how ``directory_completion_hook`` interacts with hooks added in
   version 3.0.
   [stefan]
