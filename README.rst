@@ -85,21 +85,21 @@ window and type::
 
 You either see some output (good) or an installer window pops up. Click
 the "Install" button to install the command line developer tools.
-A more detailed tutorial is available from `RailsApps`_.
+A more detailed tutorial is available from the `Mac Install Guide`_.
+
+.. _`Mac Install Guide`: https://mac.install.guide/commandlinetools/index.html
 
 On Linux and BSD systems you probably already have a C compiler, but you may
 need to verify the development environment is complete.
-For example, Ubuntu lacks the Python headers by default and base Fedora is
+For example, Ubuntu lacks the Python headers by default and Fedora is
 missing some compiler configuration. Lastly, readline needs a termcap library
 to link to.
-
-.. _`RailsApps`: https://railsapps.github.io/xcode-command-line-tools.html
 
 Ubuntu/Debian::
 
     sudo apt install build-essential
     sudo apt install python3-dev
-    sudo apt install libtinfo-dev
+    sudo apt install libncurses-dev
 
 Redhat/Fedora::
 
