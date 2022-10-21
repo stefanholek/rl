@@ -187,11 +187,10 @@ class DisplayMatchesHookTests(JailSetup):
         self.assertEqual(called, [('fred.', ['fred.gif', 'fred.txt'], 8)])
 
     # FIXME: Prints to rl_outstream
-    def DISABLED_test_default_display_matches_hook(self):
+    def test_default_display_matches_hook(self):
         self.mkfile('fred.txt', 'fred.gif')
         completer.completer = filecomplete
         readline.complete_internal('?')
-        self.assertEqual(called, [])
 
 
 class WordBreakHookTests(unittest.TestCase):
@@ -371,6 +370,32 @@ class DirectoryCompletionHookTests(JailSetup):
         completer.directory_completion_hook = func
         completion.line_buffer = 'flint\\ stone/fr'
         readline.complete_internal(TAB)
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    # FIXME: Prints to rl_outstream
+    def test_called_by_display_match_list(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname.replace('\\', '')
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal('?')
+        self.assertEqual(called, ['flint\\ stone/', 'flint stone'])
+        self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
+
+    def test_preempted_by_directory_rewrite_hook(self):
+        def func(dirname):
+            called.append(dirname)
+            return dirname.replace('\\', '')
+        self.mkdir('flint stone')
+        self.mkfile('flint stone/fred.txt')
+        completer.directory_rewrite_hook = lambda x: x
+        completer.directory_completion_hook = func
+        completion.line_buffer = 'flint\\ stone/fr'
+        readline.complete_internal(TAB)
+        self.assertEqual(called, []) # Not called
         self.assertEqual(completion.line_buffer, "flint\\ stone/fr")
 
 
@@ -800,4 +825,31 @@ class FilenameStatHookTests(JailSetup):
         readline.complete_internal(TAB)
         self.assertEqual(called, ['flintstone/fred.txt'])
         self.assertEqual(completion.line_buffer, "flintstone/fred.txt ")
+
+    # FIXME: Prints to rl_outstream
+    def test_called_by_display_match_list(self):
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal('?')
+        self.assertEqual(called, ['flintstone/fred.txt'])
+        self.assertEqual(completion.line_buffer, "flintstone/fr")
+
+    # FIXME: Prints to rl_outstream
+    def test_preempted_by_directory_completion_hook(self):
+        def func(filename):
+            called.append(filename)
+            return filename
+        self.mkdir('flintstone')
+        self.mkfile('flintstone/fred.txt')
+        completer.directory_completion_hook = lambda x: x
+        completer.filename_stat_hook = func
+        completion.line_buffer = 'flintstone/fr'
+        readline.complete_internal('?')
+        self.assertEqual(called, []) # Not called
+        self.assertEqual(completion.line_buffer, "flintstone/fr")
 

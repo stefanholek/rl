@@ -41,6 +41,11 @@ Additional hooks for when the filesystem representation differs from the represe
 .. autoattribute:: rl.Completer.filename_rewrite_hook
 .. autoattribute:: rl.Completer.filename_stat_hook
 
+.. note:: If :attr:`~rl.Completer.directory_rewrite_hook` and/or
+   :attr:`~rl.Completer.filename_stat_hook` are set,
+   the :attr:`~rl.Completer.directory_completion_hook` must be None,
+   and vice versa.
+
 Completion Interface
 ====================
 
