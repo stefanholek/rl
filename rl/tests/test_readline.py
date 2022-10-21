@@ -94,6 +94,15 @@ class ReadlineTests(JailSetup):
     def test_redisplay_keyword_arg(self):
         self.assertRaises(TypeError, readline.redisplay, force=True)
 
+    def test_auto_history_default(self):
+        self.assertEqual(readline.get_auto_history(), True)
+
+    def test_auto_history(self):
+        readline.set_auto_history(False)
+        self.assertEqual(readline.get_auto_history(), False)
+        readline.set_auto_history(True)
+        self.assertEqual(readline.get_auto_history(), True)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
