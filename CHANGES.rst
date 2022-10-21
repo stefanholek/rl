@@ -4,6 +4,10 @@ Changelog
 3.1 - Unreleased
 ----------------
 
+- Document how ``directory_completion_hook`` interacts with hooks added in
+  version 3.0.
+  [stefan]
+
 - Implement Python 3.6 ``readline.set_auto_history`` and the corresponding
   ``history.auto``.
   [stefan]
