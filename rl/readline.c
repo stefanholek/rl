@@ -3306,9 +3306,6 @@ setup_readline(PyObject *module)
 	if (!saved_locale)
 		Py_FatalError("not enough memory to save locale");
 #endif
-	/* Initialize history variables */
-	using_history();
-
 	/* Support $if <readline_name> sections in .inputrc */
 	rl_readline_name = getenv("RL_READLINE_NAME");
 	if (rl_readline_name == NULL)
@@ -3317,6 +3314,9 @@ setup_readline(PyObject *module)
 	/* Allow $if term= in .inputrc to work */
 	rl_terminal_name = getenv("TERM");
 #endif
+	/* Initialize history variables */
+	using_history();
+
 	/* Force rebind of TAB to insert-tab */
 	rl_bind_key('\t', rl_insert);
 	/* Bind both ESC-TAB and ESC-ESC to the completion function */
