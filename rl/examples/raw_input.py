@@ -22,7 +22,6 @@ class CompleteCommand:
     def complete_command(self, text):
         # Return executables matching 'text'
         for dir in os.environ.get('PATH').split(':'):
-            dir = os.path.expanduser(dir)
             if os.path.isdir(dir):
                 for name in os.listdir(dir):
                     if name.startswith(text):
