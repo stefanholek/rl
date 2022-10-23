@@ -379,6 +379,9 @@ class DirectoryCompletionHookTests(JailSetup):
             return dirname.replace('\\', '')
         self.mkdir('flint stone')
         self.mkfile('flint stone/fred.txt')
+        if readline.readline_version() >= 0x0801:
+            # Reset last_completion_failed
+            readline.complete_internal(TAB)
         completer.directory_completion_hook = func
         completion.line_buffer = 'flint\\ stone/fr'
         readline.complete_internal('?')
