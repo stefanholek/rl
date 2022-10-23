@@ -4,7 +4,10 @@ Examples
 
 .. module:: rl.examples
 
-Example code.
+Example files are included in the source distribution and available on
+GitHub_.
+
+.. _`GitHub`: https://github.com/stefanholek/rl/tree/master/rl/examples
 
 Completion Entry Function
 ============================
