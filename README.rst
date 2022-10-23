@@ -49,7 +49,7 @@ readline
     should rarely need to interact with it directly.
 
 generator
-    A factory turning any callable into a *completion entry function* that
+    A decorator turning any callable into a *completion entry function* that
     can be handed to readline.
 
 print_exc

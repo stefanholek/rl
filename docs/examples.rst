@@ -18,8 +18,9 @@ possible completion for ``text``:
 Generator Factory
 ====================
 
-The :func:`~rl.generator` factory provides a simpler way to support this
-protocol:
+The :func:`~rl.generator` factory provides an easy way to support this
+protocol. It is typically used as a decorator but can be passed any
+callable to create a completion entry function:
 
 .. literalinclude:: ../rl/examples/factory.py
 

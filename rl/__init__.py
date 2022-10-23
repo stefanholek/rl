@@ -25,7 +25,7 @@ rl exports the following components:
     with it directly.
 
 :func:`rl.generator`
-    A factory turning any callable into a *completion entry function* that
+    A decorator turning any callable into a *completion entry function* that
     can be handed to readline.
 
 :func:`rl.print_exc`
