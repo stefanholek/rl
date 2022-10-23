@@ -16,6 +16,8 @@ from os.path import join, exists
 version = '3.1'
 readline_version = '8.2'
 
+readline_version_info = tuple(map(int, readline_version.split('.')))
+
 
 def get_config_var(name, default=''):
     return get_config_vars().get(name) or default
@@ -125,15 +127,29 @@ class readline_ext(Extension):
             'build/readline/util.c',
             'build/readline/vi_mode.c',
             'build/readline/xmalloc.c',
-            'build/readline/xfree.c',
-            'build/readline/colors.c',
-            'build/readline/parse-colors.c',
         ])
+
+        if readline_version_info >= (6, 2):
+            self.sources.extend([
+                'build/readline/xfree.c',
+            ])
+
+        if readline_version_info >= (6, 3):
+            self.sources.extend([
+                'build/readline/colors.c',
+                'build/readline/parse-colors.c',
+            ])
 
         self.define_macros.extend([
             ('HAVE_CONFIG_H', None),
             ('RL_LIBRARY_VERSION', '"%s"' % readline_version),
         ])
+
+        if sys.platform == "darwin" and readline_version_info < (7,):
+            # Fix conditional include in rltty.c
+            self.define_macros.extend([
+                ('GWINSZ_IN_SYS_IOCTL', None),
+            ])
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
 
