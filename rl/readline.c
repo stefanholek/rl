@@ -136,6 +136,9 @@ read_init_file(PyObject *self, PyObject *args)
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
+#if (RL_READLINE_VERSION >= 0x0700)
+	rl_variable_bind("enable-bracketed-paste", "off");
+#endif
 	Py_RETURN_NONE;
 }
 
@@ -3352,6 +3355,11 @@ setup_readline(PyObject *module)
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
+#if (RL_READLINE_VERSION >= 0x0700)
+	/* Issue #42819: bracketed paste can cause REPL issues. Also writes the ANSI
+	   sequence "\033[?2004h" into stdout which applications may not support. */
+	rl_variable_bind("enable-bracketed-paste", "off");
+#endif
 	RESTORE_LOCALE(saved_locale)
 }
 
