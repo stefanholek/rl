@@ -8,7 +8,6 @@ from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
 from distutils.sysconfig import get_config_vars
-from distutils.spawn import find_executable
 from distutils import log
 
 from os.path import join, exists
@@ -185,40 +184,12 @@ class build_readline_ext(build_ext):
         # Standard locations
         lib_dirs.extend(['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib'])
 
-        if self.can_inspect_libraries():
-            readline = self.compiler.find_library_file(lib_dirs, 'readline')
-            termcap = self.get_termcap_from(readline)
-
-        if not termcap:
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                if self.compiler.find_library_file(lib_dirs, name):
-                    termcap = name
-                    break
+        for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+            if self.compiler.find_library_file(lib_dirs, name):
+                termcap = name
+                break
 
         return termcap
-
-    def can_inspect_libraries(self):
-        if sys.platform == 'darwin':
-            cmd = 'otool'
-        else:
-            cmd = 'ldd'
-        if not find_executable(cmd):
-            log.warn('WARNING: Command not found: %s' % cmd)
-            return False
-        return True
-
-    def get_termcap_from(self, module):
-        if module and exists(module):
-            if sys.platform == 'darwin':
-                cmd = 'otool -L "%s"' % module
-            else:
-                cmd = 'ldd "%s"' % module
-            with os.popen(cmd) as fp:
-                libraries = fp.read()
-            for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
-                if 'lib%s.' % name in libraries:
-                    return name
-        return ''
 
     def configure_static_readline(self):
         srcdir = os.getcwd()
