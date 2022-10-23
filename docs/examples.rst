@@ -13,7 +13,7 @@ Completion Entry Function
 ============================
 
 The completion entry function is called as ``function(text, state)`` for
-state in 0, 1, 2, ... until it returns None. It should return the next
+``state`` in 0, 1, 2, ... until it returns None. It should return the next
 possible completion for ``text``:
 
 .. literalinclude:: ../rl/examples/raw_input.py
