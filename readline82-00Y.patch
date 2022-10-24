@@ -1,0 +1,15 @@
+diff --git a/complete.c b/complete.c
+index e5d224e..7f0d765 100644
+--- a/complete.c
++++ b/complete.c
+@@ -2526,7 +2526,9 @@ rl_filename_completion_function (const char *text, int state)
+ 	  temp = tilde_expand (dirname);
+ 	  xfree (dirname);
+ 	  dirname = temp;
+-	  tilde_dirname = 1;
++	  /* Set flag if the expansion was successful. */
++	  if (*dirname != '~')
++	    tilde_dirname = 1;
+ 	}
+ 
+       /* We have saved the possibly-dequoted version of the directory name
