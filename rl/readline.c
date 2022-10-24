@@ -3298,13 +3298,13 @@ readline_sigwinch_handler(int signum)
 
 /* Helper to initialize GNU readline properly. */
 
-static void
+static int
 setup_readline(PyObject *module)
 {
 #ifdef SAVE_LOCALE
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
 	if (!saved_locale)
-		Py_FatalError("not enough memory to save locale");
+		return -1;
 #endif
 	/* Support $if <readline_name> sections in .inputrc */
 	rl_readline_name = getenv("RL_READLINE_NAME");
@@ -3361,6 +3361,7 @@ setup_readline(PyObject *module)
 	rl_variable_bind("enable-bracketed-paste", "off");
 #endif
 	RESTORE_LOCALE(saved_locale)
+	return 0;
 }
 
 
@@ -3501,7 +3502,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 #ifdef SAVE_LOCALE
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
 	if (!saved_locale)
-		Py_FatalError("not enough memory to save locale");
+		return (void*)PyErr_NoMemory();
 	_Py_SetLocaleFromEnv(LC_CTYPE);
 #endif
 
@@ -3616,7 +3617,12 @@ PyInit_readline(void)
 		return NULL;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline(m);
+
+	if (setup_readline(m) < 0) {
+		PyErr_NoMemory();
+		Py_DECREF(m);
+		return NULL;
+	}
 	return m;
 }
 #else
@@ -3631,7 +3637,11 @@ initreadline(void)
 		return;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline(m);
+
+	if (setup_readline(m) < 0) {
+		PyErr_NoMemory();
+		Py_DECREF(m);
+	}
 }
 #endif
 
