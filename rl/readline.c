@@ -631,6 +631,8 @@ Set the ending index of the readline tab-completion scope.");
 static PyObject *
 get_completer_delims(PyObject *self, PyObject *noarg)
 {
+	if (!rl_completer_word_break_characters)
+		return PyString_FromString("");
 	return PyString_FromString(rl_completer_word_break_characters);
 }
 
@@ -657,7 +659,8 @@ set_completer_delims(PyObject *self, PyObject *args)
 	Py_XDECREF(b);
 
 	if (break_chars) {
-		if (rl_completer_word_break_characters)
+		if (rl_completer_word_break_characters &&
+		    rl_completer_word_break_characters != rl_basic_word_break_characters)
 			free((void*)rl_completer_word_break_characters);
 		rl_completer_word_break_characters = break_chars;
 		Py_RETURN_NONE;
