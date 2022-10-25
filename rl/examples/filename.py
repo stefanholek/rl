@@ -17,8 +17,7 @@ def char_is_quoted(text, index):
 
 @print_exc
 def quote_filename(text, single_match, quote_char):
-    # Backslash-quote characters in text. Honor quote-characters
-    # if the user has typed them.
+    # Backslash-quote characters in text
     if quote_char == "'":
         pass
     elif quote_char == '"':
@@ -30,9 +29,9 @@ def quote_filename(text, single_match, quote_char):
     return text
 
 
+@print_exc
 def dequote_filename(text, quote_char):
-    # Backslash-dequote characters in text. Honor quote-characters
-    # if the user has typed them.
+    # Backslash-dequote characters in text
     if quote_char == "'":
         pass
     elif quote_char == '"':
@@ -51,12 +50,9 @@ def rewrite_filename(text):
 
 
 @print_exc
+@generator
 def complete_filename(text):
     matches = []
-    # Dequote immediately to avoid a tilde-expansion bug. This
-    # also simplifies subsequent hooks.
-    if completion.found_quote:
-        text = dequote_filename(text, completion.quote_character)
     # Complete usernames
     if text.startswith('~') and '/' not in text:
         matches = completion.complete_username(text)
@@ -75,19 +71,19 @@ def main():
     # Configure quoting functions
     completer.char_is_quoted_function = char_is_quoted
     completer.filename_quoting_function = quote_filename
-    completer.filename_dequoting_function = None
+    completer.filename_dequoting_function = dequote_filename
 
     # Configure Unicode converter on Mac OS X
     if sys.platform == "darwin":
         completer.filename_rewrite_hook = rewrite_filename
 
     # Set the completion entry function
-    completer.completer = generator(complete_filename)
+    completer.completer = complete_filename
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
 
-    filename = input('file> ')
+    filename = input('filename> ')
     print('You typed:', filename)
 
 

@@ -25,7 +25,7 @@ rl exports the following components:
     with it directly.
 
 :func:`rl.generator`
-    A factory turning any callable into a *completion entry function* that
+    A decorator turning any callable into a *completion entry function* that
     can be handed to readline.
 
 :func:`rl.print_exc`
@@ -66,9 +66,9 @@ A calling sequence for filename completion may look like this:
 
             * :meth:`~rl.Completion.complete_filename`
 
-                * :attr:`~rl.Completer.directory_completion_hook` or
+                * :attr:`~rl.Completer.directory_rewrite_hook` or
 
-                * :attr:`~rl.Completer.directory_rewrite_hook`
+                * :attr:`~rl.Completer.directory_completion_hook`
 
                 * :attr:`~rl.Completer.filename_dequoting_function`
 
@@ -88,6 +88,8 @@ A calling sequence for filename completion may look like this:
 
             * :meth:`~rl.Completion.display_match_list`
 
+                * :attr:`~rl.Completer.directory_completion_hook` or
+
                 * :attr:`~rl.Completer.filename_stat_hook`
 
 Readline History
@@ -102,8 +104,8 @@ Upstream Documentation
 
 The `GNU Readline Library`_ and the `GNU History Library`_.
 
-.. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html#SEC45
-.. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html#SEC6
+.. _`GNU Readline Library`: https://tiswww.case.edu/php/chet/readline/readline.html
+.. _`GNU History Library`: https://tiswww.case.edu/php/chet/readline/history.html
 """
 
 # Grab the PyOS_ReadlineFunctionPointer

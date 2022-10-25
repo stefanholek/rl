@@ -136,6 +136,9 @@ read_init_file(PyObject *self, PyObject *args)
 	Py_XDECREF(b);
 	if (errno)
 		return PyErr_SetFromErrno(PyExc_IOError);
+#if (RL_READLINE_VERSION >= 0x0700)
+	rl_variable_bind("enable-bracketed-paste", "off");
+#endif
 	Py_RETURN_NONE;
 }
 
@@ -628,6 +631,8 @@ Set the ending index of the readline tab-completion scope.");
 static PyObject *
 get_completer_delims(PyObject *self, PyObject *noarg)
 {
+	if (!rl_completer_word_break_characters)
+		return PyString_FromString("");
 	return PyString_FromString(rl_completer_word_break_characters);
 }
 
@@ -654,7 +659,8 @@ set_completer_delims(PyObject *self, PyObject *args)
 	Py_XDECREF(b);
 
 	if (break_chars) {
-		if (rl_completer_word_break_characters)
+		if (rl_completer_word_break_characters &&
+		    rl_completer_word_break_characters != rl_basic_word_break_characters)
 			free((void*)rl_completer_word_break_characters);
 		rl_completer_word_break_characters = break_chars;
 		Py_RETURN_NONE;
@@ -913,6 +919,39 @@ py_clear_history(PyObject *self, PyObject *noarg)
 PyDoc_STRVAR(doc_clear_history,
 "clear_history() -> None\n\
 Clear the current readline history.");
+
+
+/* Enable or disable automatic history */
+
+static int should_auto_add_history = 1;
+
+
+static PyObject *
+get_auto_history(PyObject *self, PyObject *noarg)
+{
+	return PyBool_FromLong(should_auto_add_history);
+}
+
+PyDoc_STRVAR(doc_get_auto_history,
+"get_auto_history() -> bool\n\
+True if automatic history is enabled.");
+
+
+static PyObject *
+set_auto_history(PyObject *self, PyObject *args)
+{
+	int value;
+
+	if (!PyArg_ParseTuple(args, "i:set_auto_history", &value)) {
+		return NULL;
+	}
+	should_auto_add_history = value ? 1 : 0;
+	Py_RETURN_NONE;
+}
+
+PyDoc_STRVAR(doc_set_auto_history,
+"set_auto_history(bool) -> None\n\
+Enable or disable automatic history.");
 
 
 /* Exported function to read the current line buffer */
@@ -2907,6 +2946,7 @@ static struct PyMethodDef readline_methods[] =
 	{"set_pre_input_hook", set_pre_input_hook,
 	 METH_VARARGS, doc_set_pre_input_hook},
 	{"clear_history", py_clear_history, METH_NOARGS, doc_clear_history},
+	{"set_auto_history", set_auto_history, METH_VARARGS, doc_set_auto_history},
 
 	/* <rl.readline> */
 	{"get_completion_append_character", get_completion_append_character,
@@ -3033,6 +3073,7 @@ static struct PyMethodDef readline_methods[] =
 	 METH_NOARGS, doc_get_history_iter},
 	{"get_history_reverse_iter", get_history_reverse_iter,
 	 METH_NOARGS, doc_get_history_reverse_iter},
+	{"get_auto_history", get_auto_history, METH_NOARGS, doc_get_auto_history},
 	/* </rl.readline> */
 
 	{0, 0}
@@ -3260,17 +3301,14 @@ readline_sigwinch_handler(int signum)
 
 /* Helper to initialize GNU readline properly. */
 
-static void
+static int
 setup_readline(PyObject *module)
 {
 #ifdef SAVE_LOCALE
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
 	if (!saved_locale)
-		Py_FatalError("not enough memory to save locale");
+		return -1;
 #endif
-	/* Initialize history variables */
-	using_history();
-
 	/* Support $if <readline_name> sections in .inputrc */
 	rl_readline_name = getenv("RL_READLINE_NAME");
 	if (rl_readline_name == NULL)
@@ -3279,6 +3317,9 @@ setup_readline(PyObject *module)
 	/* Allow $if term= in .inputrc to work */
 	rl_terminal_name = getenv("TERM");
 #endif
+	/* Initialize history variables */
+	using_history();
+
 	/* Force rebind of TAB to insert-tab */
 	rl_bind_key('\t', rl_insert);
 	/* Bind both ESC-TAB and ESC-ESC to the completion function */
@@ -3317,7 +3358,13 @@ setup_readline(PyObject *module)
 	/* Initialize (allows .inputrc to override) */
 	rl_initialize();
 
+#if (RL_READLINE_VERSION >= 0x0700)
+	/* Issue #42819: bracketed paste can cause REPL issues. Also writes the ANSI
+	   sequence "\033[?2004h" into stdout which applications may not support. */
+	rl_variable_bind("enable-bracketed-paste", "off");
+#endif
 	RESTORE_LOCALE(saved_locale)
+	return 0;
 }
 
 
@@ -3458,7 +3505,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 #ifdef SAVE_LOCALE
 	char *saved_locale = strdup(setlocale(LC_CTYPE, NULL));
 	if (!saved_locale)
-		Py_FatalError("not enough memory to save locale");
+		return (void*)PyErr_NoMemory();
 	_Py_SetLocaleFromEnv(LC_CTYPE);
 #endif
 
@@ -3487,7 +3534,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 
 	/* we have a valid line */
 	n = strlen(p);
-	if (n > 0) {
+	if (should_auto_add_history && n > 0) {
 		HIST_ENTRY *hist_ent;
 		char *line;
 		if (history_length > 0) {
@@ -3573,7 +3620,12 @@ PyInit_readline(void)
 		return NULL;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline(m);
+
+	if (setup_readline(m) < 0) {
+		PyErr_NoMemory();
+		Py_DECREF(m);
+		return NULL;
+	}
 	return m;
 }
 #else
@@ -3588,7 +3640,11 @@ initreadline(void)
 		return;
 
 	PyOS_ReadlineFunctionPointer = call_readline;
-	setup_readline(m);
+
+	if (setup_readline(m) < 0) {
+		PyErr_NoMemory();
+		Py_DECREF(m);
+	}
 }
 #endif
 

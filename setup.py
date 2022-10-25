@@ -14,7 +14,9 @@ from distutils import log
 from os.path import join, exists
 
 version = '3.1'
-readline_version = '8.0'
+readline_version = '8.2'
+
+readline_version_info = tuple(map(int, readline_version.split('.')))
 
 
 def get_config_var(name, default=''):
@@ -125,15 +127,29 @@ class readline_ext(Extension):
             'build/readline/util.c',
             'build/readline/vi_mode.c',
             'build/readline/xmalloc.c',
-            'build/readline/xfree.c',
-            'build/readline/colors.c',
-            'build/readline/parse-colors.c',
         ])
+
+        if readline_version_info >= (6, 2):
+            self.sources.extend([
+                'build/readline/xfree.c',
+            ])
+
+        if readline_version_info >= (6, 3):
+            self.sources.extend([
+                'build/readline/colors.c',
+                'build/readline/parse-colors.c',
+            ])
 
         self.define_macros.extend([
             ('HAVE_CONFIG_H', None),
             ('RL_LIBRARY_VERSION', '"%s"' % readline_version),
         ])
+
+        if sys.platform == "darwin" and readline_version_info < (7,):
+            # Fix conditional include in rltty.c
+            self.define_macros.extend([
+                ('GWINSZ_IN_SYS_IOCTL', None),
+            ])
 
         self.include_dirs = ['build', 'build/readline'] + self.include_dirs
 
@@ -248,24 +264,24 @@ setup(name='rl',
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: POSIX',
           'Programming Language :: C',
+          'Programming Language :: Python',
           'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
-          'Programming Language :: Python :: 3.4',
-          'Programming Language :: Python :: 3.5',
-          'Programming Language :: Python :: 3.6',
-          'Programming Language :: Python :: 3.7',
           'Programming Language :: Python :: Implementation :: CPython',
       ],
-      keywords='gnu readline bindings gnureadline',
+      keywords='gnu, readline, bindings, gnureadline, completion, tab completion',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
       url='https://github.com/stefanholek/rl',
       license='GPLv3',
-      packages=find_packages(),
-      include_package_data=True,
+      packages=find_packages(
+          exclude=[
+              'rl.tests',
+              'rl.examples',
+          ],
+      ),
+      include_package_data=False,
       zip_safe=False,
-      test_suite='rl.tests',
       ext_modules=[
           readline_ext('rl.readline'),
       ],
@@ -275,5 +291,20 @@ setup(name='rl',
       install_requires=[
           'setuptools',
       ],
+      python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*',
+      project_urls={
+          'Documentation': 'https://rl.readthedocs.io/en/stable/',
+      },
+      extras_require={
+          'docs': [
+              'sphinx == 4.5.0',
+              'sphinx-rtd-theme == 1.0.0',
+          ],
+          'readthedocs': [
+              'sphinx == 4.5.0',
+              'sphinx-rtd-theme == 1.0.0',
+              'readthedocs-sphinx-search == 0.1.2',
+          ],
+      },
 )
 

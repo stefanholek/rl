@@ -4,13 +4,16 @@ Examples
 
 .. module:: rl.examples
 
-Example code.
+Example files are included in the source distribution and available on
+GitHub_.
+
+.. _`GitHub`: https://github.com/stefanholek/rl/tree/master/rl/examples
 
 Completion Entry Function
 ============================
 
 The completion entry function is called as ``function(text, state)`` for
-state in 0, 1, 2, ... until it returns None. It should return the next
+``state`` in 0, 1, 2, ... until it returns None. It should return the next
 possible completion for ``text``:
 
 .. literalinclude:: ../rl/examples/raw_input.py
@@ -18,8 +21,9 @@ possible completion for ``text``:
 Generator Factory
 ====================
 
-The :func:`~rl.generator` factory provides a simpler way to support this
-protocol:
+The :func:`~rl.generator` factory provides an easy way to support this
+protocol. It is typically used as a decorator but can be passed any
+callable to create a completion entry function:
 
 .. literalinclude:: ../rl/examples/factory.py
 

@@ -4,6 +4,32 @@ Changelog
 3.1 - Unreleased
 ----------------
 
+- Include GNU Readline 8.2.
+  [stefan]
+
+- Improve documentation and example code.
+  [stefan]
+
+- Document how ``directory_completion_hook`` interacts with new hooks added
+  in version 3.0.
+  [stefan]
+
+- Implement Python 3.6 ``readline.set_auto_history`` and the corresponding
+  ``history.auto``.
+  [stefan]
+
+- Disable bracketed paste.
+  [stefan]
+
+- Replace deprecated ``python setup.py test`` in tox.ini.
+  [stefan]
+
+- Remove deprecated ``test_suite`` from setup.py.
+  [stefan]
+
+- Include tests in sdist but not in wheel.
+  [stefan]
+
 
 3.0 - 2019-03-20
 ----------------

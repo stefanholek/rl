@@ -1,0 +1,19 @@
+diff --git a/complete.c b/complete.c
+index e5d224e..138c8d3 100644
+--- a/complete.c
++++ b/complete.c
+@@ -2551,6 +2551,14 @@ rl_filename_completion_function (const char *text, int state)
+ 	  xfree (dirname);
+ 	  dirname = savestring (users_dirname);
+ 	}
++      else if (tilde_dirname == 1 && rl_completion_found_quote && rl_filename_dequoting_function)
++	{
++	  /* So far we have dequoted users_dirname and tilde expanded dirname.
++	     In this branch we must do both. */
++	  temp = tilde_expand (users_dirname);
++	  xfree (dirname);
++	  dirname = temp;
++	}
+       directory = opendir (dirname);
+ 
+       /* Now dequote a non-null filename.  FILENAME will not be NULL, but may

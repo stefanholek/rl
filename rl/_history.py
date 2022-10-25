@@ -32,11 +32,21 @@ class History(object):
     __slots__ = ()
 
     @apply
+    def auto():
+        doc="""Controls whether readline automatically adds lines to
+        the history. Defaults to True. Set to False if you want to call
+        :meth:`~rl.History.append` yourself."""
+        def get(self):
+            return readline.get_auto_history()
+        def set(self, bool):
+            readline.set_auto_history(bool)
+        return property(get, set, doc=doc)
+
+    @apply
     def max_entries():
         doc="""The maximum number of history entries kept. Beyond this
         point the history list is truncated by removing the oldest entry.
-        A negative value means no limit. A value of 0 disables
-        history collection. Defaults to -1."""
+        A negative value means no limit. Defaults to -1."""
         def get(self):
             if readline.history_is_stifled():
                 return readline.get_history_max_entries()
@@ -130,6 +140,7 @@ class History(object):
         """Clear the history and reset all variables to their built-in
         defaults. Used in tests."""
         self.clear()
+        self.auto = True
         self.max_entries = -1
         self.max_file = -1
 
