@@ -295,5 +295,16 @@ setup(name='rl',
       project_urls={
           'Documentation': 'https://rl.readthedocs.io/en/stable/',
       },
+      extras_require={
+          'docs': [
+              'sphinx == 4.5.0',
+              'sphinx-rtd-theme == 1.0.0',
+          ],
+          'readthedocs': [
+              'sphinx == 4.5.0',
+              'sphinx-rtd-theme == 1.0.0',
+              'readthedocs-sphinx-search == 0.1.2',
+          ],
+      },
 )
 
