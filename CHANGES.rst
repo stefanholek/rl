@@ -27,6 +27,9 @@ Changelog
 - Remove deprecated ``test_suite`` from setup.py.
   [stefan]
 
+- Add a pyproject.toml file.
+  [stefan]
+
 - Include tests in sdist but not in wheel.
   [stefan]
 
