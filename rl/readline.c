@@ -3564,38 +3564,7 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 /* Initialize the module */
 
 PyDoc_STRVAR(doc_module,
-"Importing this module enables command line editing using GNU Readline.\n\
-\n\
-Readline Interface\n\
-===================\n\
-\n\
-The :mod:`rl.readline` module is an API-compatible replacement for the standard\n\
-library's :mod:`readline <py3k:readline>` bindings.\n\
-The standard library documentation applies, with the following exceptions:\n\
-\n\
-#. :func:`get_completion_type` returns a string.\n\
-#. :func:`get_completion_append_character` defaults to the space character.\n\
-#. :func:`get_history_item` is zero-based.\n\
-#. :func:`redisplay` accepts an optional ``force`` argument.\n\
-\n\
-Beyond that, :mod:`rl.readline` adds a plethora of new functionality which is\n\
-typically accessed through the high-level interfaces :obj:`rl.completer <rl.Completer>`,\n\
-:obj:`rl.completion <rl.Completion>`, and :obj:`rl.history <rl.History>`.\n\
-Functions not exposed through a high-level interface:\n\
-\n\
-- :func:`readline_version` returns the readline library version as an integer.\n\
-- :func:`read_key` reads a character from the keyboard.\n\
-- :func:`stuff_char` stuffs a character into the input stream.\n\
-- :func:`complete_internal` executes the completer. Used in tests.\n\
-\n\
-.. note:: It is possible to use ``rl.readline`` without the high-level APIs.\n\
-   To switch an existing application to ``rl.readline``, change occurrences of\n\
-   ``import readline`` to ``from rl import readline``.\n\
-\n\
-.. note:: Applications must not use ``readline`` and ``rl.readline`` simultaneously.\n\
-   This is because only one module can own the ``PyOS_ReadlineFunctionPointer``.\n\
-\n\
-");
+"Importing this module enables command line editing using GNU Readline.");
 
 #if (PY_MAJOR_VERSION >= 3)
 struct PyModuleDef readlinemodule = {
