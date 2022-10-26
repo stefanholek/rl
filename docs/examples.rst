@@ -2,12 +2,7 @@
 Examples
 ===================
 
-.. module:: rl.examples
-
-Example files are included in the source distribution and available on
-GitHub_.
-
-.. _`GitHub`: https://github.com/stefanholek/rl/tree/master/rl/examples
+.. automodule:: rl.examples
 
 Completion Entry Function
 ============================

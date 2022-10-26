@@ -1,1 +1,1 @@
-# 23
+"""Example code."""
