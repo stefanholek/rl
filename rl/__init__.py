@@ -1,5 +1,8 @@
 """Alternative Python bindings for GNU Readline."""
 
+__all__ = ['completer', 'completion', 'history', 'readline',
+           'generator', 'print_exc']
+
 # Grab the PyOS_ReadlineFunctionPointer
 from rl import _init
 from rl import readline
