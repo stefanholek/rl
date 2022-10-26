@@ -94,7 +94,7 @@ class Completer(object):
     @apply
     def completer():
         doc="""The completion entry function.
-        The function is called as ``function(text, state)`` for state
+        The function is called as ``function(text, state)`` for ``state``
         in 0, 1, 2, ... until it returns None. It should return the
         next possible completion for ``text``.
         See the :func:`~rl.generator` factory for a simple way to
