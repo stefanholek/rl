@@ -83,7 +83,7 @@ def main():
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
 
-    filename = input('filename> ')
+    filename = input('file> ')
     print('You typed:', filename)
 
 

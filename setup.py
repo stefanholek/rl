@@ -277,7 +277,6 @@ setup(name='rl',
       packages=find_packages(
           exclude=[
               'rl.tests',
-              'rl.examples',
           ],
       ),
       include_package_data=False,

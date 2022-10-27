@@ -3,14 +3,12 @@
 import os
 
 from rl import completer
-from rl import print_exc
 
 
-class CompleteCommand:
+class CommandCompleter:
     # A completion entry function implementing readline's
     # generator protocol
 
-    @print_exc
     def __call__(self, text, state):
         if state == 0:
             self.matches = list(self.complete_command(text))
@@ -31,7 +29,7 @@ class CompleteCommand:
 
 def main():
     # Set the completion entry function
-    completer.completer = CompleteCommand()
+    completer.completer = CommandCompleter()
 
     # Enable TAB completion
     completer.parse_and_bind('TAB: complete')
