@@ -28,6 +28,9 @@ Changelog
 - Remove deprecated ``test_suite`` from setup.py.
   [stefan]
 
+- Remove setuptools from ``install_requires``.
+  [stefan]
+
 - Add a pyproject.toml file.
   [stefan]
 
