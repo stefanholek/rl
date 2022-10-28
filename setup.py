@@ -283,8 +283,8 @@ setup(name='rl',
       },
       extras_require={
           'docs': [
-              'sphinx',
-              'sphinx-rtd-theme',
+              'sphinx == 5.3.0',
+              'sphinx-rtd-theme == 1.0.0',
           ],
           'readthedocs': [
               'sphinx == 5.3.0',
