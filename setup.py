@@ -174,20 +174,19 @@ class build_readline_ext(build_ext):
         return build_ext.build_extension(self, ext)
 
     def find_termcap(self, ext):
-        lib_dirs = []
+        lib_dirs = ext.library_dirs + self.compiler.library_dirs
+        termcap = ''
 
         # Debian/Ubuntu multiarch
         multiarch = get_config_var('MULTIARCH')
         if multiarch:
             lib_dirs.extend(['/lib/'+multiarch, '/usr/lib/'+multiarch])
 
+        # Standard locations
         lib_dirs.extend(['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib'])
-        lib_dirs = ext.library_dirs + self.compiler.library_dirs + lib_dirs
 
         lib_dynload = join(sys.exec_prefix, 'lib', 'python%d.%d' % sys.version_info[:2], 'lib-dynload')
         ext_suffix = get_config_var('EXT_SUFFIX', '.so')
-
-        termcap = ''
 
         if self.can_inspect_libraries():
             if not termcap:
