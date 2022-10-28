@@ -7,7 +7,8 @@ Changelog
 - Include GNU Readline 8.2.
   [stefan]
 
-- Improve documentation and example code.
+- Improve documentation and example code. Promote using ``generator`` as a
+  decorator.
   [stefan]
 
 - Document how ``directory_completion_hook`` interacts with new hooks added
