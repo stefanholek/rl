@@ -185,18 +185,9 @@ class build_readline_ext(build_ext):
         # Standard locations
         lib_dirs.extend(['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib'])
 
-        lib_dynload = join(sys.exec_prefix, 'lib', 'python%d.%d' % sys.version_info[:2], 'lib-dynload')
-        ext_suffix = get_config_var('EXT_SUFFIX', '.so')
-
         if self.can_inspect_libraries():
-            if not termcap:
-                pyreadline = join(lib_dynload, 'readline' + ext_suffix)
-                termcap = self.get_termcap_from(pyreadline)
-            if not termcap:
-                pycurses = join(lib_dynload, '_curses' + ext_suffix)
-                termcap = self.get_termcap_from(pycurses)
-            if termcap and not self.compiler.find_library_file(lib_dirs, termcap):
-                termcap = ''
+            readline = self.compiler.find_library_file(lib_dirs, 'readline')
+            termcap = self.get_termcap_from(readline)
 
         if not termcap:
             for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
