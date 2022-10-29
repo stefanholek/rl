@@ -286,11 +286,6 @@ setup(name='rl',
               'sphinx == 5.3.0',
               'sphinx-rtd-theme == 1.0.0',
           ],
-          'readthedocs': [
-              'sphinx == 5.3.0',
-              'sphinx-rtd-theme == 1.0.0',
-              'readthedocs-sphinx-search == 0.1.2',
-          ],
       },
 )
 
