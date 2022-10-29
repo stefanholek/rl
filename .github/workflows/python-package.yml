@@ -25,10 +25,10 @@ jobs:
 
     steps:
       - name: Check out project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -39,7 +39,7 @@ jobs:
           echo "py=$(python -c'import sys; print(sys.version_info[0])')" >> $GITHUB_OUTPUT
 
       - name: Cache pip
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-${{ hashFiles('setup.py') }}
