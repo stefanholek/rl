@@ -41,7 +41,7 @@ jobs:
           echo "dir=$(python -m pip --disable-pip-version-check cache dir)" >> $GITHUB_OUTPUT
           echo "py=$(python -c'import sys; print(sys.version_info[0])')" >> $GITHUB_OUTPUT
 
-      - name: Cache pip
+      - name: Cache pip cache
         uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
