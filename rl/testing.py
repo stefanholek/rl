@@ -16,6 +16,10 @@ def reset():
     completer.reset()
     completion.reset()
     history.reset()
+    # Disable colors if enabled in ~/.inputrc
+    completer.parse_and_bind('set colored-stats off')
+    completer.parse_and_bind('set colored-completion-prefix off')
+    completer.parse_and_bind('set enable-active-region off')
 
 
 class JailSetup(unittest.TestCase):
