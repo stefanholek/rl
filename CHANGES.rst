@@ -23,9 +23,6 @@ Changelog
   a linker error instead of silently borking the extension.
   [stefan]
 
-- Disable bracketed paste.
-  [stefan]
-
 - Replace deprecated ``python setup.py test`` in tox.ini.
   [stefan]
 
