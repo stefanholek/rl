@@ -165,7 +165,9 @@ class build_readline_ext(build_ext):
         if termcap:
             ext.libraries.append(termcap)
         else:
-            log.warn('WARNING: Failed to find a termcap library')
+            # Take a good guess and produce a linker error at least
+            log.warn('WARNING: Failed to detect a termcap library; falling back to ncurses')
+            ext.libraries.append('ncurses')
 
         # Prepare the source tree
         self.configure_static_readline()

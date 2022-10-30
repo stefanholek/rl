@@ -19,6 +19,10 @@ Changelog
   ``history.auto``.
   [stefan]
 
+- Fall back to ncurses if termcap auto-detection fails. This at least produces
+  a linker error instead of silently borking the extension.
+  [stefan]
+
 - Disable bracketed paste.
   [stefan]
 
