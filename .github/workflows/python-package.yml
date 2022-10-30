@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+        exclude:
+          - os: macos-latest
+            python-version: "3.6"
+          - os: macos-latest
+            python-version: "3.7"
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
+      - name: Check out project
+        uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get pip cache info
+        id: pip-cache
+        run: |
+          echo "dir=$(python -m pip --disable-pip-version-check cache dir)" >> $GITHUB_OUTPUT
+          echo "py=$(python -c'import sys; print(sys.version_info[0])')" >> $GITHUB_OUTPUT
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-${{ hashFiles('setup.py') }}
+          restore-keys: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-
+
+      - name: Install dependencies
+        run: |
+          python -m pip --disable-pip-version-check install -U pip setuptools wheel
+          python -m pip --disable-pip-version-check install -e .
+
+      - name: List installed packages
+        run: python -m pip --disable-pip-version-check list
+
+      - name: Run tests
+        run: python -m unittest discover
+
