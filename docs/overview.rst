@@ -21,7 +21,7 @@ rl exports the following components:
     Interface to the readline history. Used to read and write history files
     and to manipulate history entries.
 
-:mod:`rl.readline <rl.readline.add_history>`
+:mod:`rl.readline`
     The readline bindings module. Contains everything known from the standard
     library plus extensions specific to the rl package.  The :obj:`completer <rl.Completer>`,
     :obj:`completion <rl.Completion>`, and :obj:`history <rl.History>`
