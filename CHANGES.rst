@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.1 - Unreleased
+3.1 - 2022-10-31
 ----------------
 
 - Include GNU Readline 8.2.
