@@ -42,14 +42,14 @@ jobs:
       - name: Cache pip
         uses: actions/cache@v3
         with:
-          path: ${{ steps.pip-cache.outputs.dir }}
+          path: [${{ steps.pip-cache.outputs.dir }}, build/readline]
           key: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-${{ hashFiles('setup.py') }}
           restore-keys: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-
 
       - name: Install dependencies
         run: |
           python -m pip --disable-pip-version-check --no-python-version-warning install -U pip setuptools wheel
-          python -m pip --disable-pip-version-check --no-python-version-warning install -e .
+          python -m pip --disable-pip-version-check --no-python-version-warning install -e . -v
 
       - name: List installed packages
         run: python -m pip --disable-pip-version-check --no-python-version-warning list
