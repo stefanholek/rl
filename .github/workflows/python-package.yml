@@ -42,7 +42,9 @@ jobs:
       - name: Cache pip
         uses: actions/cache@v3
         with:
-          path: [${{ steps.pip-cache.outputs.dir }}, build/readline]
+          path: |
+            ${{ steps.pip-cache.outputs.dir }}
+            build/readline
           key: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-${{ hashFiles('setup.py') }}
           restore-keys: ${{ runner.os }}-pip-py${{ steps.pip-cache.outputs.py }}-
 
