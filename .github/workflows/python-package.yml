@@ -36,7 +36,7 @@ jobs:
       - name: Get pip cache info
         id: pip-cache
         run: |
-          echo "dir=$(python -m pip --disable-pip-version-check cache dir)" >> $GITHUB_OUTPUT
+          echo "dir=$(python -m pip --disable-pip-version-check --no-python-version-warning cache dir)" >> $GITHUB_OUTPUT
           echo "py=$(python -c'import sys; print("%d.%d" % sys.version_info[:2])')" >> $GITHUB_OUTPUT
 
       - name: Cache pip
@@ -48,11 +48,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip --disable-pip-version-check install -U pip setuptools wheel
-          python -m pip --disable-pip-version-check install -e .
+          python -m pip --disable-pip-version-check --no-python-version-warning install -U pip setuptools wheel
+          python -m pip --disable-pip-version-check --no-python-version-warning install -e .
 
       - name: List installed packages
-        run: python -m pip --disable-pip-version-check list
+        run: python -m pip --disable-pip-version-check --no-python-version-warning list
 
       - name: Run tests
         run: python -m unittest discover
