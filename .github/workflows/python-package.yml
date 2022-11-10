@@ -37,7 +37,7 @@ jobs:
         id: pip-cache
         run: |
           echo "dir=$(python -m pip --disable-pip-version-check cache dir)" >> $GITHUB_OUTPUT
-          echo "py=$(python -c'import sys; print(sys.version_info[0])')" >> $GITHUB_OUTPUT
+          echo "py=$(python -c'import sys; print("%d.%d" % sys.version_info[:2])')" >> $GITHUB_OUTPUT
 
       - name: Cache pip
         uses: actions/cache@v3
