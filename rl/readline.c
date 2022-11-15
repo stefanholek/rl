@@ -356,7 +356,7 @@ set_startup_hook(PyObject *self, PyObject *args)
 
 	rl_startup_hook =
 		global->startup_hook ?
-		(rl_hook_func_t *)on_startup_hook : NULL;
+		on_startup_hook : NULL;
 	return result;
 }
 
@@ -399,7 +399,7 @@ set_pre_input_hook(PyObject *self, PyObject *args)
 
 	rl_pre_input_hook =
 		global->pre_input_hook ?
-		(rl_hook_func_t *)on_pre_input_hook : NULL;
+		on_pre_input_hook : NULL;
 	return result;
 }
 
@@ -447,8 +447,8 @@ set_completion_display_matches_hook(PyObject *self, PyObject *args)
 
 	rl_completion_display_matches_hook =
 		global->completion_display_matches_hook ?
-		(rl_compdisp_func_t *)on_completion_display_matches_hook :
-		(rl_compdisp_func_t *)default_display_matches_hook;
+		on_completion_display_matches_hook :
+		default_display_matches_hook;
 	return result;
 
 }
@@ -1405,7 +1405,7 @@ set_filename_quoting_function(PyObject *self, PyObject *args)
 	rl_filename_quoting_function =
 		global->filename_quoting_function ?
 		(rl_quote_func_t *)on_filename_quoting_function :
-		(rl_quote_func_t *)default_filename_quoting_function;
+		default_filename_quoting_function;
 
 	return result;
 }
@@ -1504,7 +1504,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 /* Filename dequoting function */
 
 static char *
-on_filename_dequoting_function(const char *text, char quote_char);
+on_filename_dequoting_function(const char *text, int quote_char);
 
 
 static PyObject *
@@ -1552,7 +1552,7 @@ Get the current filename dequoting function.");
 
 
 static char *
-on_filename_dequoting_function(const char *text, char quote_char)
+on_filename_dequoting_function(const char *text, int quote_char)
 /* This function must always return new memory, which means
    at least a copy of 'text', and never NULL. */
 {
@@ -1970,7 +1970,7 @@ set_completion_word_break_hook(PyObject *self, PyObject *args)
 
 	rl_completion_word_break_hook =
 		global->completion_word_break_hook ?
-		(rl_cpvfunc_t *)on_completion_word_break_hook : NULL;
+		on_completion_word_break_hook : NULL;
 
 	return result;
 }
@@ -2025,8 +2025,7 @@ on_completion_word_break_hook(void)
 		/* Unhook ourselves to avoid infinite recursion */
 		rl_completion_word_break_hook = NULL;
 		_rl_find_completion_word(NULL, NULL);
-		rl_completion_word_break_hook =
-			(rl_cpvfunc_t *)on_completion_word_break_hook;
+		rl_completion_word_break_hook = on_completion_word_break_hook;
 	}
 	start = rl_point;
 	rl_point = end;
@@ -2089,7 +2088,7 @@ set_directory_rewrite_hook(PyObject *self, PyObject *args)
 
 	rl_directory_rewrite_hook =
 		global->directory_rewrite_hook ?
-		(rl_icppfunc_t *)on_directory_rewrite_hook : NULL;
+		on_directory_rewrite_hook : NULL;
 
 	return result;
 }
@@ -2191,7 +2190,7 @@ set_directory_completion_hook(PyObject *self, PyObject *args)
 
 	rl_directory_completion_hook =
 		global->directory_completion_hook ?
-		(rl_icppfunc_t *)on_directory_completion_hook : NULL;
+		on_directory_completion_hook : NULL;
 
 	return result;
 }
@@ -2398,7 +2397,7 @@ set_filename_stat_hook(PyObject *self, PyObject *args)
 
 	rl_filename_stat_hook =
 		global->filename_stat_hook ?
-		(rl_icppfunc_t *)on_filename_stat_hook : NULL;
+		on_filename_stat_hook : NULL;
 
 	return result;
 #else
@@ -2648,7 +2647,7 @@ Display a list of matches in columnar format on readline's output stream.");
 /* Ignore some completions function */
 
 static int
-on_ignore_some_completions_function(char **directory);
+on_ignore_some_completions_function(char **matches);
 
 
 static PyObject *
@@ -2661,7 +2660,7 @@ set_ignore_some_completions_function(PyObject *self, PyObject *args)
 
 	rl_ignore_some_completions_function =
 		global->ignore_some_completions_function ?
-		(rl_compignore_func_t *)on_ignore_some_completions_function : NULL;
+		on_ignore_some_completions_function : NULL;
 
 	return result;
 }
@@ -3239,7 +3238,7 @@ on_completion(const char *text, int state)
  * before calling the normal completer */
 
 static char **
-flex_completer(char *text, int start, int end)
+flex_completer(const char *text, int start, int end)
 {
 #ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
@@ -3328,7 +3327,7 @@ setup_readline(PyObject *module)
 	rl_startup_hook = NULL;
 	rl_pre_input_hook = NULL;
 	/* Set our completion function */
-	rl_attempted_completion_function = (rl_completion_func_t *)flex_completer;
+	rl_attempted_completion_function = flex_completer;
 	/* Set Python word break characters */
 	rl_completer_word_break_characters =
 		strdup(" \t\n`~!@#$%^&*()-=+[{]}\\|;:'\",<>/?");
