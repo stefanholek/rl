@@ -827,7 +827,7 @@ get_history_list(PyObject *self, PyObject *noarg)
 	HIST_ENTRY **hist;
 	PyObject *list;
 	PyObject *s;
-	size_t i;
+	Py_ssize_t i;
 
 	list = PyList_New(history_length);
 	if (list == NULL)
@@ -901,7 +901,7 @@ py_clear_history(PyObject *self, PyObject *noarg)
 /* Reimplemented here to avoid a memory leak in GNU Readline. */
 {
 	HIST_ENTRY **hist;
-	size_t i;
+	Py_ssize_t i;
 
 	hist = history_list();
 	for (i = 0; i < history_length; i++) {
@@ -2696,7 +2696,7 @@ on_ignore_some_completions_function(char **matches)
 {
 	int result = 0;
 	char **strings;
-	size_t i;
+	Py_ssize_t i;
 	Py_ssize_t old_size, new_size;
 	PyObject *m = NULL;
 	PyObject *r = NULL;

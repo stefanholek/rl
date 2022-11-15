@@ -62,7 +62,7 @@ PyUnicode_INDEX(const char *text, Py_ssize_t index)
 	/* Cast away const */
 	char *s = (char*)text;
 	char saved;
-	size_t l;
+	Py_ssize_t l;
 
 	/* Short-circuit */
 	if (index == 0)
@@ -97,7 +97,7 @@ PyUnicode_StrConverter(PyObject *text, void *addr)
 	b = PyUnicode_ENCODE(text);
 	if (b == NULL)
 		return 0;
-	if (PyBytes_GET_SIZE(b) != strlen(PyBytes_AS_STRING(b))) {
+	if (PyBytes_GET_SIZE(b) != (Py_ssize_t)strlen(PyBytes_AS_STRING(b))) {
 		PyErr_SetString(PyExc_TypeError, "embedded NUL character");
 		Py_DECREF(b);
 		return 0;
@@ -147,7 +147,7 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 			return 0;
 	}
 #endif
-	if (PyBytes_GET_SIZE(b) != strlen(PyBytes_AS_STRING(b))) {
+	if (PyBytes_GET_SIZE(b) != (Py_ssize_t)strlen(PyBytes_AS_STRING(b))) {
 		PyErr_SetString(PyExc_TypeError, "embedded NUL character");
 		Py_DECREF(b);
 		return 0;

@@ -13,7 +13,7 @@
 /* StringArray support */
 
 char **
-StringArray_New(size_t size)
+StringArray_New(Py_ssize_t size)
 {
 	char **p;
 
@@ -37,11 +37,11 @@ StringArray_Free(char **strings)
 }
 
 
-size_t
+Py_ssize_t
 StringArray_Size(char **strings)
 {
 	char **p;
-	size_t size = 0;
+	Py_ssize_t size = 0;
 
 	for (p = strings; *p; p++)
 		size++;
@@ -50,11 +50,11 @@ StringArray_Size(char **strings)
 
 
 int
-StringArray_Insert(char ***strings, size_t pos, char *string)
+StringArray_Insert(char ***strings, Py_ssize_t pos, char *string)
 {
 	char **new;
 	char **p;
-	size_t size, i;
+	Py_ssize_t size, i;
 	int inserted = 0;
 
 	size = StringArray_Size(*strings);
@@ -88,7 +88,7 @@ PyList_FromStringArray(char **strings)
 {
 	PyObject *list;
 	PyObject *s;
-	size_t size, i;
+	Py_ssize_t size, i;
 
 	size = StringArray_Size(strings);
 	if (size == -1)
