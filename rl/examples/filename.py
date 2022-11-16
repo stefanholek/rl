@@ -21,7 +21,7 @@ def quote_filename(text, single_match, quote_char):
     if quote_char == "'":
         pass
     elif quote_char == '"':
-        for c in '\\"$`':
+        for c in '\\"$`\n':
             text = text.replace(c, '\\'+c)
     else:
         for c in completer.filename_quote_characters:
@@ -35,7 +35,7 @@ def dequote_filename(text, quote_char):
     if quote_char == "'":
         pass
     elif quote_char == '"':
-        for c in '\\"$`':
+        for c in '\\"$`\n':
             text = text.replace('\\'+c, c)
     else:
         for c in completer.filename_quote_characters:
