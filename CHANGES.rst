@@ -4,6 +4,15 @@ Changelog
 3.2 - Unreleased
 ----------------
 
+- Update tox.ini for latest tox.
+  [stefan]
+
+- Replace size_t with Py_ssize_t.
+  [stefan]
+
+- Remove unnecessary function pointer casts.
+  [stefan]
+
 
 3.1 - 2022-10-31
 ----------------
