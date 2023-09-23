@@ -15,6 +15,8 @@
 #include <setjmp.h>
 #include <signal.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 
 #if defined(HAVE_SETLOCALE)
