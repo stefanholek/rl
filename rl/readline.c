@@ -56,13 +56,13 @@
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong _PyLong_AsInt
+#define PyInt_AsLong PyLong_AsInt
 #define PyString_FromString PyUnicode_DECODE
 #endif
 
-/* _PyLong_AsInt appeared in Python 3.3.2 */
-#if (PY_VERSION_HEX < 0x03030200)
-#define _PyLong_AsInt PyLong_AsLong
+/* PyLong_AsInt appeared in Python 3.13 */
+#if (PY_VERSION_HEX < 0x030D0000)
+#define PyLong_AsInt _PyLong_AsInt
 #endif
 
 /* PyMem_RawMalloc appeared in Python 3.4 */
@@ -77,6 +77,11 @@
 #else
 #define _Py_SetLocaleFromEnv(c) setlocale((c), "")
 #endif
+#endif
+
+/* _Py_SetLocaleFromEnv moved in Python 3.13 */
+#if (PY_VERSION_HEX >= 0x030D0000)
+extern PyAPI_FUNC(char*) _Py_SetLocaleFromEnv(int category);
 #endif
 
 
