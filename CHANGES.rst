@@ -13,6 +13,9 @@ Changelog
 - Do not rely on Python.h for standard headers.
   [stefan]
 
+- Update to Python 3.13 C-API.
+  [stefan]
+
 - Update tox.ini for latest tox.
   [stefan]
 
