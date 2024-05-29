@@ -89,7 +89,10 @@ class CompletionMatchesTests(JailSetup):
         completer.filename_dequoting_function = hook
         completion.line_buffer = 'fr\\'
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', '')])
+        if readline.readline_version() >= 0x0802:
+            self.assertEqual(called, [('.', ''), ('', '')]) # XXX
+        else:
+            self.assertEqual(called, [('.', '')])
 
     def test_ignore_some_completions_function(self):
         completer.completer = filecomplete
@@ -460,7 +463,10 @@ class FilenameDequotingFunctionTests(JailSetup):
         completer.filename_dequoting_function = func
         completion.line_buffer = 'fr\\ '
         readline.complete_internal(TAB)
-        self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
+        if readline.readline_version() >= 0x0802:
+            self.assertEqual(called, [('.', ''), ('fr\\ ', ''), ('fr\\ ', '')])
+        else:
+            self.assertEqual(called, [('.', ''), ('fr\\ ', '')])
         self.assertEqual(completion.line_buffer, "fr\\ ")
 
     def test_quote_char(self):
