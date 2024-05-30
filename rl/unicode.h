@@ -18,7 +18,8 @@ int PyUnicode_FSOrNoneConverter(PyObject *text, void *addr);
 #endif
 
 PyObject *PyUnicode_GetPreferredEncoding();
-int PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t buffer_size);
+PyObject *PyUnicode_GetFileSystemEncoding();
+int PyUnicode_CopyAsString(PyObject *text, char *buffer, Py_ssize_t buffer_size);
 void PyUnicode_PrintEncodings();
 
 #endif /* __UNICODE_H__ */

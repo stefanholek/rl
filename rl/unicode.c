@@ -188,23 +188,56 @@ PyUnicode_GetPreferredEncoding()
 }
 
 
-int
-PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t buffer_size)
+PyObject *
+PyUnicode_GetFileSystemEncoding()
 {
-	PyObject *u = NULL;
+	PyObject *sys = NULL;
+	PyObject *getfilesystemencoding = NULL;
+	PyObject *r = NULL;
+
+	sys = PyImport_ImportModule("sys");
+	if (sys == NULL)
+		goto error;
+
+	getfilesystemencoding = PyObject_GetAttrString(sys, "getfilesystemencoding");
+	if (getfilesystemencoding == NULL)
+		goto error;
+
+	r = PyObject_CallFunction(getfilesystemencoding, NULL);
+	if (r == NULL)
+		goto error;
+
+	Py_DECREF(sys);
+	Py_DECREF(getfilesystemencoding);
+	return r;
+  error:
+	Py_XDECREF(sys);
+	Py_XDECREF(getfilesystemencoding);
+	return NULL;
+}
+
+
+int
+PyUnicode_CopyAsString(PyObject *text, char *buffer, Py_ssize_t buffer_size)
+{
 	PyObject *b = NULL;
 	Py_ssize_t len;
 
-#if (PY_MAJOR_VERSION >= 3)
-	u = PyUnicode_GetPreferredEncoding();
-	if (u == NULL)
+	if (text == NULL) {
 		goto error;
-	b = PyUnicode_AsASCIIString(u);
-#else
-	b = PyUnicode_GetPreferredEncoding();
-#endif
-	if (b == NULL)
+	}
+	if (text == Py_None) {
 		goto error;
+	}
+	if (PyBytes_Check(text)) {
+		b = text;
+		Py_INCREF(b);
+	}
+	else {
+		b = PyUnicode_AsASCIIString(text);
+		if (b == NULL)
+			goto error;
+	}
 
 	len = PyBytes_GET_SIZE(b);
 	if (len >= buffer_size)
@@ -213,11 +246,9 @@ PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t buffer_size)
 	strncpy(buffer, PyBytes_AS_STRING(b), len);
 	buffer[len] = '\0';
 
-	Py_XDECREF(u);
 	Py_DECREF(b);
 	return 1;
   error:
-	Py_XDECREF(u);
 	Py_XDECREF(b);
 	return 0;
 }
@@ -226,9 +257,12 @@ PyUnicode_CopyPreferredEncoding(char *buffer, Py_ssize_t buffer_size)
 void
 PyUnicode_PrintEncodings()
 {
-	char buffer[128] = "";
-	PyUnicode_CopyPreferredEncoding(buffer, 128);
+	char preferred[128] = "";
+	char filesystem[128] = "";
 
-	printf("%s %s\n", buffer, Py_FileSystemDefaultEncoding);
+	PyUnicode_CopyAsString(PyUnicode_GetPreferredEncoding(), preferred, 128);
+	PyUnicode_CopyAsString(PyUnicode_GetFileSystemEncoding(), filesystem, 128);
+
+	printf("%s %s\n", preferred, filesystem);
 }
 
