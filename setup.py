@@ -186,7 +186,7 @@ class build_readline_ext(build_ext):
         # Standard locations
         lib_dirs.extend(['/lib64', '/usr/lib64', '/lib', '/usr/lib', '/usr/local/lib'])
 
-        for name in ['tinfo', 'ncursesw', 'ncurses', 'cursesw', 'curses', 'termcap']:
+        for name in ['tinfo', 'ncurses', 'ncursesw', 'curses', 'cursesw', 'termcap']:
             if self.compiler.find_library_file(lib_dirs, name):
                 termcap = name
                 break
