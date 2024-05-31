@@ -104,7 +104,7 @@ Ubuntu/Debian::
 Redhat/Fedora::
 
     sudo dnf install gcc
-    sudo dnf install redhat-rpm-config
+    sudo dnf install python3-devel
     sudo dnf install ncurses-devel
 
 Then type::
