@@ -88,7 +88,14 @@
 
 /* _Py_SetLocaleFromEnv moved in Python 3.13 */
 #if (PY_VERSION_HEX >= 0x030D0000)
+/* Defined in internal/pycore_pylifecycle.h */
 extern PyAPI_FUNC(char*) _Py_SetLocaleFromEnv(int category);
+#endif
+
+/* _PyOS_ReadlineTState moved in Python 3.13 */
+#if (PY_VERSION_HEX >= 0x030D0000)
+/* Defined in Parser/myreadline.c */
+extern PyThreadState *_PyOS_ReadlineTState;
 #endif
 
 
