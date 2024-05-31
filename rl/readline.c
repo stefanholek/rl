@@ -53,23 +53,11 @@
 #include "iterator.h"
 #include "modulestate.h"
 
-/* Python >= 3.7 assumes select */
-#if (PY_VERSION_HEX >= 0x03070000)
-#ifndef HAVE_SELECT
-#define HAVE_SELECT
-#endif
-#endif
-
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
 #define PyInt_AsLong PyLong_AsInt
 #define PyString_FromString PyUnicode_DECODE
-#endif
-
-/* PyLong_AsInt appeared in Python 3.13 */
-#if (PY_VERSION_HEX < 0x030D0000)
-#define PyLong_AsInt _PyLong_AsInt
 #endif
 
 /* PyMem_RawMalloc appeared in Python 3.4 */
@@ -84,6 +72,18 @@
 #else
 #define _Py_SetLocaleFromEnv(c) setlocale((c), "")
 #endif
+#endif
+
+/* Python >= 3.7 assumes select */
+#if (PY_VERSION_HEX >= 0x03070000)
+#ifndef HAVE_SELECT
+#define HAVE_SELECT
+#endif
+#endif
+
+/* PyLong_AsInt appeared in Python 3.13 */
+#if (PY_VERSION_HEX < 0x030D0000)
+#define PyLong_AsInt _PyLong_AsInt
 #endif
 
 /* _Py_SetLocaleFromEnv moved in Python 3.13 */
