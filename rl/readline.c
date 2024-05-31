@@ -53,6 +53,13 @@
 #include "iterator.h"
 #include "modulestate.h"
 
+/* Python >= 3.7 assumes select */
+#if (PY_VERSION_HEX >= 0x03070000)
+#ifndef HAVE_SELECT
+#define HAVE_SELECT
+#endif
+#endif
+
 /* Python 3 compatibility */
 #if (PY_MAJOR_VERSION >= 3)
 #define PyInt_FromLong PyLong_FromLong
