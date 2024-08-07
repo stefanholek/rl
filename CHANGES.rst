@@ -4,7 +4,7 @@ Changelog
 3.2 - Unreleased
 ----------------
 
-- Include fully-patched GNU Readline 8.2.10.
+- Include fully-patched GNU Readline 8.2.13.
   [stefan]
 
 - Replace size_t with Py_ssize_t.
