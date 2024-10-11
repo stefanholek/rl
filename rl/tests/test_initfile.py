@@ -70,7 +70,3 @@ class ReadInitFileTests(JailSetup):
             self.mkfile(Path('my_init'))
             completer.read_init_file(Path('my_init'))
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
-

@@ -103,7 +103,3 @@ class ReadlineTests(JailSetup):
         readline.set_auto_history(True)
         self.assertEqual(readline.get_auto_history(), True)
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
-

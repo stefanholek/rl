@@ -528,7 +528,3 @@ class HistoryReverseIteratorTests(unittest.TestCase):
         for n, x in enumerate(i):
             self.assertEqual(i.__length_hint__(), len(history)-n-1)
 
-
-def test_suite():
-    return unittest.defaultTestLoader.loadTestsFromName(__name__)
-
