@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.2 - Unreleased
+3.2 - 2024-10-15
 ----------------
 
 - Include fully-patched GNU Readline 8.2.13.
