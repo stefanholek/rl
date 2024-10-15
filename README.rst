@@ -87,7 +87,7 @@ You either see some output (good) or an installer window pops up. Click
 the "Install" button to install the command line developer tools.
 A more detailed tutorial is available from the `Mac Install Guide`_.
 
-.. _`Mac Install Guide`: https://mac.install.guide/commandlinetools/index.html
+.. _`Mac Install Guide`: https://mac.install.guide/commandlinetools/
 
 On Linux and BSD systems you probably already have a C compiler, but you may
 need to verify the development environment is complete.
