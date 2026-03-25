@@ -236,7 +236,7 @@ setup(name='rl',
       author='Stefan H. Holek',
       author_email='stefan@epy.co.at',
       url='https://github.com/stefanholek/rl',
-      license='GPLv3',
+      license='GPL-3.0-or-later',
       packages=find_packages(
           exclude=[
               'rl.tests',
