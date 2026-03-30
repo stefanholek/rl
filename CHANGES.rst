@@ -4,6 +4,9 @@ Changelog
 3.3 - Unreleased
 ----------------
 
+- Fix SPDX license identifier.
+  [stefan]
+
 
 3.2 - 2024-10-15
 ----------------
