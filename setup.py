@@ -223,7 +223,6 @@ setup(name='rl',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Intended Audience :: Developers',
-          'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
           'Operating System :: MacOS :: MacOS X',
           'Operating System :: POSIX',
           'Programming Language :: C',
