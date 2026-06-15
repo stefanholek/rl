@@ -103,7 +103,6 @@ except ImportError:
     pass
 else:
     html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
     html_style = 'theme-plus.css'
 
 if os.environ.get('READTHEDOCS', '') == 'True':
