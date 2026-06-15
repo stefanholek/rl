@@ -49,7 +49,7 @@ class GeneratorTests(unittest.TestCase):
 
     def test_method_decorator(self):
 
-        class Complete(object):
+        class Complete():
             @generator
             def complete(self, text):
                 """Test completer"""
@@ -114,7 +114,7 @@ class GeneratorTests(unittest.TestCase):
 
     def test_wrap_callable_object(self):
 
-        class Complete(object):
+        class Complete():
             """Test completer"""
 
             __name__ = 'Complete'
@@ -131,7 +131,7 @@ class GeneratorTests(unittest.TestCase):
 
     def test_wrap_callable_object_wo_name(self):
 
-        class Complete(object):
+        class Complete():
             """Test completer"""
 
             def __call__(self, text):
@@ -173,7 +173,7 @@ class PrintExcTests(unittest.TestCase):
 
     def test_method_decorator(self):
 
-        class Complete(object):
+        class Complete():
             @print_exc
             def complete(self, text):
                 """Test completer"""

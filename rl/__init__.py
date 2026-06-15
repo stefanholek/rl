@@ -1,7 +1,5 @@
 """Alternative Python bindings for GNU Readline."""
 
-from __future__ import absolute_import
-
 # Import stdlib readline if possible
 try:
     import readline

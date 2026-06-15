@@ -19,6 +19,9 @@ Changelog
 - Upgrade sphinx and sphinx-rtd-theme in docs extra.
   [stefan]
 
+- Require Python >= 3.5.
+  [stefan]
+
 
 3.2 - 2024-10-15
 ----------------

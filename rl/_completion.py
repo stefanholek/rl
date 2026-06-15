@@ -8,7 +8,7 @@ from rl.utils import DEFAULT_DELIMS
 from rl.utils import apply
 
 
-class Completer(object):
+class Completer():
     """Interface to the readline completer.
     Used to configure the completion aspects of readline.
 
@@ -312,7 +312,7 @@ class Completer(object):
 completer = Completer()
 
 
-class Completion(object):
+class Completion():
     """Interface to the active readline completion.
     Used to interact with readline when a completion is in progress.
 

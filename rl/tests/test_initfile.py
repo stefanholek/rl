@@ -57,11 +57,9 @@ class ReadInitFileTests(JailSetup):
         self.mkfile(self.initfile)
         completer.read_init_file('~/.$$$')
 
-    if sys.version_info[0] >= 3:
-
-        def test_read_bytes_name(self):
-            self.mkfile(bytes('my_init', sys.getfilesystemencoding()))
-            completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()))
+    def test_read_bytes_name(self):
+        self.mkfile(bytes('my_init', sys.getfilesystemencoding()))
+        completer.read_init_file(bytes('my_init', sys.getfilesystemencoding()))
 
     if sys.version_info[:2] >= (3, 6):
 

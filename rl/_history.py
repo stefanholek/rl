@@ -3,13 +3,10 @@
 from rl import readline
 from rl.utils import apply
 
-try:
-    integer_types = (int, long)
-except NameError:
-    integer_types = (int,)
+integer_types = (int,)
 
 
-class History(object):
+class History():
     """Interface to the readline history.
     Used to read and write history files and to manipulate history entries.
 

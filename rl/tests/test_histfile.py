@@ -176,30 +176,28 @@ class HistoryFileTests(JailSetup):
         history.read_file(self.histfile, raise_exc=True)
         self.assertEqual(len(history), 2)
 
-    if sys.version_info[0] >= 3:
+    def test_read_bytes_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
+        history.clear()
+        history.read_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
+        self.assertEqual(len(history), 2)
 
-        def test_read_bytes_name(self):
-            history.append('fred')
-            history.append('wilma')
-            history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
-            history.clear()
-            history.read_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
-            self.assertEqual(len(history), 2)
+    def test_write_bytes_name(self):
+        history.append('fred')
+        history.append('wilma')
+        history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
+        self.assertTrue(isfile('my_history'))
 
-        def test_write_bytes_name(self):
-            history.append('fred')
-            history.append('wilma')
-            history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
-            self.assertTrue(isfile('my_history'))
-
-        def test_append_bytes_name(self):
-            history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
-            history.append('fred')
-            history.append('wilma')
-            history.append_file(2, bytes('my_history', sys.getfilesystemencoding()))
-            history.clear()
-            history.read_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
-            self.assertEqual(len(history), 2)
+    def test_append_bytes_name(self):
+        history.write_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
+        history.append('fred')
+        history.append('wilma')
+        history.append_file(2, bytes('my_history', sys.getfilesystemencoding()))
+        history.clear()
+        history.read_file(bytes('my_history', sys.getfilesystemencoding()), raise_exc=True)
+        self.assertEqual(len(history), 2)
 
     def test_read_file_stifled(self):
         history.append('fred')

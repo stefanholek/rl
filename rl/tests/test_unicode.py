@@ -2,13 +2,6 @@
 
 import sys
 import locale
-
-if sys.version_info[0] < 3:
-    try:
-        locale.setlocale(locale.LC_ALL, '')
-    except locale.Error:
-        pass
-
 import os
 import unittest
 import unicodedata
@@ -48,20 +41,14 @@ def compose(text):
     # HFS Plus uses decomposed UTF-8
     if sys.platform != 'darwin':
         return text
-    if sys.version_info[0] >= 3:
-        return unicodedata.normalize('NFC', text)
-    else:
-        return unicodedata.normalize('NFC', text.decode('utf-8')).encode('utf-8')
+    return unicodedata.normalize('NFC', text)
 
 
 def decompose(text):
     # HFS Plus uses decomposed UTF-8
     if sys.platform != 'darwin':
         return text
-    if sys.version_info[0] >= 3:
-        return unicodedata.normalize('NFD', text)
-    else:
-        return unicodedata.normalize('NFD', text.decode('utf-8')).encode('utf-8')
+    return unicodedata.normalize('NFD', text)
 
 
 def utf8_only(func):
@@ -130,14 +117,9 @@ class WordBreakHookTests(unittest.TestCase):
         completer.word_break_characters = ' '
         completion.line_buffer = 'Mä dchen'
         readline.complete_internal(TAB)
-        if sys.version_info[0] >= 3:
-            self.assertEqual(called, [(3, 8)])
-            self.assertEqual(completion.begidx, 3)
-            self.assertEqual(completion.endidx, 8)
-        else:
-            self.assertEqual(called, [(4, 9)])
-            self.assertEqual(completion.begidx, 4)
-            self.assertEqual(completion.endidx, 9)
+        self.assertEqual(called, [(3, 8)])
+        self.assertEqual(completion.begidx, 3)
+        self.assertEqual(completion.endidx, 8)
 
 
 class CharIsQuotedFunctionTests(unittest.TestCase):
@@ -170,16 +152,10 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         completer.word_break_characters = ' '
         completion.line_buffer = 'Mä\\ dchen'
         readline.complete_internal(TAB)
-        if sys.version_info[0] >= 3:
-            self.assertEqual(called, [('Mä\\ dchen', 3),
-                                      ('Mä\\ dchen', 0)])
-            self.assertEqual(completion.begidx, 0)
-            self.assertEqual(completion.endidx, 9)
-        else:
-            self.assertEqual(called, [('M\xc3\xa4\\ dchen', 4),
-                                      ('M\xc3\xa4\\ dchen', 0)])
-            self.assertEqual(completion.begidx, 0)
-            self.assertEqual(completion.endidx, 10)
+        self.assertEqual(called, [('Mä\\ dchen', 3),
+                                  ('Mä\\ dchen', 0)])
+        self.assertEqual(completion.begidx, 0)
+        self.assertEqual(completion.endidx, 9)
 
     @utf8_only
     def test_char_is_quoted_multi_utf8(self):
@@ -191,18 +167,11 @@ class CharIsQuotedFunctionTests(unittest.TestCase):
         completer.word_break_characters = ' '
         completion.line_buffer = 'Ää\\ ÖöÜü\\ abc'
         readline.complete_internal(TAB)
-        if sys.version_info[0] >= 3:
-            self.assertEqual(called, [('Ää\\ ÖöÜü\\ abc', 9),
-                                      ('Ää\\ ÖöÜü\\ abc', 3),
-                                      ('Ää\\ ÖöÜü\\ abc', 0)])
-            self.assertEqual(completion.begidx, 0)
-            self.assertEqual(completion.endidx, 13)
-        else:
-            self.assertEqual(called, [('\xc3\x84\xc3\xa4\\ \xc3\x96\xc3\xb6\xc3\x9c\xc3\xbc\\ abc', 15),
-                                      ('\xc3\x84\xc3\xa4\\ \xc3\x96\xc3\xb6\xc3\x9c\xc3\xbc\\ abc', 5),
-                                      ('\xc3\x84\xc3\xa4\\ \xc3\x96\xc3\xb6\xc3\x9c\xc3\xbc\\ abc', 0)])
-            self.assertEqual(completion.begidx, 0)
-            self.assertEqual(completion.endidx, 19)
+        self.assertEqual(called, [('Ää\\ ÖöÜü\\ abc', 9),
+                                  ('Ää\\ ÖöÜü\\ abc', 3),
+                                  ('Ää\\ ÖöÜü\\ abc', 0)])
+        self.assertEqual(completion.begidx, 0)
+        self.assertEqual(completion.endidx, 13)
 
 
 class DirectoryCompletionHookTests(JailSetup):

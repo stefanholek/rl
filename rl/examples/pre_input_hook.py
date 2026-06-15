@@ -5,7 +5,7 @@ from rl import completion
 from rl import print_exc
 
 
-class Questionnaire(object):
+class Questionnaire():
 
     questions = ('My job is', 'My hobby is', 'I have always wanted to be a')
     defaults = ('great', 'golf', 'fireman')
