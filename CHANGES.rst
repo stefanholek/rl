@@ -7,6 +7,18 @@ Changelog
 - Fix SPDX license identifier.
   [stefan]
 
+- Remove deprecated license classifier.
+  [stefan]
+
+- Upgrade GitHub workflow.
+  [stefan]
+
+- Upgrade .readthedocs.yaml.
+  [stefan]
+
+- Upgrade sphinx and sphinx-rtd-theme in docs extra.
+  [stefan]
+
 
 3.2 - 2024-10-15
 ----------------
