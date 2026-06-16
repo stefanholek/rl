@@ -3,7 +3,6 @@
 
 #include "Python.h"
 
-#if (PY_MAJOR_VERSION >= 3)
 PyObject *PyUnicode_DECODE(const char *text);
 PyObject *PyUnicode_ENCODE(PyObject *text);
 
@@ -15,7 +14,6 @@ Py_ssize_t PyUnicode_INDEX(const char *text, Py_ssize_t index);
 
 int PyUnicode_StrConverter(PyObject *text, void *addr);
 int PyUnicode_FSOrNoneConverter(PyObject *text, void *addr);
-#endif
 
 PyObject *PyUnicode_GetPreferredEncoding();
 PyObject *PyUnicode_GetFileSystemEncoding();

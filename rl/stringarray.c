@@ -4,11 +4,6 @@
 #include "stringarray.h"
 #include "unicode.h"
 
-/* Python 3 compatibility */
-#if (PY_MAJOR_VERSION >= 3)
-#define PyString_FromString PyUnicode_DECODE
-#endif
-
 
 /* StringArray support */
 
@@ -99,7 +94,7 @@ PyList_FromStringArray(char **strings)
 		return NULL;
 
 	for (i = 0; i < size; i++) {
-		s = PyString_FromString(strings[i]);
+		s = PyUnicode_DECODE(strings[i]);
 		if (s == NULL)
 			goto error;
 		PyList_SET_ITEM(list, i, s);
@@ -133,13 +128,9 @@ StringArray_FromPyList(PyObject *list)
 
 	for (p = strings, i = 0; i < size; i++) {
 		r = PyList_GET_ITEM(list, i);
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -148,10 +139,8 @@ StringArray_FromPyList(PyObject *list)
 			goto error;
 		}
 		*p++ = s;
-#if (PY_MAJOR_VERSION >= 3)
 		Py_CLEAR(b);
 		s = NULL;
-#endif
 	}
 	return strings;
   error:

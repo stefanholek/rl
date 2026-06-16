@@ -1,10 +1,6 @@
 #include "Python.h"
 #include "modulestate.h"
 
-#if (PY_MAJOR_VERSION < 3)
-readlinestate _py2_readlinestate;
-#endif
-
 
 void readline_init_state(PyObject *module)
 {
@@ -24,8 +20,6 @@ void readline_init_state(PyObject *module)
 	global->filename_stat_hook = NULL;
 }
 
-
-#if (PY_MAJOR_VERSION >= 3)
 
 int readline_traverse(PyObject *module, visitproc visit, void *arg)
 {
@@ -78,4 +72,3 @@ void readline_free(void *module)
 	readline_clear((PyObject *) module);
 }
 
-#endif /* Python 3 */

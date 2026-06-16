@@ -1,13 +1,6 @@
 #include "Python.h"
 #include "unicode.h"
 
-#if (PY_MAJOR_VERSION >= 3)
-
-/* PyMem_RawMalloc appeared in Python 3.4 */
-#if (PY_VERSION_HEX < 0x03040000)
-#define PyMem_RawMalloc PyMem_Malloc
-#define PyMem_RawFree PyMem_Free
-#endif
 
 /* Always use surrogateescape error handler */
 #define _ERRORS "surrogateescape"
@@ -155,8 +148,6 @@ PyUnicode_FSOrNoneConverter(PyObject *text, void *addr)
 	*(PyObject**)addr = b;
 	return Py_CLEANUP_SUPPORTED;
 }
-
-#endif /* Python 3 */
 
 
 PyObject *

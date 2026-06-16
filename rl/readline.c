@@ -53,18 +53,6 @@
 #include "iterator.h"
 #include "modulestate.h"
 
-/* Python 3 compatibility */
-#if (PY_MAJOR_VERSION >= 3)
-#define PyInt_FromLong PyLong_FromLong
-#define PyInt_AsLong PyLong_AsInt
-#define PyString_FromString PyUnicode_DECODE
-#endif
-
-/* PyMem_RawMalloc appeared in Python 3.4 */
-#if (PY_VERSION_HEX < 0x03040000)
-#define PyMem_RawMalloc PyMem_Malloc
-#endif
-
 /* _Py_SetLocaleFromEnv appeared in Python 3.7 */
 #if (PY_VERSION_HEX < 0x03070000)
 #if __ANDROID__
@@ -107,14 +95,9 @@ parse_and_bind(PyObject *self, PyObject *args)
 	char *s=NULL, *copy;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:parse_and_bind", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:parse_and_bind", &s))
-		return NULL;
-#endif
 	/* Make a copy -- rl_parse_and_bind() modifies its argument */
 	/* Bernard Herzog */
 	copy = strdup(s);
@@ -139,15 +122,10 @@ read_init_file(PyObject *self, PyObject *args)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "|O&:read_init_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "|z:read_init_file", &s))
-		return NULL;
-#endif
 	/* Treat empty string like an error here */
 	if (s != NULL && *s == '\0')
 		errno = 2;
@@ -174,15 +152,10 @@ read_history_file(PyObject *self, PyObject *args)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "|O&:read_history_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "|z:read_history_file", &s))
-		return NULL;
-#endif
 	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = read_history(s);
@@ -223,15 +196,10 @@ write_history_file(PyObject *self, PyObject *args)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "|O&:write_history_file", PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "|z:write_history_file", &s))
-		return NULL;
-#endif
 	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = _py_write_history(s);
@@ -270,15 +238,10 @@ append_history_file(PyObject *self, PyObject *args)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "i|O&:append_history_file", &n, PyUnicode_FSOrNoneConverter, &b))
 		return NULL;
 	if (b != NULL)
 		s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "i|z:append_history_file", &n, &s))
-		return NULL;
-#endif
 	if (s != NULL && *s == '~') {
 		s = tilde_expand(s);
 		errno = _py_append_history(n, s);
@@ -322,7 +285,7 @@ history file truncation.");
 static PyObject*
 get_history_length(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(history_file_length);
+	return PyLong_FromLong(history_file_length);
 }
 
 PyDoc_STRVAR(get_history_length_doc,
@@ -546,13 +509,7 @@ Get the current completion entry function.");
 static PyObject *
 get_completion_type(PyObject *self, PyObject *noarg)
 {
-#if (PY_MAJOR_VERSION >= 3)
 	return PyUnicode_DECODE_CHAR(rl_completion_type);
-#else
-	if (!rl_completion_type)
-		return PyString_FromString("");
-	return PyString_FromFormat("%c", rl_completion_type);
-#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_type,
@@ -566,14 +523,9 @@ set_completion_type(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_completion_type", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completion_type", &s))
-		return NULL;
-#endif
 	rl_completion_type = (s && *s) ? *s : '\0';
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
@@ -589,7 +541,7 @@ Set the type of completion being attempted.");
 static PyObject *
 get_begidx(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(begidx);
+	return PyLong_FromLong(begidx);
 }
 
 PyDoc_STRVAR(doc_get_begidx,
@@ -619,7 +571,7 @@ Set the beginning index of the readline tab-completion scope.");
 static PyObject *
 get_endidx(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(endidx);
+	return PyLong_FromLong(endidx);
 }
 
 PyDoc_STRVAR(doc_get_endidx,
@@ -650,8 +602,8 @@ static PyObject *
 get_completer_delims(PyObject *self, PyObject *noarg)
 {
 	if (!rl_completer_word_break_characters)
-		return PyString_FromString("");
-	return PyString_FromString(rl_completer_word_break_characters);
+		return PyUnicode_DECODE("");
+	return PyUnicode_DECODE(rl_completer_word_break_characters);
 }
 
 PyDoc_STRVAR(doc_get_completer_delims,
@@ -665,14 +617,9 @@ set_completer_delims(PyObject *self, PyObject *args)
 	char *break_chars;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_completer_delims", PyUnicode_StrConverter, &b))
 		return NULL;
 	break_chars = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completer_delims", &break_chars))
-		return NULL;
-#endif
 	break_chars = strdup(break_chars);
 	Py_XDECREF(b);
 
@@ -757,14 +704,9 @@ py_replace_history(PyObject *self, PyObject *args)
 	HIST_ENTRY *old_entry;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "iO&:replace_history_item", &entry_number, PyUnicode_StrConverter, &b))
 		return NULL;
 	line = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "is:replace_history_item", &entry_number, &line))
-		return NULL;
-#endif
 	if (entry_number < 0) {
 		PyErr_SetString(PyExc_ValueError,
 				"History index cannot be negative");
@@ -800,14 +742,9 @@ py_add_history(PyObject *self, PyObject *args)
 	char *line;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if(!PyArg_ParseTuple(args, "O&:add_history", PyUnicode_StrConverter, &b))
 		return NULL;
 	line = PyBytes_AsString(b);
-#else
-	if(!PyArg_ParseTuple(args, "s:add_history", &line))
-		return NULL;
-#endif
 	add_history(line);
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
@@ -829,7 +766,7 @@ get_history_item(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "i:get_history_item", &idx))
 		return NULL;
 	if ((hist_ent = history_get(history_base + idx)))
-		return PyString_FromString(hist_ent->line);
+		return PyUnicode_DECODE(hist_ent->line);
 	else {
 		Py_RETURN_NONE;
 	}
@@ -859,7 +796,7 @@ get_history_list(PyObject *self, PyObject *noarg)
 		return list;
 
 	for (i = 0; i < history_length; i++) {
-		s = PyString_FromString(hist[i]->line);
+		s = PyUnicode_DECODE(hist[i]->line);
 		if (s == NULL)
 			goto error;
 		PyList_SET_ITEM(list, i, s);
@@ -907,7 +844,7 @@ Return a reverse iterator over the history (newest to oldest).");
 static PyObject *
 get_current_history_length(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(history_length);
+	return PyLong_FromLong(history_length);
 }
 
 PyDoc_STRVAR(doc_get_current_history_length,
@@ -977,7 +914,7 @@ Enable or disable automatic history.");
 static PyObject *
 get_line_buffer(PyObject *self, PyObject *noarg)
 {
-	return PyString_FromString(rl_line_buffer);
+	return PyUnicode_DECODE(rl_line_buffer);
 }
 
 PyDoc_STRVAR(doc_get_line_buffer,
@@ -993,14 +930,9 @@ insert_text(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:insert_text", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:insert_text", &s))
-		return NULL;
-#endif
 	rl_insert_text(s);
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
@@ -1050,13 +982,7 @@ redisplays the prompt area as well as the line.");
 static PyObject *
 get_completion_append_character(PyObject *self, PyObject *noarg)
 {
-#if (PY_MAJOR_VERSION >= 3)
 	return PyUnicode_DECODE_CHAR(rl_completion_append_character);
-#else
-	if (!rl_completion_append_character)
-		return PyString_FromString("");
-	return PyString_FromFormat("%c", rl_completion_append_character);
-#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_append_character,
@@ -1070,14 +996,9 @@ set_completion_append_character(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_completion_append_character", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completion_append_character", &s))
-		return NULL;
-#endif
 	rl_completion_append_character = (s && *s) ? *s : '\0';
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
@@ -1126,8 +1047,8 @@ static PyObject *
 get_completer_quote_characters(PyObject *self, PyObject *noarg)
 {
 	if (!rl_completer_quote_characters)
-		return PyString_FromString("");
-	return PyString_FromString(rl_completer_quote_characters);
+		return PyUnicode_DECODE("");
+	return PyUnicode_DECODE(rl_completer_quote_characters);
 }
 
 PyDoc_STRVAR(doc_get_completer_quote_characters,
@@ -1141,14 +1062,9 @@ set_completer_quote_characters(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_completer_quote_characters", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completer_quote_characters", &s))
-		return NULL;
-#endif
 	s = strdup(s);
 	Py_XDECREF(b);
 
@@ -1173,8 +1089,8 @@ static PyObject *
 get_filename_quote_characters(PyObject *self, PyObject *noarg)
 {
 	if (!rl_filename_quote_characters)
-		return PyString_FromString("");
-	return PyString_FromString(rl_filename_quote_characters);
+		return PyUnicode_DECODE("");
+	return PyUnicode_DECODE(rl_filename_quote_characters);
 }
 
 PyDoc_STRVAR(doc_get_filename_quote_characters,
@@ -1188,14 +1104,9 @@ set_filename_quote_characters(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_filename_quote_characters", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_filename_quote_characters", &s))
-		return NULL;
-#endif
 	s = strdup(s);
 	Py_XDECREF(b);
 
@@ -1249,13 +1160,7 @@ if the word being completed contains any quoting character (including backslashe
 static PyObject *
 get_completion_quote_character(PyObject *self, PyObject *noarg)
 {
-#if (PY_MAJOR_VERSION >= 3)
 	return PyUnicode_DECODE_CHAR(rl_completion_quote_character);
-#else
-	if (!rl_completion_quote_character)
-		return PyString_FromString("");
-	return PyString_FromFormat("%c", rl_completion_quote_character);
-#endif
 }
 
 PyDoc_STRVAR(doc_get_completion_quote_character,
@@ -1269,14 +1174,9 @@ set_completion_quote_character(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_completion_quote_character", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_completion_quote_character", &s))
-		return NULL;
-#endif
 	rl_completion_quote_character = (s && *s) ? *s : '\0';
 	Py_XDECREF(b);
 	Py_RETURN_NONE;
@@ -1479,27 +1379,18 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	if (quote_pointer && *quote_pointer) {
 		quote_char_string[0] = *quote_pointer;
 	}
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->filename_quoting_function, "NON",
 				  PyUnicode_DECODE(text), single_match,
 				  PyUnicode_DECODE(quote_char_string));
-#else
-	r = PyObject_CallFunction(global->filename_quoting_function, "sOs",
-				  text, single_match, quote_char_string);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = (char*)text;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -1591,14 +1482,9 @@ on_filename_dequoting_function(const char *text, int quote_char)
 	if (quote_char) {
 		quote_char_string[0] = quote_char;
 	}
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->filename_dequoting_function, "NN",
 				  PyUnicode_DECODE(text),
 				  PyUnicode_DECODE(quote_char_string));
-#else
-	r = PyObject_CallFunction(global->filename_dequoting_function, "ss",
-				  text, quote_char_string);
-#endif
 	if (r == NULL) {
 		result = strdup(text);
 		goto error;
@@ -1607,13 +1493,9 @@ on_filename_dequoting_function(const char *text, int quote_char)
 		result = strdup(text);
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL) {
 			result = strdup(text);
 			goto error;
@@ -1701,21 +1583,16 @@ on_char_is_quoted_function(const char *text, int index)
 
 	_py_set_completion_defaults();
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->char_is_quoted_function, "Ni",
 				  PyUnicode_DECODE(text),
 				  PyUnicode_INDEX(text, index));
-#else
-	r = PyObject_CallFunction(global->char_is_quoted_function, "si",
-	                          text, index);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = 0;
 	}
 	else {
-		i = PyInt_AsLong(r);
+		i = PyLong_AsInt(r);
 		if (i == -1 && PyErr_Occurred())
 			goto error;
 		result = i;
@@ -1744,19 +1621,14 @@ filename_completion_function(PyObject *self, PyObject *args)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&i:filename_completion_function", PyUnicode_StrConverter, &b, &state))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "si:filename_completion_function", &s, &state))
-		return NULL;
-#endif
 	completion = rl_filename_completion_function(s, state);
 	Py_XDECREF(b);
 	if (!completion)
 		Py_RETURN_NONE;
-	r = PyString_FromString(completion);
+	r = PyUnicode_DECODE(completion);
 	free(completion);
 	return r;
 }
@@ -1775,19 +1647,14 @@ username_completion_function(PyObject *self, PyObject *args)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&i:username_completion_function", PyUnicode_StrConverter, &b, &state))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "si:username_completion_function", &s, &state))
-		return NULL;
-#endif
 	completion = rl_username_completion_function(s, state);
 	Py_XDECREF(b);
 	if (!completion)
 		Py_RETURN_NONE;
-	r = PyString_FromString(completion);
+	r = PyUnicode_DECODE(completion);
 	free(completion);
 	return r;
 }
@@ -1804,22 +1671,17 @@ py_tilde_expand(PyObject *self, PyObject *args)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:tilde_expand", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:tilde_expand", &s))
-		return NULL;
-#endif
 	if (*s == '~') {
 		/* tilde_expand aborts when out of memory */
 		s = tilde_expand(s);
-		r = PyString_FromString(s);
+		r = PyUnicode_DECODE(s);
 		free(s);
 	}
 	else
-		r = PyString_FromString(s);
+		r = PyUnicode_DECODE(s);
 	Py_XDECREF(b);
 	return r;
 }
@@ -1835,8 +1697,8 @@ static PyObject *
 get_special_prefixes(PyObject *self, PyObject *noarg)
 {
 	if (!rl_special_prefixes)
-		return PyString_FromString("");
-	return PyString_FromString(rl_special_prefixes);
+		return PyUnicode_DECODE("");
+	return PyUnicode_DECODE(rl_special_prefixes);
 }
 
 PyDoc_STRVAR(doc_get_special_prefixes,
@@ -1851,14 +1713,9 @@ set_special_prefixes(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:set_special_prefixes", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:set_special_prefixes", &s))
-		return NULL;
-#endif
 	s = strdup(s);
 	Py_XDECREF(b);
 
@@ -1883,7 +1740,7 @@ when it is passed to the completion function.");
 static PyObject *
 get_completion_query_items(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(rl_completion_query_items);
+	return PyLong_FromLong(rl_completion_query_items);
 }
 
 PyDoc_STRVAR(doc_get_completion_query_items,
@@ -1913,7 +1770,7 @@ Up to this many items will be displayed in response to a possible-completions ca
 static PyObject *
 readline_version(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(rl_readline_version);
+	return PyLong_FromLong(rl_readline_version);
 }
 
 PyDoc_STRVAR(doc_readline_version,
@@ -1928,7 +1785,7 @@ the minor version number.");
 static PyObject *
 get_rl_point(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(rl_point);
+	return PyLong_FromLong(rl_point);
 }
 
 PyDoc_STRVAR(doc_get_rl_point,
@@ -1939,7 +1796,7 @@ Return rl_point.");
 static PyObject *
 get_rl_end(PyObject *self, PyObject *noarg)
 {
-	return PyInt_FromLong(rl_end);
+	return PyLong_FromLong(rl_end);
 }
 
 PyDoc_STRVAR(doc_get_rl_end,
@@ -1954,17 +1811,12 @@ complete_internal(PyObject *self, PyObject *args)
 	int result = 1;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:complete_internal", PyUnicode_StrConverter, &b))
 		return NULL;
 	what_to_do = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:complete_internal", &what_to_do))
-		return NULL;
-#endif
 	result = rl_complete_internal(*what_to_do);
 	Py_XDECREF(b);
-	return PyInt_FromLong(result);
+	return PyLong_FromLong(result);
 }
 
 PyDoc_STRVAR(doc_complete_internal,
@@ -2051,27 +1903,18 @@ on_completion_word_break_hook(void)
 	start = rl_point;
 	rl_point = end;
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->completion_word_break_hook, "ii",
 				  PyUnicode_INDEX(rl_line_buffer, start),
 				  PyUnicode_INDEX(rl_line_buffer, end));
-#else
-	r = PyObject_CallFunction(global->completion_word_break_hook, "ii",
-	                          start, end);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = NULL;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		result = strdup(s);
@@ -2152,26 +1995,17 @@ on_directory_rewrite_hook(char **directory)
 #endif
 	modulestate *global = PyModule_GetState(readline_module());
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->directory_rewrite_hook, "N",
 				  PyUnicode_DECODE(*directory));
-#else
-	r = PyObject_CallFunction(global->directory_rewrite_hook, "s",
-				  *directory);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = 0;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_FS_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -2254,26 +2088,17 @@ on_directory_completion_hook(char **directory)
 #endif
 	modulestate *global = PyModule_GetState(readline_module());
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->directory_completion_hook, "N",
 				  PyUnicode_DECODE(*directory));
-#else
-	r = PyObject_CallFunction(global->directory_completion_hook, "s",
-				  *directory);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = 0;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -2361,26 +2186,17 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 #endif
 	modulestate *global = PyModule_GetState(readline_module());
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->filename_rewrite_hook, "N",
 				  PyUnicode_FS_DECODE(text));
-#else
-	r = PyObject_CallFunction(global->filename_rewrite_hook, "s",
-				  text);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = (char *)text;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -2463,26 +2279,17 @@ on_filename_stat_hook(char **directory)
 #endif
 	modulestate *global = PyModule_GetState(readline_module());
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->filename_stat_hook, "N",
 				  PyUnicode_DECODE(*directory));
-#else
-	r = PyObject_CallFunction(global->filename_stat_hook, "s",
-				  *directory);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
 		result = 0;
 	}
 	else {
-#if (PY_MAJOR_VERSION >= 3)
 		b = PyUnicode_FS_ENCODE(r);
 		if (b != NULL)
 			s = PyBytes_AsString(b);
-#else
-		s = PyString_AsString(r);
-#endif
 		if (s == NULL)
 			goto error;
 		s = strdup(s);
@@ -2514,14 +2321,9 @@ replace_line(PyObject *self, PyObject *args)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:replace_line", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:replace_line", &s))
-		return NULL;
-#endif
 	if (s) {
 		rl_replace_line(s, 0);
 		/* Move rl_point to end of line */
@@ -2553,11 +2355,7 @@ read_key(PyObject *self, PyObject *noargs)
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
 
-#if (PY_MAJOR_VERSION >= 3)
 	return PyUnicode_DECODE_CHAR(c);
-#else
-	return PyString_FromFormat("%c", c);
-#endif
 }
 
 PyDoc_STRVAR(doc_read_key,
@@ -2576,14 +2374,9 @@ stuff_char(PyObject *self, PyObject *args)
 	int r = 0;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&:stuff_char", PyUnicode_StrConverter, &b))
 		return NULL;
 	s = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "s:stuff_char", &s))
-		return NULL;
-#endif
 	if (s && *s)
 		r = rl_stuff_char(*s);
 	Py_XDECREF(b);
@@ -2609,16 +2402,10 @@ display_match_list(PyObject *self, PyObject *args)
 	char *s;
 	PyObject *b = NULL;
 
-#if (PY_MAJOR_VERSION >= 3)
 	if (!PyArg_ParseTuple(args, "O&Oi:display_match_list",
 			      PyUnicode_StrConverter, &b, &matches, &max_length))
 		return NULL;
 	substitution = PyBytes_AsString(b);
-#else
-	if (!PyArg_ParseTuple(args, "sOi:display_match_list",
-			      &substitution, &matches, &max_length))
-		return NULL;
-#endif
 	num_matches = PyList_Size(matches);
 	if (num_matches == -1)
 		goto error;
@@ -2730,13 +2517,8 @@ on_ignore_some_completions_function(char **matches)
 	if (m == NULL)
 		goto error;
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->ignore_some_completions_function, "NO",
 				  PyUnicode_DECODE(matches[0]), m);
-#else
-	r = PyObject_CallFunction(global->ignore_some_completions_function, "sO",
-				  matches[0], m);
-#endif
 	if (r == NULL)
 		goto error;
 	if (r == Py_None) {
@@ -2785,7 +2567,7 @@ on_ignore_some_completions_function(char **matches)
 PyObject *
 get_history_max_entries(PyObject *self, PyObject *noargs)
 {
-	return PyInt_FromLong(history_max_entries);
+	return PyLong_FromLong(history_max_entries);
 }
 
 PyDoc_STRVAR(doc_get_history_max_entries,
@@ -2812,7 +2594,7 @@ Limit the history size to ``max_entries`` entries.");
 PyObject *
 py_unstifle_history(PyObject *self, PyObject *noargs)
 {
-	return PyInt_FromLong(unstifle_history());
+	return PyLong_FromLong(unstifle_history());
 }
 
 PyDoc_STRVAR(doc_unstifle_history,
@@ -3111,7 +2893,7 @@ on_hook(PyObject *func)
 		if (r == Py_None)
 			result = 0;
 		else {
-			result = PyInt_AsLong(r);
+			result = PyLong_AsInt(r);
 			if (result == -1 && PyErr_Occurred())
 				goto error;
 		}
@@ -3174,17 +2956,12 @@ on_completion_display_matches_hook(char **matches,
 	if (m == NULL)
 		goto error;
 
-#if (PY_MAJOR_VERSION >= 3)
 	r = PyObject_CallFunction(global->completion_display_matches_hook, "NOi",
 				  PyUnicode_DECODE(matches[0]), m, max_length);
-#else
-	r = PyObject_CallFunction(global->completion_display_matches_hook, "sOi",
-				  matches[0], m, max_length);
-#endif
 	Py_CLEAR(m);
 
 	if (r == NULL ||
-	    (r != Py_None && PyInt_AsLong(r) == -1 && PyErr_Occurred())) {
+	    (r != Py_None && PyLong_AsInt(r) == -1 && PyErr_Occurred())) {
 		goto error;
 	}
 	Py_CLEAR(r);
@@ -3218,24 +2995,16 @@ on_completion(const char *text, int state)
 	if (global->completer != NULL) {
 		PyObject *r;
 		rl_attempted_completion_over = 1;
-#if (PY_MAJOR_VERSION >= 3)
 		r = PyObject_CallFunction(global->completer, "Ni", PyUnicode_DECODE(text), state);
-#else
-		r = PyObject_CallFunction(global->completer, "si", text, state);
-#endif
 		if (r == NULL)
 			goto error;
 		if (r == Py_None) {
 			result = NULL;
 		}
 		else {
-#if (PY_MAJOR_VERSION >= 3)
 			b = PyUnicode_ENCODE(r);
 			if (b != NULL)
 				s = PyBytes_AsString(b);
-#else
-			s = PyString_AsString(r);
-#endif
 			if (s == NULL)
 				goto error;
 			result = strdup(s);
@@ -3266,13 +3035,8 @@ flex_completer(const char *text, int start, int end)
 #endif
 	_py_set_completion_defaults();
 
-#if (PY_MAJOR_VERSION >= 3)
 	begidx = PyUnicode_INDEX(rl_line_buffer, start);
 	endidx = PyUnicode_INDEX(rl_line_buffer, end);
-#else
-	begidx = start;
-	endidx = end;
-#endif
 
 #ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
@@ -3578,7 +3342,6 @@ call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
 PyDoc_STRVAR(doc_module,
 "Importing this module enables command line editing using GNU Readline.");
 
-#if (PY_MAJOR_VERSION >= 3)
 struct PyModuleDef readlinemodule = {
 	PyModuleDef_HEAD_INIT,
 	"readline",
@@ -3614,23 +3377,4 @@ PyInit_readline(void)
 	}
 	return m;
 }
-#else
-PyMODINIT_FUNC
-initreadline(void)
-{
-	PyObject *m;
-
-	m = Py_InitModule4("readline", readline_methods, doc_module,
-			   (PyObject *)NULL, PYTHON_API_VERSION);
-	if (m == NULL)
-		return;
-
-	PyOS_ReadlineFunctionPointer = call_readline;
-
-	if (setup_readline(m) < 0) {
-		PyErr_NoMemory();
-		Py_DECREF(m);
-	}
-}
-#endif
 

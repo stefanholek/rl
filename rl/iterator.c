@@ -18,13 +18,6 @@
 #define true 1
 #define false 0
 
-/* Python 3 compatibility */
-#if (PY_MAJOR_VERSION >= 3)
-#define PyInt_FromLong PyLong_FromLong
-#define PyInt_FromSsize_t PyLong_FromSsize_t
-#define PyString_FromString PyUnicode_DECODE
-#endif
-
 
 /* The following borrows heavily from list iterators */
 
@@ -49,12 +42,7 @@ static PyMethodDef histiter_methods[] = {
 };
 
 PyTypeObject PyHistIter_Type = {
-#if (PY_VERSION_HEX < 0x02060000)
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,						/* ob_size */
-#else
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-#endif
 	"historyiterator",				/* tp_name */
 	sizeof(histiterobject),				/* tp_basicsize */
 	0,						/* tp_itemsize */
@@ -128,7 +116,7 @@ histiter_next(histiterobject *it)
 		index = it->it_index;
 		if (index < history_length) {
 			hist = history_list();
-			item = PyString_FromString(hist[index]->line);
+			item = PyUnicode_DECODE(hist[index]->line);
 			it->it_index++;
 			return item;
 		}
@@ -146,9 +134,9 @@ histiter_len(histiterobject *it)
 	if (!it->it_done) {
 		len = history_length - it->it_index;
 		if (len >= 0)
-			return PyInt_FromSsize_t(len);
+			return PyLong_FromSsize_t(len);
 	}
-	return PyInt_FromLong(0);
+	return PyLong_FromLong(0);
 }
 
 
@@ -171,12 +159,7 @@ static PyMethodDef histreviter_methods[] = {
 };
 
 PyTypeObject PyHistRevIter_Type = {
-#if (PY_VERSION_HEX < 0x02060000)
-	PyObject_HEAD_INIT(&PyType_Type)
-	0,						/* ob_size */
-#else
 	PyVarObject_HEAD_INIT(&PyType_Type, 0)
-#endif
 	"historyreverseiterator",			/* tp_name */
 	sizeof(histreviterobject),			/* tp_basicsize */
 	0,						/* tp_itemsize */
@@ -250,7 +233,7 @@ histreviter_next(histreviterobject *it)
 		index = it->it_index;
 		if (index >= 0 && index < history_length) {
 			hist = history_list();
-			item = PyString_FromString(hist[index]->line);
+			item = PyUnicode_DECODE(hist[index]->line);
 			it->it_index--;
 			return item;
 		}
@@ -268,8 +251,8 @@ histreviter_len(histreviterobject *it)
 	if (!it->it_done) {
 		len = it->it_index + 1;
 		if (len >= 0 && len <= history_length)
-			return PyInt_FromSsize_t(len);
+			return PyLong_FromSsize_t(len);
 	}
-	return PyInt_FromLong(0);
+	return PyLong_FromLong(0);
 }
 
