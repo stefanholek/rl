@@ -1,7 +1,7 @@
 Changelog
 =========
 
-3.3 - Unreleased
+4.0 - Unreleased
 ----------------
 
 - Fix SPDX license identifier.
