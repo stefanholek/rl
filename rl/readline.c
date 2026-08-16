@@ -3098,6 +3098,12 @@ setup_readline(PyObject *module)
 	/* Allow $if term= in .inputrc to work */
 	rl_terminal_name = getenv("TERM");
 #endif
+#if (RL_READLINE_VERSION >= 0x0603)
+	/* Prevent readline from setting the LINES and COLUMNS environment
+	 * variables: ncurses prefers them over an ioctl() query, so a stale value
+	 * left after a resize breaks SIGWINCH / KEY_RESIZE handling (gh-46927). */
+	rl_change_environment = 0;
+#endif
 	/* Initialize history variables */
 	using_history();
 

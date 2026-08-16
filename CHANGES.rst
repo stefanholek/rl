@@ -4,6 +4,9 @@ Changelog
 4.0 - Unreleased
 ----------------
 
+- Prevent readline from setting LINES and COLUMNS environment variables.
+  [stefan]
+
 - Fix SPDX license identifier.
   [stefan]
 
