@@ -5,6 +5,7 @@
 void readline_init_state(PyObject *module)
 {
 	readlinestate *global = PyModule_GetState(module);
+
 	global->completer = NULL;
 	global->startup_hook = NULL;
 	global->pre_input_hook = NULL;
