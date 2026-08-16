@@ -3364,8 +3364,8 @@ PyInit_readline(void)
 		return NULL;
 
 #ifdef Py_GIL_DISABLED
-	/* Cargo-culted from Modules/readline.c
-	   This means: "Do not re-enable the GIL when importing rl.readline." */ 
+	/* Cargo-culted from Python 3.13 Modules/readline.c
+	   This means: "Do not re-enable the GIL when importing rl.readline." */
 	PyUnstable_Module_SetGIL(m, Py_MOD_GIL_NOT_USED);
 #endif
 	PyOS_ReadlineFunctionPointer = call_readline;
