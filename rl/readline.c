@@ -3209,13 +3209,8 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 #endif /* defined(HAVE_SELECT) */
 
 
-#if (PY_VERSION_HEX < 0x03040000)
-static char *
-call_readline(FILE *sys_stdin, FILE *sys_stdout, char *prompt)
-#else
 static char *
 call_readline(FILE *sys_stdin, FILE *sys_stdout, const char *prompt)
-#endif
 {
 	size_t n;
 	char *p, *q;
