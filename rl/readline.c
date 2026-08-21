@@ -1369,9 +1369,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	single_match = PyBool_FromLong(match_type == SINGLE_MATCH);
@@ -1406,9 +1404,7 @@ on_filename_quoting_function(const char *text, int match_type, char *quote_point
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -1474,9 +1470,7 @@ on_filename_dequoting_function(const char *text, int quote_char)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	if (quote_char) {
@@ -1509,9 +1503,7 @@ on_filename_dequoting_function(const char *text, int quote_char)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	/* We really can't return NULL here, and since this is a hook
 	   we can't raise a Python exception either. */
 	if (result == NULL) {
@@ -1576,9 +1568,7 @@ on_char_is_quoted_function(const char *text, int index)
 	int i = 0;
 	PyObject *r = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	_py_set_completion_defaults();
@@ -1603,9 +1593,7 @@ on_char_is_quoted_function(const char *text, int index)
 	PyErr_Clear();
 	Py_XDECREF(r);
   done:
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -1885,9 +1873,7 @@ on_completion_word_break_hook(void)
 	int start, end;
 	static char *last = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	_py_set_completion_defaults();
@@ -1929,9 +1915,7 @@ on_completion_word_break_hook(void)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -1990,9 +1974,7 @@ on_directory_rewrite_hook(char **directory)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	r = PyObject_CallFunction(global->directory_rewrite_hook, "N",
@@ -2022,9 +2004,7 @@ on_directory_rewrite_hook(char **directory)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2083,9 +2063,7 @@ on_directory_completion_hook(char **directory)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	r = PyObject_CallFunction(global->directory_completion_hook, "N",
@@ -2115,9 +2093,7 @@ on_directory_completion_hook(char **directory)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2181,9 +2157,7 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	r = PyObject_CallFunction(global->filename_rewrite_hook, "N",
@@ -2210,9 +2184,7 @@ on_filename_rewrite_hook(const char *text, int num_bytes)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2274,9 +2246,7 @@ on_filename_stat_hook(char **directory)
 	PyObject *r = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	r = PyObject_CallFunction(global->filename_stat_hook, "N",
@@ -2306,9 +2276,7 @@ on_filename_stat_hook(char **directory)
 	Py_XDECREF(r);
   done:
 	Py_XDECREF(b);
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2508,9 +2476,7 @@ on_ignore_some_completions_function(char **matches)
 	PyObject *m = NULL;
 	PyObject *r = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	m = PyList_FromStringArray(matches+1);
@@ -2555,9 +2521,7 @@ on_ignore_some_completions_function(char **matches)
 	Py_XDECREF(m);
 	Py_XDECREF(r);
   done:
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2656,16 +2620,14 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 		}
 		else
 			completion_y_or_n = get_y_or_n();
-#ifdef WITH_THREAD
+
 		PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 		/* Clear KeyboardInterrupt */
 		if (PyErr_CheckSignals() == -1 &&
 		    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 			PyErr_Clear();
-#ifdef WITH_THREAD
 		PyGILState_Release(gilstate);
-#endif
+
 		if (completion_y_or_n == 0) {
 			rl_crlf();
 			rl_forced_update_display();
@@ -2683,16 +2645,13 @@ default_display_matches_hook(char **matches, int num_matches, int max_length)
 	else
 		rl_display_match_list(matches, num_matches, max_length);
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	/* Clear KeyboardInterrupt */
 	if (PyErr_CheckSignals() == -1 &&
 	    PyErr_ExceptionMatches(PyExc_KeyboardInterrupt))
 		PyErr_Clear();
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
+
 	rl_forced_update_display();
 	rl_display_fixed = 1;
 }
@@ -2911,30 +2870,24 @@ on_hook(PyObject *func)
 static int
 on_startup_hook(void)
 {
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	int result = on_hook(global->startup_hook);
-#ifdef WITH_THREAD
+
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
 static int
 on_pre_input_hook(void)
 {
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	int result = on_hook(global->pre_input_hook);
-#ifdef WITH_THREAD
+
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -2947,9 +2900,7 @@ on_completion_display_matches_hook(char **matches,
 {
 	PyObject *m=NULL, *r=NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	m = PyList_FromStringArray(matches+1);
@@ -2972,9 +2923,7 @@ on_completion_display_matches_hook(char **matches,
 		Py_XDECREF(m);
 		Py_XDECREF(r);
 	}
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 }
 
 
@@ -2987,9 +2936,7 @@ on_completion(const char *text, int state)
 	char *s = NULL;
 	PyObject *b = NULL;
 
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	modulestate *global = PyModule_GetState(readline_module());
 
 	if (global->completer != NULL) {
@@ -3017,9 +2964,7 @@ on_completion(const char *text, int state)
 	  done:
 	  	Py_XDECREF(b);
 	}
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return result;
 }
 
@@ -3030,17 +2975,13 @@ on_completion(const char *text, int state)
 static char **
 flex_completer(const char *text, int start, int end)
 {
-#ifdef WITH_THREAD
 	PyGILState_STATE gilstate = PyGILState_Ensure();
-#endif
 	_py_set_completion_defaults();
 
 	begidx = PyUnicode_INDEX(rl_line_buffer, start);
 	endidx = PyUnicode_INDEX(rl_line_buffer, end);
 
-#ifdef WITH_THREAD
 	PyGILState_Release(gilstate);
-#endif
 	return completion_matches(text, *on_completion);
 }
 
@@ -3207,13 +3148,9 @@ readline_until_enter_or_signal(const char *prompt, int *signal)
 		}
 		else if (saved_errno == EINTR) {
 			int s;
-#ifdef WITH_THREAD
 			PyEval_RestoreThread(_PyOS_ReadlineTState);
-#endif
 			s = PyErr_CheckSignals();
-#ifdef WITH_THREAD
 			PyEval_SaveThread();
-#endif
 			if (s < 0) {
 				rl_free_line_state();
 #if (RL_READLINE_VERSION >= 0x0700)
