@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 archs = ["x86_64", "aarch64"]
-build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp315-*"]
+build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp315t-*"]
 skip = ["*-musllinux_*"]
 test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
 build-verbosity = 1
