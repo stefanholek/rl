@@ -2,7 +2,7 @@ name: Wheels
 
 on:
   push:
-    branches: [main]
+    branches: [main, build-wheels]
   workflow_dispatch:
 
 concurrency:
@@ -16,9 +16,9 @@ env:
 permissions: {}
 
 jobs:
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+  build-wheels:
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -50,9 +50,9 @@ jobs:
           name: cibw-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
-  build_sdist:
-    name: Build source distribution
+  build-sdist:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out project
         uses: actions/checkout@v7
@@ -67,3 +67,4 @@ jobs:
         with:
           name: sdist
           path: ./dist/*.tar.gz
+
