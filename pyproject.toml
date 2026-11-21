@@ -1,3 +1,18 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+archs = ["x86_64", "aarch64"]
+build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp315t-*"]
+skip = ["*-musllinux_*"]
+test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
+build-verbosity = 1
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y ncurses-devel"
+
+[tool.cibuildwheel.macos]
+# Link against the ncurses that ships with the macOS SDK instead of
+# brewing an ncurses that find_termcap cannot see (it is keg-only).
+environment = { RL_TERMCAP = "ncurses" }
