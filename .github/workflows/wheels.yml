@@ -1,8 +1,8 @@
 name: Wheels
 
 on:
-  push:
-    branches: [main, build-wheels]
+  #push:
+  #  branches: [main, workflow]
   workflow_dispatch:
 
 concurrency:
