@@ -4,6 +4,9 @@ Changelog
 4.0 - Unreleased
 ----------------
 
+- Provide pre-compiled wheels for Linux and macOS.
+  [stefan]
+
 - Prevent readline from setting LINES and COLUMNS environment variables.
   [stefan]
 
