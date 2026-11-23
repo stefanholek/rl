@@ -13,6 +13,12 @@ build-verbosity = 1
 before-all = """\
 yum install -y ncurses-devel
 curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/1.0.0/lief-tools-$(uname -m)-unknown-linux-musl.zip
+case "$(uname -m)" in
+  x86_64) sha=4c463a1d3014e32741fe88e4612105d27daef6975cdc3788752c1b3e5bf28e6b ;;
+  aarch64) sha=8183f2cddc0e33d88223600617db5ece393dbd430de9a9978b54b6b8875f5848 ;;
+  *) echo "no LIEF checksum for $(uname -m)" >&2; exit 1 ;;
+esac
+echo "$sha  /tmp/lief-tools.zip" | sha256sum -c -
 unzip -qo /tmp/lief-tools.zip -d /usr/local
 chmod +x /usr/local/bin/lief-patchelf
 """
