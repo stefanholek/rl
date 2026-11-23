@@ -12,7 +12,7 @@ build-verbosity = 1
 [tool.cibuildwheel.linux]
 before-all = """\
 yum install -y ncurses-devel
-curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/0.17.6/lief-tools-$(uname -m)-unknown-linux-musl.zip
+curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/1.0.0/lief-tools-$(uname -m)-unknown-linux-musl.zip
 unzip -qo /tmp/lief-tools.zip -d /usr/local
 chmod +x /usr/local/bin/lief-patchelf
 """
