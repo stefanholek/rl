@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [tool.cibuildwheel]
 archs = ["x86_64", "aarch64"]
 build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp315t-*"]
-skip = ["*-musllinux_*"]
 test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
 build-verbosity = 1
 
-[tool.cibuildwheel.linux]
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux*"
 # Link the versioned runtime library directly so that the ncurses
 # development package is not needed.
 environment = { RL_TERMCAP = ":libtinfo.so.6" }
@@ -28,6 +28,11 @@ unzip -qo /tmp/lief-tools.zip -d /usr/local
 chmod +x /usr/local/bin/lief-patchelf
 """
 repair-wheel-command = "auditwheel repair --patcher lief-patchelf -w {dest_dir} {wheel}"
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+# Alpine has no separate tinfo library. Termcap lives in libncursesw.
+environment = { RL_TERMCAP = ":libncursesw.so.6" }
 
 [tool.cibuildwheel.macos]
 # Link against the ncurses that ships with the macOS SDK instead of
