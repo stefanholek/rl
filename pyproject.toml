@@ -13,6 +13,8 @@ build-verbosity = 1
 # Link the versioned runtime library directly so that the ncurses
 # development package is not needed.
 environment = { RL_TERMCAP = ":libtinfo.so.6" }
+# Download lief-patchelf from the LIEF release, pinned by sha256, to keep
+# auditwheel from padding vendored libraries.
 before-all = """\
 set -e
 curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/1.0.0/lief-tools-$(uname -m)-unknown-linux-musl.zip
