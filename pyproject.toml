@@ -10,9 +10,11 @@ test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/r
 build-verbosity = 1
 
 [tool.cibuildwheel.linux]
+# Link the versioned runtime library directly so that the ncurses
+# development package is not needed.
+environment = { RL_TERMCAP = ":libtinfo.so.6" }
 before-all = """\
 set -e
-yum install -y ncurses-devel
 curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/1.0.0/lief-tools-$(uname -m)-unknown-linux-musl.zip
 case "$(uname -m)" in
   x86_64) sha=4c463a1d3014e32741fe88e4612105d27daef6975cdc3788752c1b3e5bf28e6b ;;
