@@ -35,6 +35,6 @@ select = "*-musllinux*"
 environment = { RL_TERMCAP = ":libncursesw.so.6" }
 
 [tool.cibuildwheel.macos]
-# Link against the ncurses that ships with the macOS SDK instead of
-# brewing an ncurses that find_termcap cannot see (it is keg-only).
+# The bare name links the SDK ncurses, or the copy bundled with the
+# python.org 3.12+ frameworks.
 environment = { RL_TERMCAP = "ncurses" }
