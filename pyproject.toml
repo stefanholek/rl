@@ -40,4 +40,4 @@ archs = ["x86_64", "aarch64"]
 # The bare name links the SDK ncurses, or the copy bundled with the
 # python.org 3.12+ frameworks.
 environment = { RL_TERMCAP = "ncurses" }
-archs = ["x86_64", "arm64"]
+archs = ["universal2"]
