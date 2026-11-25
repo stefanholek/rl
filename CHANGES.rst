@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0 - Unreleased
+4.0 - 2026-11-25
 ----------------
 
 - Provide pre-compiled wheels for Linux and macOS.
