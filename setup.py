@@ -12,7 +12,7 @@ from distutils import log
 
 from os.path import join, exists
 
-version = '4.0'
+version = '4.1'
 readline_version = '8.2'
 
 readline_version_info = tuple(map(int, readline_version.split('.')))
