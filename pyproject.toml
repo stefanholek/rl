@@ -3,7 +3,6 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-archs = ["x86_64", "aarch64"]
 build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp315t-*"]
 test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
 build-verbosity = 1
@@ -34,7 +33,11 @@ select = "*-musllinux*"
 # Alpine has no separate tinfo library. Termcap lives in libncursesw.
 environment = { RL_TERMCAP = ":libncursesw.so.6" }
 
+[tool.cibuildwheel.linux]
+archs = ["x86_64", "aarch64"]
+
 [tool.cibuildwheel.macos]
 # The bare name links the SDK ncurses, or the copy bundled with the
 # python.org 3.12+ frameworks.
 environment = { RL_TERMCAP = "ncurses" }
+archs = ["x86_64", "arm64"]
