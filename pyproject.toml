@@ -3,16 +3,41 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-archs = ["x86_64", "aarch64"]
 build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp315t-*"]
-skip = ["*-musllinux_*"]
 test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
 build-verbosity = 1
 
+[[tool.cibuildwheel.overrides]]
+select = "*-manylinux*"
+# Link the versioned runtime library directly so that the ncurses
+# development package is not needed.
+environment = { RL_TERMCAP = ":libtinfo.so.6" }
+# Download lief-patchelf from the LIEF release, pinned by sha256, to keep
+# auditwheel from padding vendored libraries.
+before-all = """\
+set -e
+curl -fsSLo /tmp/lief-tools.zip https://github.com/lief-project/LIEF/releases/download/1.0.0/lief-tools-$(uname -m)-unknown-linux-musl.zip
+case "$(uname -m)" in
+  x86_64) sha=4c463a1d3014e32741fe88e4612105d27daef6975cdc3788752c1b3e5bf28e6b ;;
+  aarch64) sha=8183f2cddc0e33d88223600617db5ece393dbd430de9a9978b54b6b8875f5848 ;;
+  *) echo "no LIEF checksum for $(uname -m)" >&2; exit 1 ;;
+esac
+echo "$sha  /tmp/lief-tools.zip" | sha256sum -c -
+unzip -qo /tmp/lief-tools.zip -d /usr/local
+chmod +x /usr/local/bin/lief-patchelf
+"""
+repair-wheel-command = "auditwheel repair --patcher lief-patchelf -w {dest_dir} {wheel}"
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+# Alpine has no separate tinfo library. Termcap lives in libncursesw.
+environment = { RL_TERMCAP = ":libncursesw.so.6" }
+
 [tool.cibuildwheel.linux]
-before-all = "yum install -y ncurses-devel"
+archs = ["x86_64", "aarch64"]
 
 [tool.cibuildwheel.macos]
-# Link against the ncurses that ships with the macOS SDK instead of
-# brewing an ncurses that find_termcap cannot see (it is keg-only).
-environment = { RL_TERMCAP = "ncurses" }
+# The versioned name links the system ncurses. The bare name would pick
+# up the copy bundled with the python.org 3.12+ frameworks.
+environment = { RL_TERMCAP = "ncurses.5.4" }
+archs = ["universal2"]

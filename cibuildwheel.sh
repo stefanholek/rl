@@ -12,7 +12,7 @@ if [ ! -x "$cibw" ]; then
     exit 1
 fi
 
-if [ -n "$(git -C "$root" status --porcelain)" ]; then
+if [ -n "$(git -C "$root" status --porcelain -uno)" ]; then
     echo "warning: working tree is dirty, building HEAD instead" >&2
 fi
 

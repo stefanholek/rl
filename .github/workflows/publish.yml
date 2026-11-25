@@ -27,10 +27,8 @@ jobs:
             archs: x86_64
           - os: ubuntu-24.04-arm
             archs: aarch64
-          - os: macos-15-intel
-            archs: x86_64
           - os: macos-15
-            archs: arm64
+            archs: universal2
 
     steps:
       - name: Check out project
