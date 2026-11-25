@@ -37,7 +37,7 @@ environment = { RL_TERMCAP = ":libncursesw.so.6" }
 archs = ["x86_64", "aarch64"]
 
 [tool.cibuildwheel.macos]
-# The bare name links the SDK ncurses, or the copy bundled with the
-# python.org 3.12+ frameworks.
-environment = { RL_TERMCAP = "ncurses" }
+# The versioned name links the system ncurses. The bare name would pick
+# up the copy bundled with the python.org 3.12+ frameworks.
+environment = { RL_TERMCAP = "ncurses.5.4" }
 archs = ["universal2"]
