@@ -848,6 +848,9 @@ class FilenameStatHookTests(JailSetup):
             return filename
         self.mkdir('flintstone')
         self.mkfile('flintstone/fred.txt')
+        if readline.readline_version() >= 0x0801:
+            # Reset last_completion_failed
+            readline.complete_internal(TAB)
         completer.filename_stat_hook = func
         completion.line_buffer = 'flintstone/fr'
         readline.complete_internal('?')
@@ -861,6 +864,9 @@ class FilenameStatHookTests(JailSetup):
             return filename
         self.mkdir('flintstone')
         self.mkfile('flintstone/fred.txt')
+        if readline.readline_version() >= 0x0801:
+            # Reset last_completion_failed
+            readline.complete_internal(TAB)
         completer.directory_completion_hook = lambda x: x
         completer.filename_stat_hook = func
         completion.line_buffer = 'flintstone/fr'
