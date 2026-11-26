@@ -7,6 +7,15 @@ build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*", "cp314t-*", "cp315-*", "cp3
 test-command = "python -m unittest discover -t {project}/rl/tests -s {project}/rl/tests"
 build-verbosity = 1
 
+[tool.cibuildwheel.macos]
+archs = ["universal2"]
+# The versioned name links the system ncurses. The bare name would pick
+# up the copy bundled with the python.org 3.12+ frameworks.
+environment = { RL_TERMCAP = "ncurses.5.4" }
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64", "aarch64"]
+
 [[tool.cibuildwheel.overrides]]
 select = "*-manylinux*"
 # Link the versioned runtime library directly so that the ncurses
@@ -32,12 +41,3 @@ repair-wheel-command = "auditwheel repair --patcher lief-patchelf -w {dest_dir} 
 select = "*-musllinux*"
 # Alpine has no separate tinfo library. Termcap lives in libncursesw.
 environment = { RL_TERMCAP = ":libncursesw.so.6" }
-
-[tool.cibuildwheel.linux]
-archs = ["x86_64", "aarch64"]
-
-[tool.cibuildwheel.macos]
-# The versioned name links the system ncurses. The bare name would pick
-# up the copy bundled with the python.org 3.12+ frameworks.
-environment = { RL_TERMCAP = "ncurses.5.4" }
-archs = ["universal2"]
