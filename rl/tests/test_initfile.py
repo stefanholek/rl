@@ -36,8 +36,8 @@ class ReadInitFileTests(JailSetup):
         self.assertRaises(IOError, completer.read_init_file, 'my_init')
 
     def test_read_None_name(self):
-        self.mkfile('my_init')
         self.mkfile(self.initfile)
+        completer.read_init_file(self.initfile)
         completer.read_init_file(None)
 
     def test_read_empty_string(self):

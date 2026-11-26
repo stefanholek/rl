@@ -54,13 +54,13 @@ class ReadlineTests(JailSetup):
         self.assertEqual(readline.parse_and_bind(''), None)
 
     def test_read_initfile_noarg(self):
-        self.mkfile('my_init')
         self.mkfile(self.initfile)
+        readline.read_init_file(self.initfile)
         readline.read_init_file()
 
     def test_read_initfile_None(self):
-        self.mkfile('my_init')
         self.mkfile(self.initfile)
+        readline.read_init_file(self.initfile)
         readline.read_init_file(None)
 
     def test_read_initfile_empty_string(self):
