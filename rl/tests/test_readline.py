@@ -60,7 +60,6 @@ class ReadlineTests(JailSetup):
         readline.read_init_file(None)
 
     def test_read_initfile_empty_string(self):
-        self.mkfile('my_init')
         self.mkfile(self.initfile)
         self.assertRaises(IOError, readline.read_init_file, '')
 
