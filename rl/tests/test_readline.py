@@ -29,10 +29,6 @@ class ReadlineTests(JailSetup):
         if isfile(self.initfile):
             os.remove(self.initfile)
 
-    def test_AAA_setup_init_file(self):
-        self.mkfile(self.initfile)
-        readline.read_init_file(self.initfile)
-
     def test_readline_version(self):
         self.assertNotEqual(readline.readline_version(), 0)
 

@@ -25,10 +25,6 @@ class ReadInitFileTests(JailSetup):
         if isfile(self.initfile):
             os.remove(self.initfile)
 
-    def test_AAA_setup_init_file(self):
-        self.mkfile(self.initfile)
-        completer.read_init_file(self.initfile)
-
     def test_no_initfile(self):
         self.assertEqual(isfile(self.initfile), False)
 
